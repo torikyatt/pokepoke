@@ -241,7 +241,7 @@ export function DetailSheet() {
           </button>
           <DetailHeader card={card} />
         </div>
-        <div ref={content} className="min-h-0 flex-1 overflow-y-auto overscroll-contain border-t border-line pb-[max(2rem,env(safe-area-inset-bottom))]">
+        <div ref={content} className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-contain border-t border-line pb-[max(2rem,env(safe-area-inset-bottom))]">
           {id && <CardDetail key={id} id={id} actions={card && <DeckButtons card={card} />} fav={card && <FavToggle card={card} />} />}
         </div>
       </div>
@@ -309,7 +309,7 @@ export function DetailPane() {
           <DetailHeader card={card} />
         </div>
       ) : null}
-      <div ref={content} className="min-h-0 flex-1 overflow-y-auto">
+      <div ref={content} className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto">
         {id ? (
           <CardDetail key={id} id={id} keepOpen actions={card && <DeckButtons card={card} />} fav={card && <FavToggle card={card} />} />
         ) : (

@@ -121,7 +121,7 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
           <section>
             <h2 className="mb-2 text-sm font-extrabold text-muted">相性のいいカード</h2>
             {/* スマホは横にスクロール、PCはマウスで横に動かしにくいので折り返して全部並べる */}
-            <div className={keepOpen ? "grid grid-cols-[repeat(auto-fill,minmax(4.5rem,1fr))] gap-x-2 gap-y-3" : "scrollbar-none -mx-4 flex gap-2 overflow-x-auto px-4 pb-2"}>
+            <div className={keepOpen ? "grid grid-cols-[repeat(auto-fill,minmax(4.5rem,1fr))] gap-x-2 gap-y-3" : "scrollbar-none -mx-3 flex gap-2 overflow-x-auto px-3 pb-2"}>
               {partners.map((p) => (
                 <div key={p.card.id} className={keepOpen ? "min-w-0" : "w-24 shrink-0"}>
                   <PoolCard card={p.card} onTap={() => openCard(p.card.id)} />
