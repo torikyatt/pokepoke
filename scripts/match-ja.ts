@@ -39,8 +39,8 @@ const bareCompat = (a: string, b: string) => {
   return !!x && !!y && (x === y || x.includes(y) || y.includes(x));
 };
 const nameCompat = (a: string, b: string) => bareCompat(a, b) && isEx(a) === isEx(b);
-// 句読点や空白だけの違い（Game8の入力揺れ）は同じ文とみなす
-const textKey = (s: string) => norm(s).replace(/[、。,.・「」]/g, "");
+// 句読点や空白だけの違い（Game8の入力揺れ）は同じ文とみなす。★は無色エネルギーのアイコン
+const textKey = (s: string) => norm(s).replace(/★/g, "無色").replace(/[、。,.・「」]/g, "");
 
 const G8_SET: Record<string, string> = { pa: "PROMO-A", pb: "PROMO-B" };
 const g8SetOf = (pdSet: string) => G8_SET[pdSet] ?? pdSet.charAt(0).toUpperCase() + pdSet.slice(1);
@@ -48,7 +48,7 @@ const printNumber = (printId: string) => Number(printId.split("-").pop());
 
 const JA_COST: Record<string, EnergyType> = {
   草: "grass", 炎: "fire", 水: "water", 雷: "lightning", 超: "psychic",
-  闘: "fighting", 悪: "darkness", 鋼: "metal", 無色: "colorless", 無: "colorless",
+  闘: "fighting", 悪: "darkness", 鋼: "metal", 無色: "colorless", 無: "colorless", "★": "colorless",
 };
 const TRAINER_KIND: Record<string, CardKind> = {
   サポート: "supporter", グッズ: "item", "グッズ（化石）": "fossil", "グッズ(化石)": "fossil",
@@ -248,7 +248,7 @@ function resolveTrainer(card: Card): void {
   const text = withText.find((c) => textKey(c.text!) === mostCommon(withText.map((c) => textKey(c.text!))))?.text;
   if (name) card.nameJa = name;
   if (text && card.text) {
-    card.text.textJa = text;
+    card.text.textJa = text.replace(/★/g, "無色");
     card.text.jaSource = "official";
   }
   // 収録違いで食い違うときは多数決。票が割れたら（＝どれが正しいか決められない）レビューに回す
