@@ -4,15 +4,16 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { jaImageIndex } from "./lib/game8.ts";
+import { requireInfoOf, selectorOf } from "./lib/targets.ts";
 import { loadTaxonomy } from "./lib/taxonomy.ts";
 import type { Card, Effect } from "./lib/types.ts";
 import type { G8Card } from "./lib/game8.ts";
-import type { AppAttack, AppCard, AppData, AppEffect, AppPrint, AppSet, EnergyType, LexEntry, Slot } from "../src/types.ts";
+import type { AppAttack, AppCard, AppData, AppEffect, AppPrint, AppSet, EnergyType, LexEntry, Selector, Slot } from "../src/types.ts";
 
 const ROOT = join(import.meta.dirname, "..");
 const DATA = join(ROOT, "data");
 const cards: Card[] = JSON.parse(readFileSync(join(DATA, "cards.json"), "utf8"));
-const tags: Record<string, { ability?: string[]; attacks: string[][]; text?: string[]; refs: string[] }> = JSON.parse(
+const tags: Record<string, { ability?: string[]; attacks: string[][]; text?: string[]; refs: string[]; slotRefs?: Record<string, string[]> }> = JSON.parse(
   readFileSync(join(DATA, "tags.json"), "utf8"),
 );
 const tax = loadTaxonomy(DATA);
@@ -25,6 +26,14 @@ const CODE: Record<string, EnergyType> = {
   G: "grass", R: "fire", W: "water", L: "lightning", P: "psychic", F: "fighting", D: "darkness", M: "metal",
 };
 const byId = new Map(cards.map((c) => [c.id, c]));
+// タグ → 供給（親タグの供給も受け継ぐ）／要求（そのタグ自身のものだけ）
+const taxById = new Map(tax.map((x) => [x.id, x]));
+const suppliesOfTag = (id: string) => {
+  const out: string[] = [];
+  for (let x = taxById.get(id); x; x = x.parent ? taxById.get(x.parent) : undefined) out.push(...(x.supplies ?? []));
+  return out;
+};
+const requiresOfTag = (id: string) => taxById.get(id)?.requires ?? [];
 const jaImageOf = jaImageIndex(DATA);
 
 // 収録の日本語（Game8 の収録パック名・入手方法）。照合済みのプリントだけ使う
@@ -101,6 +110,22 @@ const out: AppCard[] = cards.map((c) => {
     const ts = [...e.textEn.matchAll(/\[\s*([GRWLPFDMC])\s*\]/g)].map((m) => (m[1] === "C" ? "colorless" : CODE[m[1]]));
     if (new Set(ts).size < 5) for (const x of ts) accelTypes.add(x as EnergyType);
   }
+  // シナジー: 効果ごとに供給・要求を集め、供給には「誰に効くか」を付ける
+  const supplies: Record<string, Selector[]> = {};
+  const requires: Record<string, { etypes?: EnergyType[] }> = {};
+  const slotted: [string, Effect | undefined, string[] | undefined][] = [["ability", c.ability, ct.ability], ...c.attacks.map((a, i) => [`attack${i}`, a, ct.attacks[i]] as [string, Effect, string[]]), ["text", c.text, ct.text]];
+  for (const [slot, e, ts] of slotted) {
+    if (!e?.textEn || !ts) continue;
+    for (const s of new Set(ts.flatMap(suppliesOfTag))) (supplies[s] ??= []).push(selectorOf(s, e.textEn, ct.slotRefs?.[slot] ?? []));
+    for (const r of new Set(ts.flatMap(requiresOfTag))) {
+      const info = requireInfoOf(r, e.textEn);
+      const cur = requires[r];
+      requires[r] = cur && !(cur.etypes && info.etypes) ? {} : { ...(info.etypes || cur?.etypes ? { etypes: [...new Set([...(cur?.etypes ?? []), ...(info.etypes ?? [])])] } : {}) };
+    }
+  }
+  // カードそのものの性質から決まる要求
+  if (c.kind === "pokemon" && (c.retreat ?? 0) >= 3) requires["supply.retreat.help"] = {};
+  if (c.stage === "stage1" || c.stage === "stage2") requires["supply.evolve.help"] = {};
   const card: AppCard = {
     id: c.id,
     nameJa: c.nameJa ?? c.nameEn,
@@ -125,6 +150,8 @@ const out: AppCard[] = cards.map((c) => {
     ...(c.attacks.length ? { minCost: Math.min(...c.attacks.map((a) => a.costTotal)) } : {}),
     tags: [...new Set([...(ability?.tags ?? []), ...attacks.flatMap((a) => a.tags), ...(text?.tags ?? [])])].sort(),
     refs: ct.refs,
+    supplies,
+    requires,
   };
   if (c.nameJaMachine) card.nameMachine = true;
   if (c.type) card.type = c.type;

@@ -134,6 +134,7 @@
   children:
     - id: damage.bench
       ja: ベンチ狙撃
+      supplies: [supply.opp.bench_damage]
       match:
         - '(damage to|do \d+ damage to) (1|2|each) of your opponent.s (Benched )?Pokémon'
         - '1 of your opponent.s (Benched )?Pokémon is chosen at random'
@@ -145,6 +146,7 @@
         - 'damage to 1 of your opponent.s Pokémon'
     - id: damage.spread
       ja: 全体攻撃
+      supplies: [supply.opp.bench_damage]
       match:
         - 'damage (for each heads )?to (each of your opponent.s|all Benched)'
         - 'do \d+ damage to each of your opponent.s Pokémon'
@@ -269,11 +271,11 @@
   # 状態異常にする側。scripts/tag.ts が「相手を状態異常にする文」だけに付ける（条件文・自分が受ける文は除く）
   supplies: [supply.status]
   children:
-    - { id: status.poison, ja: どく, match: ['Poisoned'] }
-    - { id: status.burn, ja: やけど, match: ['Burned'] }
-    - { id: status.paralysis, ja: マヒ, match: ['Paralyzed'] }
-    - { id: status.sleep, ja: ねむり, match: ['Asleep'] }
-    - { id: status.confusion, ja: こんらん, match: ['Confused'] }
+    - { id: status.poison, ja: どく, supplies: [supply.status.poison], match: ['Poisoned'] }
+    - { id: status.burn, ja: やけど, supplies: [supply.status.burn], match: ['Burned'] }
+    - { id: status.paralysis, ja: マヒ, supplies: [supply.status.paralysis], match: ['Paralyzed'] }
+    - { id: status.sleep, ja: ねむり, supplies: [supply.status.sleep], match: ['Asleep'] }
+    - { id: status.confusion, ja: こんらん, supplies: [supply.status.confusion], match: ['Confused'] }
     - id: status.no_attack
       ja: ワザ封じ
       match:
@@ -533,9 +535,14 @@
           ja: 相手のダメージ・HPで変わる
           match:
             - 'opponent.s Active Pokémon has damage on it'
-            - 'Pokémon that have damage on them'
-            - 'Benched Pokémon that has damage on it'
             - 'remaining HP than this Pokémon'
+        - id: cond.damage.opp_bench
+          ja: 相手のベンチのダメージで変わる
+          requires: [supply.opp.bench_damage]
+          match:
+            - 'opponent.s Pokémon that ha(s|ve) damage on (it|them)'
+            - 'opponent.s Benched Pokémon that has damage on it'
+            - 'Benched Pokémon that has damage on it'
     - id: cond.deck
       ja: 山札の中身で変わる
       match:
@@ -573,8 +580,15 @@
       ja: 相手が状態異常だと変わる
       requires: [supply.status]
       match:
-        - 'If your opponent.s Active Pokémon is (Asleep|Burned|Confused|Poisoned|affected by a Special Condition)'
+        - 'If your opponent.s Active Pokémon is affected by a Special Condition'
         - 'for each Special Condition affecting'
+      # どの状態異常かが決まっているものは、その状態異常にできるカードとだけ結ぶ
+      children:
+        - { id: cond.status.poison, ja: 相手がどくだと変わる, requires: [supply.status.poison], match: ['If your opponent.s Active Pokémon is Poisoned'] }
+        - { id: cond.status.burn, ja: 相手がやけどだと変わる, requires: [supply.status.burn], match: ['If your opponent.s Active Pokémon is Burned'] }
+        - { id: cond.status.paralysis, ja: 相手がマヒだと変わる, requires: [supply.status.paralysis], match: ['If your opponent.s Active Pokémon is Paralyzed'] }
+        - { id: cond.status.sleep, ja: 相手がねむりだと変わる, requires: [supply.status.sleep], match: ['If your opponent.s Active Pokémon is Asleep', 'if your opponent.s Active Pokémon is Asleep'] }
+        - { id: cond.status.confusion, ja: 相手がこんらんだと変わる, requires: [supply.status.confusion], match: ['If your opponent.s Active Pokémon is Confused'] }
     - id: cond.target
       ja: 相手の種類で変わる
       match:

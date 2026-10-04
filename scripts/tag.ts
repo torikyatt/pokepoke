@@ -22,6 +22,7 @@ export interface CardTags {
   attacks: string[][];
   text?: string[];
   refs: string[]; // 効果文が名前で指しているカードID
+  slotRefs: Record<string, string[]>; // 効果ごとの名前指定（ability / attack0 … / text）
 }
 
 const clean = (s: string) =>
@@ -125,7 +126,7 @@ function apply(cardId: string, slot: string, tags: Set<string>): string[] {
 
 const empty: string[] = [];
 for (const c of cards) {
-  const ct: CardTags = { attacks: [], refs: [] };
+  const ct: CardTags = { attacks: [], refs: [], slotRefs: {} };
   const texts: string[] = [];
   const effects: [string, Effect, EffectSlot][] = [];
   if (c.ability) effects.push(["ability", c.ability, "ability"]);
@@ -133,7 +134,11 @@ for (const c of cards) {
   if (c.text) effects.push(["text", c.text, slotOf(c)]);
   for (const [slot, e, kind] of effects) {
     const tags = apply(c.id, slot, e.textEn ? tagEffect(e.textEn, kind) : new Set());
-    if (e.textEn) texts.push(e.textEn);
+    if (e.textEn) {
+      texts.push(e.textEn);
+      const r = refsOf(c, [e.textEn]);
+      if (r.length) ct.slotRefs[slot] = r;
+    }
     if (e.textEn && !tags.length && c.kind !== "fossil") empty.push(`${c.id} ${c.nameEn} [${slot}] ${e.textEn}`);
     if (slot === "ability") ct.ability = tags;
     else if (slot === "text") ct.text = tags;
