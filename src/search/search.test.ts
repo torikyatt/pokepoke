@@ -1,0 +1,103 @@
+// 検索の受け入れテスト（SPEC 7）。期待カードは実データから選んだ。
+// 事前に npm run build-index で src/data/app-data.json を作っておく（npm test が自動でやる）
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import { describe, expect, it } from "vitest";
+import { createEngine } from "./engine.ts";
+import { normalize } from "./normalize.ts";
+import type { AppData } from "../types.ts";
+
+const data: AppData = JSON.parse(readFileSync(join(import.meta.dirname, "../data/app-data.json"), "utf8"));
+const engine = createEngine(data);
+const ids = (q: string, n = 50) => engine.search(q).slice(0, n).map((h) => h.card.id);
+
+describe("正規化", () => {
+  it("カタカナ・エネルギー・長音・全角をそろえる", () => {
+    expect(normalize("エネルギー")).toBe("えね");
+    expect(normalize("ＨＰ１００")).toBe("hp100");
+    expect(normalize("ピカチュウ")).toBe(normalize("ぴかちゅう"));
+    expect(normalize("ゲッコウガ")).toBe("げつこうが");
+  });
+});
+
+describe("受け入れテスト", () => {
+  it("トラッシュの枚数によって効果が変わる系のカード", () => {
+    const top = ids("トラッシュの枚数によって効果が変わる系のカード", 10);
+    // シャンデラ（サポートの枚数）・ハカドッグ・ヒスイゾロアークex・ロトムex（グッズの枚数）
+    for (const id of ["b2-069", "b2a-053", "b3b-060", "b4-055"]) expect(top).toContain(id);
+  });
+
+  it("攻撃の必要エネが水1個であとは無色でいいカード", () => {
+    const hits = engine.search("攻撃の必要エネが水1個であとは無色でいいカード");
+    expect(hits.length).toBeGreaterThan(10);
+    for (const h of hits) expect(h.card.attacks.some((a) => a.cost.water === 1 && a.costTyped === 1)).toBe(true);
+    expect(hits.map((h) => h.card.id)).toContain("a1-054"); // カメール「スプラッシュ」水＋無色
+  });
+
+  it("エネ加速できる炎のカード", () => {
+    const all = ids("エネ加速できる炎のカード");
+    // ブーバー・リザードンex（エネゾーンから自分へ）、ブースター（ベンチへ）、カキ（サポート）
+    for (const id of ["a2-023", "a2b-010", "a3b-008", "a3-150"]) expect(all).toContain(id);
+    for (const h of engine.search("エネ加速できる炎のカード")) expect(h.card.type === "fire" || h.card.typeRefs.includes("fire")).toBe(true);
+  });
+
+  it("ベンチに攻撃できる雷ポケモン", () => {
+    const hits = engine.search("ベンチに攻撃できる雷ポケモン");
+    for (const id of ["a1a-026", "a4-070", "a2-060"]) expect(hits.map((h) => h.card.id)).toContain(id);
+    for (const h of hits) {
+      expect(h.card.type).toBe("lightning");
+      expect(h.card.tags).toContain("damage.bench");
+    }
+  });
+
+  it("にげるエネ0のたね", () => {
+    const hits = engine.search("にげるエネ0のたね");
+    expect(hits.length).toBeGreaterThan(5);
+    for (const h of hits) {
+      expect(h.card.stage).toBe("basic");
+      expect(h.card.retreat).toBe(0);
+    }
+    expect(hits.map((h) => h.card.id)).toContain("a3-078"); // アブリー
+  });
+
+  it("相手の手札を減らすサポート", () => {
+    const top = ids("相手の手札を減らすサポート", 5);
+    for (const id of ["a2-155", "a4-158"]) expect(top).toContain(id); // マーズ・シルバー
+    for (const h of engine.search("相手の手札を減らすサポート")) expect(h.card.kind).toBe("supporter");
+  });
+
+  it("コインで火力が上がるワザ", () => {
+    const hits = engine.search("コインで火力が上がるワザ");
+    const top = hits.slice(0, 20).map((h) => h.card.id);
+    for (const id of ["a1-022", "a1-026", "a1-102"]) expect(top).toContain(id); // ナッシー・カイロス・サンダース
+    for (const h of hits.slice(0, 20)) {
+      expect(h.card.attacks.some((a) => a.damageVariable && a.tags.some((t) => t.startsWith("coin.")))).toBe(true);
+    }
+  });
+
+  it("ダメージを受けないようにするワザ", () => {
+    const hits = engine.search("ダメージを受けないようにするワザ");
+    expect(hits.map((h) => h.card.id).slice(0, 10)).toContain("a1-140"); // ダグトリオ「あなをほる」
+    for (const h of hits) expect(h.card.attacks.some((a) => a.tags.includes("defense.no_damage"))).toBe(true);
+  });
+});
+
+describe("その他の検索", () => {
+  it("カード名で引ける", () => {
+    expect(ids("ピカチュウex", 5)).toContain("a1-096");
+  });
+  it("HPやダメージの数値条件", () => {
+    for (const h of engine.search("HP150以上の水ポケモン")) {
+      expect(h.card.hp).toBeGreaterThanOrEqual(150);
+      expect(h.card.type).toBe("water");
+    }
+    for (const h of engine.search("120ダメ以上のワザ")) expect(h.card.attacks.some((a) => (a.damage ?? 0) >= 120)).toBe(true);
+  });
+  it("他TCGの言葉（墓地・ハンデス）", () => {
+    expect(engine.parse("墓地からエネをつける").some((c) => c.kind === "tag" && c.tag === "energy.accel.trash")).toBe(true);
+    expect(engine.parse("ハンデス").some((c) => c.kind === "tag" && c.tag.startsWith("disrupt.hand"))).toBe(true);
+  });
+  it("何にも当たらない検索文は条件ゼロ", () => {
+    expect(engine.parse("あいうえお").filter((c) => c.kind !== "text")).toHaveLength(0);
+  });
+});

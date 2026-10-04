@@ -1,9 +1,9 @@
 {
   "name": "pokepoke",
   "version": "1.0.0",
-  "description": "",
+  "description": "ポケポケのカード検索・デッキビルダー",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npm run build-index && vitest run",
     "fetch": "tsx scripts/fetch.ts",
     "normalize": "tsx scripts/normalize.ts",
     "names-ja": "tsx scripts/names-ja.ts",
@@ -11,12 +11,14 @@
     "match-ja": "tsx scripts/match-ja.ts",
     "translate": "tsx scripts/translate.ts",
     "tag": "tsx scripts/tag.ts",
+    "lexicon-gen": "tsx scripts/lexicon-gen.ts",
     "validate": "tsx scripts/validate.ts",
-    "data": "npm run normalize && npm run names-ja && npm run match-ja && npm run translate && npm run tag && npm run validate"
+    "build-index": "tsx scripts/build-index.ts",
+    "data": "npm run normalize && npm run names-ja && npm run match-ja && npm run translate && npm run tag && npm run lexicon-gen && npm run validate && npm run build-index"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "AGPL-3.0-only",
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
     "@types/js-yaml": "^4.0.9",
@@ -39,5 +41,6 @@
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "zustand": "^5.0.15"
-  }
+  },
+  "private": true
 }
