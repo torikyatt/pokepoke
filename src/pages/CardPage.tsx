@@ -10,7 +10,7 @@ import type { AppAttack, AppCard, AppEffect } from "../types.ts";
 import { GROUP_JA, KIND_JA, RULE_JA, STAGE_JA, TYPE_JA } from "../types.ts";
 
 /** カード詳細の中身（スマホは下からのシート、PCは真ん中の列に入れる） */
-export function CardDetail({ id, keepOpen, actions }: { id: string; keepOpen?: boolean; actions?: React.ReactNode }) {
+export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpen?: boolean; actions?: React.ReactNode; fav?: React.ReactNode }) {
   const { byId, synergy, engine } = useData();
   const card = byId.get(id);
   const partners = useMemo(() => (card ? synergy.partners(card) : []), [card, synergy]);
@@ -32,20 +32,24 @@ export function CardDetail({ id, keepOpen, actions }: { id: string; keepOpen?: b
 
   return (
     <div className="@container">
-      <div className="mx-auto max-w-3xl space-y-5 px-4 py-4">
-        <div className="flex gap-4">
+      <div className="mx-auto max-w-3xl space-y-4 px-3 pt-3 pb-4">
+        {/* 画像の横に、名前・タイプ・お気に入り・デッキの −／＋ をまとめる（スクロールせずに押せるように） */}
+        <div className="flex gap-3">
           <div className="w-32 shrink-0 @sm:w-40 @lg:w-56">
             <PrintGallery card={card} index={printIndex} onIndex={setPrintIndex} />
           </div>
           <div className="min-w-0 flex-1 space-y-2 text-sm">
-            <div>
-              <div className="text-xl leading-tight font-extrabold">
-                {card.nameJa}
-                {card.nameMachine && <MachineBadge />}
+            <div className="flex items-start gap-1">
+              <div className="min-w-0 flex-1">
+                <div className="text-lg leading-tight font-extrabold">
+                  {card.nameJa}
+                  {card.nameMachine && <MachineBadge />}
+                </div>
+                <div className="truncate text-[11px] font-bold text-muted">{card.nameEn}</div>
               </div>
-              <div className="text-xs font-bold text-muted">{card.nameEn}</div>
+              {fav}
             </div>
-            <div className="flex flex-wrap items-center gap-1.5">
+            <div className="flex flex-wrap items-center gap-1">
               {card.type && <EnergyIcon type={card.type} />}
               <Chip active>{card.kind === "pokemon" ? (card.stage ? STAGE_JA[card.stage] : "ポケモン") : KIND_JA[card.kind]}</Chip>
               {card.rule !== "normal" && <Chip tone="text">{RULE_JA[card.rule]}</Chip>}
@@ -53,8 +57,9 @@ export function CardDetail({ id, keepOpen, actions }: { id: string; keepOpen?: b
                 <Chip key={g}>{GROUP_JA[g]}</Chip>
               ))}
             </div>
+            {actions}
             {card.kind === "pokemon" && (
-              <dl className="neu-in grid grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 rounded-2xl p-3 text-xs font-bold [&_dt]:whitespace-nowrap">
+              <dl className="neu-in grid grid-cols-[auto_1fr] gap-x-2.5 gap-y-1 rounded-2xl px-3 py-2 text-xs font-bold [&_dt]:whitespace-nowrap">
                 <dt className="text-muted">HP</dt>
                 <dd className="font-bold">{card.hp}</dd>
                 <dt className="text-muted">弱点</dt>
@@ -71,8 +76,6 @@ export function CardDetail({ id, keepOpen, actions }: { id: string; keepOpen?: b
             )}
           </div>
         </div>
-
-        {actions}
 
         <section className="space-y-3">
           {card.ability && <EffectBlock e={card.ability} label="特性" tagChip={tagChip} />}

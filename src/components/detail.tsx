@@ -9,20 +9,8 @@ import { useDecks, useFavorites, useToast } from "../store.ts";
 import type { AppCard } from "../types.ts";
 import { IconHeart, Thumb } from "./ui.tsx";
 
-/** 今のデッキに入っている枚数と −／＋ */
-export function DeckCounter({ card }: { card: AppCard }) {
-  return (
-    <div className="space-y-2">
-      <div className="flex justify-end">
-        <FavToggle card={card} />
-      </div>
-      <DeckButtons card={card} />
-    </div>
-  );
-}
-
-/** お気に入りの登録・解除 */
-function FavToggle({ card }: { card: AppCard }) {
+/** お気に入りの登録・解除（カード名の横に置く小さなボタン） */
+export function FavToggle({ card }: { card: AppCard }) {
   const on = useFavorites((s) => s.ids.includes(card.id));
   const toggle = useFavorites((s) => s.toggle);
   const show = useToast((s) => s.show);
@@ -34,45 +22,51 @@ function FavToggle({ card }: { card: AppCard }) {
         toggle(card.id);
         show(on ? `「${card.nameJa}」をお気に入りから外しました` : `「${card.nameJa}」をお気に入りに登録しました`);
       }}
-      className={`flex items-center gap-1 rounded-full px-3 py-1 text-xs font-extrabold transition active:scale-95 ${on ? "bg-[#ffe3e8] text-[#e5566a]" : "neu-sm text-muted"}`}
+      aria-label={on ? "お気に入りから外す" : "お気に入りに追加"}
+      title={on ? "お気に入りから外す" : "お気に入りに追加"}
+      className={`flex shrink-0 items-center gap-0.5 rounded-full px-2 py-1 text-[10px] font-extrabold transition active:scale-95 ${on ? "bg-[#ffe3e8] text-[#e5566a]" : "neu-sm text-muted"}`}
     >
-      <IconHeart filled={on} className="h-4 w-4" />
-      {on ? "お気に入り登録済み" : "お気に入りに追加"}
+      <IconHeart filled={on} className="h-3.5 w-3.5" />
+      {on ? "登録済み" : "お気に入り"}
     </button>
   );
 }
 
-function DeckButtons({ card }: { card: AppCard }) {
+/** 今のデッキの −／＋（カード画像の横に置く。狭くても押しやすい大きさ） */
+export function DeckButtons({ card }: { card: AppCard }) {
   const addToDeck = useAddToDeck();
   const deck = useDecks((s) => s.decks.find((d) => d.id === s.currentId) ?? s.decks[0]);
   const removeCard = useDecks((s) => s.removeCard);
   const show = useToast((s) => s.show);
   const n = deck?.cards.filter((id) => id === card.id).length ?? 0;
   return (
-    <div className="flex items-center gap-2">
-      <button
-        type="button"
-        aria-label="デッキから1枚外す"
-        disabled={!n}
-        onClick={() => {
-          removeCard(deck!.id, card.id);
-          show(`「${card.nameJa}」を1枚外しました（${deck!.cards.length - 1}/${DECK_SIZE}）`);
-        }}
-        className="neu-sm neu-press flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-2xl font-extrabold text-muted disabled:opacity-35"
-      >
-        −
-      </button>
-      <div className="neu-in min-w-0 flex-1 rounded-full px-3 py-1 text-center leading-tight">
-        <div className="truncate text-[10px] font-bold text-muted">
-          {deck ? `${deck.name}（${deck.cards.length}/${DECK_SIZE}）` : "デッキはまだありません"}
-        </div>
-        <div className="text-sm font-extrabold whitespace-nowrap">
-          デッキに <span className={`text-lg tabular-nums ${n ? "text-accent-deep" : ""}`}>{n}</span> 枚
-        </div>
+    <div className="space-y-1">
+      <div className="flex items-center gap-1.5">
+        <button
+          type="button"
+          aria-label="デッキから1枚外す"
+          disabled={!n}
+          onClick={() => {
+            removeCard(deck!.id, card.id);
+            show(`「${card.nameJa}」を1枚外しました（${deck!.cards.length - 1}/${DECK_SIZE}）`);
+          }}
+          className="neu-sm neu-press flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xl font-extrabold text-muted disabled:opacity-35"
+        >
+          −
+        </button>
+        <button type="button" onClick={() => addToDeck(card)} className="btn-ok flex h-10 min-w-0 flex-1 items-center justify-center gap-0.5 rounded-full px-2 text-xs tracking-normal whitespace-nowrap">
+          <span className="text-lg leading-none">＋</span>デッキに追加
+        </button>
       </div>
-      <button type="button" onClick={() => addToDeck(card)} className="btn-ok flex h-11 shrink-0 items-center gap-1 rounded-full pr-4 pl-3 text-sm tracking-normal">
-        <span className="text-xl leading-none">＋</span>デッキに追加
-      </button>
+      <div className="truncate text-center text-[10px] font-bold text-muted">
+        {deck ? (
+          <>
+            {deck.name}に <span className={`text-sm tabular-nums ${n ? "text-accent-deep" : "text-ink"}`}>{n}</span> 枚（{deck.cards.length}/{DECK_SIZE}）
+          </>
+        ) : (
+          "デッキはまだありません"
+        )}
+      </div>
     </div>
   );
 }
@@ -237,7 +231,7 @@ export function DetailSheet() {
           <DetailHeader card={card} />
         </div>
         <div ref={content} className="min-h-0 flex-1 overflow-y-auto overscroll-contain border-t border-line pb-[max(2rem,env(safe-area-inset-bottom))]">
-          {id && <CardDetail key={id} id={id} actions={card && <DeckCounter card={card} />} />}
+          {id && <CardDetail key={id} id={id} actions={card && <DeckButtons card={card} />} fav={card && <FavToggle card={card} />} />}
         </div>
       </div>
     </>
@@ -306,7 +300,7 @@ export function DetailPane() {
       ) : null}
       <div ref={content} className="min-h-0 flex-1 overflow-y-auto">
         {id ? (
-          <CardDetail key={id} id={id} keepOpen actions={card && <DeckCounter card={card} />} />
+          <CardDetail key={id} id={id} keepOpen actions={card && <DeckButtons card={card} />} fav={card && <FavToggle card={card} />} />
         ) : (
           <div className="flex h-full flex-col items-center justify-center gap-4 p-8 text-center text-sm font-bold text-muted">
             <p>
