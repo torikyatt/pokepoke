@@ -1,4 +1,5 @@
 node_modules/
 dist/
+dist-single/
 data/game8/cache/
 src/data/app-data.json

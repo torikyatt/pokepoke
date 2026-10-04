@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "ポケポケのカード検索・デッキビルダー",
   "scripts": {
+    "dev": "npm run build-index && vite",
+    "build": "npm run build-index && vite build && vite build --mode single && tsx scripts/finish-build.ts",
+    "preview": "vite preview",
     "test": "npm run build-index && vitest run",
+    "typecheck": "tsc -p .",
     "fetch": "tsx scripts/fetch.ts",
     "normalize": "tsx scripts/normalize.ts",
     "names-ja": "tsx scripts/names-ja.ts",
@@ -13,6 +17,7 @@
     "tag": "tsx scripts/tag.ts",
     "lexicon-gen": "tsx scripts/lexicon-gen.ts",
     "validate": "tsx scripts/validate.ts",
+    "thumbs": "tsx scripts/thumbs.ts",
     "build-index": "tsx scripts/build-index.ts",
     "data": "npm run normalize && npm run names-ja && npm run match-ja && npm run translate && npm run tag && npm run lexicon-gen && npm run validate && npm run build-index"
   },

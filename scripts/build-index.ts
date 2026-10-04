@@ -54,12 +54,21 @@ const out: AppCard[] = cards.map((c) => {
       if (r?.type && r.type !== "colorless") typeRefs.add(r.type);
     }
   }
+  // エネ加速するワザ・特性・効果が付けるエネのタイプ（シナジー「特定タイプのエネ加速 ↔ そのタイプの重いワザ」用）
+  const accelTypes = new Set<EnergyType>();
+  const slots: [Effect | undefined, string[] | undefined][] = [[c.ability, ct.ability], ...c.attacks.map((a, i) => [a, ct.attacks[i]] as [Effect, string[]]), [c.text, ct.text]];
+  for (const [e, t] of slots) {
+    if (!e?.textEn || !t?.some((x) => x.startsWith("energy.accel"))) continue;
+    const ts = [...e.textEn.matchAll(/\[\s*([GRWLPFDMC])\s*\]/g)].map((m) => (m[1] === "C" ? "colorless" : CODE[m[1]]));
+    if (new Set(ts).size < 5) for (const x of ts) accelTypes.add(x as EnergyType);
+  }
   const card: AppCard = {
     id: c.id,
     nameJa: c.nameJa ?? c.nameEn,
     nameEn: c.nameEn,
     kind: c.kind,
     typeRefs: typeRefs.size >= 5 ? [] : [...typeRefs],
+    accelTypes: [...accelTypes],
     rule: c.rule,
     groups: c.groups,
     evolvesFrom: c.evolvesFrom,

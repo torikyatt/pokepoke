@@ -44,6 +44,7 @@ export interface AppCard {
   type?: EnergyType;
   // トレーナーズが効果文で名指ししているタイプ（例: カスミ → 水）。タイプ絞り込みに使う
   typeRefs: EnergyType[];
+  accelTypes: EnergyType[]; // エネ加速で付けるエネのタイプ
   stage?: Stage;
   rule: Rule;
   groups: CardGroup[];
