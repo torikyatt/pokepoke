@@ -106,15 +106,19 @@ function DetailHeader({ card }: { card?: AppCard }) {
   );
 }
 
-/** 開いていたカードの見ていた位置（1つ戻ったときに元の位置へ） */
+/**
+ * 詳細のスクロール位置:
+ *   新しく開いたカード … いちばん上から（進化ラインから移ったときだけ、進化ラインを同じ高さに）
+ *   戻る・進む・「最近見たカード」で開き直したとき … そのカードで見ていた位置へ
+ */
 function useScrollMemory(ref: React.RefObject<HTMLDivElement | null>, key: string) {
   const mem = useRef(new Map<string, number>());
   const cur = useRef(key);
+  const nav = useDetail((s) => s.nav);
   useLayoutEffect(() => {
     const el = ref.current;
     cur.current = key;
     if (!el) return;
-    // 進化ラインから移ってきたときは、進化ラインが前と同じ高さに来るように
     const a = takeScrollAnchor();
     const target = a && el.querySelector<HTMLElement>(`[data-anchor="${a.name}"]`);
     if (a && target) {
@@ -123,8 +127,8 @@ function useScrollMemory(ref: React.RefObject<HTMLDivElement | null>, key: strin
       requestAnimationFrame(align); // 後から高さが変わる欄があっても合わせ直す
       return;
     }
-    el.scrollTo(0, mem.current.get(key) ?? 0);
-  }, [key]);
+    el.scrollTo(0, nav.kind === "history" ? (mem.current.get(key) ?? 0) : 0);
+  }, [key, nav.seq]);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
