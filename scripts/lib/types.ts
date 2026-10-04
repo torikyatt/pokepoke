@@ -2,6 +2,8 @@ export type EnergyType =
   | "grass" | "fire" | "water" | "lightning" | "psychic"
   | "fighting" | "darkness" | "metal" | "dragon" | "colorless";
 
+export type CardGroup = "ultra_beast" | "ancient" | "future" | "team_rocket";
+
 export type CardKind = "pokemon" | "item" | "supporter" | "tool" | "fossil" | "stadium";
 
 export interface Effect {
@@ -33,6 +35,7 @@ export interface Card {
   id: string; // 代表プリントのID
   nameEn: string;
   nameJa?: string;
+  nameJaMachine?: boolean; // カード名が仮訳
   kind: CardKind;
   type?: EnergyType;
   stage?: "basic" | "stage1" | "stage2";
@@ -40,6 +43,7 @@ export interface Card {
   evolvesFrom: string[]; // カードID
   evolvesTo: string[]; // カードID
   rule: "normal" | "ex" | "mega_ex";
+  groups: CardGroup[]; // ウルトラビースト・古代・未来・ロケット団（効果文の対象指定に使う）
   points?: number;
   hp?: number;
   weakness?: EnergyType;

@@ -78,6 +78,10 @@ for (const xs of groups.values()) {
     evolvesFrom: [],
     evolvesTo: [],
     rule: x.mega ? "mega_ex" : x.ex ? "ex" : "normal",
+    groups: [
+      ...((x.special_tags ?? []) as string[]).map((g) => (({ ultra_beasts: "ultra_beast" }) as Record<string, string>)[g] ?? g),
+      ...(/^Team Rocket's /.test(x.name) ? ["team_rocket"] : []),
+    ] as Card["groups"],
     attacks: [],
     prints,
     tags: [],

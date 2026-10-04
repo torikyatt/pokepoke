@@ -9,16 +9,35 @@
     "names-ja": "tsx scripts/names-ja.ts",
     "scrape-game8": "tsx scripts/scrape-game8.ts",
     "match-ja": "tsx scripts/match-ja.ts",
+    "translate": "tsx scripts/translate.ts",
+    "tag": "tsx scripts/tag.ts",
     "validate": "tsx scripts/validate.ts",
-    "data": "npm run normalize && npm run names-ja && npm run match-ja && npm run validate"
+    "data": "npm run normalize && npm run names-ja && npm run match-ja && npm run translate && npm run tag && npm run validate"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/js-yaml": "^4.0.9",
     "@types/node": "^26.6.4",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "js-yaml": "^5.4.2",
+    "sharp": "^0.35.5",
+    "tailwindcss": "^4.3.3",
     "tsx": "^4.23.15",
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "vite": "^8.3.2",
+    "vite-plugin-singlefile": "^2.3.3",
+    "vitest": "^5.0.3"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "html-to-image": "^1.11.13",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "zustand": "^5.0.15"
+  }
 }

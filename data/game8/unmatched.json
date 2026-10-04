@@ -37,11 +37,6 @@
    "reason": "Game8に合う行が無い: 特性「Repelling Wind」"
   },
   {
-   "id": "b3-152",
-   "nameEn": "Parasol Lady",
-   "reason": "Game8に該当カードが見つからない"
-  },
-  {
    "id": "b3b-061",
    "nameEn": "Furfrou",
    "nameJa": "トリミアン",
@@ -177,10 +172,6 @@
   {
    "g8Id": 1987626,
    "title": "コルニ(B3-190/155)"
-  },
-  {
-   "g8Id": 1987664,
-   "title": "パラソルおねえさん(B3-152/155)"
   },
   {
    "g8Id": 2025612,

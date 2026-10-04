@@ -1,0 +1,58 @@
+{
+ "08d9a20aa574": {
+  "en": "Moon Press",
+  "ja": "ムーンプレス"
+ },
+ "b2135bfa0d93": {
+  "en": "Fantastical Floating",
+  "ja": "ゆめのうきあし"
+ },
+ "dbb43b0e1dff": {
+  "en": "If you have Latias in play, this Pokémon has no Retreat Cost.",
+  "ja": "自分の場に「ラティアス」がいるなら、このポケモンのにげるためのエネルギーは、すべてなくなる。"
+ },
+ "e5f41e2dad70": {
+  "en": "Repelling Wind",
+  "ja": "はじきかぜ"
+ },
+ "d76e8ed09efa": {
+  "en": "Once during your turn, you may switch out your opponent's Active Basic Pokémon to the Bench. (Your opponent chooses the new Active Pokémon.)",
+  "ja": "自分の番に1回使える。相手のバトル場のたねポケモンを、ベンチポケモンと入れ替える。〔バトル場に出すポケモンは相手が選ぶ。〕"
+ },
+ "522591c0c67c": {
+  "en": "Your opponent's Active Pokémon is now Poisoned. Do 40 damage to this Pokémon instead of the usual amount for this Special Condition.",
+  "ja": "相手のバトルポケモンをどくにする。このどくで受けるダメージは、40になる。"
+ },
+ "aca3bbfd07b0": {
+  "en": "Ogre’s Whip",
+  "ja": "オーガウィップ"
+ },
+ "1194c84fab69": {
+  "en": "This attack does damage to your opponent's Active Pokémon equal to this Pokémon's remaining HP.",
+  "ja": "このポケモンの残りHPと同じ数のダメージを、相手のバトルポケモンに与える。"
+ },
+ "414401ab9ada": {
+  "en": "Mime-y Shuffle",
+  "ja": "まねまねシャッフル"
+ },
+ "5f1a62b08d3a": {
+  "en": "Dual Customization",
+  "ja": "ダブルカスタム"
+ },
+ "722f7b373f4a": {
+  "en": "This Pokémon may have up to 2 Pokémon Tool cards attached to it.",
+  "ja": "このポケモンは、ポケモンのどうぐを2枚までつけられる。"
+ },
+ "2b554449c8bd": {
+  "en": "Sitdown Splash",
+  "ja": "しりもちスプラッシュ"
+ },
+ "bfaf4ecf8d50": {
+  "en": "Healing Ripples",
+  "ja": "いやしのさざなみ"
+ },
+ "f931b2b3f499": {
+  "en": "Once during your turn, when you play this Pokémon from your hand to evolve 1 of your Pokémon, you may heal 60 damage from 1 of your [W] Pokémon.",
+  "ja": "自分の番に、このカードを手札から出して進化させたとき、1回使える。自分の水ポケモン1匹のHPを60回復。"
+ }
+}
