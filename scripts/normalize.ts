@@ -42,7 +42,8 @@ function parseAttack(a: any): Attack {
 
 function kindOf(x: any): CardKind {
   if (x.type !== "Trainer") return "pokemon";
-  if (/Fossil$/.test(x.name)) return "fossil";
+  // 「ひみつのコハク」(Old Amber) のように名前が Fossil で終わらない化石もあるので効果文でも見る
+  if (/Fossil$/.test(x.name) || /as if it were a \d+-HP Basic/.test(x.card_text ?? "")) return "fossil";
   return ({ Supporter: "supporter", Item: "item", Tool: "tool", Stadium: "stadium" } as const)[
     x.subtype as "Supporter"
   ] ?? "item";

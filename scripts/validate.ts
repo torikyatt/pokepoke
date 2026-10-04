@@ -1,13 +1,19 @@
 // データの欠けと不整合を洗い出す。エラーがあれば終了コード1。
+// data/cards.json（日本語付き）があればそれを、無ければ data/cards.base.json を検査する。
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { Card } from "./lib/types.ts";
 
 const DATA = join(import.meta.dirname, "../data");
-const cards: Card[] = JSON.parse(readFileSync(join(DATA, "cards.base.json"), "utf8"));
+const withJa = existsSync(join(DATA, "cards.json"));
+const cards: Card[] = JSON.parse(readFileSync(join(DATA, withJa ? "cards.json" : "cards.base.json"), "utf8"));
 const namesJa: Record<string, string> = existsSync(join(DATA, "names-ja.json"))
   ? JSON.parse(readFileSync(join(DATA, "names-ja.json"), "utf8"))
   : {};
+const nameJaOf = (c: Card) => (withJa ? c.nameJa : namesJa[c.nameEn]);
+
+// M1の完了条件: 9割以上のカードに公式日本語（Game8）が付く
+const OFFICIAL_RATE_MIN = 0.9;
 
 const errors: string[] = [];
 const warns: string[] = [];
@@ -21,7 +27,7 @@ for (const c of cards) {
     if (!c.hp) errors.push(`${at}: HPなし`);
     if (!c.attacks.length && !c.ability) errors.push(`${at}: ワザも特性もない`);
     if (c.stage !== "basic" && !c.evolvesFrom.length) errors.push(`${at}: 進化元が見つからない (${c.evolvesFromName})`);
-    if (!namesJa[c.nameEn]) warns.push(`${at}: 日本語名なし`);
+    if (!nameJaOf(c)) warns.push(`${at}: 日本語名なし`);
     for (const a of c.attacks) {
       if (a.damage === undefined && !a.textEn) warns.push(`${at}: ワザ「${a.nameEn}」にダメージも効果もない`);
     }
@@ -31,11 +37,26 @@ for (const c of cards) {
   for (const id of [...c.evolvesFrom, ...c.evolvesTo]) {
     if (!ids.has(id)) errors.push(`${at}: 存在しない進化リンク ${id}`);
   }
+  if (withJa) {
+    for (const [label, e] of [["特性", c.ability], ...c.attacks.map((a) => ["ワザ", a] as const), ["効果", c.text]] as const) {
+      if (!e) continue;
+      if (e.jaSource && !e.nameJa && label !== "効果") errors.push(`${at}: ${label}「${e.nameEn}」に日本語の名前がない`);
+      if (e.jaSource && e.textEn && !e.textJa) warns.push(`${at}: ${label}「${e.nameEn ?? ""}」の日本語の効果文がない`);
+    }
+  }
 }
 
 const pokemon = cards.filter((c) => c.kind === "pokemon");
-const jaRate = pokemon.filter((c) => namesJa[c.nameEn]).length / pokemon.length;
+const jaRate = pokemon.filter(nameJaOf).length / pokemon.length;
 console.log(`カード ${cards.length} 種 / ポケモン名の日本語化率 ${(jaRate * 100).toFixed(1)}%`);
+if (withJa) {
+  const effects = (c: Card) => [c.ability, ...c.attacks, c.text].filter((e) => e !== undefined);
+  const official = cards.filter((c) => c.nameJa && effects(c).every((e) => e.jaSource === "official")).length;
+  const rate = official / cards.length;
+  const missing = cards.flatMap((c) => effects(c).filter((e) => !e.jaSource)).length;
+  console.log(`公式日本語がそろったカード ${(rate * 100).toFixed(1)}%（${official}/${cards.length}）/ 日本語の無いワザ・特性・効果 ${missing} 件（M2で翻訳補完）`);
+  if (rate < OFFICIAL_RATE_MIN) errors.push(`公式日本語の付いたカードが ${(OFFICIAL_RATE_MIN * 100).toFixed(0)}% 未満`);
+}
 console.log(`エラー ${errors.length} 件 / 警告 ${warns.length} 件`);
 for (const e of errors.slice(0, 30)) console.log(`  ✗ ${e}`);
 for (const w of warns.slice(0, 15)) console.log(`  △ ${w}`);

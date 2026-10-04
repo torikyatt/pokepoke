@@ -7,8 +7,10 @@
     "fetch": "tsx scripts/fetch.ts",
     "normalize": "tsx scripts/normalize.ts",
     "names-ja": "tsx scripts/names-ja.ts",
+    "scrape-game8": "tsx scripts/scrape-game8.ts",
+    "match-ja": "tsx scripts/match-ja.ts",
     "validate": "tsx scripts/validate.ts",
-    "data": "npm run normalize && npm run names-ja && npm run validate"
+    "data": "npm run normalize && npm run names-ja && npm run match-ja && npm run validate"
   },
   "keywords": [],
   "author": "",
