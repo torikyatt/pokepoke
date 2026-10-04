@@ -23,8 +23,8 @@ function deckCards(deck: Pick<Deck, "cards">, byId: Map<string, AppCard>): AppCa
     .sort((a, b) => a.order - b.order || a.id.localeCompare(b.id, "en", { numeric: true }));
 }
 
-// デッキ編集画面の上の枠: 小=10枚×2段、中=7枚×3段、大=5枚×4段
-const SLOT_GRID = { s: "grid-cols-10 gap-1.5", m: "grid-cols-7 gap-2", l: "grid-cols-5 gap-2.5" } as const;
+// デッキ編集画面の上の枠: いつも10枚×2段。大きくすると1画面に見える列が減り、横にスクロールする
+const SLOT_VISIBLE = { s: 10, m: 7, l: 5 } as const;
 
 // ---------------- 一覧 ----------------
 
@@ -131,20 +131,23 @@ export function DeckBuilderPage({ id }: { id: string }) {
     <div className="pb-28">
       <div className="sticky top-0 z-30 bg-canvas/95 px-3 pt-[max(0.75rem,env(safe-area-inset-top))] pb-3 backdrop-blur">
         <div className="neu rounded-3xl p-3">
-          <div className={`grid ${SLOT_GRID[slotSize]}`}>
+          <div className="scrollbar-none -mx-1 snap-x snap-mandatory overflow-x-auto px-1 pb-1">
+          <div className="grid grid-cols-10 gap-1.5" style={{ width: `${(1000 / SLOT_VISIBLE[slotSize]).toFixed(2)}%` }}>
             {Array.from({ length: DECK_SIZE }, (_, i) => cards[i]).map((c, i) =>
               c ? (
-                <Pressable key={`${c.id}-${i}`} onTap={() => removeCard(deck.id, c.id)} onLongPress={() => navigate(`/card/${c.id}`)} label={`${c.nameJa}を外す`} className="pop-in rounded-[4px] shadow-[1px_2px_3px_rgb(150_165_185/0.5)]">
+                <Pressable key={`${c.id}-${i}`} onTap={() => removeCard(deck.id, c.id)} onLongPress={() => navigate(`/card/${c.id}`)} label={`${c.nameJa}を外す`} className="pop-in snap-start rounded-[4px] shadow-[1px_2px_3px_rgb(150_165_185/0.5)]">
                   <Thumb card={c} className="rounded-[4px]" />
                 </Pressable>
               ) : (
-                <div key={i} className="neu-in flex aspect-[367/512] items-center justify-center rounded-[4px] text-lg font-light text-[#b8c3d1]">
+                <div key={i} className="neu-in flex aspect-[367/512] snap-start items-center justify-center rounded-[4px] text-lg font-light text-[#b8c3d1]">
                   ＋
                 </div>
               ),
             )}
           </div>
+          </div>
           <div className="mt-2 flex items-center justify-end gap-1 text-[11px] font-bold text-muted">
+            {slotSize !== "s" && <span className="mr-auto">← 横にスクロール →</span>}
             <span className="mr-1">枠の大きさ</span>
             {(["s", "m", "l"] as const).map((v) => (
               <button key={v} type="button" aria-pressed={slotSize === v} onClick={() => setSlotSize(v)} className={`h-6 w-7 rounded-full ${slotSize === v ? "bg-accent text-white" : "neu-in"}`}>
