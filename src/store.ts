@@ -110,6 +110,21 @@ export const useSettings = create<SettingsState>()(
   ),
 );
 
+// お気に入り（毎回入れる必須級のカードや、いつか使いたいカードを覚えておく）。新しく入れたものが先頭
+interface FavState {
+  ids: string[];
+  toggle: (id: string) => void;
+}
+export const useFavorites = create<FavState>()(
+  persist(
+    (set) => ({
+      ids: [],
+      toggle: (id) => set((s) => ({ ids: s.ids.includes(id) ? s.ids.filter((x) => x !== id) : [id, ...s.ids] })),
+    }),
+    { name: "pokepoke.favorites", storage: createJSONStorage(() => safeStorage), version: 1 },
+  ),
+);
+
 // 一時メッセージ
 interface ToastState {
   message?: string;

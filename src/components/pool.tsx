@@ -1,11 +1,12 @@
 // カード一覧まわりの部品: ツールバー、グリッド、並べ替え・絞り込みシート、右下の丸ボタン
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { useData } from "../context.tsx";
+import { useAddToDeck, useData } from "../context.tsx";
 import { activeCount, EMPTY_FILTERS, matchFilters, RARITIES, SORTS, sortHits, usePool, type Filters, type SortKey } from "../pool.ts";
 import type { Cond, Hit } from "../search/engine.ts";
 import type { AppCard, CardGroup, CardKind, EnergyType, Rule, Stage } from "../types.ts";
 import { GROUP_JA, KIND_JA, STAGE_JA } from "../types.ts";
-import { Chip, EnergyIcon, IconSearch, IconSort, PoolCard, Sheet, Toggle } from "./ui.tsx";
+import { useDecks, useFavorites } from "../store.ts";
+import { Chip, EnergyIcon, IconHeart, IconSearch, IconSort, PoolCard, Sheet } from "./ui.tsx";
 
 const TYPES: EnergyType[] = ["grass", "fire", "water", "lightning", "psychic", "fighting", "darkness", "metal", "dragon", "colorless"];
 const KINDS: CardKind[] = ["pokemon", "supporter", "item", "tool", "stadium", "fossil"];
@@ -18,39 +19,95 @@ const DMG_STEPS = [30, 50, 70, 90, 100, 120, 150, 180, 200];
 /** 検索文＋絞り込み＋並べ替えを通した一覧 */
 export function usePoolResults(conds: Cond[]) {
   const { engine } = useData();
-  const { filters, sort, desc } = usePool();
+  const { filters, sort, desc, favOnly } = usePool();
+  const favs = useFavorites((s) => s.ids);
   const scored = conds.some((c) => ["tag", "variable", "name", "text"].includes(c.kind));
   return useMemo(() => {
-    const raw: Hit[] = engine.run(conds, Infinity).filter((h) => matchFilters(h.card, filters));
+    // お気に入りを開いているときは、お気に入りの中から探す
+    const fav = favOnly ? new Set(favs) : undefined;
+    const raw: Hit[] = engine.run(conds, Infinity).filter((h) => (!fav || fav.has(h.card.id)) && matchFilters(h.card, filters));
     // 検索文があるときは「一致度順」なら上位50件（SPEC 4.3）。他の並びでは一致したもの全部を並べ替える
     const key: SortKey = sort === "score" && !scored ? "order" : sort;
     const sorted = sortHits(raw, key, key === sort ? desc : false);
     return { hits: key === "score" ? sorted.slice(0, 50) : sorted, scored, total: raw.length };
-  }, [engine, conds, filters, sort, desc, scored]);
+  }, [engine, conds, filters, sort, desc, scored, favOnly, favs]);
 }
 
-/** n/20・列数トグル・虫めがね（PCでは並べ替え・絞り込みも）のバー */
+/** n/20・お気に入り・カードの大きさ・虫めがね（PCでは並べ替え・絞り込みも）のバー */
 export function PoolToolbar({ left, searchOpen, onSearch, filter }: { left: ReactNode; searchOpen?: boolean; onSearch?: () => void; filter?: boolean }) {
-  const { columns, setColumns } = usePool();
+  const { columns, setColumns, favOnly, setFavOnly } = usePool();
+  const nFav = useFavorites((s) => s.ids.length);
+  const seg = (on: boolean) => `flex h-7 w-8 items-center justify-center rounded-full transition ${on ? "bg-white text-accent shadow" : "text-muted"}`;
   return (
-    <div className="neu flex items-center gap-3 rounded-2xl px-3 py-2">
-      <div className="neu-in flex items-center gap-1.5 rounded-full px-3 py-1 text-[15px] font-extrabold">{left}</div>
+    <div className="neu flex items-center gap-2 rounded-2xl px-2.5 py-1.5">
+      <div className="neu-in flex items-center gap-1.5 rounded-full px-3 py-0.5 text-sm font-extrabold">{left}</div>
       <div className="flex-1" />
-      <Toggle on={columns === 5} onChange={(v) => setColumns(v ? 5 : 3)} label={columns === 5 ? "5列" : "3列"} />
+      <button
+        type="button"
+        onClick={() => setFavOnly(!favOnly)}
+        aria-pressed={favOnly}
+        title="お気に入り"
+        className={`flex h-8 items-center gap-1 rounded-full px-2.5 text-xs font-extrabold transition ${favOnly ? "bg-[#ffe3e8] text-[#e5566a] shadow-[inset_0_1px_3px_rgb(229_86_106/0.25)]" : "neu-sm neu-press text-muted"}`}
+      >
+        <IconHeart filled={favOnly} className="h-4 w-4" />
+        お気に入り{nFav > 0 && <span className="tabular-nums">{nFav}</span>}
+      </button>
+      <div className="neu-in flex rounded-full p-0.5" role="group" aria-label="カードの大きさ">
+        <button type="button" onClick={() => setColumns(3)} aria-pressed={columns === 3} title="カードを大きく" aria-label="カードを大きく" className={seg(columns === 3)}>
+          <IconCardsLarge />
+        </button>
+        <button type="button" onClick={() => setColumns(5)} aria-pressed={columns === 5} title="カードを小さく" aria-label="カードを小さく" className={seg(columns === 5)}>
+          <IconCardsSmall />
+        </button>
+      </div>
       {filter && (
         <>
-          <span className="h-8 w-px bg-line" />
+          <span className="h-6 w-px bg-line" />
           <FilterButton />
         </>
       )}
       {onSearch && (
         <>
-          <span className="h-8 w-px bg-line" />
-          <button type="button" onClick={onSearch} aria-label="検索" aria-pressed={searchOpen} className={`flex h-9 w-9 items-center justify-center rounded-full ${searchOpen ? "neu-in text-accent" : "text-muted"}`}>
-            <IconSearch className="h-7 w-7 fill-none stroke-current stroke-[2.4]" />
+          <span className="h-6 w-px bg-line" />
+          <button type="button" onClick={onSearch} aria-label="検索" aria-pressed={searchOpen} className={`flex h-8 w-8 items-center justify-center rounded-full ${searchOpen ? "neu-in text-accent" : "text-muted"}`}>
+            <IconSearch className="h-6 w-6 fill-none stroke-current stroke-[2.4]" />
           </button>
         </>
       )}
+    </div>
+  );
+}
+
+// カードの大きさのアイコン（大きいカード2枚 / 小さいカード6枚）
+const IconCardsLarge = () => (
+  <svg viewBox="0 0 20 20" className="h-4 w-4 fill-current" aria-hidden>
+    <rect x="2" y="2.5" width="7" height="10" rx="1.4" />
+    <rect x="11" y="2.5" width="7" height="10" rx="1.4" />
+    <rect x="2" y="14.5" width="7" height="3" rx="1" opacity=".45" />
+    <rect x="11" y="14.5" width="7" height="3" rx="1" opacity=".45" />
+  </svg>
+);
+const IconCardsSmall = () => (
+  <svg viewBox="0 0 20 20" className="h-4 w-4 fill-current" aria-hidden>
+    {[1.5, 7.5, 13.5].flatMap((x) => [2.5, 11].map((y) => <rect key={`${x}-${y}`} x={x} y={y} width="5" height="6.5" rx="1" />))}
+  </svg>
+);
+
+/** お気に入りの中で、そのままデッキに出し入れする小さな −／＋ */
+function QuickAdd({ card }: { card: AppCard }) {
+  const addToDeck = useAddToDeck();
+  const deckId = useDecks((s) => s.currentId ?? s.decks[0]?.id);
+  const count = useDecks((s) => s.decks.find((d) => d.id === deckId)?.cards.filter((id) => id === card.id).length ?? 0);
+  const removeCard = useDecks((s) => s.removeCard);
+  const b = "flex h-7 flex-1 items-center justify-center rounded-full text-base font-extrabold leading-none disabled:opacity-35";
+  return (
+    <div className="mt-1 flex items-center gap-1">
+      <button type="button" aria-label={`${card.nameJa}を1枚外す`} disabled={!count} onClick={() => deckId && removeCard(deckId, card.id)} className={`neu-sm neu-press text-muted ${b}`}>
+        −
+      </button>
+      <button type="button" aria-label={`${card.nameJa}をデッキに追加`} onClick={() => addToDeck(card)} className={`btn-ok ${b}`}>
+        ＋
+      </button>
     </div>
   );
 }
@@ -102,7 +159,8 @@ export function QueryBox({ value, onChange, onSubmit, conds, excluded, onToggle,
 
 /** カードのグリッド。下までスクロールすると続きを出す */
 export function PoolGrid({ hits, counts, maxed, onTap, footer, wide }: { hits: Hit[]; counts?: Map<string, number>; maxed?: (c: AppCard) => boolean; onTap: (c: AppCard) => void; footer?: (h: Hit) => ReactNode; wide?: boolean }) {
-  const { columns } = usePool();
+  const { columns, favOnly, setFavOnly } = usePool();
+  const nFav = useFavorites((s) => s.ids.length);
   const [shown, setShown] = useState(90);
   const sentinel = useRef<HTMLDivElement>(null);
   useEffect(() => setShown(90), [hits]);
@@ -115,6 +173,19 @@ export function PoolGrid({ hits, counts, maxed, onTap, footer, wide }: { hits: H
   }, [hits]);
   return (
     <>
+      {favOnly && (
+        <div className="mb-3 flex items-center gap-2 rounded-2xl bg-[#ffe3e8]/70 px-3 py-2 text-xs font-bold text-[#b8394c]">
+          <IconHeart filled className="h-4 w-4 shrink-0" />
+          <span className="min-w-0 flex-1 leading-tight">
+            お気に入り {hits.length < nFav ? `${nFav}枚中 ${hits.length}枚` : `${nFav}枚`}
+            <span className="block text-[10px] font-medium text-[#c76676]">−／＋ でそのままデッキに出し入れ</span>
+          </span>
+          <button type="button" onClick={() => setFavOnly(false)} className="shrink-0 rounded-full bg-white/80 px-2.5 py-1 text-[11px] font-extrabold">
+            すべてのカード
+          </button>
+        </div>
+      )}
+      {favOnly && !nFav && <p className="py-10 text-center text-sm font-bold text-muted">まだお気に入りはありません。カード詳細の「♡ お気に入りに追加」で登録できます</p>}
       <div
         className={wide ? `grid ${columns === 5 ? "gap-2" : "gap-3"}` : `grid ${columns === 5 ? "grid-cols-5 gap-2 sm:grid-cols-7 md:grid-cols-8" : "grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5"}`}
         style={wide ? { gridTemplateColumns: `repeat(auto-fill, minmax(${columns === 5 ? 76 : 116}px, 1fr))` } : undefined}
@@ -122,7 +193,7 @@ export function PoolGrid({ hits, counts, maxed, onTap, footer, wide }: { hits: H
         {hits.slice(0, shown).map((h) => (
           <div key={h.card.id}>
             <PoolCard card={h.card} count={counts?.get(h.card.id)} maxed={maxed?.(h.card)} compact={columns === 5} onTap={() => onTap(h.card)} />
-            {footer?.(h)}
+            {favOnly ? <QuickAdd card={h.card} /> : footer?.(h)}
           </div>
         ))}
       </div>
@@ -239,6 +310,7 @@ export function SortFilterSheet({ open, onClose }: { open: boolean; onClose: () 
               pool.setSort(sort, desc);
               onClose();
               window.scrollTo({ top: 0 });
+              document.getElementById("pool-column")?.scrollTo({ top: 0 });
             }}
             className="btn-ok flex-[2] rounded-full py-3 text-lg"
           >

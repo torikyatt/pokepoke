@@ -88,7 +88,7 @@ export function CardDetail({ id, keepOpen, actions }: { id: string; keepOpen?: b
         {line.length > 1 && (
           <section>
             <h2 className="mb-2 text-sm font-extrabold text-muted">進化ライン</h2>
-            <div className="flex items-center gap-2 overflow-x-auto pb-1">
+            <div className={`flex items-center gap-2 pb-1 ${keepOpen ? "flex-wrap" : "overflow-x-auto"}`}>
               {line.map((group, i) => (
                 <div key={i} className="flex items-center gap-2">
                   {i > 0 && <span className="font-extrabold text-muted">→</span>}
@@ -106,9 +106,10 @@ export function CardDetail({ id, keepOpen, actions }: { id: string; keepOpen?: b
         {partners.length > 0 && (
           <section>
             <h2 className="mb-2 text-sm font-extrabold text-muted">相性のいいカード</h2>
-            <div className="scrollbar-none -mx-4 flex gap-2 overflow-x-auto px-4 pb-2">
+            {/* スマホは横にスクロール、PCはマウスで横に動かしにくいので折り返して全部並べる */}
+            <div className={keepOpen ? "grid grid-cols-[repeat(auto-fill,minmax(4.5rem,1fr))] gap-x-2 gap-y-3" : "scrollbar-none -mx-4 flex gap-2 overflow-x-auto px-4 pb-2"}>
               {partners.map((p) => (
-                <div key={p.card.id} className="w-24 shrink-0">
+                <div key={p.card.id} className={keepOpen ? "min-w-0" : "w-24 shrink-0"}>
                   <PoolCard card={p.card} onTap={() => openCard(p.card.id)} />
                   <div className="mt-1 text-[10px] leading-tight font-bold text-accent-deep">
                     {p.reasons.slice(0, 2).map((r) => (

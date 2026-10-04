@@ -5,12 +5,44 @@ import { useAddToDeck, useData } from "../context.tsx";
 import { DECK_SIZE } from "../deck.ts";
 import { backDetail, closeDetail, reopenDetail, useDetail } from "../detail.ts";
 import { CardDetail } from "../pages/CardPage.tsx";
-import { useDecks, useToast } from "../store.ts";
+import { useDecks, useFavorites, useToast } from "../store.ts";
 import type { AppCard } from "../types.ts";
-import { Thumb } from "./ui.tsx";
+import { IconHeart, Thumb } from "./ui.tsx";
 
 /** 今のデッキに入っている枚数と −／＋ */
 export function DeckCounter({ card }: { card: AppCard }) {
+  return (
+    <div className="space-y-2">
+      <div className="flex justify-end">
+        <FavToggle card={card} />
+      </div>
+      <DeckButtons card={card} />
+    </div>
+  );
+}
+
+/** お気に入りの登録・解除 */
+function FavToggle({ card }: { card: AppCard }) {
+  const on = useFavorites((s) => s.ids.includes(card.id));
+  const toggle = useFavorites((s) => s.toggle);
+  const show = useToast((s) => s.show);
+  return (
+    <button
+      type="button"
+      aria-pressed={on}
+      onClick={() => {
+        toggle(card.id);
+        show(on ? `「${card.nameJa}」をお気に入りから外しました` : `「${card.nameJa}」をお気に入りに登録しました`);
+      }}
+      className={`flex items-center gap-1 rounded-full px-3 py-1 text-xs font-extrabold transition active:scale-95 ${on ? "bg-[#ffe3e8] text-[#e5566a]" : "neu-sm text-muted"}`}
+    >
+      <IconHeart filled={on} className="h-4 w-4" />
+      {on ? "お気に入り登録済み" : "お気に入りに追加"}
+    </button>
+  );
+}
+
+function DeckButtons({ card }: { card: AppCard }) {
   const addToDeck = useAddToDeck();
   const deck = useDecks((s) => s.decks.find((d) => d.id === s.currentId) ?? s.decks[0]);
   const removeCard = useDecks((s) => s.removeCard);

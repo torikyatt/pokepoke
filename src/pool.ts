@@ -112,6 +112,8 @@ interface PoolState {
   sort: SortKey;
   desc: boolean;
   filters: Filters;
+  favOnly: boolean; // お気に入りだけを並べる
+  setFavOnly: (v: boolean) => void;
   setColumns: (n: 3 | 5) => void;
   setSort: (key: SortKey, desc: boolean) => void;
   setFilters: (f: Filters) => void;
@@ -150,6 +152,8 @@ function createPoolStore(scope: string) {
         sort: "order",
         desc: false,
         filters: EMPTY_FILTERS,
+        favOnly: false,
+        setFavOnly: (favOnly) => set({ favOnly }),
         setColumns: (columns) => set({ columns }),
         setSort: (sort, desc) => set({ sort, desc }),
         setFilters: (filters) => set({ filters }),

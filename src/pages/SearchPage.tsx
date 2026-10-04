@@ -3,6 +3,7 @@ import { PoolFab, PoolGrid, PoolToolbar, QueryBox, usePoolResults } from "../com
 import { Chip } from "../components/ui.tsx";
 import { useData } from "../context.tsx";
 import { openCard } from "../detail.ts";
+import { usePool } from "../pool.ts";
 import { navigate, searchPath, useRoute } from "../router.ts";
 
 export const EXAMPLES = [
@@ -42,6 +43,7 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
   useEffect(() => setInput(q), [q]);
 
   const { parsed, conds } = useQueryConds(q, excluded, tagParam);
+  const favOnly = usePool().favOnly;
   const { hits, scored, total } = usePoolResults(conds);
   const labelOf = useMemo(() => new Map(parsed.map((c) => [c.id, c.label])), [parsed]);
 
@@ -78,11 +80,11 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
       </div>
 
       <div className="px-4 pb-6">
-        {!q && !tagParam && (
+        {!q && !tagParam && !favOnly && (
           <div className="mb-3">
             {!wide && <h1 className="mb-1 text-lg font-extrabold tracking-wider text-ink">POKÉPOKE LAB</h1>}
             <p className="mb-2 text-xs font-bold text-muted">ふだんの言葉で探せます（カードをタップで詳細・デッキに追加）</p>
-            <div className="scrollbar-none -mx-4 flex gap-2 overflow-x-auto px-4 pb-2">
+            <div className={wide ? "flex flex-wrap gap-2 pb-2" : "scrollbar-none -mx-4 flex gap-2 overflow-x-auto px-4 pb-2"}>
               {EXAMPLES.map((ex) => (
                 <Chip key={ex} onClick={() => go({ q: ex }, false)}>
                   {ex}
@@ -91,7 +93,7 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
             </div>
           </div>
         )}
-        {q && hits.length === 0 && <p className="py-8 text-center text-sm font-bold text-muted">見つかりませんでした。条件をタップして外すか、絞り込みをゆるめてください。</p>}
+        {q && !favOnly && hits.length === 0 && <p className="py-8 text-center text-sm font-bold text-muted">見つかりませんでした。条件をタップして外すか、絞り込みをゆるめてください。</p>}
         <PoolGrid
           hits={hits}
           wide={wide}
