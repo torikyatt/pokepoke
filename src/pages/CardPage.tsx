@@ -82,18 +82,24 @@ export function CardDetail({ id, keepOpen, actions }: { id: string; keepOpen?: b
           {card.text && <EffectBlock e={card.text} label={KIND_JA[card.kind]} tagChip={tagChip} />}
         </section>
 
-        {line.length > 1 && (
+        {line.reduce((n, l) => n + l.cards.length, 0) > 1 && (
           <section>
             <h2 className="mb-2 text-sm font-extrabold text-muted">進化ライン</h2>
-            <div className={`flex items-center gap-2 pb-1 ${keepOpen ? "flex-wrap" : "overflow-x-auto"}`}>
-              {line.map((group, i) => (
-                <div key={i} className="flex items-center gap-2">
-                  {i > 0 && <span className="font-extrabold text-muted">→</span>}
-                  {group.map((c) => (
-                    <button key={c.id} type="button" onClick={() => openCard(c.id)} className={`w-16 shrink-0 rounded-md ${c.id === card.id ? "ring-[3px] ring-accent" : ""}`}>
-                      <Thumb card={c} />
-                    </button>
-                  ))}
+            {/* 段ごとに、進化できるカードを全部（別のパックのものも）並べる */}
+            <div className="neu space-y-1 rounded-2xl p-3">
+              {line.map((level, i) => (
+                <div key={i}>
+                  {i > 0 && <div className="pl-3 text-xs leading-none font-extrabold text-muted">↓</div>}
+                  <div className="flex items-start gap-2">
+                    <span className="w-10 shrink-0 pt-1 text-[10px] font-extrabold text-muted">{level.label}</span>
+                    <div className="flex min-w-0 flex-1 flex-wrap gap-1.5">
+                      {level.cards.map((c) => (
+                        <button key={c.id} type="button" onClick={() => openCard(c.id)} title={c.nameJa} className={`w-12 shrink-0 rounded-md ${c.id === card.id ? "ring-[3px] ring-accent" : ""}`}>
+                          <Thumb card={c} />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>

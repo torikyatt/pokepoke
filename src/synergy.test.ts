@@ -30,10 +30,10 @@ describe("進化補助", () => {
       expect(p.card.evolvesFrom.some((id) => (byId.get(id)!.hp ?? 999) <= 50)).toBe(true);
     }
   });
-  it("自分を進化させる特性（コイキング）は自分の進化先だけ", () => {
-    const ps = reasonOf("b1-050", /進化ポケモン/);
-    expect(ps.length).toBeGreaterThan(0);
-    for (const p of ps) expect(p.card.nameEn).toMatch(/Gyarados/);
+  it("自分を進化させる特性（コイキング）の相手は進化ラインに出るので、相性のいいカードには出さない", () => {
+    expect(reasonOf("b1-050", /進化ポケモン/)).toHaveLength(0);
+    const line = syn.evolutionLine(byId.get("b1-050")!).flatMap((l) => l.cards.map((c) => c.nameEn));
+    expect(line).toContain("Gyarados");
   });
   it("進化ポケモンの側から見ても、関係ない進化補助は出ない", () => {
     // ギャラドス（水の1進化）: 草専用のそうじゅくエキスも、2進化専用のふしぎなアメも結ばない。コイキングの特性は結ぶ
@@ -41,7 +41,7 @@ describe("進化補助", () => {
     const g = partnersOf(gyarados.id).map((p) => p.card.id);
     expect(g).not.toContain("b1a-067");
     expect(g).not.toContain("a3-144");
-    expect(g).toContain("b1-050");
+    expect(g).not.toContain("b1-050"); // コイキングは進化ラインに出る
     // フシギバナ（草の2進化）: どちらも結ぶ
     const venusaur = data.cards.find((c) => c.nameEn === "Venusaur" && c.stage === "stage2")!;
     const v = partnersOf(venusaur.id).map((p) => p.card.id);
@@ -172,5 +172,21 @@ describe("トレーナーズの効く相手（効果文を読んで書いた表�
     const venusaur = data.cards.find((c) => c.nameEn === "Venusaur" && c.stage === "stage2")!;
     const ids = partnersOf(venusaur.id).map((p) => p.card.id);
     for (const id of ["a1-219", "a3-147", "a3-155"]) expect(ids).toContain(id); // エリカ・リーフマント・リーリエ
+  });
+});
+
+describe("進化ライン", () => {
+  it("別のパックのものも含めて、進化できるカードを全部出す", () => {
+    const line = syn.evolutionLine(byId.get("b3-079")!); // リオル
+    const names = line.flatMap((l) => l.cards.map((c) => c.id));
+    for (const id of ["a2-091", "pa-059", "b3-079", "a2-092", "a2b-043", "b3-080", "b3-081"]) expect(names).toContain(id);
+    expect(line.map((l) => l.label)).toEqual(["たね", "1進化"]);
+  });
+  it("進化ラインのカードは相性のいいカードに出さない", () => {
+    for (const id of ["b3-081", "a2-092", "b3a-020", "pb-011"]) {
+      const c = byId.get(id)!;
+      const lineNames = new Set(syn.evolutionLine(c).flatMap((l) => l.cards.map((x) => x.nameEn)));
+      for (const p of partnersOf(id)) expect(lineNames.has(p.card.nameEn)).toBe(false);
+    }
   });
 });

@@ -7,7 +7,7 @@
 //   ・攻略記事で紹介されている定番の組み合わせ（data/combos.yaml）
 //   ・大会で勝ち越したデッキに一緒に入っていることが多い組（data/meta/meta.json。どのデッキにも入る定番どうしは除いてある）
 import type { AppArchetype, AppCard, AppCombo, AppData, HelpTarget, Selector } from "./types.ts";
-import { TYPE_JA } from "./types.ts";
+import { STAGE_JA, TYPE_JA } from "./types.ts";
 
 // 供給の種類ごとの説明（相手のカードが「供給する側」「要求する側」のときのラベル）
 const SUPPLY: Record<string, { give: string; need: string }> = {
@@ -160,8 +160,10 @@ export function createSynergy(data: AppData) {
 
   function partners(x: AppCard, limit = 30): Partner[] {
     const out = new Map<string, Partner>();
+    // 進化ラインのカード（進化元・進化先・同じ名前）は「進化ライン」に出すので、相性のいいカードには出さない
+    const line = x.kind === "pokemon" ? lineNames(x) : new Set([x.nameEn]);
     const push = (card: AppCard, score: number, reason: string) => {
-      if (card.id === x.id || card.nameEn === x.nameEn) return;
+      if (card.id === x.id || line.has(card.nameEn)) return;
       const p = out.get(card.id) ?? out.set(card.id, { card, score: 0, reasons: [] }).get(card.id)!;
       p.score += score;
       if (!p.reasons.includes(reason)) p.reasons.push(reason);
@@ -259,16 +261,46 @@ export function createSynergy(data: AppData) {
     return [...out.values()].sort((a, b) => b.score - a.score || a.card.order - b.card.order).slice(0, limit);
   }
 
-  /** 進化ライン（たね → 1進化 → 2進化）を同名でまとめて返す */
-  function evolutionLine(x: AppCard): AppCard[][] {
-    const up = (c: AppCard): AppCard[] => c.evolvesFrom.map((id) => byId.get(id)!).filter(Boolean);
-    const down = (c: AppCard): AppCard[] => c.evolvesTo.map((id) => byId.get(id)!).filter(Boolean);
-    const uniq = (cs: AppCard[]) => [...new Map(cs.map((c) => [c.nameEn, c])).values()];
-    const prev1 = uniq(up(x));
-    const prev2 = uniq(prev1.flatMap(up));
-    const next1 = uniq(down(x));
-    const next2 = uniq(next1.flatMap(down));
-    return [prev2, prev1, [x], next1, next2].filter((l) => l.length);
+  /**
+   * 進化ライン: 進化元（たね・1進化）→ このカードと同じ名前のカード → 進化先（1進化・2進化）を、段ごとに全部返す。
+   * 進化は名前でつながるので、別のパックのカードも含める（例: リオル3種 → ルカリオ・ルカリオex・メガルカリオex）
+   */
+  function evolutionLine(x: AppCard): { label: string; cards: AppCard[] }[] {
+    const sorted = (ids: Iterable<string>) =>
+      [...new Set(ids)].map((id) => byId.get(id)!).filter(Boolean).sort((a, b) => a.order - b.order || a.id.localeCompare(b.id, "en", { numeric: true }));
+    const same = data.cards.filter((c) => c.nameEn === x.nameEn && c.kind === x.kind && c.stage === x.stage).map((c) => c.id);
+    const prev1 = sorted(same.flatMap((id) => byId.get(id)!.evolvesFrom));
+    const prev2 = sorted(prev1.flatMap((c) => c.evolvesFrom));
+    const next1 = sorted(same.flatMap((id) => byId.get(id)!.evolvesTo));
+    const next2 = sorted(next1.flatMap((c) => c.evolvesTo));
+    const label = (cs: AppCard[]) => (cs[0]?.stage ? STAGE_JA[cs[0].stage] : "");
+    const self = sorted(same);
+    return [prev2, prev1, self, next1, next2].filter((l) => l.length).map((cards) => ({ label: label(cards), cards }));
+  }
+
+  /** 進化ラインにいるカードの名前（相性のいいカードからは除く） */
+  const lineCache = new Map<string, Set<string>>();
+  function lineNames(x: AppCard): Set<string> {
+    let r = lineCache.get(x.nameEn);
+    if (!r) {
+      r = new Set([x.nameEn]);
+      const walk = (c: AppCard, dir: "evolvesFrom" | "evolvesTo", seen = new Set<string>()) => {
+        for (const id of c[dir]) {
+          if (seen.has(id)) continue;
+          seen.add(id);
+          const n = byId.get(id);
+          if (!n) continue;
+          r!.add(n.nameEn);
+          walk(n, dir, seen);
+        }
+      };
+      for (const c of data.cards) if (c.nameEn === x.nameEn) {
+        walk(c, "evolvesFrom");
+        walk(c, "evolvesTo");
+      }
+      lineCache.set(x.nameEn, r);
+    }
+    return r;
   }
 
   /** カードが出てくる攻略記事の組み合わせ */

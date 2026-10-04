@@ -79,13 +79,13 @@ function DeckButtons({ card }: { card: AppCard }) {
 
 function IconBtn({ label, onClick, children }: { label: string; onClick: () => void; children: React.ReactNode }) {
   return (
-    <button type="button" onClick={onClick} aria-label={label} title={label} className="neu-sm neu-press flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-muted">
+    <button type="button" onClick={onClick} aria-label={label} title={label} className="neu-sm neu-press flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-muted">
       {children}
     </button>
   );
 }
 const BackIcon = () => (
-  <svg viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current stroke-[2.5]" aria-hidden>
+  <svg viewBox="0 0 24 24" className="h-4 w-4 fill-none stroke-current stroke-[2.5]" aria-hidden>
     <path d="m15 18-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
@@ -100,14 +100,14 @@ function DetailHeader({ card }: { card?: AppCard }) {
           <BackIcon />
         </IconBtn>
       ) : (
-        <span className="w-9 shrink-0" />
+        <span className="w-7 shrink-0" />
       )}
-      <h2 className="min-w-0 flex-1 truncate text-center text-base font-extrabold">
+      <h2 className="min-w-0 flex-1 truncate text-center text-sm font-extrabold">
         {card?.nameJa}
         {pos > 0 && <span className="ml-1.5 text-[10px] font-bold text-muted">{pos + 1}枚目</span>}
       </h2>
       <IconBtn label="閉じる" onClick={() => closeDetail()}>
-        <span className="text-base font-extrabold">✕</span>
+        <span className="text-sm font-extrabold">✕</span>
       </IconBtn>
     </div>
   );
@@ -230,9 +230,9 @@ export function DetailSheet() {
         className={`fixed inset-x-0 bottom-0 z-50 mx-auto flex h-[94dvh] max-w-3xl flex-col rounded-t-3xl bg-canvas shadow-[0_-6px_24px_rgb(61_71_87/0.22)] ${drag === null ? "transition-transform duration-300 ease-[cubic-bezier(.2,.8,.2,1)]" : ""} ${open ? "" : "pointer-events-none"}`}
         style={{ transform }}
       >
-        <div ref={header} className="shrink-0 px-4 pt-2 pb-3">
-          <button type="button" aria-label={snap === "half" ? "いっぱいに開く" : "半分に下げる"} onClick={() => useDetail.setState({ snap: snap === "half" ? "full" : "half" })} className="mx-auto block py-1">
-            <span className="block h-1.5 w-12 rounded-full bg-[#c5cfdb]" />
+        <div ref={header} className="shrink-0 px-3 pt-1 pb-1.5">
+          <button type="button" aria-label={snap === "half" ? "いっぱいに開く" : "半分に下げる"} onClick={() => useDetail.setState({ snap: snap === "half" ? "full" : "half" })} className="mx-auto block pt-0.5 pb-1">
+            <span className="block h-1 w-10 rounded-full bg-[#c5cfdb]" />
           </button>
           <DetailHeader card={card} />
         </div>
@@ -300,7 +300,7 @@ export function DetailPane() {
   return (
     <div className="flex h-full min-h-0 flex-col">
       {card ? (
-        <div className="shrink-0 border-b border-line px-4 pt-3 pb-3">
+        <div className="shrink-0 border-b border-line px-3 py-1.5">
           <DetailHeader card={card} />
         </div>
       ) : null}
