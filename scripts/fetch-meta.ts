@@ -10,7 +10,7 @@
 // キャッシュ: data/meta/cache/（コミットしない）
 // 出力:       data/meta/meta.json（集計結果。コミットする）
 //             data/meta/decks.json（勝ち越し・五分のデッキリスト。同じ構成はまとめる。カード詳細の「このカードを使ったデッキ」に使う）
-import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, renameSync, statSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 const DIR = join(import.meta.dirname, "../data/meta");
@@ -23,8 +23,9 @@ const INTERVAL_MS = 7000;
 // 直近の大会（デッキタイプ・採用率に使う）と、それより前の大きな大会（「一緒に使われる組」だけに使う。昔の定番コンボも拾うため）
 const DAYS = 60;
 const MIN_PLAYERS = 32;
-const OLD_DAYS = 300;
-const OLD_MIN_PLAYERS = 128;
+const OLD_DAYS = 800; // ポケポケのサービス開始（2024年10月末）まで
+const OLD_MIN_PLAYERS = 64;
+const CHECKPOINT = 100; // この件数を取るごとに集計を書き出す（長い取得の途中経過）
 const refresh = process.argv.includes("--refresh");
 const offline = process.argv.includes("--offline");
 
@@ -75,7 +76,7 @@ if (!offline && (refresh || !tournaments.length)) {
   const since = Date.now() - OLD_DAYS * 86400e3;
   const recent = Date.now() - DAYS * 86400e3;
   const got: Tournament[] = [];
-  for (let page = 1; page < 60; page++) {
+  for (let page = 1; page < 200; page++) {
     const t = await getJson<Tournament[]>(`${API}/tournaments?game=POCKET&limit=200&page=${page}`);
     got.push(...t);
     if (!t.length || Date.parse(t[t.length - 1].date) < since) break;
@@ -87,12 +88,23 @@ if (!offline && (refresh || !tournaments.length)) {
 }
 const isRecent = (t: Tournament) => Date.parse(t.date) >= Date.parse(fetchedAt) - DAYS * 86400e3;
 console.log(`対象の大会 ${tournaments.length} 件（直近${DAYS}日 ${tournaments.filter(isRecent).length} 件）`);
-for (const t of offline ? [] : tournaments) {
+let fetched = 0;
+const todo = (offline ? [] : tournaments).filter((t) => !existsSync(join(CACHE, `${t.id}.json`)));
+for (const t of todo) {
   const f = join(CACHE, `${t.id}.json`);
-  if (existsSync(f)) continue;
   const standings = await getJson<Entry[]>(`${API}/tournaments/${t.id}/standings`);
-  writeFileSync(f, JSON.stringify(standings));
+  // 途中で止めても壊れたファイルが残らないよう、書き終えてから名前を変える
+  writeFileSync(`${f}.tmp`, JSON.stringify(standings));
+  renameSync(`${f}.tmp`, f);
+  if (++fetched % CHECKPOINT === 0 && fetched < todo.length) {
+    aggregate();
+    console.log(`CHECKPOINT ${fetched}/${todo.length}`);
+  }
 }
+aggregate();
+console.log(`DONE ${fetched}/${todo.length}`);
+
+function aggregate() {
 
 // ---- 集計 ----
 
@@ -271,3 +283,4 @@ writeFileSync(join(DIR, "decks.json"), JSON.stringify(deckOut).replace(/\],\[/g,
 console.log(`デッキリスト ${deckOut.decks.length} 件（勝ち越し・五分、同じ構成をまとめたあと）・ ${usedT.length} 大会`);
 
 console.log(`アーキタイプ ${archOut.length} 件 ・ 組み合わせ ${pairsOut.length} 件 ・ 使われたカード ${single.size} 種（直近 ${recentCount.size} 種）`);
+}

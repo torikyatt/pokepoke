@@ -41,7 +41,7 @@ npm run build      # dist/（Web版）と dist/pokepoke.html（単一HTML版）�
 | --- | --- |
 | `npm run fetch` | PocketDecks・flibustier・PokéAPI から元データを取得（`data/raw/`、取得元のSHAを記録） |
 | `npm run scrape-game8 [-- --refresh]` | Game8 から日本語カード情報を取得（robots.txt 確認・2秒間隔・キャッシュ） |
-| `npm run fetch-meta [-- --refresh]` | Limitless の公開APIから大会結果（通常ルール）を取得して集計（`data/meta/meta.json`。7秒間隔・キャッシュ）。デッキタイプと採用率は直近60日（32人以上）、一緒に使われるカードの組と大会のデッキリスト（`data/meta/decks.json`。勝ち越し・五分、同じ構成はまとめる）はそれより前の大きな大会（300日前まで・128人以上）も含める |
+| `npm run fetch-meta [-- --refresh]` | Limitless の公開APIから大会結果（通常ルール）を取得して集計（`data/meta/meta.json`。7秒間隔・キャッシュ）。デッキタイプと採用率は直近60日（32人以上）、一緒に使われるカードの組と大会のデッキリスト（`data/meta/decks.json`。勝ち越し・五分、同じ構成はまとめる）はそれより前の大会（ポケポケ開始の2024年10月まで・64人以上）も含める。途中経過を100大会ごとに書き出す |
 | `npm run data` | 正規化 → ポケモン名日本語化 → Game8照合 → 翻訳補完 → タグ付与 → 表現辞書 → 検査 → アプリ用データ |
 | `npm run thumbs` | 英語のカード画像を幅160pxのWebPに縮小（`public/thumbs/`） |
 | `npm run thumbs -- --ja` | 日本語のカード画像（Game8）を幅200pxのWebPに縮小（`public/thumbs-ja/`、2秒に1枚） |
