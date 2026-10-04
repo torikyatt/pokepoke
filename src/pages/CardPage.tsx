@@ -4,6 +4,7 @@ import { useAddToDeck, useData } from "../context.tsx";
 import { largeUrl, thumbUrl } from "../data/load.ts";
 import { useSettings } from "../store.ts";
 import { useNav } from "../nav.ts";
+import { PrintLine } from "../components/prints.tsx";
 
 /** 詳細を閉じて、今のタブの元の画面に戻る（ブラウザの「戻る」だとタブをまたいでしまう） */
 function closeCard() {
@@ -128,10 +129,14 @@ export function CardPage({ id }: { id: string }) {
 
         <section>
           <h2 className="mb-1 text-sm font-extrabold text-muted">収録</h2>
-          <ul className="neu space-y-0.5 rounded-2xl p-3 text-xs font-bold text-muted">
+          <ul className="neu space-y-1.5 rounded-2xl p-3">
             {card.prints.map((p) => (
-              <li key={p.id}>
-                {p.setName}（{p.id.toUpperCase()}）{p.rarity}
+              <li key={p.id} className="flex items-center gap-2">
+                <div className="min-w-0 flex-1">
+                  <PrintLine p={p} />
+                  {p.how && p.how.includes("|") && <div className="mt-0.5 truncate text-[10px] font-bold text-muted">{p.how.split(/[|｜]/).slice(1).join(" / ")}</div>}
+                </div>
+                <span className="shrink-0 text-[10px] font-bold text-muted">{p.id.toUpperCase()}</span>
               </li>
             ))}
           </ul>

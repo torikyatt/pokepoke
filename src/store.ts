@@ -117,12 +117,16 @@ export const useMisses = create<MissState>()(
 interface SettingsState {
   imageLang: "ja" | "en"; // カード画像の言語
   setImageLang: (l: "ja" | "en") => void;
+  deckView: "grid" | "list"; // デッキ内容の見せ方
+  setDeckView: (v: "grid" | "list") => void;
 }
 export const useSettings = create<SettingsState>()(
   persist(
     (set) => ({
       imageLang: "ja",
       setImageLang: (imageLang) => set({ imageLang }),
+      deckView: "grid",
+      setDeckView: (deckView) => set({ deckView }),
     }),
     { name: "pokepoke.settings", storage: createJSONStorage(() => safeStorage), version: 1 },
   ),

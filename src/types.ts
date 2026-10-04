@@ -33,6 +33,8 @@ export interface AppPrint {
   set: string;
   setName: string;
   rarity: string;
+  pack?: string; // その弾の中のパック（例: ミュウツー）。空なら弾のどのパックからも出る
+  how?: string; // パック以外の入手方法（プロモなど）
 }
 
 export interface AppCard {

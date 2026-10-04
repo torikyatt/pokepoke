@@ -6,7 +6,8 @@ import { join } from "node:path";
 import { jaImageIndex } from "./lib/game8.ts";
 import { loadTaxonomy } from "./lib/taxonomy.ts";
 import type { Card, Effect } from "./lib/types.ts";
-import type { AppAttack, AppCard, AppData, AppEffect, AppSet, EnergyType, LexEntry, Slot } from "../src/types.ts";
+import type { G8Card } from "./lib/game8.ts";
+import type { AppAttack, AppCard, AppData, AppEffect, AppPrint, AppSet, EnergyType, LexEntry, Slot } from "../src/types.ts";
 
 const ROOT = join(import.meta.dirname, "..");
 const DATA = join(ROOT, "data");
@@ -25,6 +26,42 @@ const CODE: Record<string, EnergyType> = {
 };
 const byId = new Map(cards.map((c) => [c.id, c]));
 const jaImageOf = jaImageIndex(DATA);
+
+// 収録の日本語（Game8 の収録パック名・入手方法）。照合済みのプリントだけ使う
+const g8All: G8Card[] = JSON.parse(readFileSync(join(DATA, "game8/cards.json"), "utf8"));
+const g8Match: Record<string, { g8: number[] }> = JSON.parse(readFileSync(join(DATA, "game8/match.json"), "utf8"));
+const g8ById = new Map(g8All.map((c) => [c.g8Id, c]));
+const g8SetOf = (s: string) => ({ pa: "PROMO-A", pb: "PROMO-B" } as Record<string, string>)[s] ?? s.charAt(0).toUpperCase() + s.slice(1);
+// 収録パックの日本語名: Game8 の収録パック名（「最強の遺伝子ピカチュウ」など）の共通の頭の部分
+const packNames = new Map<string, Map<string, number>>();
+for (const c of g8All) {
+  if (!c.pack || c.pack === "-") continue;
+  const m = packNames.get(c.set) ?? packNames.set(c.set, new Map()).get(c.set)!;
+  m.set(c.pack, (m.get(c.pack) ?? 0) + 1);
+}
+const commonPrefix = (a: string, b: string) => {
+  let i = 0;
+  while (i < a.length && a[i] === b[i]) i++;
+  return a.slice(0, i);
+};
+function setJaOf(code: string): string {
+  const g8code = ({ pa: "PROMO-A", pb: "PROMO-B" } as Record<string, string>)[code] ?? code.charAt(0).toUpperCase() + code.slice(1);
+  const top = [...(packNames.get(g8code) ?? [])].sort((a, b) => b[1] - a[1]).map(([n]) => n);
+  if (g8code.startsWith("PROMO") || !top.length) return g8code.replace("PROMO", "プロモ");
+  return top.length > 1 && commonPrefix(top[0], top[1]).length >= 3 ? commonPrefix(top[0], top[1]) : top[0];
+}
+function printOf(c: Card, p: Card["prints"][number]): AppPrint {
+  const out: AppPrint = { id: p.id, set: p.set, setName: p.setName, rarity: p.rarity };
+  const g = (g8Match[c.id]?.g8 ?? []).map((id) => g8ById.get(id)).find((x) => x && x.set === g8SetOf(p.set) && x.number === Number(p.id.split("-").pop()));
+  if (!g) return out;
+  const setJa = setJaOf(p.set);
+  if (g.pack && g.pack !== "-") {
+    const sub = g.pack.startsWith(setJa) ? g.pack.slice(setJa.length) : g.pack === setJa ? "" : g.pack;
+    if (sub) out.pack = sub;
+  }
+  if (g.acquire && g.acquire !== "パック") out.how = g.howTo || g.acquire;
+  return out;
+}
 
 function effect(e: Effect, slot: Slot, t: string[] | undefined): AppEffect {
   const out: AppEffect = { slot, tags: t ?? [] };
@@ -76,7 +113,7 @@ const out: AppCard[] = cards.map((c) => {
     evolvesFrom: c.evolvesFrom,
     evolvesTo: c.evolvesTo,
     attacks,
-    prints: c.prints.map((p) => ({ id: p.id, set: p.set, setName: p.setName, rarity: p.rarity })),
+    prints: c.prints.map((p) => printOf(c, p)),
     image: c.prints[0].image,
     ...(jaImageOf(c) ? { imageJa: jaImageOf(c) } : {}),
     ...(existsSync(join(ROOT, "public/thumbs-ja", `${c.id}.webp`)) ? { jaThumb: true as const } : {}),
@@ -101,30 +138,11 @@ const out: AppCard[] = cards.map((c) => {
   return card;
 });
 
-// 収録パックの日本語名: Game8 の収録パック名（「最強の遺伝子ピカチュウ」など）の共通の頭の部分
-const g8: { set: string; pack?: string }[] = JSON.parse(readFileSync(join(DATA, "game8/cards.json"), "utf8"));
-const packNames = new Map<string, Map<string, number>>();
-for (const c of g8) {
-  if (!c.pack || c.pack === "-") continue;
-  const m = packNames.get(c.set) ?? packNames.set(c.set, new Map()).get(c.set)!;
-  m.set(c.pack, (m.get(c.pack) ?? 0) + 1);
-}
-const commonPrefix = (a: string, b: string) => {
-  let i = 0;
-  while (i < a.length && a[i] === b[i]) i++;
-  return a.slice(0, i);
-};
-const setJa = (code: string) => {
-  const g8code = ({ pa: "PROMO-A", pb: "PROMO-B" } as Record<string, string>)[code] ?? code.charAt(0).toUpperCase() + code.slice(1);
-  const top = [...(packNames.get(g8code) ?? [])].sort((a, b) => b[1] - a[1]).map(([n]) => n);
-  if (g8code.startsWith("PROMO") || !top.length) return g8code.replace("PROMO", "プロモ");
-  return top.length > 1 && commonPrefix(top[0], top[1]).length >= 3 ? commonPrefix(top[0], top[1]) : top[0];
-};
 const setMap = new Map<string, AppSet>();
 for (const c of cards) {
   for (const p of c.prints) {
     const cur = setMap.get(p.set);
-    if (!cur) setMap.set(p.set, { code: p.set, name: p.setName, nameJa: setJa(p.set), released: p.released ?? "" });
+    if (!cur) setMap.set(p.set, { code: p.set, name: p.setName, nameJa: setJaOf(p.set), released: p.released ?? "" });
     else if (p.released && (!cur.released || p.released < cur.released)) cur.released = p.released;
   }
 }

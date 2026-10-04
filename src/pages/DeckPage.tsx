@@ -11,6 +11,7 @@ import { useDecks, useMisses, useToast, type Deck } from "../store.ts";
 import type { AppCard, EnergyType } from "../types.ts";
 import { TYPE_JA } from "../types.ts";
 import { useQueryConds } from "./SearchPage.tsx";
+import { mainPrint, packLabel, PrintLine, SetBadge, useMultiPackSets } from "../components/prints.tsx";
 
 const ZONE_TYPES: EnergyType[] = ["grass", "fire", "water", "lightning", "psychic", "fighting", "darkness", "metal"];
 
@@ -216,6 +217,7 @@ export function DeckViewPage({ id }: { id: string }) {
   const imageRef = useRef<HTMLDivElement>(null);
   const [exporting, setExporting] = useState(false);
   const lang = useSettings((s) => s.imageLang);
+  const { deckView, setDeckView } = useSettings();
   if (!deck) return <Header title="デッキが見つかりません" back={() => navigate("/deck")} />;
   const cards = deckCards(deck, byId);
   const check = checkDeck(deck, byId);
@@ -283,19 +285,36 @@ export function DeckViewPage({ id }: { id: string }) {
           aria-label="デッキ名"
         />
 
-        <div className="neu rounded-3xl p-3">
-          <div className="grid grid-cols-5 gap-2">
-            {Array.from({ length: DECK_SIZE }, (_, i) => cards[i]).map((c, i) =>
-              c ? (
-                <Pressable key={i} onTap={() => navigate(`/card/${c.id}`)} label={c.nameJa} className="rounded-md shadow-[1px_2px_4px_rgb(150_165_185/0.5)]">
-                  <Thumb card={c} />
-                </Pressable>
-              ) : (
-                <div key={i} className="neu-in aspect-[367/512] rounded-md" />
-              ),
-            )}
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-extrabold text-muted">
+            {cards.length}/{DECK_SIZE} 枚
+          </span>
+          <div className="neu-in flex rounded-full p-0.5 text-xs font-bold" role="tablist" aria-label="表示">
+            {(["grid", "list"] as const).map((v) => (
+              <button key={v} type="button" role="tab" aria-selected={deckView === v} onClick={() => setDeckView(v)} className={`rounded-full px-4 py-1.5 ${deckView === v ? "bg-white text-accent shadow" : "text-muted"}`}>
+                {v === "grid" ? "カード" : "リスト"}
+              </button>
+            ))}
           </div>
         </div>
+
+        {deckView === "list" ? (
+          <DeckList cards={cards} />
+        ) : (
+          <div className="neu rounded-3xl p-3">
+            <div className="grid grid-cols-5 gap-2">
+              {Array.from({ length: DECK_SIZE }, (_, i) => cards[i]).map((c, i) =>
+                c ? (
+                  <Pressable key={i} onTap={() => navigate(`/card/${c.id}`)} label={c.nameJa} className="rounded-md shadow-[1px_2px_4px_rgb(150_165_185/0.5)]">
+                    <Thumb card={c} />
+                  </Pressable>
+                ) : (
+                  <div key={i} className="neu-in aspect-[367/512] rounded-md" />
+                ),
+              )}
+            </div>
+          </div>
+        )}
 
         <button type="button" onClick={() => navigate(`/deck/${deck.id}/edit`)} className="btn-ok w-full rounded-full py-4 text-lg">
           デッキを編集
@@ -382,6 +401,64 @@ export function DeckViewPage({ id }: { id: string }) {
       <div style={{ position: "fixed", left: -10000, top: 0 }} aria-hidden>
         <DeckImage ref={imageRef} deck={deck} cards={cards} />
       </div>
+    </div>
+  );
+}
+
+/** 縦の一覧: 小さなサムネ・カード名・枚数・収録パック。上にパックごとの枚数をまとめる */
+function DeckList({ cards }: { cards: AppCard[] }) {
+  const { data } = useData();
+  const multi = useMultiPackSets();
+  const rows = [...new Map(cards.map((c) => [c.id, c])).values()].map((c) => ({ card: c, count: cards.filter((x) => x.id === c.id).length, main: mainPrint(c) }));
+  // パックごとの枚数（いちばん手に入れやすい収録で数える）
+  const byPack = new Map<string, { set: string; label: string; n: number }>();
+  for (const r of rows) {
+    const label = packLabel(r.main, data.sets, multi);
+    const key = `${r.main.set}|${label}`;
+    const cur = byPack.get(key) ?? byPack.set(key, { set: r.main.set, label, n: 0 }).get(key)!;
+    cur.n += r.count;
+  }
+  if (!rows.length) return <p className="neu rounded-3xl p-6 text-center text-sm font-bold text-muted">まだカードがありません</p>;
+  return (
+    <div className="space-y-3">
+      <div className="neu rounded-3xl p-3">
+        <h3 className="mb-2 text-xs font-extrabold text-muted">出るパック</h3>
+        <div className="space-y-1.5">
+          {[...byPack.values()]
+            .sort((a, b) => b.n - a.n)
+            .map((p) => (
+              <div key={`${p.set}${p.label}`} className="flex items-center gap-1.5">
+                <SetBadge set={p.set} />
+                <span className="min-w-0 flex-1 truncate text-xs font-bold">{p.label}</span>
+                <span className="text-xs font-extrabold tabular-nums">{p.n}枚</span>
+              </div>
+            ))}
+        </div>
+      </div>
+      <ul className="neu divide-y divide-line rounded-3xl px-3 py-1">
+        {rows.map(({ card, count, main }) => {
+          const others = [...new Set(card.prints.filter((p) => p !== main).map((p) => packLabel(p, data.sets, multi)))].filter((l) => l !== packLabel(main, data.sets, multi));
+          return (
+            <li key={card.id}>
+              <Pressable onTap={() => navigate(`/card/${card.id}`)} label={card.nameJa} className="flex items-center gap-3 py-2 text-left">
+                <div className="w-10 shrink-0">
+                  <Thumb card={card} className="rounded-[4px]" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="min-w-0 flex-1 truncate text-sm font-extrabold">{card.nameJa}</span>
+                    <span className="shrink-0 rounded-full bg-badge px-2 py-0.5 text-xs font-extrabold text-white">×{count}</span>
+                  </div>
+                  <div className="mt-1">
+                    <PrintLine p={main} />
+                  </div>
+                  {others.length > 0 && <div className="mt-0.5 truncate text-[10px] font-bold text-muted">ほか: {others.join(" / ")}</div>}
+                </div>
+              </Pressable>
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }
