@@ -11,31 +11,50 @@ import { Chip, EnergyIcon, Thumb } from "./ui.tsx";
 
 const PAGE = 8;
 
-/** 順位の良さ（上位何%か）。順位が分からなければ勝ち越し数で */
+/** 順位の良さ（上位何%か。小さいほど良い）。順位が分からなければ勝ち越し数で */
 const strength = (d: TournamentDeck) => (d.place ? d.place / Math.max(d.players, 1) : 1) - (d.wins - d.losses) * 0.001;
+
+type Order = "recommended" | "new" | "best";
+const ORDERS: [Order, string][] = [["recommended", "おすすめ"], ["new", "新しい順"], ["best", "成績順"]];
+const DAY = 86400e3;
+const HALF_LIFE_DAYS = 21; // 3週間ごとに重みが半分になる
+
+/**
+ * おすすめ度: 最近の大会で好成績なものほど高い。
+ *   成績 = 上位何%か（1位なら1に近い）＋ 上位8位以内なら加点 ＋ 大きな大会なら少し加点 ＋ 同じ構成が多ければ少し加点
+ *   新しさ = 最新の大会から3週間ごとに半分
+ */
+function recommendScore(d: TournamentDeck, newest: number): number {
+  const top = d.place ? 1 - (d.place - 1) / Math.max(d.players, 1) : Math.max(0, 0.5 + (d.wins - d.losses) * 0.05);
+  const quality = top + (d.place && d.place <= 8 ? 0.3 : 0) + 0.1 * Math.log10(Math.max(d.players, 32) / 32) + 0.05 * Math.log2(d.dup);
+  const age = Math.max(0, (newest - Date.parse(d.date)) / DAY);
+  return quality * 0.5 ** (age / HALF_LIFE_DAYS);
+}
 
 export function CardDecks({ card, keepOpen }: { card: AppCard; keepOpen?: boolean }) {
   const index = useTournamentDecks();
   const [arch, setArch] = useState<string>();
   const [shown, setShown] = useState(PAGE);
-  // 2年分あるので、既定は新しい大会から（同じ日なら成績の良い順）
-  const [order, setOrder] = useState<"new" | "best">("new");
+  // 既定は「おすすめ」（最近の大会で好成績なもの）
+  const [order, setOrder] = useState<Order>("recommended");
   const all = useMemo(() => {
     if (!index) return [];
     const list = (index.byCard.get(card.id) ?? []).map((i) => index.decks[i]);
-    return order === "new"
-      ? list.sort((a, b) => b.date.localeCompare(a.date) || strength(a) - strength(b))
-      : list.sort((a, b) => strength(a) - strength(b) || b.date.localeCompare(a.date));
+    if (order === "new") return list.sort((a, b) => b.date.localeCompare(a.date) || strength(a) - strength(b));
+    if (order === "best") return list.sort((a, b) => strength(a) - strength(b) || b.date.localeCompare(a.date));
+    const score = new Map(list.map((d) => [d, recommendScore(d, index.newest)]));
+    return list.sort((a, b) => score.get(b)! - score.get(a)! || b.date.localeCompare(a.date));
   }, [index, card.id, order]);
-  // よく使われているデッキタイプ（絞り込み用）
+  // よく使われているデッキタイプ（絞り込み用）。おすすめ順では、最近の大会で強いデッキタイプから
   const archs = useMemo(() => {
-    const m = new Map<string, { name: string; n: number }>();
+    const m = new Map<string, { name: string; n: number; rec: number }>();
     for (const d of all) {
-      const x = m.get(d.archId) ?? m.set(d.archId, { name: d.arch, n: 0 }).get(d.archId)!;
+      const x = m.get(d.archId) ?? m.set(d.archId, { name: d.arch, n: 0, rec: 0 }).get(d.archId)!;
       x.n += d.dup;
+      if (order === "recommended" && index) x.rec += recommendScore(d, index.newest);
     }
-    return [...m].sort((a, b) => b[1].n - a[1].n).slice(0, 8);
-  }, [all]);
+    return [...m].sort((a, b) => (order === "recommended" ? b[1].rec - a[1].rec : 0) || b[1].n - a[1].n).slice(0, 8);
+  }, [all, order, index]);
   const list = arch ? all.filter((d) => d.archId === arch) : all;
   const total = all.reduce((n, d) => n + d.dup, 0);
 
@@ -53,9 +72,9 @@ export function CardDecks({ card, keepOpen }: { card: AppCard; keepOpen?: boolea
               勝ち越し・五分のデッキ {total} 件（同じ構成をまとめて {all.length} 種類）
             </p>
             <div className="neu-in flex shrink-0 rounded-full p-0.5 text-[11px] font-bold">
-              {(["new", "best"] as const).map((o) => (
-                <button key={o} type="button" onClick={() => { setOrder(o); setShown(PAGE); }} className={`rounded-full px-2.5 py-1 ${order === o ? "bg-white text-accent shadow" : "text-muted"}`}>
-                  {o === "new" ? "新しい順" : "成績順"}
+              {ORDERS.map(([o, label]) => (
+                <button key={o} type="button" onClick={() => { setOrder(o); setShown(PAGE); }} className={`rounded-full px-2 py-1 ${order === o ? "bg-white text-accent shadow" : "text-muted"}`}>
+                  {label}
                 </button>
               ))}
             </div>

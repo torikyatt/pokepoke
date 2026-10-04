@@ -21,6 +21,7 @@ export interface DeckIndex {
   fetchedAt: string;
   decks: TournamentDeck[];
   byCard: Map<string, number[]>; // カードID → そのカードが入っているデッキ
+  newest: number; // いちばん新しい大会の日（おすすめ順の「新しさ」の基準）
 }
 
 type Raw = {
@@ -52,7 +53,8 @@ export function loadDecks(): Promise<DeckIndex> {
     decks.forEach((d, i) => {
       for (const [id] of d.cards) (byCard.get(id) ?? byCard.set(id, []).get(id)!).push(i);
     });
-    return { fetchedAt: raw.fetchedAt, decks, byCard };
+    const newest = Math.max(0, ...raw.tournaments.map(([, date]) => Date.parse(date)));
+    return { fetchedAt: raw.fetchedAt, decks, byCard, newest };
   });
   return loading;
 }
