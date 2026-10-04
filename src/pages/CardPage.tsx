@@ -10,7 +10,7 @@ import type { AppAttack, AppCard, AppEffect } from "../types.ts";
 import { GROUP_JA, KIND_JA, RULE_JA, STAGE_JA, TYPE_JA } from "../types.ts";
 
 /** カード詳細の中身（スマホは下からのシート、PCは真ん中の列に入れる） */
-export function CardDetail({ id, keepOpen }: { id: string; keepOpen?: boolean }) {
+export function CardDetail({ id, keepOpen, actions }: { id: string; keepOpen?: boolean; actions?: React.ReactNode }) {
   const { byId, synergy, engine } = useData();
   const card = byId.get(id);
   const partners = useMemo(() => (card ? synergy.partners(card) : []), [card, synergy]);
@@ -74,6 +74,8 @@ export function CardDetail({ id, keepOpen }: { id: string; keepOpen?: boolean })
             )}
           </div>
         </div>
+
+        {actions}
 
         <section className="space-y-3">
           {card.ability && <EffectBlock e={card.ability} label="特性" tagChip={tagChip} />}

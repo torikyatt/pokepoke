@@ -198,15 +198,14 @@ export function DetailSheet() {
         className={`fixed inset-x-0 bottom-0 z-50 mx-auto flex h-[94dvh] max-w-3xl flex-col rounded-t-3xl bg-canvas shadow-[0_-6px_24px_rgb(61_71_87/0.22)] ${drag === null ? "transition-transform duration-300 ease-[cubic-bezier(.2,.8,.2,1)]" : ""} ${open ? "" : "pointer-events-none"}`}
         style={{ transform }}
       >
-        <div ref={header} className="shrink-0 space-y-2.5 px-4 pt-2 pb-3">
+        <div ref={header} className="shrink-0 px-4 pt-2 pb-3">
           <button type="button" aria-label={snap === "half" ? "いっぱいに開く" : "半分に下げる"} onClick={() => useDetail.setState({ snap: snap === "half" ? "full" : "half" })} className="mx-auto block py-1">
             <span className="block h-1.5 w-12 rounded-full bg-[#c5cfdb]" />
           </button>
           <DetailHeader card={card} />
-          {card && <DeckCounter card={card} />}
         </div>
         <div ref={content} className="min-h-0 flex-1 overflow-y-auto overscroll-contain border-t border-line pb-[max(2rem,env(safe-area-inset-bottom))]">
-          {id && <CardDetail key={id} id={id} />}
+          {id && <CardDetail key={id} id={id} actions={card && <DeckCounter card={card} />} />}
         </div>
       </div>
     </>
@@ -269,14 +268,13 @@ export function DetailPane() {
   return (
     <div className="flex h-full min-h-0 flex-col">
       {card ? (
-        <div className="shrink-0 space-y-2.5 border-b border-line px-4 pt-3 pb-3">
+        <div className="shrink-0 border-b border-line px-4 pt-3 pb-3">
           <DetailHeader card={card} />
-          <DeckCounter card={card} />
         </div>
       ) : null}
       <div ref={content} className="min-h-0 flex-1 overflow-y-auto">
         {id ? (
-          <CardDetail key={id} id={id} keepOpen />
+          <CardDetail key={id} id={id} keepOpen actions={card && <DeckCounter card={card} />} />
         ) : (
           <div className="flex h-full flex-col items-center justify-center gap-4 p-8 text-center text-sm font-bold text-muted">
             <p>
