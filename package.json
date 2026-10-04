@@ -1,0 +1,22 @@
+{
+  "name": "pokepoke",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "fetch": "tsx scripts/fetch.ts",
+    "normalize": "tsx scripts/normalize.ts",
+    "names-ja": "tsx scripts/names-ja.ts",
+    "validate": "tsx scripts/validate.ts",
+    "data": "npm run normalize && npm run names-ja && npm run validate"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  },
+  "type": "module"
+}
