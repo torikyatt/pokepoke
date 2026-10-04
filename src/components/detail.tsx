@@ -98,7 +98,6 @@ function DetailHeader({ card }: { card?: AppCard }) {
       )}
       <h2 className="min-w-0 flex-1 truncate text-center text-sm font-extrabold">
         {card?.nameJa}
-        {pos > 0 && <span className="ml-1.5 text-[10px] font-bold text-muted">{pos + 1}枚目</span>}
       </h2>
       <IconBtn label="閉じる" onClick={() => closeDetail()}>
         <span className="text-sm font-extrabold">✕</span>
