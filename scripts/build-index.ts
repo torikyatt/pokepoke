@@ -23,7 +23,7 @@ const lexicon: LexEntry[] = existsSync(lexDir)
   : [];
 
 const CODE: Record<string, EnergyType> = {
-  G: "grass", R: "fire", W: "water", L: "lightning", P: "psychic", F: "fighting", D: "darkness", M: "metal",
+  G: "grass", R: "fire", W: "water", L: "lightning", P: "psychic", F: "fighting", D: "darkness", M: "metal", N: "dragon",
 };
 const byId = new Map(cards.map((c) => [c.id, c]));
 // タグ → 供給（親タグの供給も受け継ぐ）／要求（そのタグ自身のものだけ）
@@ -96,7 +96,7 @@ const out: AppCard[] = cards.map((c) => {
   // トレーナーズ・どうぐが名指ししているタイプ（[R] 表記と、名指しされたポケモンのタイプ）。全タイプ列挙は除く
   const typeRefs = new Set<EnergyType>();
   if (c.kind !== "pokemon" && c.text?.textEn) {
-    for (const m of c.text.textEn.matchAll(/\[\s*([GRWLPFDM])\s*\]/g)) typeRefs.add(CODE[m[1]]);
+    for (const m of c.text.textEn.matchAll(/\[\s*([GRWLPFDMN])\s*\]/g)) typeRefs.add(CODE[m[1]]);
     for (const id of ct.refs) {
       const r = byId.get(id);
       if (r?.type && r.type !== "colorless") typeRefs.add(r.type);
@@ -107,7 +107,7 @@ const out: AppCard[] = cards.map((c) => {
   const slots: [Effect | undefined, string[] | undefined][] = [[c.ability, ct.ability], ...c.attacks.map((a, i) => [a, ct.attacks[i]] as [Effect, string[]]), [c.text, ct.text]];
   for (const [e, t] of slots) {
     if (!e?.textEn || !t?.some((x) => x.startsWith("energy.accel"))) continue;
-    const ts = [...e.textEn.matchAll(/\[\s*([GRWLPFDMC])\s*\]/g)].map((m) => (m[1] === "C" ? "colorless" : CODE[m[1]]));
+    const ts = [...e.textEn.matchAll(/\[\s*([GRWLPFDMCN])\s*\]/g)].map((m) => (m[1] === "C" ? "colorless" : CODE[m[1]]));
     if (new Set(ts).size < 5) for (const x of ts) accelTypes.add(x as EnergyType);
   }
   // シナジー: 効果ごとに供給・要求を集め、供給には「誰に効くか」を付ける
@@ -116,15 +116,28 @@ const out: AppCard[] = cards.map((c) => {
   const slotted: [string, Effect | undefined, string[] | undefined][] = [["ability", c.ability, ct.ability], ...c.attacks.map((a, i) => [`attack${i}`, a, ct.attacks[i]] as [string, Effect, string[]]), ["text", c.text, ct.text]];
   for (const [slot, e, ts] of slotted) {
     if (!e?.textEn || !ts) continue;
-    for (const s of new Set(ts.flatMap(suppliesOfTag))) (supplies[s] ??= []).push(selectorOf(s, e.textEn, ct.slotRefs?.[slot] ?? []));
+    for (const s of new Set(ts.flatMap(suppliesOfTag))) {
+      const sel = selectorOf(s, e.textEn, ct.slotRefs?.[slot] ?? []);
+      if (slot === "ability" || c.kind === "stadium" || c.kind === "tool") sel.repeat = true;
+      (supplies[s] ??= []).push(sel);
+    }
     for (const r of new Set(ts.flatMap(requiresOfTag))) {
       const info = requireInfoOf(r, e.textEn);
       const cur = requires[r];
       requires[r] = cur && !(cur.etypes && info.etypes) ? {} : { ...(info.etypes || cur?.etypes ? { etypes: [...new Set([...(cur?.etypes ?? []), ...(info.etypes ?? [])])] } : {}) };
     }
   }
+  // 場にエネをためる特性（毎ターン自分にエネを付ける。レアコイルのボルトチャージなど）
+  // 進化したときだけ・最初の番だけのものは含めない
+  const ab = c.ability?.textEn ?? "";
+  if (c.ability && ct.ability?.includes("energy.accel.zone") && /^Once during your turn, you may take/.test(ab.trim()) && (supplies["supply.energy.many"] ?? []).some((s) => s.self)) {
+    const et = [...ab.matchAll(/\[\s*([GRWLPFDMN])\s*\]/g)].map((m) => CODE[m[1]]);
+    supplies["supply.energy.bank"] = [{ etypes: [...new Set(et)] }];
+  }
   // カードそのものの性質から決まる要求
   if (c.kind === "pokemon" && (c.retreat ?? 0) >= 3) requires["supply.retreat.help"] = {};
+  // ワザに2種類以上のタイプのエネが要る（ドラゴンなど）→ エネ事故を減らすカードと相性がいい
+  if (c.attacks.some((a) => Object.keys(a.cost).filter((t) => t !== "colorless").length >= 2)) requires["supply.energy.fix"] = {};
   if (c.stage === "stage1" || c.stage === "stage2") requires["supply.evolve.help"] = {};
   const card: AppCard = {
     id: c.id,

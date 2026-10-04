@@ -23,6 +23,9 @@ function deckCards(deck: Pick<Deck, "cards">, byId: Map<string, AppCard>): AppCa
     .sort((a, b) => a.order - b.order || a.id.localeCompare(b.id, "en", { numeric: true }));
 }
 
+// デッキ編集画面の上の枠: 小=10枚×2段、中=7枚×3段、大=5枚×4段
+const SLOT_GRID = { s: "grid-cols-10 gap-1.5", m: "grid-cols-7 gap-2", l: "grid-cols-5 gap-2.5" } as const;
+
 // ---------------- 一覧 ----------------
 
 export function DeckListPage() {
@@ -97,6 +100,7 @@ export function DeckBuilderPage({ id }: { id: string }) {
   const { byId, engine } = useData();
   const deck = useDecks((s) => s.decks.find((d) => d.id === id));
   const { add, removeCard, select } = useDecks();
+  const { slotSize, setSlotSize } = useSettings();
   const show = useToast((s) => s.show);
   const logMiss = useMisses((s) => s.log);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -127,7 +131,7 @@ export function DeckBuilderPage({ id }: { id: string }) {
     <div className="pb-28">
       <div className="sticky top-0 z-30 bg-canvas/95 px-3 pt-[max(0.75rem,env(safe-area-inset-top))] pb-3 backdrop-blur">
         <div className="neu rounded-3xl p-3">
-          <div className="grid grid-cols-10 gap-1.5">
+          <div className={`grid ${SLOT_GRID[slotSize]}`}>
             {Array.from({ length: DECK_SIZE }, (_, i) => cards[i]).map((c, i) =>
               c ? (
                 <Pressable key={`${c.id}-${i}`} onTap={() => removeCard(deck.id, c.id)} onLongPress={() => navigate(`/card/${c.id}`)} label={`${c.nameJa}を外す`} className="pop-in rounded-[4px] shadow-[1px_2px_3px_rgb(150_165_185/0.5)]">
@@ -139,6 +143,14 @@ export function DeckBuilderPage({ id }: { id: string }) {
                 </div>
               ),
             )}
+          </div>
+          <div className="mt-2 flex items-center justify-end gap-1 text-[11px] font-bold text-muted">
+            <span className="mr-1">枠の大きさ</span>
+            {(["s", "m", "l"] as const).map((v) => (
+              <button key={v} type="button" aria-pressed={slotSize === v} onClick={() => setSlotSize(v)} className={`h-6 w-7 rounded-full ${slotSize === v ? "bg-accent text-white" : "neu-in"}`}>
+                {{ s: "小", m: "中", l: "大" }[v]}
+              </button>
+            ))}
           </div>
         </div>
         <div className="mt-3">

@@ -78,3 +78,21 @@ describe("自分にしか効かない効果は他と結ばない", () => {
     for (const p of ps) expect(p.card.nameEn).toMatch(/Dondozo/);
   });
 });
+
+describe("慣れた人の知っているシナジー", () => {
+  it("にじいろの洞窟 ↔ ハクリュー（りゅうのめぐみ）はお互いのいちばん上", () => {
+    expect(partnersOf("b4-155")[0].card.id).toBe("b4-117");
+    expect(partnersOf("b4-117")[0].card.id).toBe("b4-155");
+  });
+  it("にじいろの洞窟は、複数タイプのエネが要るポケモン（ドラゴン）と結ぶ", () => {
+    const ps = reasonOf("b4-155", /複数タイプのエネ/);
+    expect(ps.length).toBeGreaterThan(10);
+    for (const p of ps) expect(p.card.attacks.some((a) => Object.keys(a.cost).filter((t) => t !== "colorless").length >= 2)).toBe(true);
+  });
+  it("レアコイル（ボルトチャージ）は場のエネを集めるカード（ミライドンex・マチス）と強く結び、雷タイプ全般とも結ぶ", () => {
+    const top = partnersOf("a1-098").slice(0, 10).map((p) => p.card.nameEn);
+    expect(top).toContain("Miraidon ex");
+    expect(top).toContain("Lt. Surge");
+    expect(reasonOf("a1-098", /雷タイプ/).length).toBeGreaterThan(30);
+  });
+});

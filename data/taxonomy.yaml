@@ -44,6 +44,15 @@
       match:
         - '[Mm]ove (a|an|all|2|any amount of|2 random)[^.]*Energy'
         - 'move a random Energy from your opponent'
+      children:
+        - id: energy.move.gather
+          ja: 場のエネを集める
+          # 場にためたエネ（レアコイルのボルトチャージなど）を、戦うポケモンに集める
+          requires: [supply.energy.bank]
+          match:
+            - '[Mm]ove [^.]*Energy from (1 of your|your|each of your) (Benched )?(\[[A-Z]\] )?Pokémon'
+            - 'move all of your Energy in play'
+            - 'from your Pokémon in play to your other'
     - id: energy.self_discard
       ja: 自分のエネをトラッシュ
       supplies: [supply.trash.energy, supply.trash.fill]
@@ -79,7 +88,13 @@
       ja: エネルギーゾーン操作
       match:
         - 'Change the type of'
-        - 'discard the Energy that has been generated'
+      children:
+        - id: energy.manipulate.reroll
+          ja: エネを引き直す
+          # にじいろの洞窟: 出たエネを捨てて引き直す。エネ事故が減り、捨てたエネはトラッシュへ
+          supplies: [supply.energy.fix, supply.trash.energy]
+          match:
+            - 'discard the Energy that has been generated'
 
 - id: draw
   ja: ドロー・サーチ

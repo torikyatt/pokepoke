@@ -84,6 +84,7 @@ export interface Selector {
   groups?: CardGroup[];
   preHpMax?: number; // 進化元のHPがこれ以下
   etypes?: EnergyType[]; // トラッシュに送る・使うエネのタイプ
+  repeat?: true; // 毎ターン使える（特性・スタジアム・どうぐ）
 }
 
 export interface AppTag {

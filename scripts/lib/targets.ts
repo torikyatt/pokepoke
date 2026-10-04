@@ -5,7 +5,7 @@
 import type { CardGroup, EnergyType, Selector, Stage } from "../../src/types.ts";
 
 const CODE: Record<string, EnergyType> = {
-  G: "grass", R: "fire", W: "water", L: "lightning", P: "psychic", F: "fighting", D: "darkness", M: "metal", C: "colorless",
+  G: "grass", R: "fire", W: "water", L: "lightning", P: "psychic", F: "fighting", D: "darkness", M: "metal", C: "colorless", N: "dragon",
 };
 
 const clean = (s: string) => s.replace(/\[\s*([A-Z])\s*\]/g, "[$1]").replace(/Pokemon/g, "Pokémon").replace(/[’‘]/g, "'").replace(/\s+/g, " ");
@@ -34,7 +34,7 @@ export function selectorOf(supply: string, raw: string, refs: string[]): Selecto
     return sel;
   }
   if (refs.length && supply !== "supply.trash.fill" && supply !== "supply.bench.fill") sel.ids = refs;
-  const types = [...t.matchAll(/\[([GRWLPFDM])\] Pokémon/g)].map((m) => CODE[m[1]]);
+  const types = [...t.matchAll(/\[([GRWLPFDMN])\] Pokémon/g)].map((m) => CODE[m[1]]);
   if (types.length) sel.types = [...new Set(types)];
   if (supply === "supply.evolve.help") {
     if (/Stage 2/.test(t)) sel.stages = ["stage2"];
@@ -50,7 +50,7 @@ export function selectorOf(supply: string, raw: string, refs: string[]): Selecto
   if (/Future Pokémon/.test(t)) groups.push("future");
   if (groups.length) sel.groups = groups;
   if (supply === "supply.trash.energy") {
-    const et = [...t.matchAll(/\[([GRWLPFDMC])\](?! Pokémon)/g)].map((m) => CODE[m[1]]);
+    const et = [...t.matchAll(/\[([GRWLPFDMCN])\](?! Pokémon)/g)].map((m) => CODE[m[1]]);
     sel.types = undefined;
     if (et.length) sel.etypes = [...new Set(et)];
   }
@@ -59,7 +59,7 @@ export function selectorOf(supply: string, raw: string, refs: string[]): Selecto
 
 /** 要求する側の条件（トラッシュのエネの種類など） */
 export function requireInfoOf(require: string, raw: string): { etypes?: EnergyType[] } {
-  if (require !== "supply.trash.energy") return {};
-  const et = [...clean(raw).matchAll(/\[([GRWLPFDMC])\](?! Pokémon)/g)].map((m) => CODE[m[1]]);
+  if (require !== "supply.trash.energy" && require !== "supply.energy.bank") return {};
+  const et = [...clean(raw).matchAll(/\[([GRWLPFDMCN])\](?! Pokémon)/g)].map((m) => CODE[m[1]]);
   return et.length ? { etypes: [...new Set(et)] } : {};
 }

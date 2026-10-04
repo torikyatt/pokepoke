@@ -119,6 +119,8 @@ interface SettingsState {
   setImageLang: (l: "ja" | "en") => void;
   deckView: "grid" | "list"; // デッキ内容の見せ方
   setDeckView: (v: "grid" | "list") => void;
+  slotSize: "s" | "m" | "l"; // デッキ編集画面の上の枠の大きさ
+  setSlotSize: (v: "s" | "m" | "l") => void;
 }
 export const useSettings = create<SettingsState>()(
   persist(
@@ -127,6 +129,8 @@ export const useSettings = create<SettingsState>()(
       setImageLang: (imageLang) => set({ imageLang }),
       deckView: "grid",
       setDeckView: (deckView) => set({ deckView }),
+      slotSize: "s",
+      setSlotSize: (slotSize) => set({ slotSize }),
     }),
     { name: "pokepoke.settings", storage: createJSONStorage(() => safeStorage), version: 1 },
   ),
