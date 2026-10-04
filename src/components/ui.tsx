@@ -138,9 +138,9 @@ export function Thumb({ card, className = "" }: { card: AppCard; className?: str
 }
 
 /** 一覧のカード。左下に枚数タブ（アプリと同じ形） */
-export function PoolCard({ card, count, maxed, onTap, compact }: { card: AppCard; count?: number; maxed?: boolean; onTap?: () => void; compact?: boolean }) {
+export function PoolCard({ card, count, maxed, onTap, onLongPress, compact }: { card: AppCard; count?: number; maxed?: boolean; onTap?: () => void; onLongPress?: () => void; compact?: boolean }) {
   return (
-    <Pressable onTap={onTap} label={card.nameJa} className="relative rounded-md shadow-[2px_3px_6px_rgb(150_165_185/0.45)]">
+    <Pressable onTap={onTap} onLongPress={onLongPress} label={card.nameJa} className="relative rounded-md shadow-[2px_3px_6px_rgb(150_165_185/0.45)]">
       <Thumb card={card} className={maxed ? "opacity-45" : ""} />
       {!!count && (
         <span className={`count-tab absolute bottom-0 left-0 flex w-[56%] items-center justify-center font-extrabold ${compact ? "h-[19%] text-sm" : "h-[17%] text-lg"}`}>

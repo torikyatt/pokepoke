@@ -86,7 +86,7 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
         {!q && !tagParam && !favOnly && (
           <div className="mb-3">
             {!wide && <h1 className="mb-1 text-lg font-extrabold tracking-wider text-ink">POKÉPOKE LAB</h1>}
-            <p className="mb-2 text-xs font-bold text-muted">ふだんの言葉で探せます（カードをタップで詳細・デッキに追加）</p>
+            <p className="mb-2 text-xs font-bold text-muted">ふだんの言葉で探せます（タップで詳細・長押しでデッキに追加）</p>
             <div className={wide ? "flex flex-wrap gap-2 pb-2" : "scrollbar-none -mx-4 flex gap-2 overflow-x-auto px-4 pb-2"}>
               {EXAMPLES.map((ex) => (
                 <Chip key={ex} onClick={() => go({ q: ex }, false)}>

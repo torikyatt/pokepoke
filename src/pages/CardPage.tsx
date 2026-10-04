@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Chip, Cost, EnergyIcon, PoolCard, Thumb } from "../components/ui.tsx";
-import { useData } from "../context.tsx";
+import { useAddToDeck, useData } from "../context.tsx";
 import { closeDetail, openCard, setScrollAnchor } from "../detail.ts";
 
 /** 進化ラインから開く: 移った先でも進化ラインが画面の同じ高さに来るようにする */
@@ -20,6 +20,7 @@ import { GROUP_JA, KIND_JA, RULE_JA, STAGE_JA, TYPE_JA } from "../types.ts";
 /** カード詳細の中身（スマホは下からのシート、PCは真ん中の列に入れる） */
 export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpen?: boolean; actions?: React.ReactNode; fav?: React.ReactNode }) {
   const { byId, synergy, engine } = useData();
+  const addToDeck = useAddToDeck();
   const card = byId.get(id);
   const partners = useMemo(() => (card ? synergy.partners(card) : []), [card, synergy]);
   const combos = card ? synergy.combos(card) : [];
@@ -124,7 +125,7 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
             <div className={keepOpen ? "grid grid-cols-[repeat(auto-fill,minmax(4.5rem,1fr))] gap-x-2 gap-y-3" : "scrollbar-none -mx-3 flex gap-2 overflow-x-auto px-3 pb-2"}>
               {partners.map((p) => (
                 <div key={p.card.id} className={keepOpen ? "min-w-0" : "w-24 shrink-0"}>
-                  <PoolCard card={p.card} onTap={() => openCard(p.card.id)} />
+                  <PoolCard card={p.card} onTap={() => openCard(p.card.id)} onLongPress={() => addToDeck(p.card)} />
                   <div className="mt-1 text-[10px] leading-tight font-bold text-accent-deep">
                     {p.reasons.slice(0, 2).map((r) => (
                       <div key={r}>{r}</div>

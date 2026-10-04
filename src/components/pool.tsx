@@ -163,6 +163,7 @@ export function QueryBox({ value, onChange, onSubmit, conds, excluded, onToggle,
 /** カードのグリッド。下までスクロールすると続きを出す */
 export function PoolGrid({ hits, counts, maxed, onTap, footer, wide }: { hits: Hit[]; counts?: Map<string, number>; maxed?: (c: AppCard) => boolean; onTap: (c: AppCard) => void; footer?: (h: Hit) => ReactNode; wide?: boolean }) {
   const { columns, favOnly, setFavOnly } = usePool();
+  const addToDeck = useAddToDeck(); // 長押しで今のデッキに追加（タップは詳細）
   const nFav = useFavorites((s) => s.ids.length);
   const [shown, setShown] = useState(90);
   const sentinel = useRef<HTMLDivElement>(null);
@@ -195,7 +196,7 @@ export function PoolGrid({ hits, counts, maxed, onTap, footer, wide }: { hits: H
       >
         {hits.slice(0, shown).map((h) => (
           <div key={h.card.id}>
-            <PoolCard card={h.card} count={counts?.get(h.card.id)} maxed={maxed?.(h.card)} compact={columns === 5} onTap={() => onTap(h.card)} />
+            <PoolCard card={h.card} count={counts?.get(h.card.id)} maxed={maxed?.(h.card)} compact={columns === 5} onTap={() => onTap(h.card)} onLongPress={() => addToDeck(h.card)} />
             {favOnly ? <QuickAdd card={h.card} /> : footer?.(h)}
           </div>
         ))}

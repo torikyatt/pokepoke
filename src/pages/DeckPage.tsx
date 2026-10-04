@@ -1,5 +1,6 @@
 import { toPng } from "html-to-image";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { PoolFab, PoolGrid, PoolToolbar, QueryBox, usePoolResults } from "../components/pool.tsx";
 import { EnergyIcon, Header, IconDeck, Pressable, Thumb } from "../components/ui.tsx";
 import { useData } from "../context.tsx";
@@ -11,7 +12,6 @@ import { openCard } from "../detail.ts";
 import { useNav } from "../nav.ts";
 import { useDecks, useToast, type Deck } from "../store.ts";
 import type { AppCard, EnergyType } from "../types.ts";
-import { TYPE_JA } from "../types.ts";
 import { useQueryConds } from "./SearchPage.tsx";
 import { mainPrint, packLabel, PrintLine, SetBadge, useMultiPackSets } from "../components/prints.tsx";
 
@@ -136,7 +136,7 @@ export function DeckBuilderPage({ id }: { id: string }) {
           <div className="grid grid-cols-10 gap-1.5" style={{ width: `${(1000 / SLOT_VISIBLE[slotSize]).toFixed(2)}%` }}>
             {Array.from({ length: DECK_SIZE }, (_, i) => cards[i]).map((c, i) =>
               c ? (
-                <Pressable key={`${c.id}-${i}`} onTap={() => openCard(c.id)} label={c.nameJa} className="pop-in snap-start rounded-[4px] shadow-[1px_2px_3px_rgb(150_165_185/0.5)]">
+                <Pressable key={`${c.id}-${i}`} onTap={() => openCard(c.id)} onLongPress={() => { removeCard(deck.id, c.id); show(`「${c.nameJa}」を1枚外しました`); }} label={`${c.nameJa}（長押しで外す）`} className="pop-in snap-start rounded-[4px] shadow-[1px_2px_3px_rgb(150_165_185/0.5)]">
                   <Thumb card={c} className="rounded-[4px]" />
                 </Pressable>
               ) : (
@@ -198,7 +198,7 @@ export function DeckBuilderPage({ id }: { id: string }) {
       </div>
 
       <div className="px-4">
-        <p className="mb-2 text-center text-[11px] font-bold text-muted">カードをタップ → 詳細の「＋ デッキに追加」「−」で出し入れ</p>
+        <p className="mb-2 text-center text-[11px] font-bold text-muted">タップで詳細 ・ 長押しで追加 ・ 上の枠を長押しで外す</p>
         <PoolGrid
           hits={hits}
           counts={counts}
@@ -230,6 +230,7 @@ export function useDeckExport(deck: Deck | undefined) {
   const show = useToast((s) => s.show);
   const imageRef = useRef<HTMLDivElement>(null);
   const [exporting, setExporting] = useState(false);
+  const [preview, setPreview] = useState<string>(); // 作った画像（画面に出して、長押し・右クリックで保存してもらう）
   const lang = useSettings((s) => s.imageLang);
   const savePng = async () => {
     if (!deck || !imageRef.current) return;
@@ -260,8 +261,7 @@ export function useDeckExport(deck: Deck | undefined) {
       );
       // Webフォントは別オリジンなので取り込まない（端末のフォントで描く）
       const url = await toPng(imageRef.current, { pixelRatio: 2, backgroundColor: "#e6ecf3", skipFonts: true });
-      download(`${deck.name}.png`, await (await fetch(url)).blob(), "image/png");
-      show("画像を保存しました");
+      setPreview(url);
     } catch {
       show("画像を作れませんでした", "error");
     } finally {
@@ -284,9 +284,18 @@ export function useDeckExport(deck: Deck | undefined) {
   };
 
   const image = deck && (
-    <div style={{ position: "fixed", left: -10000, top: 0 }} aria-hidden>
-      <DeckImage ref={imageRef} deck={deck} cards={deckCards(deck, byId)} />
-    </div>
+    <>
+      <div style={{ position: "fixed", left: -10000, top: 0 }} aria-hidden>
+        <DeckImage ref={imageRef} deck={deck} cards={deckCards(deck, byId)} />
+      </div>
+      {preview && (
+        <ImagePreview
+          url={preview}
+          onClose={() => setPreview(undefined)}
+          onDownload={async () => download(`${deck.name}.png`, await (await fetch(preview)).blob(), "image/png")}
+        />
+      )}
+    </>
   );
   return { savePng, share, exporting, image };
 }
@@ -359,7 +368,7 @@ export function DeckViewPage({ id }: { id: string }) {
 
         <div className="grid grid-cols-2 gap-3">
           <button type="button" disabled={!cards.length || exporting} onClick={savePng} className={btn}>
-            {exporting ? "画像を作成中…" : "画像として保存"}
+            {exporting ? "画像を作成中…" : "画像で保存"}
           </button>
           <button type="button" disabled={!cards.length} onClick={share} className={btn}>
             共有URL
@@ -502,26 +511,79 @@ export function DeckList({ cards }: { cards: AppCard[] }) {
   );
 }
 
+/** 画像にするデッキ: 左にカード20枚、右にカードの一覧（名前と枚数） */
 function DeckImage({ deck, cards, ref }: { deck: Deck; cards: AppCard[]; ref: React.Ref<HTMLDivElement> }) {
   const lang = useSettings((s) => s.imageLang);
+  const rows = [...new Map(cards.map((c) => [c.id, c])).values()].map((c) => ({ card: c, n: cards.filter((x) => x.id === c.id).length }));
+  const groups: [string, typeof rows][] = [
+    ["ポケモン", rows.filter((r) => r.card.kind === "pokemon")],
+    ["トレーナーズ", rows.filter((r) => r.card.kind !== "pokemon")],
+  ];
+  const panel = { borderRadius: 24, background: "#eef2f7", boxShadow: "6px 6px 14px rgba(176,189,206,.55), -6px -6px 14px #fff" };
   return (
-    <div ref={ref} style={{ width: 1000, padding: 28, background: "#e6ecf3", color: "#3d4757", fontFamily: "'M PLUS Rounded 1c', sans-serif" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
-        <div style={{ fontSize: 30, fontWeight: 800, flex: 1 }}>{deck.name}</div>
-        {deck.energy.map((t) => (
-          <span key={t} style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 18, fontWeight: 700 }}>
-            <EnergyIcon type={t} size="lg" />
-            {TYPE_JA[t]}
-          </span>
-        ))}
+    <div ref={ref} style={{ width: 1400, padding: 28, background: "#e6ecf3", color: "#3d4757", fontFamily: "'M PLUS Rounded 1c', 'Hiragino Maru Gothic ProN', 'Hiragino Sans', sans-serif" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 18 }}>
+        <div style={{ fontSize: 32, fontWeight: 800, flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{deck.name}</div>
+        {deck.energy.length > 0 && (
+          <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 14px", ...panel, borderRadius: 999 }}>
+            <span style={{ fontSize: 15, fontWeight: 800, color: "#8794a7" }}>エネルギー</span>
+            {deck.energy.map((t) => (
+              <EnergyIcon key={t} type={t} size="lg" />
+            ))}
+          </div>
+        )}
+        <div style={{ fontSize: 18, fontWeight: 800, color: "#8794a7" }}>{cards.length}/{DECK_SIZE}</div>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 12, padding: 16, borderRadius: 24, background: "#eef2f7", boxShadow: "6px 6px 14px rgba(176,189,206,.55), -6px -6px 14px #fff" }}>
-        {cards.map((c, i) => (
-          <img key={i} data-id={c.id} src={thumbUrl(c, lang)} alt={c.nameJa} style={{ width: "100%", aspectRatio: "367/512", borderRadius: 8, objectFit: "cover" }} />
-        ))}
+      <div style={{ display: "flex", gap: 20, alignItems: "stretch" }}>
+        <div style={{ width: 900, flexShrink: 0, display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 12, padding: 16, ...panel }}>
+          {cards.map((c, i) => (
+            <img key={i} data-id={c.id} src={thumbUrl(c, lang)} alt={c.nameJa} style={{ width: "100%", aspectRatio: "367/512", borderRadius: 8, objectFit: "cover" }} />
+          ))}
+        </div>
+        <div style={{ flex: 1, minWidth: 0, padding: "14px 18px", ...panel }}>
+          {groups.map(([title, list]) =>
+            list.length ? (
+              <div key={title} style={{ marginBottom: 12 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 15, fontWeight: 800, color: "#8794a7", borderBottom: "2px solid #d5dde7", paddingBottom: 4, marginBottom: 6 }}>
+                  <span>{title}</span>
+                  <span>{list.reduce((a, r) => a + r.n, 0)}枚</span>
+                </div>
+                {list.map(({ card, n }) => (
+                  <div key={card.id} style={{ display: "flex", alignItems: "center", gap: 10, padding: "4px 0" }}>
+                    <img data-id={card.id} src={thumbUrl(card, lang)} alt="" style={{ width: 30, aspectRatio: "367/512", borderRadius: 3, objectFit: "cover" }} />
+                    <span style={{ flex: 1, minWidth: 0, fontSize: 19, fontWeight: 700, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{card.nameJa}</span>
+                    <span style={{ fontSize: 19, fontWeight: 800 }}>×{n}</span>
+                  </div>
+                ))}
+              </div>
+            ) : null,
+          )}
+        </div>
       </div>
       <div style={{ marginTop: 12, fontSize: 13, color: "#8794a7", textAlign: "right", fontWeight: 700 }}>POKÉPOKE LAB</div>
     </div>
+  );
+}
+
+/** 作った画像を画面に出す。長押し（PCは右クリック）で保存できる */
+function ImagePreview({ url, onClose, onDownload }: { url: string; onClose: () => void; onDownload: () => void }) {
+  return createPortal(
+    <div className="fixed inset-0 z-[70] flex flex-col items-center justify-center bg-[#3d4757]/60 p-3" role="dialog" aria-modal="true" aria-label="デッキの画像">
+      <button type="button" aria-label="閉じる" className="absolute inset-0" onClick={onClose} />
+      <div className="pop-in relative flex max-h-full w-full max-w-4xl flex-col gap-2 rounded-3xl bg-panel p-3 shadow-2xl">
+        <div className="flex items-center gap-2">
+          <p className="min-w-0 flex-1 text-xs font-bold text-muted">画像を長押し（PCは右クリック）して保存してください</p>
+          <button type="button" onClick={onClose} className="neu-sm neu-press flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-muted" aria-label="閉じる">
+            ✕
+          </button>
+        </div>
+        <img src={url} alt="デッキの画像" className="min-h-0 w-full flex-1 rounded-xl object-contain" style={{ WebkitTouchCallout: "default" }} />
+        <button type="button" onClick={onDownload} className="self-end text-[11px] font-bold text-accent-deep underline">
+          ファイルとしてダウンロード
+        </button>
+      </div>
+    </div>,
+    document.body,
   );
 }
 
