@@ -268,10 +268,9 @@ export function DetailDock({ bottom }: { bottom: string }) {
       onTouchStart={(e) => (startY.current = e.touches[0].clientY)}
       onTouchEnd={(e) => e.changedTouches[0].clientY - startY.current < -24 && reopenDetail()}
       aria-label={`最近見たカード「${cards[0].nameJa}」を開く`}
-      className="neu pop-in fixed left-1/2 z-[47] flex max-w-[52vw] -translate-x-1/2 items-end gap-2 rounded-t-2xl px-3 pt-3 pb-1.5"
+      className="neu neu-press pop-in fixed left-1/2 z-[47] flex max-w-[56vw] -translate-x-1/2 items-center gap-2 rounded-2xl border border-white/70 py-1.5 pr-2.5 pl-2"
       style={{ bottom }}
     >
-      <span className="absolute top-1 left-1/2 h-1 w-8 -translate-x-1/2 rounded-full bg-[#c5cfdb]" />
       <span className="relative h-9 w-7 shrink-0">
         {cards
           .slice()
@@ -289,7 +288,7 @@ export function DetailDock({ bottom }: { bottom: string }) {
         <span className="block text-[9px] font-bold text-muted">最近見たカード{pos > 0 ? `（${pos + 1}枚）` : ""}</span>
         <span className="block truncate text-xs font-extrabold">{cards[0].nameJa}</span>
       </span>
-      <span className="self-center text-xs text-muted">▲</span>
+      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-canvas text-[10px] text-muted">▲</span>
     </button>
   );
 }

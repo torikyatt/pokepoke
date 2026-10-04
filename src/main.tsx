@@ -88,7 +88,8 @@ function Shell() {
           </main>
         </RouteContext.Provider>
       ))}
-      <DetailDock bottom={building ? "0px" : "calc(3.65rem + env(safe-area-inset-bottom))"} />
+      {/* 下のタブやデッキ編集の ✓ ボタンから少し離して浮かせる */}
+      <DetailDock bottom={building ? "max(1.5rem, calc(env(safe-area-inset-bottom) + 0.5rem))" : "calc(4.4rem + env(safe-area-inset-bottom))"} />
       <DetailSheet />
       <Toast />
       {!building && <BottomNav />}
