@@ -2,7 +2,7 @@ export type EnergyType =
   | "grass" | "fire" | "water" | "lightning" | "psychic"
   | "fighting" | "darkness" | "metal" | "dragon" | "colorless";
 
-export type CardGroup = "ultra_beast" | "ancient" | "future" | "team_rocket";
+export type CardGroup = "ultra_beast" | "ancient" | "future" | "team_rocket" | "baby";
 
 export type CardKind = "pokemon" | "item" | "supporter" | "tool" | "fossil" | "stadium";
 

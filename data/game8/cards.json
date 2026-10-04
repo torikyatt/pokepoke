@@ -20549,7 +20549,8 @@
   "name": "ネクロズマ(たそがれのたてがみ)",
   "image": "https://img.game8.jp/11427713/81118ac5c48a389507683c226c233bcc.png/show",
   "acquire": "プロモカードパック",
-  "howTo": "ウルトラビーストドロップイベントで入手"
+  "howTo": "ウルトラビーストドロップイベントで入手",
+  "group": "ウルトラビースト"
  },
  {
   "g8Id": 1713132,
@@ -20568,7 +20569,8 @@
   "name": "ネクロズマ(あかつきのつばさ)",
   "image": "https://img.game8.jp/11427717/42dbb66015aa4ea18a123c268b876a56.png/show",
   "acquire": "プロモカードパック",
-  "howTo": "ウルトラビーストドロップイベントで入手"
+  "howTo": "ウルトラビーストドロップイベントで入手",
+  "group": "ウルトラビースト"
  },
  {
   "g8Id": 1713133,
@@ -20587,7 +20589,8 @@
   "name": "デンジュモク",
   "image": "https://img.game8.jp/11427716/a13d7cc664efb9110578cb9ac09a6579.png/show",
   "acquire": "プロモカードパック",
-  "howTo": "ウルトラビーストドロップイベントで入手"
+  "howTo": "ウルトラビーストドロップイベントで入手",
+  "group": "ウルトラビースト"
  },
  {
   "g8Id": 1713134,
@@ -20606,7 +20609,8 @@
   "name": "ズガドーン",
   "image": "https://img.game8.jp/11427712/b67963a118cad3b9b44a5cd74912d710.png/show",
   "acquire": "プロモカードパック",
-  "howTo": "ウルトラビーストドロップイベントで入手"
+  "howTo": "ウルトラビーストドロップイベントで入手",
+  "group": "ウルトラビースト"
  },
  {
   "g8Id": 1713135,
@@ -20625,7 +20629,8 @@
   "name": "カミツルギ",
   "image": "https://img.game8.jp/11427718/39882ad46ffbbb60ff9429f4327ac33b.png/show",
   "acquire": "プロモカードパック",
-  "howTo": "ウルトラビーストドロップイベントで入手"
+  "howTo": "ウルトラビーストドロップイベントで入手",
+  "group": "ウルトラビースト"
  },
  {
   "g8Id": 1713136,
@@ -20663,7 +20668,8 @@
   "name": "ウツロイド",
   "pack": "異次元クライシス",
   "image": "https://img.game8.jp/11402795/8c0007a4a636bb8988476c2d228ea70c.png/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ウルトラビースト"
  },
  {
   "g8Id": 1713138,
@@ -20948,7 +20954,8 @@
   "name": "マッシブーンex",
   "pack": "異次元クライシス",
   "image": "https://img.game8.jp/11402561/06e2f4cf6abe0983c463a236279bfa9f.png/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ウルトラビースト"
  },
  {
   "g8Id": 1713153,
@@ -20986,7 +20993,8 @@
   "name": "アクジキングex",
   "pack": "異次元クライシス",
   "image": "https://img.game8.jp/11402792/9ec482407a5dfebd496bd1618a9f0779.png/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ウルトラビースト"
  },
  {
   "g8Id": 1713155,
@@ -21110,7 +21118,8 @@
   "name": "アクジキングex",
   "pack": "異次元クライシス",
   "image": "https://img.game8.jp/11402563/cc473f102f3e4381fd6e18fe02ba8bec.png/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ウルトラビースト"
  },
  {
   "g8Id": 1713162,
@@ -21167,7 +21176,8 @@
   "name": "マッシブーンex",
   "pack": "異次元クライシス",
   "image": "https://img.game8.jp/11402797/d551562561c59a984fe97f30e2855c5b.png/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ウルトラビースト"
  },
  {
   "g8Id": 1713165,
@@ -21186,7 +21196,8 @@
   "name": "テッカグヤ",
   "pack": "異次元クライシス",
   "image": "https://img.game8.jp/11402577/0dddd0031fcf9e7b716c04b135982728.png/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ウルトラビースト"
  },
  {
   "g8Id": 1713166,
@@ -21243,7 +21254,8 @@
   "name": "ズガドーン",
   "pack": "異次元クライシス",
   "image": "https://img.game8.jp/11402570/b06120ad3b05f7b9ffb972f0c31cc553.png/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ウルトラビースト"
  },
  {
   "g8Id": 1713169,
@@ -21262,7 +21274,8 @@
   "name": "フェローチェ",
   "pack": "異次元クライシス",
   "image": "https://img.game8.jp/11402493/d5e216ef456260ca8a875de6e0a14338.png/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ウルトラビースト"
  },
  {
   "g8Id": 1713170,
@@ -21412,7 +21425,8 @@
   "name": "テッカグヤ",
   "pack": "異次元クライシス",
   "image": "https://img.game8.jp/11402551/89fb8cb7accea9b6d227ca156908f048.png/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ウルトラビースト"
  },
  {
   "g8Id": 1713179,
@@ -21583,7 +21597,8 @@
   "name": "ツンデツンデ",
   "pack": "異次元クライシス",
   "image": "https://img.game8.jp/11402571/e482a4c3c25e6292d57032019e7e9c30.png/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ウルトラビースト"
  },
  {
   "g8Id": 1713188,
@@ -21735,7 +21750,8 @@
   "name": "アーゴヨン",
   "pack": "異次元クライシス",
   "image": "https://img.game8.jp/11402537/10b7769fad4b97e594c0a686bf9836e1.png/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ウルトラビースト"
  },
  {
   "g8Id": 1713196,
@@ -21754,7 +21770,8 @@
   "name": "ベベノム",
   "pack": "異次元クライシス",
   "image": "https://img.game8.jp/11402541/c67a2b29f2b05d5cc25426f4a8d5457b.png/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ウルトラビースト"
  },
  {
   "g8Id": 1713197,
@@ -21773,7 +21790,8 @@
   "name": "アクジキングex",
   "pack": "異次元クライシス",
   "image": "https://img.game8.jp/11402798/d383864272feec5d18941c49a0ae7dd6.png/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ウルトラビースト"
  },
  {
   "g8Id": 1713198,
@@ -21792,7 +21810,8 @@
   "name": "ウツロイド",
   "pack": "異次元クライシス",
   "image": "https://img.game8.jp/11402534/5181783c99c1bb4a0459389f71236c65.png/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ウルトラビースト"
  },
  {
   "g8Id": 1713199,
@@ -22210,7 +22229,8 @@
   "name": "デンジュモク",
   "pack": "異次元クライシス",
   "image": "https://img.game8.jp/11402486/6fd9b22246cfd3e2531064d7b266ea84.png/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ウルトラビースト"
  },
  {
   "g8Id": 1713221,
@@ -22419,7 +22439,8 @@
   "name": "ズガドーン",
   "pack": "異次元クライシス",
   "image": "https://img.game8.jp/11402558/ceecb56e94c6d93f5eed706059641f68.png/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ウルトラビースト"
  },
  {
   "g8Id": 1713232,
@@ -22438,7 +22459,8 @@
   "name": "カミツルギ",
   "pack": "異次元クライシス",
   "image": "https://img.game8.jp/11402501/df63da6c401f03703c82b53e1e88b67a.png/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ウルトラビースト"
  },
  {
   "g8Id": 1713233,
@@ -22457,7 +22479,8 @@
   "name": "フェローチェ",
   "pack": "異次元クライシス",
   "image": "https://img.game8.jp/11402476/a859ae8fd47678db563a914fa27e9b57.png/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ウルトラビースト"
  },
  {
   "g8Id": 1713234,
@@ -22476,7 +22499,8 @@
   "name": "マッシブーンex",
   "pack": "異次元クライシス",
   "image": "https://img.game8.jp/11402559/7322445d7d257209b0b7e0e14723b294.png/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ウルトラビースト"
  },
  {
   "g8Id": 1713235,
@@ -27359,7 +27383,8 @@
   "name": "バルキー",
   "pack": "空と海の導きホウオウ",
   "image": "https://img.game8.jp/11602396/f7f0016e8263ac633fc531bf73d8a6bc.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ベビー"
  },
  {
   "g8Id": 1764103,
@@ -27814,7 +27839,8 @@
   "name": "ピィ",
   "pack": "空と海の導きルギア",
   "image": "https://img.game8.jp/11602577/0fd86f9c46c8f660e42f3541f8d95f14.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ベビー"
  },
  {
   "g8Id": 1764127,
@@ -27851,7 +27877,8 @@
   "name": "ムチュール",
   "pack": "空と海の導きホウオウ",
   "image": "https://img.game8.jp/11602376/c139a43aa03992d37af51ff6fd978f84.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ベビー"
  },
  {
   "g8Id": 1764129,
@@ -27945,7 +27972,8 @@
   "name": "エレキッド",
   "pack": "空と海の導きルギア",
   "image": "https://img.game8.jp/11602319/c80d73a98668b0093dc095d256901dee.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ベビー"
  },
  {
   "g8Id": 1764134,
@@ -28020,7 +28048,8 @@
   "name": "ピチュー",
   "pack": "空と海の導きルギア",
   "image": "https://img.game8.jp/11602311/ea27ca1af2ebcc3ba3b00e2ab70cde73.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ベビー"
  },
  {
   "g8Id": 1764138,
@@ -28665,7 +28694,8 @@
   "name": "ブビィ",
   "pack": "空と海の導きホウオウ",
   "image": "https://img.game8.jp/11602573/f37a63bb2f030b2ec84d69d2d2075529.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ベビー"
  },
  {
   "g8Id": 1764172,
@@ -30189,7 +30219,8 @@
   "name": "ルリリ",
   "pack": "未知なる水域",
   "image": "https://img.game8.jp/11709158/71651eed49ce3cecd4f03d5818c06285.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ベビー"
  },
  {
   "g8Id": 1784623,
@@ -30264,7 +30295,8 @@
   "name": "ププリン",
   "pack": "未知なる水域",
   "image": "https://img.game8.jp/11709161/eca08b0357988145b012d7ab1eefaebd.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ベビー"
  },
  {
   "g8Id": 1784627,
@@ -30945,7 +30977,8 @@
   "name": "タマンタ",
   "pack": "未知なる水域",
   "image": "https://img.game8.jp/11709191/c222233affe716f84835e9623c5c3de3.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ベビー"
  },
  {
   "g8Id": 1784663,
@@ -37016,7 +37049,8 @@
   "name": "メガチルタリスex",
   "pack": "メガライジングチルタリス",
   "image": "https://img.game8.jp/11927776/ccd6b5a705f685a53c2e7b7c8d479b0a.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "メガ"
  },
  {
   "g8Id": 1828685,
@@ -37035,7 +37069,8 @@
   "name": "メガギャラドスex",
   "pack": "メガライジングギャラドス",
   "image": "https://img.game8.jp/11928805/0ddeb1ec442ec011dbd51426f642da03.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "メガ"
  },
  {
   "g8Id": 1828686,
@@ -37054,7 +37089,8 @@
   "name": "メガバシャーモex",
   "pack": "メガライジングバシャーモ",
   "image": "https://img.game8.jp/11928516/e51683318a077471e14299245ee66ede.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "メガ"
  },
  {
   "g8Id": 1828687,
@@ -37130,7 +37166,8 @@
   "name": "メガアブソルex",
   "pack": "メガライジングギャラドス",
   "image": "https://img.game8.jp/11928076/08dfc958ac0f936be49e0b5a7918da54.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "メガ"
  },
  {
   "g8Id": 1828691,
@@ -37187,7 +37224,8 @@
   "name": "メガデンリュウex",
   "pack": "メガライジングチルタリス",
   "image": "https://img.game8.jp/11928006/32537df1bb0e398811a43b1b7189f951.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "メガ"
  },
  {
   "g8Id": 1828694,
@@ -37282,7 +37320,8 @@
   "name": "メガカイロスex",
   "pack": "メガライジングバシャーモ",
   "image": "https://img.game8.jp/11929027/81e2f7c0cad882b92a7e24ef44f9f94f.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "メガ"
  },
  {
   "g8Id": 1828699,
@@ -37454,7 +37493,8 @@
   "name": "メガアブソルex",
   "pack": "メガライジングギャラドス",
   "image": "https://img.game8.jp/11928870/b08907433765b3f636cff19b23ceeb39.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "メガ"
  },
  {
   "g8Id": 1828709,
@@ -37511,7 +37551,8 @@
   "name": "メガチルタリスex",
   "pack": "メガライジングチルタリス",
   "image": "https://img.game8.jp/11928509/5dd5a6d9f40dce80283769acd15ce1e4.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "メガ"
  },
  {
   "g8Id": 1828712,
@@ -37530,7 +37571,8 @@
   "name": "メガデンリュウex",
   "pack": "メガライジングチルタリス",
   "image": "https://img.game8.jp/11927989/8398bd48f87c574f04913b5bc328e1a8.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "メガ"
  },
  {
   "g8Id": 1828713,
@@ -37587,7 +37629,8 @@
   "name": "メガギャラドスex",
   "pack": "メガライジングギャラドス",
   "image": "https://img.game8.jp/11929017/9a04b9a360ea413f5df892ffb3531cf8.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "メガ"
  },
  {
   "g8Id": 1828716,
@@ -37606,7 +37649,8 @@
   "name": "メガバシャーモex",
   "pack": "メガライジングバシャーモ",
   "image": "https://img.game8.jp/11928720/fa6af69ecc3797ca70e3b78c668f9089.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "メガ"
  },
  {
   "g8Id": 1828717,
@@ -37663,7 +37707,8 @@
   "name": "メガカイロスex",
   "pack": "メガライジングバシャーモ",
   "image": "https://img.game8.jp/11928717/09b844b173a97fc01325908453f8031b.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "メガ"
  },
  {
   "g8Id": 1828720,
@@ -39513,7 +39558,8 @@
   "name": "メガアブソルex",
   "pack": "メガライジングギャラドス",
   "image": "https://img.game8.jp/11927680/d0a5e277769761455abe9772a8510aef.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "メガ"
  },
  {
   "g8Id": 1828820,
@@ -40310,7 +40356,8 @@
   "name": "リーシャン",
   "pack": "メガライジング",
   "image": "https://img.game8.jp/11927490/bf9eb84044f92410da710998b26b4fc9.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ベビー"
  },
  {
   "g8Id": 1828862,
@@ -40443,7 +40490,8 @@
   "name": "メガチルタリスex",
   "pack": "メガライジングチルタリス",
   "image": "https://img.game8.jp/11927552/83204d6986919f5c51cf4c21d0c10ba6.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "メガ"
  },
  {
   "g8Id": 1828869,
@@ -40766,7 +40814,8 @@
   "name": "メガデンリュウex",
   "pack": "メガライジングチルタリス",
   "image": "https://img.game8.jp/11928441/c772e9abb86d0807d4b31efbcbaa4756.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "メガ"
  },
  {
   "g8Id": 1828886,
@@ -41393,7 +41442,8 @@
   "name": "メガギャラドスex",
   "pack": "メガライジングギャラドス",
   "image": "https://img.game8.jp/11927575/b53784cb917fb91f25237f327103a59c.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "メガ"
  },
  {
   "g8Id": 1828919,
@@ -41697,7 +41747,8 @@
   "name": "メガバシャーモex",
   "pack": "メガライジングバシャーモ",
   "image": "https://img.game8.jp/11927546/adb1af601e4132975da998b2817dd485.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "メガ"
  },
  {
   "g8Id": 1828935,
@@ -42343,7 +42394,8 @@
   "name": "メガカイロスex",
   "pack": "メガライジングバシャーモ",
   "image": "https://img.game8.jp/11927433/fa2673938f8761d47f6b8842f7da5838.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "メガ"
  },
  {
   "g8Id": 1828969,
@@ -42533,7 +42585,8 @@
   "name": "メガアブソルex",
   "image": "https://img.game8.jp/12044912/65e4b0b43946ebfd5be87d9334418818.webp/show",
   "acquire": "プレミアムパス",
-  "howTo": "12月プレミアムパス報酬"
+  "howTo": "12月プレミアムパス報酬",
+  "group": "メガ"
  },
  {
   "g8Id": 1865896,
@@ -43538,7 +43591,8 @@
   "name": "メガハガネールex",
   "pack": "紅蓮ブレイズ",
   "image": "https://img.game8.jp/12117122/1eeeca0d49e178d7a6e21872c39048d9.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "メガ"
  },
  {
   "g8Id": 1873623,
@@ -43728,7 +43782,8 @@
   "name": "メガミミロップex",
   "pack": "紅蓮ブレイズ",
   "image": "https://img.game8.jp/12117229/1276abafbb9dc1d9bd5534148ac6ce44.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "メガ"
  },
  {
   "g8Id": 1873633,
@@ -44146,7 +44201,8 @@
   "name": "メガカメックスex",
   "pack": "紅蓮ブレイズ",
   "image": "https://img.game8.jp/12117230/30bbe145d3f80c13dc3939beb5b13041.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "メガ"
  },
  {
   "g8Id": 1873655,
@@ -44260,7 +44316,8 @@
   "name": "メガリザードンYex",
   "pack": "紅蓮ブレイズ",
   "image": "https://img.game8.jp/12117088/104b42f332d8d18e9e7f2955cc544515.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "メガ"
  },
  {
   "g8Id": 1873661,
@@ -44450,7 +44507,8 @@
   "name": "メガフシギバナex",
   "pack": "紅蓮ブレイズ",
   "image": "https://img.game8.jp/12117068/8c2bf8fe2b77c46c7366c78f448d48e6.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "メガ"
  },
  {
   "g8Id": 1873671,
@@ -44975,7 +45033,8 @@
   "name": "バルキー",
   "pack": "夢幻パレード",
   "image": "https://img.game8.jp/12248327/a2b35bf6bea8352ca64117e385d5c3aa.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ベビー"
  },
  {
   "g8Id": 1897817,
@@ -45164,7 +45223,8 @@
   "name": "ピチュー",
   "pack": "夢幻パレード",
   "image": "https://img.game8.jp/12248328/eb901ef88c710bd22816d51a0ce20f27.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ベビー"
  },
  {
   "g8Id": 1897827,
@@ -45220,7 +45280,8 @@
   "name": "タマンタ",
   "pack": "夢幻パレード",
   "image": "https://img.game8.jp/12248282/e5cf7f6e3ea835a55497c50254999ff1.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ベビー"
  },
  {
   "g8Id": 1897830,
@@ -45295,7 +45356,8 @@
   "name": "ブビィ",
   "pack": "夢幻パレード",
   "image": "https://img.game8.jp/12294015/c617f4195cd3525530a644f31ed6036c.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ベビー"
  },
  {
   "g8Id": 1897834,
@@ -46739,7 +46801,8 @@
   "name": "メガガルーラex",
   "pack": "夢幻パレード",
   "image": "https://img.game8.jp/12248410/dc4b8f8c132ab7c628ea8ae1a3737736.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "メガ"
  },
  {
   "g8Id": 1897913,
@@ -47002,7 +47065,8 @@
   "name": "メガクチートex",
   "pack": "夢幻パレード",
   "image": "https://img.game8.jp/12248408/6a4b63faf3266f4c0bdabc2727de1499.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "メガ"
  },
  {
   "g8Id": 1897927,
@@ -47078,7 +47142,8 @@
   "name": "アクジキング",
   "pack": "夢幻パレード",
   "image": "https://img.game8.jp/12248151/d95ca6e172a626d936feb76adaa9b627.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ウルトラビースト"
  },
  {
   "g8Id": 1897931,
@@ -47895,7 +47960,8 @@
   "name": "メガサーナイトex",
   "pack": "夢幻パレード",
   "image": "https://img.game8.jp/12248109/1d7a69024b9b39f470b947d068114cb0.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "メガ"
  },
  {
   "g8Id": 1897974,
@@ -48465,7 +48531,8 @@
   "name": "メガラグラージex",
   "pack": "夢幻パレード",
   "image": "https://img.game8.jp/12248433/a67290a77159cc25e1e409d3d592833a.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "メガ"
  },
  {
   "g8Id": 1898004,
@@ -48712,7 +48779,8 @@
   "name": "ズガドーンex",
   "pack": "夢幻パレード",
   "image": "https://img.game8.jp/12248413/319d40e1cf6a98476e6d3dc3c5ec13a7.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ウルトラビースト"
  },
  {
   "g8Id": 1898017,
@@ -48883,7 +48951,8 @@
   "name": "マッシブーン",
   "pack": "夢幻パレード",
   "image": "https://img.game8.jp/12248405/33b8c97bb4296535c1465a2d96feb889.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ウルトラビースト"
  },
  {
   "g8Id": 1898026,
@@ -55461,7 +55530,8 @@
   "name": "ウソハチ",
   "pack": "波動ビート",
   "image": "https://img.game8.jp/12525289/63e491944873524e4dfeb1c4de17f24f.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ベビー"
  },
  {
   "g8Id": 1987649,
@@ -55632,7 +55702,8 @@
   "name": "スボミー",
   "pack": "波動ビート",
   "image": "https://img.game8.jp/12525144/31103d5fe985ba301f7abd7893a907ed.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ベビー"
  },
  {
   "g8Id": 1987658,
@@ -57141,7 +57212,8 @@
   "name": "ウソハチ",
   "pack": "波動ビート",
   "image": "https://img.game8.jp/12525043/5e8bf3f95e299818fdd4bfe2e9f407f4.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ベビー"
  },
  {
   "g8Id": 1987739,
@@ -58376,7 +58448,8 @@
   "name": "スボミー",
   "pack": "波動ビート",
   "image": "https://img.game8.jp/12525359/ef45e47d377bfbd8454ab7eaec35ab6e.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ベビー"
  },
  {
   "g8Id": 1987804,
@@ -59888,7 +59961,8 @@
   "name": "タケルライコ",
   "pack": "進撃パラドックス",
   "image": "https://img.game8.jp/12599391/278247ed3eb8dc75e9a9c4cd145421b8.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "古代"
  },
  {
   "g8Id": 2002850,
@@ -59907,7 +59981,8 @@
   "name": "ウガツホムラ",
   "pack": "進撃パラドックス",
   "image": "https://img.game8.jp/12599414/055bdb246f191f967318b8d9d58959f3.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "古代"
  },
  {
   "g8Id": 2002851,
@@ -59926,7 +60001,8 @@
   "name": "ウネルミナモ",
   "pack": "進撃パラドックス",
   "image": "https://img.game8.jp/12599407/7a4b406a298945d0db5a50d6762d3511.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "古代"
  },
  {
   "g8Id": 2002852,
@@ -59964,7 +60040,8 @@
   "name": "テツノワダチ",
   "pack": "進撃パラドックス",
   "image": "https://img.game8.jp/12599405/2a4f1714c83d9c2015894b8da2db594d.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "未来"
  },
  {
   "g8Id": 2002854,
@@ -60040,7 +60117,8 @@
   "name": "トドロクツキ",
   "pack": "進撃パラドックス",
   "image": "https://img.game8.jp/12599415/7df792d308fb894621f687a75b7277dd.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "古代"
  },
  {
   "g8Id": 2002858,
@@ -60059,7 +60137,8 @@
   "name": "テツノコウベ",
   "pack": "進撃パラドックス",
   "image": "https://img.game8.jp/12599418/dd62a1bb9b06e0dd632064fcfef71d45.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "未来"
  },
  {
   "g8Id": 2002859,
@@ -60249,7 +60328,8 @@
   "name": "コライドンex",
   "pack": "進撃パラドックス",
   "image": "https://img.game8.jp/12599419/e3398d6da410cf477029f2d6a7c52c11.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "古代"
  },
  {
   "g8Id": 2002869,
@@ -60268,7 +60348,8 @@
   "name": "スナノケガワ",
   "pack": "進撃パラドックス",
   "image": "https://img.game8.jp/12599411/6160c5c1df618dc43c3616eef86b7765.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "古代"
  },
  {
   "g8Id": 2002870,
@@ -60287,7 +60368,8 @@
   "name": "イダイナキバ",
   "pack": "進撃パラドックス",
   "image": "https://img.game8.jp/12599374/1f61c8902f2c8433fadfb66aa2d0ce44.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "古代"
  },
  {
   "g8Id": 2002871,
@@ -60363,7 +60445,8 @@
   "name": "テツノカシラ",
   "pack": "進撃パラドックス",
   "image": "https://img.game8.jp/12599605/cc79f8b0f643a6dcc5a1c9a10e36226c.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "未来"
  },
  {
   "g8Id": 2002875,
@@ -60382,7 +60465,8 @@
   "name": "テツノイワオ",
   "pack": "進撃パラドックス",
   "image": "https://img.game8.jp/12599399/9efd8482bcff562f4ae89d8d26dad0d3.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "未来"
  },
  {
   "g8Id": 2002876,
@@ -60401,7 +60485,8 @@
   "name": "テツノイサハ",
   "pack": "進撃パラドックス",
   "image": "https://img.game8.jp/12599409/2f4fe40308475f90498875ebe2621e41.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "未来"
  },
  {
   "g8Id": 2002877,
@@ -60420,7 +60505,8 @@
   "name": "テツノブジン",
   "pack": "進撃パラドックス",
   "image": "https://img.game8.jp/12599408/7e313c02a4cc503b078a003754c6a5aa.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "未来"
  },
  {
   "g8Id": 2002878,
@@ -60439,7 +60525,8 @@
   "name": "ハバタクカミex",
   "pack": "進撃パラドックス",
   "image": "https://img.game8.jp/12599410/bd1f403391f7afc1215f16f3a6dc3072.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "古代"
  },
  {
   "g8Id": 2002879,
@@ -60458,7 +60545,8 @@
   "name": "サケブシッポ",
   "pack": "進撃パラドックス",
   "image": "https://img.game8.jp/12599372/1434c756c3bc263930926e80d08d0514.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "古代"
  },
  {
   "g8Id": 2002880,
@@ -60572,7 +60660,8 @@
   "name": "ミライドンex",
   "pack": "進撃パラドックス",
   "image": "https://img.game8.jp/12599701/d70138bb44114f94f67a7b08f95fb4de.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "未来"
  },
  {
   "g8Id": 2002886,
@@ -60591,7 +60680,8 @@
   "name": "テツノイバラ",
   "pack": "進撃パラドックス",
   "image": "https://img.game8.jp/12599371/cbc406536a20a44397afd4ad7ed4ec1c.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "未来"
  },
  {
   "g8Id": 2002887,
@@ -60610,7 +60700,8 @@
   "name": "テツノカイナ",
   "pack": "進撃パラドックス",
   "image": "https://img.game8.jp/12599398/8de6d513324358c613c73721c7041127.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "未来"
  },
  {
   "g8Id": 2002888,
@@ -60686,7 +60777,8 @@
   "name": "テツノツツミex",
   "pack": "進撃パラドックス",
   "image": "https://img.game8.jp/12599416/b3386d6c6474f33b95d4e9f088f01a18.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "未来"
  },
  {
   "g8Id": 2002892,
@@ -60838,7 +60930,8 @@
   "name": "テツノドクガ",
   "pack": "進撃パラドックス",
   "image": "https://img.game8.jp/12599366/0338902660acaeddf7b5960f41a2290d.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "未来"
  },
  {
   "g8Id": 2002900,
@@ -60857,7 +60950,8 @@
   "name": "チヲハウハネ",
   "pack": "進撃パラドックス",
   "image": "https://img.game8.jp/12599358/62a79d242a87d2e4cbbc440009113ac2.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "古代"
  },
  {
   "g8Id": 2002901,
@@ -60876,7 +60970,8 @@
   "name": "アラブルタケ",
   "pack": "進撃パラドックス",
   "image": "https://img.game8.jp/12599356/124684869c692a5dc9c2624aeb24d9c3.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "古代"
  },
  {
   "g8Id": 2002902,
@@ -62400,7 +62495,8 @@
   "name": "ハバタクカミ",
   "pack": "ミラクルデイズ",
   "image": "https://img.game8.jp/12706172/19e8be67af70c0f368a1eb149f5026b6.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "古代"
  },
  {
   "g8Id": 2025610,
@@ -62685,7 +62781,8 @@
   "name": "テツノツツミ",
   "pack": "ミラクルデイズ",
   "image": "https://img.game8.jp/12706196/2d6489707c44b43ee76a67b1659a29c1.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "未来"
  },
  {
   "g8Id": 2025625,
@@ -66171,7 +66268,8 @@
   "name": "ソーナノ",
   "pack": "天空の支配者",
   "image": "https://img.game8.jp/12815714/caaa340323f1ebd90e6e54722f4d425d.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ベビー"
  },
  {
   "g8Id": 2101516,
@@ -68443,7 +68541,8 @@
   "text": "相手の手札のオモテをすべて見て、その中からたねポケモンを好きなだけ選び、相手のベンチに出す。",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916691/d68eca34d8907644f88f7ebb3d3f9c46.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2126988,
@@ -68459,7 +68558,8 @@
   "text": "相手のバトルポケモンをこんらんにする。コインを1回投げウラなら、自分のバトルポケモンもこんらんにする。",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916689/3c3b32defbc0328e2c977bc1600f088f.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2126989,
@@ -68475,7 +68575,8 @@
   "text": "ウラが出るまでコインを投げ、オモテの数ぶん、自分の山札から名前に「ロケット団」とつくポケモンをランダムに手札に加える。",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916661/64b10654b137eef1c54b1c109d3a81a4.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2126990,
@@ -68491,7 +68592,8 @@
   "text": "次の相手の番の終わりまで、相手のバトルポケモンのにげるためのエネルギーを、1個多くする。",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916662/35961fc80b6d0aa88a91d9c8bef29087.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2126991,
@@ -68507,7 +68609,8 @@
   "text": "相手のトラッシュからグッズ(「ロケット団のどろぼうマシン」をのぞく)をランダムに1枚、自分の手札に加える。",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916660/133d2dd341b061d062fc78c1098b941d.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2126992,
@@ -68582,7 +68685,8 @@
   "name": "ピンプク",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916721/bf3e0482e66cb7c844f7a68df240bbbc.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ベビー"
  },
  {
   "g8Id": 2126996,
@@ -68601,7 +68705,8 @@
   "name": "ロケット団のカクレオン",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916749/878d814735420ec41702d8645736b94b.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2126997,
@@ -68620,7 +68725,8 @@
   "name": "ロケット団のペルシアン",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916687/95780499e5750da9072243d1465cc0b4.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2126998,
@@ -68639,7 +68745,8 @@
   "name": "ロケット団のニャース",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916726/b36bdc61b22f52f10e08d05a043b724c.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2126999,
@@ -68657,7 +68764,8 @@
   "name": "ロケット団のラッタex",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916758/641476bbb7a111c1d570b64a47a531b8.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2127000,
@@ -68676,7 +68784,8 @@
   "name": "ロケット団のコラッタ",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916717/f0afccf82c62e3eb14e75470d2f01eb9.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2127001,
@@ -68828,7 +68937,8 @@
   "name": "ロケット団のデカヌチャン",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916742/6c59058172a9e00ec19161587ec63297.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2127009,
@@ -68847,7 +68957,8 @@
   "name": "ロケット団のナカヌチャン",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916752/4fbcbb52e1b5f7c70ea6bf67cde4cfbb.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2127010,
@@ -68866,7 +68977,8 @@
   "name": "ロケット団のカヌチャン",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916723/759d81982769944b83ddf6afd874fbc6.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2127011,
@@ -68942,7 +69054,8 @@
   "name": "ロケット団のニューラ",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916750/915797f836b174fceef2f511667c046b.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2127015,
@@ -68961,7 +69074,8 @@
   "name": "ロケット団のマタドガスex",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12917054/46586211552583df7392808d142f2596.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2127016,
@@ -68980,7 +69094,8 @@
   "name": "ロケット団のドガース",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916733/c520178aff323eb3c5223bf3bdbdb89a.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2127017,
@@ -68999,7 +69114,8 @@
   "name": "ロケット団のベトベトン",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916743/8f05a669e4487315d77e72968d3e596f.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2127018,
@@ -69018,7 +69134,8 @@
   "name": "ロケット団のベトベター",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916729/9860028cca8415f8f7f336d7a4ec2376.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2127019,
@@ -69037,7 +69154,8 @@
   "name": "ロケット団のアーボック",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916762/089cb6e68ce6c71db46c3531c273901b.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2127020,
@@ -69056,7 +69174,8 @@
   "name": "ロケット団のアーボ",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916728/b8942f1faf4193eb1356011ce70492a2.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2127021,
@@ -69208,7 +69327,8 @@
   "name": "ロケット団のミュウツー",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916710/83616a2ae001cfcb73e69b4e2de722d7.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2127029,
@@ -69227,7 +69347,8 @@
   "name": "ロケット団のバリヤード",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916704/e5ee4b4b978ca4b444e3bbc49dd5207b.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2127030,
@@ -69246,7 +69367,8 @@
   "name": "ロケット団のスリーパー",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916706/bee189d45c8e41051f30ce74e0abbe27.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2127031,
@@ -69265,7 +69387,8 @@
   "name": "ロケット団のスリープ",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916747/9990354b39e9bedd5f6e45e66797119c.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2127032,
@@ -69284,7 +69407,8 @@
   "name": "ロケット団のヤドキングex",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916725/668f91fdef480d3436e7ba39d16f8c4b.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2127033,
@@ -69303,7 +69427,8 @@
   "name": "ロケット団のヤドン",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916694/5c1e40dd73378a4850e97a8642d77ed4.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2127034,
@@ -69322,7 +69447,8 @@
   "name": "ロケット団のバチンウニ",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916700/0332b7e9adc26e6b9f43b7d516c98c55.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2127035,
@@ -69379,7 +69505,8 @@
   "name": "ロケット団のサンダーex",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916702/bdee951a7413d76c145705f4abb62b25.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2127038,
@@ -69398,7 +69525,8 @@
   "name": "ロケット団のマルマイン",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916703/c1ebc93139088c22398f5857038fb718.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2127039,
@@ -69417,7 +69545,8 @@
   "name": "ロケット団のビリリダマ",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916705/1fcb2e8bfd7d23414746456f66b4a9b0.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2127040,
@@ -69512,7 +69641,8 @@
   "name": "ロケット団のフリーザーex",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916754/fa13fd806b1d85d56d10e120e316469f.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2127045,
@@ -69531,7 +69661,8 @@
   "name": "ロケット団のラプラス",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916720/df40f8fcb0ca6029ee04b264981e7aca.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2127046,
@@ -69607,7 +69738,8 @@
   "name": "ロケット団のヘルガー",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916698/d314fc0bc383ac25fa5931fc5d9077e8.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2127050,
@@ -69626,7 +69758,8 @@
   "name": "ロケット団のデルビル",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916697/2be32cc18597edb7b6c818730b66841f.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2127051,
@@ -69645,7 +69778,8 @@
   "name": "ロケット団のファイヤーex",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916731/4ccb5b7696937bcec2a641b4606225cc.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2127052,
@@ -69664,7 +69798,8 @@
   "name": "ロケット団のブーバー",
   "pack": "ロケット団の野望",
   "image": "https://img.game8.jp/12916696/a55e9c7a61927abf74dcb1544f3527b1.webp/show",
-  "acquire": "パック"
+  "acquire": "パック",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2127053,
@@ -69797,7 +69932,8 @@
   "name": "ロケット団のストライク",
   "image": "https://img.game8.jp/12988080/6427815557ad8eae272462c0b67d498e.webp/show",
   "acquire": "イベント",
-  "howTo": "ロケット団のラプラスドロップイベントで入手可能"
+  "howTo": "ロケット団のラプラスドロップイベントで入手可能",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2154932,
@@ -69816,7 +69952,8 @@
   "name": "ロケット団のラプラス",
   "image": "https://img.game8.jp/12988079/b74123218364d28acd30c4d6b3b7c222.webp/show",
   "acquire": "イベント",
-  "howTo": "ロケット団のラプラスドロップイベントで入手可能"
+  "howTo": "ロケット団のラプラスドロップイベントで入手可能",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2154933,
@@ -69854,7 +69991,8 @@
   "name": "ロケット団のソーナンス",
   "image": "https://img.game8.jp/12988082/e604be311dee6f805a4d85602214a72e.webp/show",
   "acquire": "イベント",
-  "howTo": "ロケット団のラプラスドロップイベントで入手可能"
+  "howTo": "ロケット団のラプラスドロップイベントで入手可能",
+  "group": "ロケット団"
  },
  {
   "g8Id": 2154935,

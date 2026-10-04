@@ -24,6 +24,7 @@ const SUPPLY: Record<string, { give: string; need: string }> = {
   "supply.opp.bench_damage": { give: "相手のベンチにダメージを与える", need: "ダメージを受けた相手のベンチを狙う" },
   "supply.energy.fix": { give: "エネ事故を減らせる", need: "複数タイプのエネが要る" },
   "supply.energy.bank": { give: "場にエネをためられる", need: "場のエネを集められる" },
+  "supply.coin.control": { give: "コインをやり直せる", need: "コインを投げる" },
 };
 // 結びつきの強さ（既定は1）。場にためたエネと集めるカードは、組み合わせ前提の強いシナジー
 const WEIGHT: Record<string, number> = { "supply.energy.bank": 2, "supply.energy.fix": 1.5, "supply.trash.energy": 1.5 };
@@ -71,6 +72,7 @@ export function createSynergy(data: AppData) {
     if (sel.types?.length && !(receiver.type && sel.types.includes(receiver.type))) return false;
     if (sel.stages?.length && !(receiver.stage && sel.stages.includes(receiver.stage))) return false;
     if (sel.groups?.length && !sel.groups.some((g) => receiver.groups.includes(g))) return false;
+    if (sel.kinds?.length && !sel.kinds.includes(receiver.kind === "pokemon" ? "pokemon" : "trainer")) return false;
     if (sel.preHpMax !== undefined && !receiver.evolvesFrom.some((id) => (byId.get(id)?.hp ?? 999) <= sel.preHpMax!)) return false;
     if (sel.etypes?.length) {
       const want = receiver.requires[s]?.etypes;
@@ -159,7 +161,7 @@ export function createSynergy(data: AppData) {
         if (ry.size < 3) continue;
         let n = 0;
         for (const id of rx) if (ry.has(id)) n++;
-        if (n >= 3 && n / Math.min(rx.size, ry.size) >= 0.3) push(y, 1, "同じポケモンを支える");
+        if (n >= 3 && n / Math.min(rx.size, ry.size) >= 0.3) push(y, 0.5, "同じポケモンを支える");
       }
     }
 

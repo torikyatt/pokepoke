@@ -128,6 +128,7 @@ const cards: G8Card[] = cardRows.map((r) => ({
   image: s(r.image_url) || undefined,
   acquire: s(r.col_22) || undefined,
   howTo: s(r.col_56) || undefined,
+  group: s(r.col_35) || undefined,
 }));
 
 const moves: G8Move[] = moveRows.map((r) => ({

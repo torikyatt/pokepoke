@@ -59,6 +59,13 @@ function setJaOf(code: string): string {
   if (g8code.startsWith("PROMO") || !top.length) return g8code.replace("PROMO", "プロモ");
   return top.length > 1 && commonPrefix(top[0], top[1]).length >= 3 ? commonPrefix(top[0], top[1]) : top[0];
 }
+// ベビーポケモン: Game8 の分類「ベビー」か、たね・にげる0・ワザのエネがすべて0のポケモン
+function isBaby(c: Card): boolean {
+  if (c.kind !== "pokemon") return false;
+  if ((g8Match[c.id]?.g8 ?? []).some((id) => g8ById.get(id)?.group === "ベビー")) return true;
+  return c.stage === "basic" && c.retreat === 0 && c.attacks.length > 0 && c.attacks.every((a) => a.costTotal === 0);
+}
+
 function printOf(c: Card, p: Card["prints"][number]): AppPrint {
   const out: AppPrint = { id: p.id, set: p.set, setName: p.setName, rarity: p.rarity };
   const g = (g8Match[c.id]?.g8 ?? []).map((id) => g8ById.get(id)).find((x) => x && x.set === g8SetOf(p.set) && x.number === Number(p.id.split("-").pop()));
@@ -134,6 +141,8 @@ const out: AppCard[] = cards.map((c) => {
     const et = [...ab.matchAll(/\[\s*([GRWLPFDMN])\s*\]/g)].map((m) => CODE[m[1]]);
     supplies["supply.energy.bank"] = [{ etypes: [...new Set(et)] }];
   }
+  // コインを投げるワザ・効果がある → コインをやり直せるカード（ビクティニ・イツキ…）と相性がいい
+  if ([...(ct.ability ?? []), ...ct.attacks.flat(), ...(ct.text ?? [])].some((x) => x.startsWith("coin.") && x !== "coin.control")) requires["supply.coin.control"] = {};
   // カードそのものの性質から決まる要求
   if (c.kind === "pokemon" && (c.retreat ?? 0) >= 3) requires["supply.retreat.help"] = {};
   // ワザに2種類以上のタイプのエネが要る（ドラゴンなど）→ エネ事故を減らすカードと相性がいい
@@ -147,7 +156,7 @@ const out: AppCard[] = cards.map((c) => {
     typeRefs: typeRefs.size >= 5 ? [] : [...typeRefs],
     accelTypes: [...accelTypes],
     rule: c.rule,
-    groups: c.groups,
+    groups: [...c.groups, ...(isBaby(c) ? (["baby"] as const) : [])],
     evolvesFrom: c.evolvesFrom,
     evolvesTo: c.evolvesTo,
     attacks,

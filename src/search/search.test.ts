@@ -101,3 +101,13 @@ describe("その他の検索", () => {
     expect(engine.parse("あいうえお").filter((c) => c.kind !== "text")).toHaveLength(0);
   });
 });
+
+describe("ベビーポケモン", () => {
+  it("ベビー・ベイビー・ベイビィ・ベビィのどれでも引ける", () => {
+    for (const q of ["ベビー", "ベイビー", "ベイビィ", "ベビィポケモン"]) {
+      const hits = engine.search(q);
+      expect(hits.length).toBeGreaterThanOrEqual(14);
+      for (const h of hits) expect(h.card.groups).toContain("baby");
+    }
+  });
+});

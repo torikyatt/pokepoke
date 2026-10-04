@@ -49,6 +49,8 @@ export function selectorOf(supply: string, raw: string, refs: string[]): Selecto
   if (/Ancient Pokémon/.test(t)) groups.push("ancient");
   if (/Future Pokémon/.test(t)) groups.push("future");
   if (groups.length) sel.groups = groups;
+  if (/effect of your Trainer cards/.test(t)) sel.kinds = ["trainer"];
+  else if (/for an attack of/.test(t)) sel.kinds = ["pokemon"];
   if (supply === "supply.trash.energy") {
     const et = [...t.matchAll(/\[([GRWLPFDMCN])\](?! Pokémon)/g)].map((m) => CODE[m[1]]);
     sel.types = undefined;

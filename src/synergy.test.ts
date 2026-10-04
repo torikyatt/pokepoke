@@ -96,3 +96,19 @@ describe("慣れた人の知っているシナジー", () => {
     expect(reasonOf("a1-098", /雷タイプ/).length).toBeGreaterThan(30);
   });
 });
+
+describe("コインをやり直せるカード", () => {
+  it("ビクティニは、コインを投げるワザを持つ炎ポケモンとだけ結ぶ", () => {
+    const ps = reasonOf("pb-049", /コインを投げる/);
+    expect(ps.length).toBeGreaterThan(5);
+    for (const p of ps) {
+      expect(p.card.type).toBe("fire");
+      expect(p.card.attacks.some((a) => a.tags.some((t) => t.startsWith("coin.")))).toBe(true);
+    }
+  });
+  it("サーフゴー（トレーナーズのコイン）は、コインを投げるトレーナーズとだけ結ぶ", () => {
+    const ps = reasonOf("b4a-051", /コインを投げる/);
+    expect(ps.length).toBeGreaterThan(0);
+    for (const p of ps) expect(p.card.kind).not.toBe("pokemon");
+  });
+});

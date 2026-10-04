@@ -11,7 +11,7 @@ const TYPES: EnergyType[] = ["grass", "fire", "water", "lightning", "psychic", "
 const KINDS: CardKind[] = ["pokemon", "supporter", "item", "tool", "stadium", "fossil"];
 const STAGES: Stage[] = ["basic", "stage1", "stage2"];
 const RULES: [Rule, string][] = [["normal", "通常"], ["ex", "ex"], ["mega_ex", "メガシンカex"]];
-const GROUPS: CardGroup[] = ["ultra_beast", "ancient", "future", "team_rocket"];
+const GROUPS: CardGroup[] = ["baby", "ultra_beast", "ancient", "future", "team_rocket"];
 const HP_STEPS = Array.from({ length: 23 }, (_, i) => 30 + i * 10);
 const DMG_STEPS = [30, 50, 70, 90, 100, 120, 150, 180, 200];
 

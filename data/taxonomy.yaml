@@ -648,6 +648,7 @@
         - 'If (both|all) of them are tails, this attack does nothing'
     - id: coin.control
       ja: コインを操作
+      supplies: [supply.coin.control]
       match:
         - 'ignore all results of those coin flips'
         - 'will definitely be heads'

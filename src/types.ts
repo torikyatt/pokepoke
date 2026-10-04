@@ -7,7 +7,7 @@ export type EnergyType =
 export type CardKind = "pokemon" | "item" | "supporter" | "tool" | "fossil" | "stadium";
 export type Stage = "basic" | "stage1" | "stage2";
 export type Rule = "normal" | "ex" | "mega_ex";
-export type CardGroup = "ultra_beast" | "ancient" | "future" | "team_rocket";
+export type CardGroup = "ultra_beast" | "ancient" | "future" | "team_rocket" | "baby";
 export type Slot = "ability" | "attack" | "text";
 
 export interface AppEffect {
@@ -85,6 +85,7 @@ export interface Selector {
   preHpMax?: number; // 進化元のHPがこれ以下
   etypes?: EnergyType[]; // トラッシュに送る・使うエネのタイプ
   repeat?: true; // 毎ターン使える（特性・スタジアム・どうぐ）
+  kinds?: ("pokemon" | "trainer")[]; // ポケモン（のワザ）だけ・トレーナーズだけ
 }
 
 export interface AppTag {
@@ -136,5 +137,5 @@ export const KIND_JA: Record<CardKind, string> = {
 export const STAGE_JA: Record<Stage, string> = { basic: "たね", stage1: "1進化", stage2: "2進化" };
 export const RULE_JA: Record<Rule, string> = { normal: "通常", ex: "ex", mega_ex: "メガシンカex" };
 export const GROUP_JA: Record<CardGroup, string> = {
-  ultra_beast: "ウルトラビースト", ancient: "古代", future: "未来", team_rocket: "ロケット団",
+  ultra_beast: "ウルトラビースト", ancient: "古代", future: "未来", team_rocket: "ロケット団", baby: "ベビー",
 };
