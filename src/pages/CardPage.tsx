@@ -1,42 +1,37 @@
 import { useMemo, useState } from "react";
-import { Chip, Cost, EnergyIcon, Header, PoolCard, Thumb } from "../components/ui.tsx";
-import { useAddToDeck, useData } from "../context.tsx";
+import { Chip, Cost, EnergyIcon, PoolCard, Thumb } from "../components/ui.tsx";
+import { useData } from "../context.tsx";
 import { largeUrl, thumbUrl } from "../data/load.ts";
+import { closeDetail, openCard } from "../detail.ts";
 import { useSettings } from "../store.ts";
-import { useNav } from "../nav.ts";
 import { PrintLine } from "../components/prints.tsx";
-
-/** 詳細を閉じて、今のタブの元の画面に戻る（ブラウザの「戻る」だとタブをまたいでしまう） */
-function closeCard() {
-  const s = useNav.getState();
-  location.hash = s.base[s.active];
-}
 import { navigate, searchPath } from "../router.ts";
 import type { AppAttack, AppCard, AppEffect } from "../types.ts";
 import { GROUP_JA, KIND_JA, RULE_JA, STAGE_JA, TYPE_JA } from "../types.ts";
 
-export function CardPage({ id }: { id: string }) {
+/** カード詳細の中身（スマホは下からのシート、PCは真ん中の列に入れる） */
+export function CardDetail({ id, keepOpen }: { id: string; keepOpen?: boolean }) {
   const { byId, synergy, engine } = useData();
-  const addToDeck = useAddToDeck();
   const card = byId.get(id);
   const partners = useMemo(() => (card ? synergy.partners(card) : []), [card, synergy]);
   const line = useMemo(() => (card && card.kind === "pokemon" ? synergy.evolutionLine(card) : []), [card, synergy]);
   const [hires, setHires] = useState(true);
   const lang = useSettings((s) => s.imageLang);
-  if (!card) return <Header title="カードが見つかりません" back={closeCard} />;
+  if (!card) return <p className="p-6 text-center text-sm font-bold text-muted">カードが見つかりません</p>;
 
+  // 効果のタグを押すと、そのタグで検索する（スマホは詳細を閉じてから）
+  const searchTag = (t: string) => (keepOpen ? navigate(searchPath({ tag: t })) : closeDetail(() => navigate(searchPath({ tag: t }))));
   const tagChip = (t: string) => (
-    <Chip key={t} tone="match" onClick={() => navigate(searchPath({ tag: t }))}>
+    <Chip key={t} tone="match" onClick={() => searchTag(t)}>
       {engine.tagJa.get(t) ?? t}
     </Chip>
   );
 
   return (
-    <div>
-      <Header title={card.nameJa} back={closeCard} />
+    <div className="@container">
       <div className="mx-auto max-w-3xl space-y-5 px-4 py-4">
         <div className="flex gap-4">
-          <div className="w-40 shrink-0 sm:w-56">
+          <div className="w-32 shrink-0 @sm:w-40 @lg:w-56">
             <img
               key={`${card.id}-${lang}`}
               src={hires ? largeUrl(card, lang) : thumbUrl(card, lang)}
@@ -62,7 +57,7 @@ export function CardPage({ id }: { id: string }) {
               ))}
             </div>
             {card.kind === "pokemon" && (
-              <dl className="neu-in grid grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 rounded-2xl p-3 text-xs font-bold">
+              <dl className="neu-in grid grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 rounded-2xl p-3 text-xs font-bold [&_dt]:whitespace-nowrap">
                 <dt className="text-muted">HP</dt>
                 <dd className="font-bold">{card.hp}</dd>
                 <dt className="text-muted">弱点</dt>
@@ -77,9 +72,6 @@ export function CardPage({ id }: { id: string }) {
                 )}
               </dl>
             )}
-            <button type="button" onClick={() => addToDeck(card)} className="btn-ok w-full rounded-full py-2.5 text-sm">
-              デッキに追加
-            </button>
           </div>
         </div>
 
@@ -99,7 +91,7 @@ export function CardPage({ id }: { id: string }) {
                 <div key={i} className="flex items-center gap-2">
                   {i > 0 && <span className="font-extrabold text-muted">→</span>}
                   {group.map((c) => (
-                    <button key={c.id} type="button" onClick={() => navigate(`/card/${c.id}`)} className={`w-16 shrink-0 rounded-md ${c.id === card.id ? "ring-[3px] ring-accent" : ""}`}>
+                    <button key={c.id} type="button" onClick={() => openCard(c.id)} className={`w-16 shrink-0 rounded-md ${c.id === card.id ? "ring-[3px] ring-accent" : ""}`}>
                       <Thumb card={c} />
                     </button>
                   ))}
@@ -115,7 +107,7 @@ export function CardPage({ id }: { id: string }) {
             <div className="scrollbar-none -mx-4 flex gap-2 overflow-x-auto px-4 pb-2">
               {partners.map((p) => (
                 <div key={p.card.id} className="w-24 shrink-0">
-                  <PoolCard card={p.card} onTap={() => navigate(`/card/${p.card.id}`)} onLongPress={() => addToDeck(p.card)} />
+                  <PoolCard card={p.card} onTap={() => openCard(p.card.id)} />
                   <div className="mt-1 text-[10px] leading-tight font-bold text-accent-deep">
                     {p.reasons.slice(0, 2).map((r) => (
                       <div key={r}>{r}</div>

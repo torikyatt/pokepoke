@@ -137,9 +137,9 @@ export function Thumb({ card, className = "" }: { card: AppCard; className?: str
 }
 
 /** 一覧のカード。左下に枚数タブ（アプリと同じ形） */
-export function PoolCard({ card, count, maxed, onTap, onLongPress, compact }: { card: AppCard; count?: number; maxed?: boolean; onTap?: () => void; onLongPress?: () => void; compact?: boolean }) {
+export function PoolCard({ card, count, maxed, onTap, compact }: { card: AppCard; count?: number; maxed?: boolean; onTap?: () => void; compact?: boolean }) {
   return (
-    <Pressable onTap={onTap} onLongPress={onLongPress} label={card.nameJa} className="relative rounded-md shadow-[2px_3px_6px_rgb(150_165_185/0.45)]">
+    <Pressable onTap={onTap} label={card.nameJa} className="relative rounded-md shadow-[2px_3px_6px_rgb(150_165_185/0.45)]">
       <Thumb card={card} className={maxed ? "opacity-45" : ""} />
       {!!count && (
         <span className={`count-tab absolute bottom-0 left-0 flex w-[56%] items-center justify-center font-extrabold ${compact ? "h-[19%] text-sm" : "h-[17%] text-lg"}`}>
@@ -154,7 +154,7 @@ export function Toast() {
   const { message, tone } = useToast();
   if (!message) return null;
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-28 z-[60] flex justify-center px-4">
+    <div className="pointer-events-none fixed inset-x-0 bottom-32 z-[60] flex justify-center px-4">
       <div className={`pop-in rounded-full px-4 py-2 text-sm font-bold shadow-lg ${tone === "error" ? "bg-danger text-white" : "bg-badge text-white"}`}>{message}</div>
     </div>
   );

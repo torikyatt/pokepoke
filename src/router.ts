@@ -1,6 +1,6 @@
 // ハッシュルーター。file:// でも GitHub Pages でも動くよう、URLの # 以降だけで画面を切り替える
 //   #/            検索（?q=…&x=…&tag=…）
-//   #/card/<id>   カード詳細（今のタブの上に重ねて開く）
+//   #/card/<id>   カード詳細を開く（開いたら今のタブのURLに戻す。詳細の履歴は detail.ts）
 //   #/deck        デッキ一覧（#/deck/<id> で確認、#/deck/<id>/edit で編集）
 //   #/share/<code> 共有されたデッキ
 //   #/settings    設定
@@ -31,7 +31,7 @@ export function useRoute() {
 export function navigate(path: string, opts: { replace?: boolean } = {}) {
   const url = `#${path}`;
   if (opts.replace) {
-    history.replaceState(null, "", url);
+    history.replaceState(history.state, "", url); // 詳細シートの履歴はそのまま
     window.dispatchEvent(new HashChangeEvent("hashchange"));
   } else {
     window.location.hash = path;

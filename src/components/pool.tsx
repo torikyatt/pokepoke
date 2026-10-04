@@ -29,14 +29,20 @@ export function usePoolResults(conds: Cond[]) {
   }, [engine, conds, filters, sort, desc, scored]);
 }
 
-/** n/20・列数トグル・虫めがね のバー */
-export function PoolToolbar({ left, searchOpen, onSearch }: { left: ReactNode; searchOpen?: boolean; onSearch?: () => void }) {
+/** n/20・列数トグル・虫めがね（PCでは並べ替え・絞り込みも）のバー */
+export function PoolToolbar({ left, searchOpen, onSearch, filter }: { left: ReactNode; searchOpen?: boolean; onSearch?: () => void; filter?: boolean }) {
   const { columns, setColumns } = usePool();
   return (
     <div className="neu flex items-center gap-3 rounded-2xl px-3 py-2">
       <div className="neu-in flex items-center gap-1.5 rounded-full px-3 py-1 text-[15px] font-extrabold">{left}</div>
       <div className="flex-1" />
       <Toggle on={columns === 5} onChange={(v) => setColumns(v ? 5 : 3)} label={columns === 5 ? "5列" : "3列"} />
+      {filter && (
+        <>
+          <span className="h-8 w-px bg-line" />
+          <FilterButton />
+        </>
+      )}
       {onSearch && (
         <>
           <span className="h-8 w-px bg-line" />
@@ -95,7 +101,7 @@ export function QueryBox({ value, onChange, onSubmit, conds, excluded, onToggle,
 }
 
 /** カードのグリッド。下までスクロールすると続きを出す */
-export function PoolGrid({ hits, counts, maxed, onTap, onLongPress, footer }: { hits: Hit[]; counts?: Map<string, number>; maxed?: (c: AppCard) => boolean; onTap: (c: AppCard) => void; onLongPress?: (c: AppCard) => void; footer?: (h: Hit) => ReactNode }) {
+export function PoolGrid({ hits, counts, maxed, onTap, footer, wide }: { hits: Hit[]; counts?: Map<string, number>; maxed?: (c: AppCard) => boolean; onTap: (c: AppCard) => void; footer?: (h: Hit) => ReactNode; wide?: boolean }) {
   const { columns } = usePool();
   const [shown, setShown] = useState(90);
   const sentinel = useRef<HTMLDivElement>(null);
@@ -109,15 +115,38 @@ export function PoolGrid({ hits, counts, maxed, onTap, onLongPress, footer }: { 
   }, [hits]);
   return (
     <>
-      <div className={`grid ${columns === 5 ? "grid-cols-5 gap-2 sm:grid-cols-7 md:grid-cols-8" : "grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5"}`}>
+      <div
+        className={wide ? `grid ${columns === 5 ? "gap-2" : "gap-3"}` : `grid ${columns === 5 ? "grid-cols-5 gap-2 sm:grid-cols-7 md:grid-cols-8" : "grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5"}`}
+        style={wide ? { gridTemplateColumns: `repeat(auto-fill, minmax(${columns === 5 ? 76 : 116}px, 1fr))` } : undefined}
+      >
         {hits.slice(0, shown).map((h) => (
           <div key={h.card.id}>
-            <PoolCard card={h.card} count={counts?.get(h.card.id)} maxed={maxed?.(h.card)} compact={columns === 5} onTap={() => onTap(h.card)} onLongPress={onLongPress && (() => onLongPress(h.card))} />
+            <PoolCard card={h.card} count={counts?.get(h.card.id)} maxed={maxed?.(h.card)} compact={columns === 5} onTap={() => onTap(h.card)} />
             {footer?.(h)}
           </div>
         ))}
       </div>
       {hits.length > shown && <div ref={sentinel} className="h-10" />}
+    </>
+  );
+}
+
+/** ツールバーに置く並べ替え・絞り込みボタン（PC） */
+function FilterButton() {
+  const { filters, sort } = usePool();
+  const [open, setOpen] = useState(false);
+  const n = activeCount(filters);
+  const label = SORTS.find((s) => s.key === sort)?.label;
+  return (
+    <>
+      <button type="button" onClick={() => setOpen(true)} className="neu-sm neu-press relative flex items-center gap-1.5 rounded-full py-1.5 pr-3 pl-2 text-xs font-extrabold text-[#5aa9d6]">
+        <span className="scale-75">
+          <IconSort />
+        </span>
+        <span className="text-ink">{label}</span>
+        {n > 0 && <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-[11px] text-white">{n}</span>}
+      </button>
+      <SortFilterSheet open={open} onClose={() => setOpen(false)} />
     </>
   );
 }

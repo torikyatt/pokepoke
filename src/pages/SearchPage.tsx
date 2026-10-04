@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { PoolFab, PoolGrid, PoolToolbar, QueryBox, usePoolResults } from "../components/pool.tsx";
 import { Chip } from "../components/ui.tsx";
-import { useAddToDeck, useData } from "../context.tsx";
+import { useData } from "../context.tsx";
+import { openCard } from "../detail.ts";
 import { navigate, searchPath, useRoute } from "../router.ts";
 
 export const EXAMPLES = [
@@ -29,10 +30,10 @@ export function useQueryConds(q: string, excluded: Set<string>, tagParam = "") {
   return { parsed, conds };
 }
 
-export function SearchPage() {
+/** カードの検索。wide は PC の左の列（右下の丸ボタンの代わりにツールバーで絞り込む） */
+export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<string, number> }) {
   const { data, engine } = useData();
   const { params } = useRoute();
-  const addToDeck = useAddToDeck();
   const q = params.get("q") ?? "";
   const tagParam = params.get("tag") ?? "";
   const excluded = new Set(csv(params.get("x")));
@@ -66,6 +67,7 @@ export function SearchPage() {
           onToggle={(id) => go({ x: excluded.has(id) ? [...excluded].filter((x) => x !== id) : [...excluded, id] })}
         />
         <PoolToolbar
+          filter={wide}
           left={
             <>
               <span>{hits.length}</span>
@@ -78,8 +80,8 @@ export function SearchPage() {
       <div className="px-4 pb-6">
         {!q && !tagParam && (
           <div className="mb-3">
-            <h1 className="mb-1 text-lg font-extrabold tracking-wider text-ink">POKÉPOKE LAB</h1>
-            <p className="mb-2 text-xs font-bold text-muted">ふだんの言葉で探せます（長押しでデッキに追加）</p>
+            {!wide && <h1 className="mb-1 text-lg font-extrabold tracking-wider text-ink">POKÉPOKE LAB</h1>}
+            <p className="mb-2 text-xs font-bold text-muted">ふだんの言葉で探せます（カードをタップで詳細・デッキに追加）</p>
             <div className="scrollbar-none -mx-4 flex gap-2 overflow-x-auto px-4 pb-2">
               {EXAMPLES.map((ex) => (
                 <Chip key={ex} onClick={() => go({ q: ex }, false)}>
@@ -89,11 +91,12 @@ export function SearchPage() {
             </div>
           </div>
         )}
-        {q && hits.length === 0 && <p className="py-8 text-center text-sm font-bold text-muted">見つかりませんでした。条件をタップして外すか、右下のボタンで絞り込みをゆるめてください。</p>}
+        {q && hits.length === 0 && <p className="py-8 text-center text-sm font-bold text-muted">見つかりませんでした。条件をタップして外すか、絞り込みをゆるめてください。</p>}
         <PoolGrid
           hits={hits}
-          onTap={(c) => navigate(`/card/${c.id}`)}
-          onLongPress={addToDeck}
+          wide={wide}
+          counts={counts}
+          onTap={(c) => openCard(c.id)}
           footer={(h) =>
             scored && (
               <div className="mt-1 space-y-0.5 text-[10px] leading-tight font-bold text-muted">
@@ -112,7 +115,7 @@ export function SearchPage() {
           データ {data.cards.length} 種 ・ {new Date(data.builtAt).toLocaleDateString("ja-JP")} 時点
         </p>
       </div>
-      <PoolFab />
+      {!wide && <PoolFab />}
     </div>
   );
 }

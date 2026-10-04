@@ -1,11 +1,12 @@
-import { lazy, StrictMode, Suspense, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { lazy, StrictMode, Suspense, useEffect, useLayoutEffect, useState, useSyncExternalStore } from "react";
 import { createRoot } from "react-dom/client";
 import { BottomNav, Toast } from "./components/ui.tsx";
 import { DataContext, type Ctx } from "./context.tsx";
 import { loadData } from "./data/load.ts";
 import "./index.css";
 import { parseHash, scrollPos, useNav, type Tab } from "./nav.ts";
-import { CardPage } from "./pages/CardPage.tsx";
+import { DetailDock, DetailSheet } from "./components/detail.tsx";
+import { Desktop } from "./pages/Desktop.tsx";
 import { DeckBuilderPage, DeckListPage, DeckViewPage, SharePage } from "./pages/DeckPage.tsx";
 import { SearchPage } from "./pages/SearchPage.tsx";
 import { SettingsPage } from "./pages/SettingsPage.tsx";
@@ -48,24 +49,21 @@ function Routes() {
   }
 }
 
-/** カード詳細は、今のタブの画面の上に重ねて開く（閉じると一覧が元の位置のまま残る） */
-function CardOverlay({ id }: { id: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  useLayoutEffect(() => ref.current?.scrollTo(0, 0), [id]);
-  return (
-    <RouteContext.Provider value={`#/card/${id}`}>
-      <div ref={ref} className="fixed inset-0 z-[45] overflow-y-auto overscroll-contain bg-canvas pb-24">
-        <div className="mx-auto max-w-5xl">
-          <CardPage id={id} />
-        </div>
-      </div>
-    </RouteContext.Provider>
+// PCは横幅1024px以上（一覧・詳細・デッキを横に並べる）
+const wideQuery = window.matchMedia("(min-width: 1024px)");
+function useIsDesktop() {
+  return useSyncExternalStore(
+    (cb) => {
+      wideQuery.addEventListener("change", cb);
+      return () => wideQuery.removeEventListener("change", cb);
+    },
+    () => wideQuery.matches,
   );
 }
 
 function Shell() {
   const hash = useHash();
-  const { active, base, card, visited, sync } = useNav();
+  const { active, base, visited, sync } = useNav();
   useLayoutEffect(() => sync(hash), [hash]);
 
   // タブを切り替えたら、そのタブのスクロール位置に戻す
@@ -74,18 +72,12 @@ function Shell() {
   }, [active, base[active]]);
   useEffect(() => {
     const onScroll = () => {
-      const s = useNav.getState();
-      if (!s.card[s.active]) scrollPos[s.active] = window.scrollY;
+      // 詳細をいっぱいに開いている間は後ろを固定しているので、位置を覚え直さない
+      if (document.documentElement.style.overflow !== "hidden") scrollPos[useNav.getState().active] = window.scrollY;
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-  // 詳細を開いている間は、下の一覧がスクロールしないようにする
-  const overlay = card[active];
-  useEffect(() => {
-    document.documentElement.style.overflow = overlay ? "hidden" : "";
-  }, [overlay]);
-
   const building = active === "deck" && parseHash(base.deck).parts[2] === "edit";
   return (
     <>
@@ -96,11 +88,16 @@ function Shell() {
           </main>
         </RouteContext.Provider>
       ))}
-      {overlay && <CardOverlay id={overlay} />}
+      <DetailDock bottom={building ? "0px" : "calc(3.65rem + env(safe-area-inset-bottom))"} />
+      <DetailSheet />
       <Toast />
-      {!(building && !overlay) && <BottomNav />}
+      {!building && <BottomNav />}
     </>
   );
+}
+
+function Layout() {
+  return useIsDesktop() ? <Desktop /> : <Shell />;
 }
 
 function App() {
@@ -132,7 +129,7 @@ function App() {
     );
   return (
     <DataContext.Provider value={ctx}>
-      <Shell />
+      <Layout />
     </DataContext.Provider>
   );
 }

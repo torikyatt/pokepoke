@@ -5,12 +5,12 @@ import { navigate } from "../router.ts";
 import { useSettings } from "../store.ts";
 import { Chip } from "../components/ui.tsx";
 
-export function SettingsPage() {
+export function SettingsPage({ embedded }: { embedded?: boolean }) {
   const { data } = useData();
   const { imageLang, setImageLang } = useSettings();
   return (
     <div>
-      <Header title="設定" />
+      {!embedded && <Header title="設定" />}
       <div className="mx-auto max-w-3xl space-y-4 px-4 pb-6 text-sm">
         <section className="neu space-y-2 rounded-3xl p-4">
           <h2 className="font-extrabold">カード画像</h2>

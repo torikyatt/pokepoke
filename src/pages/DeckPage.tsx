@@ -7,16 +7,18 @@ import { thumbUrl } from "../data/load.ts";
 import { useSettings } from "../store.ts";
 import { canAdd, checkDeck, DECK_SIZE, decodeShare, download, encodeShare, fromFile, guessEnergy, MAX_ENERGY, MAX_SAME_NAME, toFile } from "../deck.ts";
 import { navigate } from "../router.ts";
+import { openCard } from "../detail.ts";
+import { useNav } from "../nav.ts";
 import { useDecks, useToast, type Deck } from "../store.ts";
 import type { AppCard, EnergyType } from "../types.ts";
 import { TYPE_JA } from "../types.ts";
 import { useQueryConds } from "./SearchPage.tsx";
 import { mainPrint, packLabel, PrintLine, SetBadge, useMultiPackSets } from "../components/prints.tsx";
 
-const ZONE_TYPES: EnergyType[] = ["grass", "fire", "water", "lightning", "psychic", "fighting", "darkness", "metal"];
+export const ZONE_TYPES: EnergyType[] = ["grass", "fire", "water", "lightning", "psychic", "fighting", "darkness", "metal"];
 
 /** デッキ内の並び（図鑑順＝アプリと同じ） */
-function deckCards(deck: Pick<Deck, "cards">, byId: Map<string, AppCard>): AppCard[] {
+export function deckCards(deck: Pick<Deck, "cards">, byId: Map<string, AppCard>): AppCard[] {
   return deck.cards
     .map((id) => byId.get(id))
     .filter((c): c is AppCard => !!c)
@@ -134,7 +136,7 @@ export function DeckBuilderPage({ id }: { id: string }) {
           <div className="grid grid-cols-10 gap-1.5" style={{ width: `${(1000 / SLOT_VISIBLE[slotSize]).toFixed(2)}%` }}>
             {Array.from({ length: DECK_SIZE }, (_, i) => cards[i]).map((c, i) =>
               c ? (
-                <Pressable key={`${c.id}-${i}`} onTap={() => removeCard(deck.id, c.id)} onLongPress={() => navigate(`/card/${c.id}`)} label={`${c.nameJa}を外す`} className="pop-in snap-start rounded-[4px] shadow-[1px_2px_3px_rgb(150_165_185/0.5)]">
+                <Pressable key={`${c.id}-${i}`} onTap={() => openCard(c.id)} label={c.nameJa} className="pop-in snap-start rounded-[4px] shadow-[1px_2px_3px_rgb(150_165_185/0.5)]">
                   <Thumb card={c} className="rounded-[4px]" />
                 </Pressable>
               ) : (
@@ -196,47 +198,41 @@ export function DeckBuilderPage({ id }: { id: string }) {
       </div>
 
       <div className="px-4">
-        <p className="mb-2 text-center text-[11px] font-bold text-muted">タップで追加 ・ 長押しで詳細 ・ 上の枠をタップで外す</p>
+        <p className="mb-2 text-center text-[11px] font-bold text-muted">カードをタップ → 詳細の「＋ デッキに追加」「−」で出し入れ</p>
         <PoolGrid
           hits={hits}
           counts={counts}
           maxed={(c) => full || (nameCounts.get(c.nameEn) ?? 0) >= MAX_SAME_NAME}
-          onTap={(c) => {
-            const err = canAdd(deck, c, byId);
-            if (err) show(err, "error");
-            else add(deck.id, c.id);
-          }}
-          onLongPress={(c) => navigate(`/card/${c.id}`)}
+          onTap={(c) => openCard(c.id)}
         />
       </div>
 
-      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center px-4 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
-        <button type="button" onClick={() => navigate(`/deck/${deck.id}`, { replace: true })} className="btn-ok pointer-events-auto h-16 w-[62%] max-w-sm rounded-full text-2xl">
-          OK
-        </button>
-      </div>
+      <button
+        type="button"
+        onClick={() => navigate(`/deck/${deck.id}`, { replace: true })}
+        aria-label="編集を終える"
+        title="編集を終える"
+        className="btn-ok fixed left-4 z-40 flex h-14 w-14 items-center justify-center rounded-full"
+        style={{ bottom: "max(1.25rem, env(safe-area-inset-bottom))" }}
+      >
+        <svg viewBox="0 0 24 24" className="h-8 w-8 fill-none stroke-white stroke-[3]" aria-hidden>
+          <path d="m5 12.5 4.5 4.5L19 7.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
       <PoolFab bottom="bottom-5" />
     </div>
   );
 }
 
-// ---------------- 確認・書き出し ----------------
-
-export function DeckViewPage({ id }: { id: string }) {
+/** デッキを画像・共有URLで書き出す（デッキ確認画面とPCのデッキ列で共通） */
+export function useDeckExport(deck: Deck | undefined) {
   const { byId } = useData();
-  const deck = useDecks((s) => s.decks.find((d) => d.id === id));
-  const { update, remove, create } = useDecks();
   const show = useToast((s) => s.show);
   const imageRef = useRef<HTMLDivElement>(null);
   const [exporting, setExporting] = useState(false);
   const lang = useSettings((s) => s.imageLang);
-  const { deckView, setDeckView } = useSettings();
-  if (!deck) return <Header title="デッキが見つかりません" back={() => navigate("/deck")} />;
-  const cards = deckCards(deck, byId);
-  const check = checkDeck(deck, byId);
-
   const savePng = async () => {
-    if (!imageRef.current) return;
+    if (!deck || !imageRef.current) return;
     setExporting(true);
     try {
       // オンラインなら高解像度画像、取れなければサムネイルで書き出す（SPEC 5.3）
@@ -274,6 +270,7 @@ export function DeckViewPage({ id }: { id: string }) {
   };
 
   const share = async () => {
+    if (!deck) return;
     const url = `${location.href.split("#")[0]}#/share/${encodeShare(deck)}`;
     try {
       if (navigator.share) await navigator.share({ title: deck.name, url });
@@ -285,6 +282,27 @@ export function DeckViewPage({ id }: { id: string }) {
       prompt("このURLをコピーしてください", url);
     }
   };
+
+  const image = deck && (
+    <div style={{ position: "fixed", left: -10000, top: 0 }} aria-hidden>
+      <DeckImage ref={imageRef} deck={deck} cards={deckCards(deck, byId)} />
+    </div>
+  );
+  return { savePng, share, exporting, image };
+}
+
+// ---------------- 確認・書き出し ----------------
+
+export function DeckViewPage({ id }: { id: string }) {
+  const { byId } = useData();
+  const deck = useDecks((s) => s.decks.find((d) => d.id === id));
+  const { update, remove, create } = useDecks();
+  const show = useToast((s) => s.show);
+  const { deckView, setDeckView } = useSettings();
+  const { savePng, share, exporting, image } = useDeckExport(deck);
+  if (!deck) return <Header title="デッキが見つかりません" back={() => navigate("/deck")} />;
+  const cards = deckCards(deck, byId);
+  const check = checkDeck(deck, byId);
 
   const btn = "neu neu-press rounded-2xl py-3 text-sm font-extrabold disabled:opacity-40";
   return (
@@ -318,7 +336,7 @@ export function DeckViewPage({ id }: { id: string }) {
             <div className="grid grid-cols-5 gap-2">
               {Array.from({ length: DECK_SIZE }, (_, i) => cards[i]).map((c, i) =>
                 c ? (
-                  <Pressable key={i} onTap={() => navigate(`/card/${c.id}`)} label={c.nameJa} className="rounded-md shadow-[1px_2px_4px_rgb(150_165_185/0.5)]">
+                  <Pressable key={i} onTap={() => openCard(c.id)} label={c.nameJa} className="rounded-md shadow-[1px_2px_4px_rgb(150_165_185/0.5)]">
                     <Thumb card={c} />
                   </Pressable>
                 ) : (
@@ -333,34 +351,7 @@ export function DeckViewPage({ id }: { id: string }) {
           デッキを編集
         </button>
 
-        <div className="neu rounded-3xl p-4">
-          <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-sm font-extrabold text-muted">エネルギー（{MAX_ENERGY}タイプまで）</h2>
-            <button type="button" className="text-xs font-bold text-accent-deep" onClick={() => update(deck.id, { energy: guessEnergy(deck, byId) })}>
-              デッキから自動設定
-            </button>
-          </div>
-          <div className="flex flex-wrap justify-between gap-1">
-            {ZONE_TYPES.map((t) => {
-              const on = deck.energy.includes(t);
-              return (
-                <button
-                  key={t}
-                  type="button"
-                  aria-pressed={on}
-                  onClick={() => {
-                    if (on) update(deck.id, { energy: deck.energy.filter((x) => x !== t) });
-                    else if (deck.energy.length < MAX_ENERGY) update(deck.id, { energy: [...deck.energy, t] });
-                    else show(`エネルギーは${MAX_ENERGY}タイプまで`, "error");
-                  }}
-                  className={`rounded-full p-1 transition ${on ? "ring-[3px] ring-accent" : "opacity-40"}`}
-                >
-                  <EnergyIcon type={t} size="xl" />
-                </button>
-              );
-            })}
-          </div>
-        </div>
+        <EnergyZone deck={deck} />
 
         <div className={`rounded-2xl p-4 text-sm font-bold ${check.ok ? "bg-[#dff4f1] text-accent-deep" : "bg-[#fdf1d8] text-[#8a5c0c]"}`}>
           {check.ok ? "✓ このデッキでバトルできます" : check.problems.map((p) => <div key={p}>・{p}</div>)}
@@ -411,15 +402,50 @@ export function DeckViewPage({ id }: { id: string }) {
         </div>
       </div>
 
-      <div style={{ position: "fixed", left: -10000, top: 0 }} aria-hidden>
-        <DeckImage ref={imageRef} deck={deck} cards={cards} />
+      {image}
+    </div>
+  );
+}
+
+/** エネルギーゾーン（最大3タイプ） */
+export function EnergyZone({ deck }: { deck: Deck }) {
+  const { byId } = useData();
+  const { update } = useDecks();
+  const show = useToast((s) => s.show);
+  return (
+    <div className="neu rounded-3xl p-4">
+      <div className="mb-3 flex items-center justify-between">
+        <h2 className="text-sm font-extrabold text-muted">エネルギー（{MAX_ENERGY}タイプまで）</h2>
+        <button type="button" className="text-xs font-bold text-accent-deep" onClick={() => update(deck.id, { energy: guessEnergy(deck, byId) })}>
+          デッキから自動設定
+        </button>
+      </div>
+      <div className="flex flex-wrap justify-between gap-1">
+        {ZONE_TYPES.map((t) => {
+          const on = deck.energy.includes(t);
+          return (
+            <button
+              key={t}
+              type="button"
+              aria-pressed={on}
+              onClick={() => {
+                if (on) update(deck.id, { energy: deck.energy.filter((x) => x !== t) });
+                else if (deck.energy.length < MAX_ENERGY) update(deck.id, { energy: [...deck.energy, t] });
+                else show(`エネルギーは${MAX_ENERGY}タイプまで`, "error");
+              }}
+              className={`rounded-full p-1 transition ${on ? "ring-[3px] ring-accent" : "opacity-40"}`}
+            >
+              <EnergyIcon type={t} size="xl" />
+            </button>
+          );
+        })}
       </div>
     </div>
   );
 }
 
 /** 縦の一覧: 小さなサムネ・カード名・枚数・収録パック。上にパックごとの枚数をまとめる */
-function DeckList({ cards }: { cards: AppCard[] }) {
+export function DeckList({ cards }: { cards: AppCard[] }) {
   const { data } = useData();
   const multi = useMultiPackSets();
   const rows = [...new Map(cards.map((c) => [c.id, c])).values()].map((c) => ({ card: c, count: cards.filter((x) => x.id === c.id).length, main: mainPrint(c) }));
@@ -453,7 +479,7 @@ function DeckList({ cards }: { cards: AppCard[] }) {
           const others = [...new Set(card.prints.filter((p) => p !== main).map((p) => packLabel(p, data.sets, multi)))].filter((l) => l !== packLabel(main, data.sets, multi));
           return (
             <li key={card.id}>
-              <Pressable onTap={() => navigate(`/card/${card.id}`)} label={card.nameJa} className="flex items-center gap-3 py-2 text-left">
+              <Pressable onTap={() => openCard(card.id)} label={card.nameJa} className="flex items-center gap-3 py-2 text-left">
                 <div className="w-10 shrink-0">
                   <Thumb card={card} className="rounded-[4px]" />
                 </div>
@@ -501,7 +527,7 @@ function DeckImage({ deck, cards, ref }: { deck: Deck; cards: AppCard[]; ref: Re
 
 // ---------------- 共有URLから ----------------
 
-export function SharePage({ code }: { code: string }) {
+export function SharePage({ code, embedded }: { code: string; embedded?: boolean }) {
   const { byId } = useData();
   const importDecks = useDecks((s) => s.importDecks);
   const show = useToast((s) => s.show);
@@ -516,7 +542,7 @@ export function SharePage({ code }: { code: string }) {
   const check = checkDeck(shared, byId);
   return (
     <div>
-      <Header title={`共有デッキ: ${shared.name}`} />
+      {embedded ? <h3 className="px-4 pb-3 text-base font-extrabold">{shared.name}</h3> : <Header title={`共有デッキ: ${shared.name}`} />}
       <div className="mx-auto max-w-3xl space-y-4 px-4 pb-8">
         <div className="flex items-center gap-2">
           {shared.energy.map((t) => (
@@ -527,7 +553,7 @@ export function SharePage({ code }: { code: string }) {
         {!check.ok && <div className="text-xs font-bold text-[#8a5c0c]">{check.problems.join(" / ")}</div>}
         <div className="neu grid grid-cols-5 gap-2 rounded-3xl p-3">
           {cards.map((c, i) => (
-            <Pressable key={i} onTap={() => navigate(`/card/${c.id}`)} label={c.nameJa}>
+            <Pressable key={i} onTap={() => openCard(c.id)} label={c.nameJa}>
               <Thumb card={c} />
             </Pressable>
           ))}
@@ -538,7 +564,7 @@ export function SharePage({ code }: { code: string }) {
           onClick={() => {
             importDecks([{ name: shared!.name, energy: shared!.energy, cards: shared!.cards.filter((cid) => byId.has(cid)) }]);
             show("マイデッキに保存しました");
-            navigate("/deck");
+            navigate(embedded ? useNav.getState().base.search.slice(1) : "/deck");
           }}
         >
           マイデッキに保存
