@@ -125,6 +125,7 @@ const cards: G8Card[] = cardRows.map((r) => ({
   name: s(r.col_20),
   text: s(r.col_17) || undefined,
   pack: s(r.col_23) || undefined,
+  image: s(r.image_url) || undefined,
 }));
 
 const moves: G8Move[] = moveRows.map((r) => ({

@@ -3,6 +3,7 @@
 // 出力: src/data/app-data.json（生成物。コミットしない）
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { jaImageIndex } from "./lib/game8.ts";
 import { loadTaxonomy } from "./lib/taxonomy.ts";
 import type { Card, Effect } from "./lib/types.ts";
 import type { AppAttack, AppCard, AppData, AppEffect, AppSet, EnergyType, LexEntry, Slot } from "../src/types.ts";
@@ -23,6 +24,7 @@ const CODE: Record<string, EnergyType> = {
   G: "grass", R: "fire", W: "water", L: "lightning", P: "psychic", F: "fighting", D: "darkness", M: "metal",
 };
 const byId = new Map(cards.map((c) => [c.id, c]));
+const jaImageOf = jaImageIndex(DATA);
 
 function effect(e: Effect, slot: Slot, t: string[] | undefined): AppEffect {
   const out: AppEffect = { slot, tags: t ?? [] };
@@ -76,6 +78,8 @@ const out: AppCard[] = cards.map((c) => {
     attacks,
     prints: c.prints.map((p) => ({ id: p.id, set: p.set, setName: p.setName, rarity: p.rarity })),
     image: c.prints[0].image,
+    ...(jaImageOf(c) ? { imageJa: jaImageOf(c) } : {}),
+    ...(existsSync(join(ROOT, "public/thumbs-ja", `${c.id}.webp`)) ? { jaThumb: true as const } : {}),
     order: Math.min(...c.prints.map((p) => p.builderNr ?? 99999)),
     released: c.prints.map((p) => p.released ?? "9999").sort()[0],
     rarities: [...new Set(c.prints.map((p) => p.rarity))],

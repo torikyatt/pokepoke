@@ -58,7 +58,9 @@ export interface AppCard {
   attacks: AppAttack[];
   text?: AppEffect;
   prints: AppPrint[];
-  image: string;
+  image: string; // 高解像度画像（英語・PocketDecks。オンライン時）
+  imageJa?: string; // 日本語の画像（Game8。オンライン時）
+  jaThumb?: true; // 日本語のサムネイル（public/thumbs-ja/）がある
   order: number; // アプリのデッキ編集画面と同じ並び（図鑑順）
   released: string; // 最初の収録の発売日
   rarities: string[]; // 収録されているレアリティ（◊ ◊◊ … ☆ … Crown Rare, Promo）

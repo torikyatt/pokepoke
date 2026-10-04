@@ -1,7 +1,15 @@
 import { useMemo, useState } from "react";
 import { Chip, Cost, EnergyIcon, Header, PoolCard, Thumb } from "../components/ui.tsx";
 import { useAddToDeck, useData } from "../context.tsx";
-import { thumbUrl } from "../data/load.ts";
+import { largeUrl, thumbUrl } from "../data/load.ts";
+import { useSettings } from "../store.ts";
+import { useNav } from "../nav.ts";
+
+/** 詳細を閉じて、今のタブの元の画面に戻る（ブラウザの「戻る」だとタブをまたいでしまう） */
+function closeCard() {
+  const s = useNav.getState();
+  location.hash = s.base[s.active];
+}
 import { navigate, searchPath } from "../router.ts";
 import type { AppAttack, AppCard, AppEffect } from "../types.ts";
 import { GROUP_JA, KIND_JA, RULE_JA, STAGE_JA, TYPE_JA } from "../types.ts";
@@ -13,7 +21,8 @@ export function CardPage({ id }: { id: string }) {
   const partners = useMemo(() => (card ? synergy.partners(card) : []), [card, synergy]);
   const line = useMemo(() => (card && card.kind === "pokemon" ? synergy.evolutionLine(card) : []), [card, synergy]);
   const [hires, setHires] = useState(true);
-  if (!card) return <Header title="カードが見つかりません" back />;
+  const lang = useSettings((s) => s.imageLang);
+  if (!card) return <Header title="カードが見つかりません" back={closeCard} />;
 
   const tagChip = (t: string) => (
     <Chip key={t} tone="match" onClick={() => navigate(searchPath({ tag: t }))}>
@@ -23,12 +32,13 @@ export function CardPage({ id }: { id: string }) {
 
   return (
     <div>
-      <Header title={card.nameJa} back />
+      <Header title={card.nameJa} back={closeCard} />
       <div className="mx-auto max-w-3xl space-y-5 px-4 py-4">
         <div className="flex gap-4">
           <div className="w-40 shrink-0 sm:w-56">
             <img
-              src={hires ? card.image : thumbUrl(card)}
+              key={`${card.id}-${lang}`}
+              src={hires ? largeUrl(card, lang) : thumbUrl(card, lang)}
               onError={() => setHires(false)}
               alt={card.nameJa}
               className="aspect-[367/512] w-full rounded-xl bg-line object-cover shadow-[3px_5px_12px_rgb(150_165_185/0.55)]"

@@ -3,15 +3,30 @@ import { useData } from "../context.tsx";
 import { isSingleFile } from "../data/load.ts";
 import { download } from "../deck.ts";
 import { navigate } from "../router.ts";
-import { useMisses } from "../store.ts";
+import { useMisses, useSettings } from "../store.ts";
+import { Chip } from "../components/ui.tsx";
 
 export function SettingsPage() {
   const { data } = useData();
   const { misses, clear } = useMisses();
+  const { imageLang, setImageLang } = useSettings();
   return (
     <div>
       <Header title="設定" />
       <div className="mx-auto max-w-3xl space-y-4 px-4 pb-6 text-sm">
+        <section className="neu space-y-2 rounded-3xl p-4">
+          <h2 className="font-extrabold">カード画像</h2>
+          <div className="flex gap-2">
+            <Chip active={imageLang === "ja"} onClick={() => setImageLang("ja")}>
+              日本語
+            </Chip>
+            <Chip active={imageLang === "en"} onClick={() => setImageLang("en")}>
+              英語
+            </Chip>
+          </div>
+          <p className="text-xs text-muted">日本語の画像が無いカードは英語で表示します。{isSingleFile && "オフライン版で英語を選ぶと、ネットにつながっているときだけ英語の画像を読み込みます。"}</p>
+        </section>
+
         <section className="neu space-y-2 rounded-3xl p-4">
           <h2 className="font-extrabold">ミスログ</h2>
           <p className="text-xs text-muted">条件が何も見つからなかった検索文です。書き出したファイルを Claude Code に渡すと、表現辞書に言い回しを追加できます。</p>
@@ -75,7 +90,7 @@ export function SettingsPage() {
           <h2 className="text-sm font-extrabold text-ink">このサイトについて</h2>
           <p>個人用の非公式ツールです。ポケモン・ポケモンカードゲーム Pocket は任天堂・クリーチャーズ・ゲームフリーク・株式会社ポケモンの商標です。</p>
           <p>
-            カードデータ: <a className="underline" href="https://github.com/PocketDecks/pokemon-tcg-pocket-cards">PocketDecks/pokemon-tcg-pocket-cards</a>（AGPL-3.0）。日本語のカード文は Game8 掲載の表記、ポケモン名は PokéAPI を参照。「仮訳」の付いた文は機械翻訳です。
+            カードデータ: <a className="underline" href="https://github.com/PocketDecks/pokemon-tcg-pocket-cards">PocketDecks/pokemon-tcg-pocket-cards</a>（AGPL-3.0）。日本語のカード文と日本語のカード画像は Game8 掲載のもの、ポケモン名は PokéAPI を参照。「仮訳」の付いた文は機械翻訳です。
           </p>
           <p>
             ソースコード: <a className="underline" href="https://github.com/torikyatt/pokepoke">github.com/torikyatt/pokepoke</a>（AGPL-3.0）

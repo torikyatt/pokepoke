@@ -1,7 +1,7 @@
 import { useRef, type ReactNode } from "react";
-import { thumbUrl } from "../data/load.ts";
-import { navigate, useRoute } from "../router.ts";
-import { useToast } from "../store.ts";
+import { thumbUrls } from "../data/load.ts";
+import { useNav, type Tab } from "../nav.ts";
+import { useSettings, useToast } from "../store.ts";
 import type { AppCard, EnergyType } from "../types.ts";
 import { TYPE_JA } from "../types.ts";
 
@@ -112,9 +112,12 @@ export function Pressable({ onTap, onLongPress, children, className = "", label 
 }
 
 export function Thumb({ card, className = "" }: { card: AppCard; className?: string }) {
+  const lang = useSettings((s) => s.imageLang);
+  const urls = thumbUrls(card, lang);
   return (
     <img
-      src={thumbUrl(card)}
+      key={`${card.id}-${lang}`}
+      src={urls[0]}
       alt={card.nameJa}
       loading="lazy"
       decoding="async"
@@ -123,8 +126,11 @@ export function Thumb({ card, className = "" }: { card: AppCard; className?: str
       height={223}
       className={`aspect-[367/512] w-full rounded-md bg-line object-cover ${className}`}
       onError={(e) => {
+        // 読めなければ次の候補（日本語 → 英語、オンライン画像 → 埋め込み）
         const img = e.currentTarget;
-        if (img.src !== card.image) img.src = card.image;
+        const i = Number(img.dataset.try ?? 0) + 1;
+        img.dataset.try = String(i);
+        if (urls[i]) img.src = urls[i];
       }}
     />
   );
@@ -155,16 +161,15 @@ export function Toast() {
 }
 
 export function BottomNav() {
-  const { parts } = useRoute();
-  const tab = parts[0] === "deck" || parts[0] === "share" ? "deck" : parts[0] === "settings" ? "settings" : "search";
-  const item = (key: string, label: string, path: string, icon: ReactNode) => (
-    <button type="button" onClick={() => navigate(path)} className={`flex flex-1 flex-col items-center gap-0.5 py-2 text-[11px] font-bold ${tab === key ? "text-accent" : "text-muted"}`}>
+  const { active: tab, goTab } = useNav();
+  const item = (key: Tab, label: string, _path: string, icon: ReactNode) => (
+    <button type="button" onClick={() => goTab(key)} aria-current={tab === key ? "page" : undefined} className={`flex flex-1 flex-col items-center gap-0.5 py-2 text-[11px] font-bold ${tab === key ? "text-accent" : "text-muted"}`}>
       {icon}
       {label}
     </button>
   );
   return (
-    <nav className="neu fixed inset-x-0 bottom-0 z-40 rounded-t-3xl pb-[env(safe-area-inset-bottom)]">
+    <nav className="neu fixed inset-x-0 bottom-0 z-[46] rounded-t-3xl pb-[env(safe-area-inset-bottom)]">
       <div className="mx-auto flex max-w-3xl">
         {item("search", "カード", "/", <IconSearch />)}
         {item("deck", "デッキ", "/deck", <IconDeck />)}

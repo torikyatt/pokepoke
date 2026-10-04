@@ -113,6 +113,21 @@ export const useMisses = create<MissState>()(
   ),
 );
 
+// 設定
+interface SettingsState {
+  imageLang: "ja" | "en"; // カード画像の言語
+  setImageLang: (l: "ja" | "en") => void;
+}
+export const useSettings = create<SettingsState>()(
+  persist(
+    (set) => ({
+      imageLang: "ja",
+      setImageLang: (imageLang) => set({ imageLang }),
+    }),
+    { name: "pokepoke.settings", storage: createJSONStorage(() => safeStorage), version: 1 },
+  ),
+);
+
 // 一時メッセージ
 interface ToastState {
   message?: string;

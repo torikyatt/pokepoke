@@ -2,7 +2,7 @@
 // ビルドは2種類:
 //   vite build                 → dist/        Web版（GitHub Pages）。サムネイルは dist/thumbs/ のファイル
 //   vite build --mode single   → dist-single/ 単一HTML版。JS・CSS・データ・サムネイルをすべて1ファイルに埋め込む
-import { readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { gzipSync } from "node:zlib";
 import tailwindcss from "@tailwindcss/vite";
@@ -24,9 +24,12 @@ function embeddedData(single: boolean): Plugin {
       }
       if (id === "\0virtual:thumbs") {
         if (!single) return "export default null;";
-        const dir = "public/thumbs";
+        // 日本語のサムネイルを埋め込む（日本語が無いカードは英語）
         const map: Record<string, string> = {};
-        for (const f of readdirSync(dir)) if (f.endsWith(".webp")) map[f.slice(0, -5)] = readFileSync(join(dir, f)).toString("base64");
+        for (const dir of ["public/thumbs", "public/thumbs-ja"]) {
+          if (!existsSync(dir)) continue;
+          for (const f of readdirSync(dir)) if (f.endsWith(".webp")) map[f.slice(0, -5)] = readFileSync(join(dir, f)).toString("base64");
+        }
         return `export default ${JSON.stringify(map)};`;
       }
     },

@@ -96,7 +96,7 @@ export function QueryBox({ value, onChange, onSubmit, conds, excluded, onToggle,
 
 /** カードのグリッド。下までスクロールすると続きを出す */
 export function PoolGrid({ hits, counts, maxed, onTap, onLongPress, footer }: { hits: Hit[]; counts?: Map<string, number>; maxed?: (c: AppCard) => boolean; onTap: (c: AppCard) => void; onLongPress?: (c: AppCard) => void; footer?: (h: Hit) => ReactNode }) {
-  const columns = usePool((s) => s.columns);
+  const { columns } = usePool();
   const [shown, setShown] = useState(90);
   const sentinel = useRef<HTMLDivElement>(null);
   useEffect(() => setShown(90), [hits]);

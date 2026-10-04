@@ -4,6 +4,7 @@ import { PoolFab, PoolGrid, PoolToolbar, QueryBox, usePoolResults } from "../com
 import { EnergyIcon, Header, IconDeck, Pressable, Thumb } from "../components/ui.tsx";
 import { useData } from "../context.tsx";
 import { thumbUrl } from "../data/load.ts";
+import { useSettings } from "../store.ts";
 import { canAdd, checkDeck, DECK_SIZE, decodeShare, download, encodeShare, fromFile, guessEnergy, MAX_ENERGY, MAX_SAME_NAME, toFile } from "../deck.ts";
 import { navigate } from "../router.ts";
 import { useDecks, useMisses, useToast, type Deck } from "../store.ts";
@@ -214,6 +215,7 @@ export function DeckViewPage({ id }: { id: string }) {
   const show = useToast((s) => s.show);
   const imageRef = useRef<HTMLDivElement>(null);
   const [exporting, setExporting] = useState(false);
+  const lang = useSettings((s) => s.imageLang);
   if (!deck) return <Header title="デッキが見つかりません" back={() => navigate("/deck")} />;
   const cards = deckCards(deck, byId);
   const check = checkDeck(deck, byId);
@@ -233,11 +235,12 @@ export function DeckViewPage({ id }: { id: string }) {
                 img.onerror = () => res();
                 img.onload = () => res();
                 img.removeAttribute("crossorigin");
-                img.src = thumbUrl(card);
+                img.src = thumbUrl(card, lang);
               };
               img.onload = () => res();
               img.onerror = fallback;
-              if (navigator.onLine) {
+              // 日本語の大きい画像（Game8）は別オリジンで画像化できないので、日本語はサムネイルで書き出す
+              if (navigator.onLine && lang === "en") {
                 img.crossOrigin = "anonymous";
                 img.src = card.image;
               } else fallback();
@@ -384,6 +387,7 @@ export function DeckViewPage({ id }: { id: string }) {
 }
 
 function DeckImage({ deck, cards, ref }: { deck: Deck; cards: AppCard[]; ref: React.Ref<HTMLDivElement> }) {
+  const lang = useSettings((s) => s.imageLang);
   return (
     <div ref={ref} style={{ width: 1000, padding: 28, background: "#e6ecf3", color: "#3d4757", fontFamily: "'M PLUS Rounded 1c', sans-serif" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
@@ -397,7 +401,7 @@ function DeckImage({ deck, cards, ref }: { deck: Deck; cards: AppCard[]; ref: Re
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 12, padding: 16, borderRadius: 24, background: "#eef2f7", boxShadow: "6px 6px 14px rgba(176,189,206,.55), -6px -6px 14px #fff" }}>
         {cards.map((c, i) => (
-          <img key={i} data-id={c.id} src={thumbUrl(c)} alt={c.nameJa} style={{ width: "100%", aspectRatio: "367/512", borderRadius: 8, objectFit: "cover" }} />
+          <img key={i} data-id={c.id} src={thumbUrl(c, lang)} alt={c.nameJa} style={{ width: "100%", aspectRatio: "367/512", borderRadius: 8, objectFit: "cover" }} />
         ))}
       </div>
       <div style={{ marginTop: 12, fontSize: 13, color: "#8794a7", textAlign: "right", fontWeight: 700 }}>ポケポケ検索</div>

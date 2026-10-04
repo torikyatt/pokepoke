@@ -1,4 +1,5 @@
 // カード一覧の並べ替えと詳細な絞り込み（検索画面とデッキ編集画面で共通）
+import { createContext, useContext } from "react";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import type { AppCard, CardGroup, CardKind, EnergyType, Rule, Stage } from "./types.ts";
@@ -115,45 +116,50 @@ interface PoolState {
   setSort: (key: SortKey, desc: boolean) => void;
   setFilters: (f: Filters) => void;
 }
-export const usePool = create<PoolState>()(
-  persist(
-    (set) => ({
-      columns: 5,
-      sort: "order",
-      desc: false,
-      filters: EMPTY_FILTERS,
-      setColumns: (columns) => set({ columns }),
-      setSort: (sort, desc) => set({ sort, desc }),
-      setFilters: (filters) => set({ filters }),
-    }),
-    {
-      name: "pokepoke.pool",
-      version: 1,
-      storage: createJSONStorage(() => ({
-        getItem: (k) => {
-          try {
-            return localStorage.getItem(k);
-          } catch {
-            return null;
-          }
-        },
-        setItem: (k, v) => {
-          try {
-            localStorage.setItem(k, v);
-          } catch {
-            /* noop */
-          }
-        },
-        removeItem: (k) => {
-          try {
-            localStorage.removeItem(k);
-          } catch {
-            /* noop */
-          }
-        },
-      })),
-      // 絞り込みは保存しない（開き直したら全カード）
-      partialize: (s) => ({ columns: s.columns, sort: s.sort, desc: s.desc }),
-    },
-  ),
-);
+
+const safeStorage = createJSONStorage(() => ({
+  getItem: (k: string) => {
+    try {
+      return localStorage.getItem(k);
+    } catch {
+      return null;
+    }
+  },
+  setItem: (k: string, v: string) => {
+    try {
+      localStorage.setItem(k, v);
+    } catch {
+      /* noop */
+    }
+  },
+  removeItem: (k: string) => {
+    try {
+      localStorage.removeItem(k);
+    } catch {
+      /* noop */
+    }
+  },
+}));
+
+// 一覧の状態は画面ごとに別々に持つ（検索タブとデッキ編集で絞り込みが混ざらないように）
+function createPoolStore(scope: string) {
+  return create<PoolState>()(
+    persist(
+      (set) => ({
+        columns: 5,
+        sort: "order",
+        desc: false,
+        filters: EMPTY_FILTERS,
+        setColumns: (columns) => set({ columns }),
+        setSort: (sort, desc) => set({ sort, desc }),
+        setFilters: (filters) => set({ filters }),
+      }),
+      { name: `pokepoke.pool.${scope}`, version: 1, storage: safeStorage, partialize: (s) => ({ columns: s.columns, sort: s.sort, desc: s.desc, filters: s.filters }) },
+    ),
+  );
+}
+export const poolStores = { search: createPoolStore("search"), builder: createPoolStore("builder") };
+export const PoolScope = createContext<keyof typeof poolStores>("search");
+export function usePool(): PoolState {
+  return poolStores[useContext(PoolScope)]();
+}
