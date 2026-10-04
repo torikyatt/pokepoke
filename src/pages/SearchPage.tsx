@@ -81,6 +81,7 @@ export function SearchPage() {
       <div className="px-4 pb-6">
         {!q && !tagParam && (
           <div className="mb-3">
+            <h1 className="mb-1 text-lg font-extrabold tracking-wider text-ink">POKÉPOKE LAB</h1>
             <p className="mb-2 text-xs font-bold text-muted">ふだんの言葉で探せます（長押しでデッキに追加）</p>
             <div className="scrollbar-none -mx-4 flex gap-2 overflow-x-auto px-4 pb-2">
               {EXAMPLES.map((ex) => (

@@ -69,7 +69,7 @@ export function toFile(decks: Deck[]): DeckFile {
 }
 export function fromFile(json: unknown, byId: Map<string, AppCard>): DeckFile["decks"] {
   const f = json as Partial<DeckFile>;
-  if (f?.format !== "pokepoke-decks" || !Array.isArray(f.decks)) throw new Error("ポケポケ検索のデッキファイルではありません");
+  if (f?.format !== "pokepoke-decks" || !Array.isArray(f.decks)) throw new Error("POKÉPOKE LAB のデッキファイルではありません");
   return f.decks.map((d) => ({
     name: String(d.name ?? "読み込んだデッキ"),
     energy: (d.energy ?? []).slice(0, MAX_ENERGY),

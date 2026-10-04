@@ -87,7 +87,7 @@ export function SettingsPage() {
         </section>
 
         <section className="neu space-y-1 rounded-3xl p-4 text-xs text-muted">
-          <h2 className="text-sm font-extrabold text-ink">このサイトについて</h2>
+          <h2 className="text-sm font-extrabold text-ink">POKÉPOKE LAB について</h2>
           <p>個人用の非公式ツールです。ポケモン・ポケモンカードゲーム Pocket は任天堂・クリーチャーズ・ゲームフリーク・株式会社ポケモンの商標です。</p>
           <p>
             カードデータ: <a className="underline" href="https://github.com/PocketDecks/pokemon-tcg-pocket-cards">PocketDecks/pokemon-tcg-pocket-cards</a>（AGPL-3.0）。日本語のカード文と日本語のカード画像は Game8 掲載のもの、ポケモン名は PokéAPI を参照。「仮訳」の付いた文は機械翻訳です。

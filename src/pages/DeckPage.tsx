@@ -496,7 +496,7 @@ function DeckImage({ deck, cards, ref }: { deck: Deck; cards: AppCard[]; ref: Re
           <img key={i} data-id={c.id} src={thumbUrl(c, lang)} alt={c.nameJa} style={{ width: "100%", aspectRatio: "367/512", borderRadius: 8, objectFit: "cover" }} />
         ))}
       </div>
-      <div style={{ marginTop: 12, fontSize: 13, color: "#8794a7", textAlign: "right", fontWeight: 700 }}>ポケポケ検索</div>
+      <div style={{ marginTop: 12, fontSize: 13, color: "#8794a7", textAlign: "right", fontWeight: 700 }}>POKÉPOKE LAB</div>
     </div>
   );
 }

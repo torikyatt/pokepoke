@@ -124,6 +124,7 @@ function App() {
     return (
       <div className="flex h-dvh items-center justify-center text-sm text-muted">
         <div className="text-center font-bold">
+          <div className="mb-4 text-2xl font-extrabold tracking-wider text-ink">POKÉPOKE LAB</div>
           <div className="mx-auto mb-3 h-8 w-8 animate-spin rounded-full border-4 border-line border-t-accent" />
           カードデータを展開中…
         </div>
