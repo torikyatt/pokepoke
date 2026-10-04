@@ -15,6 +15,9 @@ export const EXAMPLES = [
   "水1個であとは無色のワザ",
   "トラッシュの枚数で変わる",
   "HP150以上の鋼ポケモン",
+  "メガルカリオexデッキ",
+  "ミライドンexと相性がいいカード",
+  "大会でよく使われるサポート",
 ];
 
 const csv = (s: string | null) => (s ? s.split(",").filter(Boolean) : []);
@@ -102,8 +105,9 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
           footer={(h) =>
             scored && (
               <div className="mt-1 space-y-0.5 text-[10px] leading-tight font-bold text-muted">
+                {h.note && <div className="truncate text-accent-deep">{h.note}</div>}
                 {h.matched
-                  .filter((id) => labelOf.has(id))
+                  .filter((id) => labelOf.has(id) && !(h.note && (id.startsWith("deck:") || id === "meta")))
                   .slice(0, 2)
                   .map((id) => (
                     <div key={id} className="truncate text-accent-deep">✓ {labelOf.get(id)}</div>

@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useAddToDeck, useData } from "../context.tsx";
 import { activeCount, EMPTY_FILTERS, matchFilters, RARITIES, SORTS, sortHits, usePool, type Filters, type SortKey } from "../pool.ts";
-import type { Cond, Hit } from "../search/engine.ts";
+import { SCORED_KINDS, type Cond, type Hit } from "../search/engine.ts";
 import type { AppCard, CardGroup, CardKind, EnergyType, Rule, Stage } from "../types.ts";
 import { GROUP_JA, KIND_JA, STAGE_JA } from "../types.ts";
 import { useDecks, useFavorites } from "../store.ts";
@@ -21,16 +21,19 @@ export function usePoolResults(conds: Cond[]) {
   const { engine } = useData();
   const { filters, sort, desc, favOnly } = usePool();
   const favs = useFavorites((s) => s.ids);
-  const scored = conds.some((c) => ["tag", "variable", "name", "text"].includes(c.kind));
+  const { data } = useData();
+  const scored = conds.some((c) => SCORED_KINDS.includes(c.kind));
+  // 「〇〇デッキ」「〇〇と相性がいい」「大会でよく使われる」は、図鑑順より関係の深い順のほうが役に立つ
+  const usageFirst = conds.some((c) => c.kind === "deck" || c.kind === "partner" || c.kind === "meta");
   return useMemo(() => {
     // お気に入りを開いているときは、お気に入りの中から探す
     const fav = favOnly ? new Set(favs) : undefined;
     const raw: Hit[] = engine.run(conds, Infinity).filter((h) => (!fav || fav.has(h.card.id)) && matchFilters(h.card, filters));
     // 検索文があるときは「一致度順」なら上位50件（SPEC 4.3）。他の並びでは一致したもの全部を並べ替える
-    const key: SortKey = sort === "score" && !scored ? "order" : sort;
-    const sorted = sortHits(raw, key, key === sort ? desc : false);
-    return { hits: key === "score" ? sorted.slice(0, 50) : sorted, scored, total: raw.length };
-  }, [engine, conds, filters, sort, desc, scored, favOnly, favs]);
+    const key: SortKey = sort === "order" && usageFirst ? "score" : sort === "score" && !scored ? "order" : sort;
+    const sorted = sortHits(raw, key, key === sort ? desc : key === "score", data.meta?.usage);
+    return { hits: key === "score" && !usageFirst ? sorted.slice(0, 50) : sorted, scored, total: raw.length };
+  }, [engine, conds, filters, sort, desc, scored, usageFirst, favOnly, favs, data]);
 }
 
 /** n/20・お気に入り・カードの大きさ・虫めがね（PCでは並べ替え・絞り込みも）のバー */

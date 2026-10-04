@@ -3,7 +3,10 @@
 // （自分自身だけ・名指し・タイプ・進化段階・グループ・進化元のHP・エネのタイプ）が付いていて、相手がそれを満たすときだけ結ぶ。
 // 例: そうじゅくエキス（草の進化補助）↔ 草の進化ポケモンだけ／コイキング（自分を進化させる）↔ ギャラドスだけ
 //     アカギ（ダメージを受けた相手のベンチを呼び出す）↔ ベンチ狙撃・全体攻撃
-import type { AppCard, AppData, Selector } from "./types.ts";
+// これに加えて、実際の使われ方からも結ぶ:
+//   ・攻略記事で紹介されている定番の組み合わせ（data/combos.yaml）
+//   ・大会で勝ち越したデッキに一緒に入っていることが多い組（data/meta/meta.json。どのデッキにも入る定番どうしは除いてある）
+import type { AppArchetype, AppCard, AppCombo, AppData, HelpTarget, Selector } from "./types.ts";
 import { TYPE_JA } from "./types.ts";
 
 // 供給の種類ごとの説明（相手のカードが「供給する側」「要求する側」のときのラベル）
@@ -25,15 +28,20 @@ const SUPPLY: Record<string, { give: string; need: string }> = {
   "supply.energy.fix": { give: "エネ事故を減らせる", need: "複数タイプのエネが要る" },
   "supply.energy.bank": { give: "場にエネをためられる", need: "場のエネを集められる" },
   "supply.coin.control": { give: "コインをやり直せる", need: "コインを投げる" },
+  "supply.search.pokemon": { give: "山札から手札に持ってこられる", need: "山札から持ってこられる" },
 };
 // 結びつきの強さ（既定は1）。場にためたエネと集めるカードは、組み合わせ前提の強いシナジー
-const WEIGHT: Record<string, number> = { "supply.energy.bank": 2, "supply.energy.fix": 1.5, "supply.trash.energy": 1.5 };
+const WEIGHT: Record<string, number> = { "supply.energy.bank": 2, "supply.energy.fix": 1.5, "supply.trash.energy": 1.5, "supply.search.pokemon": 1.5 };
 // 毎ターン使える供給（特性・スタジアム・どうぐ）は、1回きりのワザより少し重く見る
 const weightOf = (s: string, sels: Selector[], receiver?: AppCard) =>
   (WEIGHT[s] ?? 1) +
   (sels.some((x) => x.repeat) ? 0.5 : 0) +
   // どのタイプのエネでもトラッシュに送れて、どのタイプでも使える組み合わせ
   (s === "supply.trash.energy" && sels.some((x) => !x.etypes?.length) && receiver && !receiver.requires[s]?.etypes?.length ? 0.5 : 0);
+
+/** 山札からポケモンを持ってくる効果のうち、対象が絞られているもの（モンスターボールのように何でも持ってくるものは結ばない） */
+const specificSearch = (sel: Selector) =>
+  sel.hpMax !== undefined || !!sel.rules?.length || !!sel.groups?.length || !!sel.ids?.length || !!sel.stages?.includes("stage2");
 
 export interface Partner {
   card: AppCard;
@@ -74,6 +82,10 @@ export function createSynergy(data: AppData) {
     if (sel.groups?.length && !sel.groups.some((g) => receiver.groups.includes(g))) return false;
     if (sel.kinds?.length && !sel.kinds.includes(receiver.kind === "pokemon" ? "pokemon" : "trainer")) return false;
     if (sel.preHpMax !== undefined && !receiver.evolvesFrom.some((id) => (byId.get(id)?.hp ?? 999) <= sel.preHpMax!)) return false;
+    if (sel.hpMax !== undefined && !(receiver.hp !== undefined && receiver.hp <= sel.hpMax)) return false;
+    if (sel.rules?.length && !sel.rules.includes(receiver.rule)) return false;
+    // 山札からポケモンを持ってくる効果は、対象が絞られているもの（HP50以下のたね・メガシンカex・2進化・ロケット団など）だけ結ぶ
+    if (s === "supply.search.pokemon" && !specificSearch(sel)) return false;
     if (sel.etypes?.length) {
       const want = receiver.requires[s]?.etypes;
       if (want?.length && !want.some((t) => sel.etypes!.includes(t))) return false;
@@ -104,6 +116,46 @@ export function createSynergy(data: AppData) {
     return r;
   }
   const supporters = data.cards.filter((c) => Object.keys(c.supplies).length);
+
+  // トレーナーズが効く相手（data/trainer-synergy.yaml）: トレーナーズ → 相手、相手 → トレーナーズ
+  const helpMatch = (t: HelpTarget, c: AppCard): boolean => {
+    if (t.kinds?.length ? !t.kinds.includes(c.kind as never) : c.kind !== "pokemon") return false;
+    if (t.types?.length && !(c.type && t.types.includes(c.type))) return false;
+    if (t.stages?.length && !(c.stage && t.stages.includes(c.stage))) return false;
+    if (t.groups?.length && !t.groups.some((g) => c.groups.includes(g))) return false;
+    if (t.rules?.length && !t.rules.includes(c.rule)) return false;
+    if (t.notRules?.length && t.notRules.includes(c.rule)) return false;
+    if (t.retreatMin !== undefined && (c.retreat ?? 0) < t.retreatMin) return false;
+    if (t.attacks?.length && !c.attacks.some((a) => a.nameEn && t.attacks!.includes(a.nameEn))) return false;
+    if (t.cost && !c.attacks.some((a) => (a.cost[t.cost!.type] ?? 0) >= t.cost!.min)) return false;
+    if (t.multiType && !c.attacks.some((a) => Object.keys(a.cost).filter((k) => k !== "colorless").length >= 2)) return false;
+    if (t.tags?.length && !c.tags.some((x) => t.tags!.some((g) => x === g || x.startsWith(g + ".")))) return false;
+    return true;
+  };
+  const helpsBy = new Map<string, { other: string; label: string; weight: number }[]>();
+  for (const h of data.helps ?? []) {
+    for (const c of data.cards) {
+      if (c.id === h.card || !helpMatch(h.to, c)) continue;
+      (helpsBy.get(h.card) ?? helpsBy.set(h.card, []).get(h.card)!).push({ other: c.id, label: h.label, weight: h.weight });
+      (helpsBy.get(c.id) ?? helpsBy.set(c.id, []).get(c.id)!).push({ other: h.card, label: h.label, weight: h.weight });
+    }
+  }
+
+  // 攻略記事の組み合わせ・大会で一緒に使われる組（カードごと）
+  const combosOf = new Map<string, AppCombo[]>();
+  for (const cb of data.combos ?? []) for (const id of new Set(cb.cards)) (combosOf.get(id) ?? combosOf.set(id, []).get(id)!).push(cb);
+  const coUsed = new Map<string, { other: string; n: number; rate: number }[]>(); // rate: このカードを使うデッキのうち、相手も入っている割合
+  for (const [a, b, n, ra, rb] of data.meta?.pairs ?? []) {
+    (coUsed.get(a) ?? coUsed.set(a, []).get(a)!).push({ other: b, n, rate: ra });
+    (coUsed.get(b) ?? coUsed.set(b, []).get(b)!).push({ other: a, n, rate: rb });
+  }
+  // カードごとの、よく入っているデッキタイプ
+  const archOf = new Map<string, { arch: AppArchetype; rate: number }[]>();
+  for (const arch of data.meta?.archetypes ?? []) for (const c of arch.cards) (archOf.get(c.id) ?? archOf.set(c.id, []).get(c.id)!).push({ arch, rate: c.rate });
+  for (const l of archOf.values()) l.sort((x, y) => y.rate * y.arch.share - x.rate * x.arch.share);
+  /** 2枚とも半分以上のデッキに入っているデッキタイプ（いちばん使われているもの） */
+  const sharedArch = (a: string, b: string) =>
+    (archOf.get(a) ?? []).filter((x) => x.rate >= 0.5).map((x) => x.arch).find((arch) => arch.cards.some((c) => c.id === b && c.rate >= 0.5));
   const accelSels = (c: AppCard) => (c.supplies["supply.energy.many"] ?? []).filter((s) => !s.self);
 
   function partners(x: AppCard, limit = 30): Partner[] {
@@ -114,6 +166,27 @@ export function createSynergy(data: AppData) {
       p.score += score;
       if (!p.reasons.includes(reason)) p.reasons.push(reason);
     };
+    // 攻略記事で紹介されている組み合わせ（いちばん強く結ぶ）
+    for (const cb of combosOf.get(x.id) ?? []) {
+      for (const id of cb.cards) {
+        const c = byId.get(id);
+        if (c) push(c, 4, `定番コンボ（${cb.deck}）`);
+      }
+    }
+    // 大会で一緒に使われる組。相手が入っている割合が高いほど強く結ぶ
+    for (const u of coUsed.get(x.id) ?? []) {
+      const c = byId.get(u.other);
+      if (!c) continue;
+      const arch = sharedArch(x.id, c.id);
+      push(c, 0.5 + 2.5 * u.rate, arch ? `大会で一緒に採用（${arch.nameJa}）` : `大会で一緒に採用（${Math.round(u.rate * 100)}%）`);
+    }
+
+    // トレーナーズの効果が効く相手
+    for (const h of helpsBy.get(x.id) ?? []) {
+      const c = byId.get(h.other);
+      if (c) push(c, h.weight, h.label);
+    }
+
     // 名前指定
     for (const id of x.refs) {
       const c = byId.get(id);
@@ -198,5 +271,10 @@ export function createSynergy(data: AppData) {
     return [prev2, prev1, [x], next1, next2].filter((l) => l.length);
   }
 
-  return { partners, evolutionLine };
+  /** カードが出てくる攻略記事の組み合わせ */
+  const combos = (x: AppCard) => combosOf.get(x.id) ?? [];
+  /** 大会での使われ方: 全体の採用率と、よく入っているデッキタイプ */
+  const usage = (x: AppCard) => ({ rate: data.meta?.usage[x.id] ?? 0, archetypes: (archOf.get(x.id) ?? []).filter((a) => a.rate >= 0.25) });
+
+  return { partners, evolutionLine, combos, usage };
 }

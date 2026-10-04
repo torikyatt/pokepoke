@@ -42,6 +42,8 @@ export function SettingsPage({ embedded }: { embedded?: boolean }) {
           <h2 className="font-extrabold">データ</h2>
           <p className="text-xs text-muted">
             カード {data.cards.length} 種 ・ タグ {data.tags.length} 種 ・ 表現辞書 {data.lexicon.length} 件 ・ {new Date(data.builtAt).toLocaleString("ja-JP")} 作成
+            {data.meta && ` ・ 大会データ ${data.meta.tournaments}大会・${data.meta.decks}デッキ（${new Date(data.meta.fetchedAt).toLocaleDateString("ja-JP")} 取得）`}
+            {data.combos && ` ・ 定番の組み合わせ ${data.combos.length} 件`}
           </p>
           {import.meta.env.DEV && (
             <button type="button" className="font-bold text-accent-deep underline" onClick={() => navigate("/review")}>
@@ -54,7 +56,7 @@ export function SettingsPage({ embedded }: { embedded?: boolean }) {
           <h2 className="text-sm font-extrabold text-ink">POKÉPOKE LAB について</h2>
           <p>個人用の非公式ツールです。ポケモン・ポケモンカードゲーム Pocket は任天堂・クリーチャーズ・ゲームフリーク・株式会社ポケモンの商標です。</p>
           <p>
-            カードデータ: <a className="underline" href="https://github.com/PocketDecks/pokemon-tcg-pocket-cards">PocketDecks/pokemon-tcg-pocket-cards</a>（AGPL-3.0）。日本語のカード文と日本語のカード画像は Game8 掲載のもの、ポケモン名は PokéAPI を参照。「仮訳」の付いた文は機械翻訳です。
+            カードデータ: <a className="underline" href="https://github.com/PocketDecks/pokemon-tcg-pocket-cards">PocketDecks/pokemon-tcg-pocket-cards</a>（AGPL-3.0）。日本語のカード文と日本語のカード画像は Game8 掲載のもの、ポケモン名は PokéAPI を参照。「仮訳」の付いた文は機械翻訳です。大会での使われ方は <a className="underline" href="https://play.limitlesstcg.com/">Limitless TCG</a> の大会結果を集計したもの、定番の組み合わせは Game8 のデッキ解説記事をもとにまとめたものです。
           </p>
           <p>
             ソースコード: <a className="underline" href="https://github.com/torikyatt/pokepoke">github.com/torikyatt/pokepoke</a>（AGPL-3.0）

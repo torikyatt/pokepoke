@@ -1,0 +1,201 @@
+# トレーナーズ（サポート・グッズ・どうぐ・スタジアム）が「どのカードに効くか」。効果文を全部読んで書いたもの。
+# ポケモンを名指ししているもの（カツラ・シロナ・マチスなど）は効果文から自動で結ぶので、ここには書かない。
+# ここには「草ポケモン」「2進化ポケモン」「古代のポケモン」「ワザ『サイコキネシス』を持つポケモン」のように、
+# 条件で効く相手が決まるものを書く。相性のいいカードに、label を理由として出す。
+#
+# to に書ける条件（全部満たすカードに効く。kinds を書かなければポケモンだけ）
+#   types: [grass]            タイプ
+#   stages: [stage2]          進化段階（basic / stage1 / stage2）
+#   groups: [ancient]         グループ（ultra_beast / ancient / future / team_rocket / baby）
+#   rules: [mega_ex]          ルール（normal / ex / mega_ex）
+#   notRules: [ex, mega_ex]   このルールは除く
+#   retreatMin: 3             にげるエネがこれ以上
+#   attacks: [Psychic]        このワザ（英語名）を持つ
+#   cost: {type: water, min: 1}  ワザにこのタイプのエネをこれ以上使う
+#   multiType: true           ワザに2タイプ以上のエネを使う
+#   tags: [damage.bench]      このタグ（子タグも含む）の効果を持つ
+#   kinds: [tool]             トレーナーズに効くとき（item / tool / stadium / supporter）
+# weight を書かなければ 1.2（名指しは3、攻略記事の組み合わせは4）
+
+# ---- タイプ ----
+a1-219: # エリカ
+  - to: { types: [grass] }
+    label: 草ポケモンを回復
+a1a-065: # 幻の石板
+  - to: { types: [psychic] }
+    label: 山札の上の超ポケモンを手札に
+a2a-072: # カイ
+  - to: { cost: { type: water, min: 1 } }
+    label: 水エネの付いたポケモンをまとめて回復
+a2a-075: # セキ
+  - to: { types: [metal] }
+    label: 鋼ポケモンの受けるダメージを減らす
+a3-143: # おさかなネット
+  - to: { types: [water], stages: [basic] }
+    label: トラッシュの水のたねポケモンを回収
+a3-147: # リーフマント
+  - to: { types: [grass] }
+    label: 草ポケモンのHPを+30
+a3-149: # イリマ
+  - to: { types: [colorless] }
+    label: ダメージを受けた無色ポケモンを手札にもどす
+a3a-065: # エレキコード
+  - to: { types: [lightning] }
+    label: 雷ポケモンが倒されてもエネをベンチに残す
+a4-151: # エレメンタルつけかえ
+  - to: { types: [fire, water, lightning] }
+    label: 炎・水・雷エネをベンチからバトル場へ付け替え
+a4-153: # 鋼鉄のまえかけ
+  - to: { types: [metal] }
+    label: 鋼ポケモンを守り、特殊状態にならない
+a4-154: # ダークペンダント
+  - to: { types: [darkness] }
+    label: 悪ポケモンに付けて、殴られたら相手の手札を戻させる
+a4-159: # 釣り人
+  - to: { types: [water] }
+    label: トラッシュの水ポケモンを回収
+a4-161: # やまおとこ
+  - to: { types: [fighting] }
+    label: 闘ポケモンの数だけ山札の上を並べ替え
+a4a-067: # ウォーターボード
+  - to: { types: [water], retreatMin: 1 }
+    label: 水ポケモンのにげるを軽くする
+a4a-071: # マツバ
+  - to: { types: [psychic] }
+    label: 超ポケモンの数だけ相手の山札を操作
+b1-217: # フレイムパッチ
+  - to: { types: [fire] }
+    label: トラッシュの炎エネを炎ポケモンに付ける
+b2-148: # メタルコアバリア
+  - to: { types: [metal] }
+    label: 鋼ポケモンの受けるダメージを-50
+b2-149: # カルネ
+  - to: { types: [psychic], cost: { type: psychic, min: 2 } }
+    label: 超エネを2個以上付けた超ポケモンを大きく回復
+b2-155: # ふしぎな広場
+  - to: { types: [psychic], retreatMin: 1 }
+    label: 超ポケモンのにげるを-2
+b2a-086: # エレキジェネレーター
+  - to: { types: [lightning] }
+    label: ベンチの雷ポケモンにエネを付ける
+b3-149: # コルニ
+  - to: { types: [fighting] }
+    label: 闘ポケモンのex相手の火力を+30
+b3-152: # パラソルおねえさん
+  - to: { types: [water], notRules: [ex, mega_ex] }
+    label: 水ポケモン（ex以外）を手札にもどして出し直す
+b3-153: # あまくかおる森
+  - to: { types: [grass], stages: [basic] }
+    label: 草のたねポケモンを毎ターン山札から持ってこられる
+b3-154: # いにしえの闘技場
+  - to: { types: [fighting] }
+    label: 闘ポケモンのex相手の火力を+20
+b4-148: # いんちきバリ
+  - to: { types: [darkness] }
+    label: 悪ポケモンに付けて毎ターン10ダメージ
+b4-154: # いやしの海辺
+  - to: { cost: { type: water, min: 1 } }
+    label: 水エネの付いたポケモンを毎ターン回復
+
+# ---- 進化段階 ----
+a3-155: # リーリエ
+  - to: { stages: [stage2] }
+    label: 2進化ポケモンを回復
+b2-150: # かんこうきゃく
+  - to: { stages: [stage1] }
+    label: 1進化ポケモンを山札から持ってこられる
+b2-153: # トレーニングエリア
+  - to: { stages: [stage1] }
+    label: 1進化ポケモンの火力を+10
+b2a-087: # 大きなふうせん
+  - to: { stages: [stage2], retreatMin: 2 }
+    label: 2進化ポケモンのにげるを0にする
+b3b-065: # ゆうがなマント
+  - to: { stages: [stage1] }
+    label: 1進化ポケモンのHPを+30
+b4-152: # フウロ
+  - to: { stages: [stage1] }
+    label: バトル場の1進化ポケモンを入れ替え
+b4-153: # ミツル
+  - to: { stages: [stage2] }
+    label: 2進化ポケモンにエネを付ける
+
+# ---- グループ・ルール ----
+a3a-063: # ビーストウォール
+  - to: { groups: [ultra_beast] }
+    label: ウルトラビーストの受けるダメージを減らす
+a3a-066: # ビーストナイト
+  - to: { groups: [ultra_beast] }
+    label: ウルトラビーストの火力を上げる
+a3a-069: # ルザミーネ
+  - to: { groups: [ultra_beast] }
+    label: ウルトラビーストにトラッシュのエネを付ける
+b3a-069: # ブーストエナジー古代
+  - to: { groups: [ancient] }
+    label: 古代ポケモンのHPを+40
+b3a-070: # ブーストエナジー未来
+  - to: { groups: [future] }
+    label: 未来ポケモンの火力を+20
+b3a-072: # オーリム博士
+  - to: { groups: [ancient] }
+    label: 古代ポケモンにトラッシュのエネを3個付ける
+b3a-073: # フトゥー博士
+  - to: { groups: [future] }
+    label: 未来ポケモンを山札にもどしてポイントを渡さない
+b2b-068: # カルム
+  - to: { rules: [mega_ex] }
+    label: メガシンカexの数だけドロー
+
+# ---- 条件 ----
+b1-219: # ヘビーメット
+  - to: { retreatMin: 3 }
+    label: にげる3以上のポケモンの受けるダメージを-20
+b2-151: # ジャグラー
+  - to: { multiType: true }
+    label: いろいろなタイプのエネを集めてバトル場へ
+b3b-067: # こいぬ大好きガール
+  - to: { attacks: [Puppy Pile] }
+    label: ワザ「こいぬまみれ」を持つポケモンを山札から集める
+b4-150: # サイキッカー
+  - to: { attacks: [Psychic] }
+    label: ワザ「サイコキネシス」を持つポケモンで使える
+b4-151: # シャガ
+  - to: { attacks: [Draco Meteor] }
+    label: ワザ「りゅうせいぐん」の当たる回数を増やす
+b2-147: # まもりのポンチョ
+  - to: { tags: [passive.ability] }
+    label: ベンチで特性を使うポケモンをベンチ狙撃から守る
+
+# ---- 相手のベンチ ----
+b4a-071: # ロケット団のボス
+  - to: { tags: [damage.bench, damage.spread, cond.bench.opp] }
+    label: 相手のたねをベンチに出させて、ベンチ攻撃でまとめて狙う
+a1a-064: # ポケモンの笛
+  - to: { tags: [damage.bench, damage.spread, cond.bench.opp] }
+    label: 相手のベンチを増やして狙う
+
+# ---- トレーナーズどうし ----
+b3-150: # タクシードライバー
+  - to: { kinds: [stadium] }
+    label: スタジアムを山札から持ってこられる
+    weight: 0.6
+a4a-070: # 旅の行商人
+  - to: { kinds: [tool] }
+    label: どうぐを山札から持ってこられる
+    weight: 0.6
+b3b-069: # こども部屋
+  - to: { kinds: [tool] }
+    label: どうぐを山札から持ってこられる
+    weight: 0.6
+b2a-091: # ペパー
+  - to: { kinds: [item, tool] }
+    label: グッズ・どうぐを山札から持ってこられる
+    weight: 0.5
+b4-145: # おとりよせパッド
+  - to: { kinds: [item] }
+    label: グッズを山札から持ってこられる
+    weight: 0.5
+b3b-066: # カミツレ
+  - to: { kinds: [tool] }
+    label: 付けたどうぐを手札にもどして付け直す
+    weight: 0.4

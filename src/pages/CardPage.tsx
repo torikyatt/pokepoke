@@ -14,12 +14,16 @@ export function CardDetail({ id, keepOpen, actions }: { id: string; keepOpen?: b
   const { byId, synergy, engine } = useData();
   const card = byId.get(id);
   const partners = useMemo(() => (card ? synergy.partners(card) : []), [card, synergy]);
+  const combos = card ? synergy.combos(card) : [];
+  const usage = card ? synergy.usage(card) : undefined;
+  const { data } = useData();
   const line = useMemo(() => (card && card.kind === "pokemon" ? synergy.evolutionLine(card) : []), [card, synergy]);
   const [hires, setHires] = useState(true);
   const lang = useSettings((s) => s.imageLang);
   if (!card) return <p className="p-6 text-center text-sm font-bold text-muted">カードが見つかりません</p>;
 
   // 効果のタグを押すと、そのタグで検索する（スマホは詳細を閉じてから）
+  const searchQ = (q: string) => (keepOpen ? navigate(searchPath({ q })) : closeDetail(() => navigate(searchPath({ q }))));
   const searchTag = (t: string) => (keepOpen ? navigate(searchPath({ tag: t })) : closeDetail(() => navigate(searchPath({ tag: t }))));
   const tagChip = (t: string) => (
     <Chip key={t} tone="match" onClick={() => searchTag(t)}>
@@ -118,6 +122,73 @@ export function CardDetail({ id, keepOpen, actions }: { id: string; keepOpen?: b
                   </div>
                 </div>
               ))}
+            </div>
+          </section>
+        )}
+
+        {combos.length > 0 && (
+          <section>
+            <h2 className="mb-2 text-sm font-extrabold text-muted">定番の組み合わせ（攻略記事より）</h2>
+            <ul className="space-y-2">
+              {combos.map((cb, i) => (
+                <li key={i} className="neu flex gap-3 rounded-2xl p-3">
+                  <div className="flex shrink-0 gap-1">
+                    {cb.cards
+                      .filter((id) => id !== card.id)
+                      .map((id) => byId.get(id))
+                      .filter((c): c is AppCard => !!c)
+                      .map((c) => (
+                        <button key={c.id} type="button" onClick={() => openCard(c.id)} className="w-12 shrink-0" aria-label={c.nameJa}>
+                          <Thumb card={c} className="rounded-[4px]" />
+                        </button>
+                      ))}
+                  </div>
+                  <div className="min-w-0 flex-1 text-xs leading-relaxed">
+                    <div className="font-extrabold">
+                      {cb.cards
+                        .filter((id) => id !== card.id)
+                        .map((id) => byId.get(id)?.nameJa)
+                        .join("・")}
+                    </div>
+                    <p className="mt-0.5 font-medium">{cb.reason}</p>
+                    <div className="mt-1 flex flex-wrap items-center gap-x-2 text-[10px] font-bold text-muted">
+                      <span>{cb.deck}</span>
+                      <a href={cb.source} target="_blank" rel="noreferrer" className="underline">
+                        出典
+                      </a>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {usage && data.meta && (
+          <section>
+            <h2 className="mb-2 text-sm font-extrabold text-muted">大会での使われ方</h2>
+            <div className="neu space-y-2 rounded-2xl p-3 text-xs font-bold">
+              <div>
+                {usage.rate > 0 ? (
+                  <>
+                    勝ち越したデッキの <span className="text-base text-accent-deep tabular-nums">{(usage.rate * 100).toFixed(usage.rate < 0.1 ? 1 : 0)}%</span> に採用
+                  </>
+                ) : (
+                  <span className="text-muted">最近の大会では、勝ち越したデッキでの採用はほぼありません</span>
+                )}
+              </div>
+              {usage.archetypes.length > 0 && (
+                <div className="flex flex-wrap gap-1.5">
+                  {usage.archetypes.slice(0, 6).map(({ arch, rate }) => (
+                    <Chip key={arch.id} onClick={() => searchQ(`${arch.nameJa}デッキ`)} title="このデッキでよく使われるカードを見る">
+                      {arch.nameJa}デッキ <span className="text-accent-deep">{Math.round(rate * 100)}%</span>
+                    </Chip>
+                  ))}
+                </div>
+              )}
+              <p className="text-[10px] font-medium text-muted">
+                直近{data.meta.days}日・{data.meta.tournaments}大会・勝ち越した{data.meta.decks}デッキ（Limitless TCG の大会結果）。デッキ名の横の%は、そのデッキでの採用率
+              </p>
             </div>
           </section>
         )}

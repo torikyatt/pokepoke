@@ -4,11 +4,12 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import type { AppCard, CardGroup, CardKind, EnergyType, Rule, Stage } from "./types.ts";
 
-export type SortKey = "order" | "score" | "hp" | "damage" | "retreat" | "cost" | "name" | "new" | "rarity";
+export type SortKey = "order" | "score" | "usage" | "hp" | "damage" | "retreat" | "cost" | "name" | "new" | "rarity";
 
 export const SORTS: { key: SortKey; label: string; desc: boolean }[] = [
   { key: "order", label: "図鑑順", desc: false },
   { key: "score", label: "一致度順", desc: true },
+  { key: "usage", label: "大会での採用率", desc: true },
   { key: "hp", label: "HP", desc: true },
   { key: "damage", label: "最大ダメージ", desc: true },
   { key: "retreat", label: "にげるエネ", desc: false },
@@ -84,11 +85,12 @@ const baseRarity = (c: AppCard) => {
 };
 
 const collator = new Intl.Collator("ja");
-export function sortHits<T extends { card: AppCard; score: number }>(list: T[], key: SortKey, desc: boolean): T[] {
+export function sortHits<T extends { card: AppCard; score: number }>(list: T[], key: SortKey, desc: boolean, usage: Record<string, number> = {}): T[] {
   const val = (h: T): number | string => {
     const c = h.card;
     switch (key) {
       case "score": return h.score;
+      case "usage": return usage[c.id] ?? 0;
       case "hp": return c.hp ?? -1;
       case "damage": return c.maxDamage;
       case "retreat": return c.retreat ?? -1;

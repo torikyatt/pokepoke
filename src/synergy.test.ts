@@ -89,8 +89,8 @@ describe("慣れた人の知っているシナジー", () => {
     expect(ps.length).toBeGreaterThan(10);
     for (const p of ps) expect(p.card.attacks.some((a) => Object.keys(a.cost).filter((t) => t !== "colorless").length >= 2)).toBe(true);
   });
-  it("レアコイル（ボルトチャージ）は場のエネを集めるカード（ミライドンex・マチス）と強く結び、雷タイプ全般とも結ぶ", () => {
-    const top = partnersOf("a1-098").slice(0, 10).map((p) => p.card.nameEn);
+  it("レアコイル（ボルトチャージ）は場のエネを集めるカード（ミライドンex・マチス）と結び、雷タイプ全般とも結ぶ", () => {
+    const top = partnersOf("a1-098").slice(0, 20).map((p) => p.card.nameEn);
     expect(top).toContain("Miraidon ex");
     expect(top).toContain("Lt. Surge");
     expect(reasonOf("a1-098", /雷タイプ/).length).toBeGreaterThan(30);
@@ -110,5 +110,67 @@ describe("コインをやり直せるカード", () => {
     const ps = reasonOf("b4a-051", /コインを投げる/);
     expect(ps.length).toBeGreaterThan(0);
     for (const p of ps) expect(p.card.kind).not.toBe("pokemon");
+  });
+});
+
+describe.skipIf(!data.meta)("実際の使われ方（攻略記事・大会データ）", () => {
+  it("攻略記事の定番コンボ: レアコイル（ボルトチャージ）↔ ミライドンex がいちばん上", () => {
+    expect(partnersOf("a1-098")[0].card.id).toBe("b3a-019");
+    expect(partnersOf("a1-098")[0].reasons.some((r) => r.startsWith("定番コンボ"))).toBe(true);
+  });
+  it("大会で一緒に使われる: メガルカリオex の上位に、ルカリオ（特性）といにしえの闘技場", () => {
+    const top = partnersOf("b3-081").slice(0, 6).map((p) => p.card.id);
+    expect(top).toContain("a2-092");
+    expect(top).toContain("b3-154");
+  });
+  it("どのデッキにも入る定番（博士の研究）は、大会データだけでは結ばない", () => {
+    const research = data.cards.find((c) => c.nameJa === "博士の研究")!;
+    expect(reasonOf("b3-081", /大会で一緒に採用/).map((p) => p.card.id)).not.toContain(research.id);
+  });
+});
+
+describe("対象が決まっている「山札からポケモンを持ってくる」", () => {
+  it("ルチアは HP50以下のたねポケモンと結ぶ（それ以外とは結ばない）", () => {
+    const ps = reasonOf("b1-226", /山札から/);
+    expect(ps.length).toBeGreaterThan(50);
+    for (const p of ps) {
+      expect(p.card.stage).toBe("basic");
+      expect(p.card.hp).toBeLessThanOrEqual(50);
+    }
+    // ポケモンの側からも、ルチアが相性のいいカードに出る
+    expect(reasonOf("b1-196", /山札から/).map((p) => p.card.id)).toContain("b1-226");
+  });
+  it("セレナはメガシンカexだけ、モンスターボール（何でも持ってくる）は結ばない", () => {
+    for (const p of reasonOf("b1a-069", /^山札から(手札に)?持ってこられる$/)) expect(p.card.rule).toBe("mega_ex");
+    expect(reasonOf("pa-005", /^山札から(手札に)?持ってこられる$/)).toHaveLength(0);
+  });
+});
+
+describe("トレーナーズの効く相手（効果文を読んで書いた表）", () => {
+  it("エリカ・リーフマントは草ポケモンだけ", () => {
+    for (const id of ["a1-219", "a3-147"]) {
+      const ps = reasonOf(id, /草ポケモン/);
+      expect(ps.length).toBeGreaterThan(50);
+      for (const p of ps) expect(p.card.type).toBe("grass");
+    }
+  });
+  it("サイキッカーはワザ「サイコキネシス」を持つポケモンだけ", () => {
+    const ps = reasonOf("b4-150", /サイコキネシス/);
+    expect(ps.length).toBeGreaterThan(5);
+    for (const p of ps) expect(p.card.attacks.some((a) => a.nameEn === "Psychic")).toBe(true);
+  });
+  it("ヘビーメットはにげる3以上、リーリエは2進化だけ", () => {
+    for (const p of reasonOf("b1-219", /にげる3以上/)) expect(p.card.retreat).toBeGreaterThanOrEqual(3);
+    for (const p of reasonOf("a3-155", /2進化/)) expect(p.card.stage).toBe("stage2");
+  });
+  it("ロケット団のボスは、相手のベンチを狙うポケモンと結ぶ", () => {
+    const ids = reasonOf("b4a-071", /ベンチ攻撃/).map((p) => p.card.id);
+    expect(ids).toContain("b4-061"); // エレザード
+    expect(ids).toContain("a4a-020"); // スイクンex（相手のベンチの数で強くなる）
+  });
+  it("ポケモンの側からも、効くトレーナーズが出る", () => {
+    const venusaur = data.cards.find((c) => c.nameEn === "Venusaur" && c.stage === "stage2")!;
+    const ids = partnersOf(venusaur.id).map((p) => p.card.id);
+    for (const id of ["a1-219", "a3-147", "a3-155"]) expect(ids).toContain(id); // エリカ・リーフマント・リーリエ
   });
 });

@@ -3,12 +3,13 @@
 // 出力: src/data/app-data.json（生成物。コミットしない）
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { load as loadYaml } from "js-yaml";
 import { jaImageIndex } from "./lib/game8.ts";
 import { requireInfoOf, selectorOf } from "./lib/targets.ts";
 import { loadTaxonomy } from "./lib/taxonomy.ts";
 import type { Card, Effect } from "./lib/types.ts";
 import type { G8Card } from "./lib/game8.ts";
-import type { AppAttack, AppCard, AppData, AppEffect, AppPrint, AppSet, EnergyType, LexEntry, Selector, Slot } from "../src/types.ts";
+import type { AppArchetype, AppAttack, AppCard, AppCombo, AppData, AppHelp, AppMeta, HelpTarget, AppEffect, AppPrint, AppSet, EnergyType, LexEntry, Selector, Slot } from "../src/types.ts";
 
 const ROOT = join(import.meta.dirname, "..");
 const DATA = join(ROOT, "data");
@@ -148,6 +149,8 @@ const out: AppCard[] = cards.map((c) => {
   // ワザに2種類以上のタイプのエネが要る（ドラゴンなど）→ エネ事故を減らすカードと相性がいい
   if (c.attacks.some((a) => Object.keys(a.cost).filter((t) => t !== "colorless").length >= 2)) requires["supply.energy.fix"] = {};
   if (c.stage === "stage1" || c.stage === "stage2") requires["supply.evolve.help"] = {};
+  // どのポケモンも「山札から持ってこられる」側になれる（結ぶのは、持ってくる側の条件が絞られているときだけ: synergy.ts）
+  if (c.kind === "pokemon") requires["supply.search.pokemon"] = {};
   const card: AppCard = {
     id: c.id,
     nameJa: c.nameJa ?? c.nameEn,
@@ -196,6 +199,77 @@ for (const c of cards) {
   }
 }
 
+// ---- 大会データ（data/meta/meta.json）と攻略記事の組み合わせ（data/combos.yaml） ----
+
+const outById = new Map(out.map((c) => [c.id, c]));
+type RawMeta = Omit<AppMeta, "archetypes"> & { archetypes: (Omit<AppArchetype, "nameJa" | "keys" | "nameEn"> & { name: string })[] };
+const metaFile = join(DATA, "meta/meta.json");
+const rawMeta: RawMeta | undefined = existsSync(metaFile) ? JSON.parse(readFileSync(metaFile, "utf8")) : undefined;
+let meta: AppMeta | undefined;
+if (rawMeta) {
+  const archetypes = rawMeta.archetypes.map((a): AppArchetype => {
+    // デッキ名（英語）に出てくるカード名を、よく入っているカードの中から探して日本語にする
+    const lower = a.name.toLowerCase();
+    const keys = a.cards
+      .filter((x) => x.rate >= 0.3)
+      .map((x) => outById.get(x.id)!)
+      .filter((c) => c && lower.includes(c.nameEn.toLowerCase()))
+      .map((c) => ({ c, at: lower.indexOf(c.nameEn.toLowerCase()), len: c.nameEn.length }))
+      // 「Lucario」は「Mega Lucario ex」の一部でもあるので、長い名前に含まれる短い名前は、別の場所にも出てくるときだけ数える
+      .filter((k, _, all) => !all.some((o) => o !== k && o.len > k.len && o.c.nameEn.toLowerCase().includes(k.c.nameEn.toLowerCase()) && lower.split(k.c.nameEn.toLowerCase()).length - 1 <= 1))
+      .sort((x, y) => x.at - y.at);
+    const uniq = [...new Map(keys.map((k) => [k.c.nameEn, k.c])).values()];
+    return {
+      id: a.id,
+      nameEn: a.name,
+      nameJa: uniq.length ? uniq.map((c) => c.nameJa).join("＆") : a.name,
+      keys: uniq.map((c) => c.id),
+      share: a.share,
+      decks: a.decks,
+      cards: a.cards.filter((x) => outById.has(x.id)).map((x) => ({ id: x.id, rate: x.rate })),
+    };
+  });
+  meta = { fetchedAt: rawMeta.fetchedAt, days: rawMeta.days, tournaments: rawMeta.tournaments, decks: rawMeta.decks, usage: rawMeta.usage, archetypes, pairs: rawMeta.pairs };
+  console.log(`大会データ: デッキ ${rawMeta.decks} 件 / アーキタイプ ${archetypes.length} 件 / 組 ${rawMeta.pairs.length} 件`);
+}
+
+const combosFile = join(DATA, "combos.yaml");
+const combos: AppCombo[] = [];
+if (existsSync(combosFile)) {
+  const usage = meta?.usage ?? {};
+  const resolve = (ref: string): string => {
+    if (/^[a-z0-9]+-\d{3}$/.test(ref)) {
+      if (!outById.has(ref)) throw new Error(`combos.yaml: カードIDが無い: ${ref}`);
+      return ref;
+    }
+    const [name, set] = ref.split("@");
+    const cs = out.filter((c) => c.nameJa === name && (!set || c.sets.includes(set) || c.id.startsWith(`${set}-`)));
+    if (!cs.length) throw new Error(`combos.yaml: カードが見つからない: ${ref}`);
+    // 同じ名前が複数あれば、大会でいちばん使われているもの
+    return cs.sort((a, b) => (usage[b.id] ?? 0) - (usage[a.id] ?? 0) || a.order - b.order)[0].id;
+  };
+  const doc = loadYaml(readFileSync(combosFile, "utf8")) as { deck: string; source: string; combos: { cards: string[]; reason: string }[] }[];
+  for (const d of doc) for (const c of d.combos) combos.push({ cards: c.cards.map(resolve), reason: c.reason, deck: d.deck, source: d.source });
+  console.log(`攻略記事の組み合わせ: ${combos.length} 件`);
+}
+
+// トレーナーズが効く相手（効果文を読んで書いた表）
+const helpsFile = join(DATA, "trainer-synergy.yaml");
+const helps: AppHelp[] = [];
+if (existsSync(helpsFile)) {
+  const doc = loadYaml(readFileSync(helpsFile, "utf8")) as Record<string, { to: HelpTarget; label: string; weight?: number }[]>;
+  const tagIds = new Set(tax.map((t) => t.id));
+  for (const [id, list] of Object.entries(doc)) {
+    const c = outById.get(id);
+    if (!c || c.kind === "pokemon") throw new Error(`trainer-synergy.yaml: トレーナーズではない: ${id}`);
+    for (const h of list) {
+      for (const t of h.to.tags ?? []) if (!tagIds.has(t)) throw new Error(`trainer-synergy.yaml: タグが無い: ${t}（${id}）`);
+      helps.push({ card: id, to: h.to, label: h.label, weight: h.weight ?? 1.2 });
+    }
+  }
+  console.log(`トレーナーズの効く相手: ${helps.length} 件`);
+}
+
 const data: AppData = {
   builtAt: new Date().toISOString(),
   sets: [...setMap.values()].sort((a, b) => a.released.localeCompare(b.released) || a.code.localeCompare(b.code)),
@@ -207,6 +281,9 @@ const data: AppData = {
     ...(t.requires ? { requires: t.requires } : {}),
   })),
   lexicon,
+  ...(meta ? { meta } : {}),
+  ...(combos.length ? { combos } : {}),
+  ...(helps.length ? { helps } : {}),
 };
 mkdirSync(join(ROOT, "src/data"), { recursive: true });
 writeFileSync(join(ROOT, "src/data/app-data.json"), JSON.stringify(data));

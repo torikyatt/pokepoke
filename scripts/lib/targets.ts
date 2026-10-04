@@ -44,8 +44,16 @@ export function selectorOf(supply: string, raw: string, refs: string[]): Selecto
   }
   const hp = t.match(/maximum HP of (\d+) or less/);
   if (hp) sel.preHpMax = Number(hp[1]);
+  if (supply === "supply.search.pokemon") {
+    // ルチア「Basic Pokémon with 50 HP or less」、セレナ「Mega Evolution Pokémon ex」
+    const own = t.match(/with (\d+) HP or less/);
+    if (own) sel.hpMax = Number(own[1]);
+    if (/Mega Evolution Pokémon ex/.test(t)) sel.rules = ["mega_ex"];
+    if (/Basic \[[A-Z]\] Pokémon/.test(t)) sel.stages = ["basic"];
+  }
   const groups: CardGroup[] = [];
   if (/Ultra Beasts?/.test(t)) groups.push("ultra_beast");
+  if (supply === "supply.search.pokemon" && /Team Rocket/.test(t)) groups.push("team_rocket");
   if (/Ancient Pokémon/.test(t)) groups.push("ancient");
   if (/Future Pokémon/.test(t)) groups.push("future");
   if (groups.length) sel.groups = groups;

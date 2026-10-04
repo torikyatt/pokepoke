@@ -4,11 +4,12 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { createEngine } from "./engine.ts";
+import { createSynergy } from "../synergy.ts";
 import { normalize } from "./normalize.ts";
 import type { AppData } from "../types.ts";
 
 const data: AppData = JSON.parse(readFileSync(join(import.meta.dirname, "../data/app-data.json"), "utf8"));
-const engine = createEngine(data);
+const engine = createEngine(data, { partners: createSynergy(data).partners });
 const ids = (q: string, n = 50) => engine.search(q).slice(0, n).map((h) => h.card.id);
 
 describe("正規化", () => {
@@ -109,5 +110,22 @@ describe("ベビーポケモン", () => {
       expect(hits.length).toBeGreaterThanOrEqual(14);
       for (const h of hits) expect(h.card.groups).toContain("baby");
     }
+  });
+});
+
+describe.skipIf(!data.meta)("実際の使われ方で探す", () => {
+  const top = (q: string, n = 10) => engine.run(engine.parse(q), Infinity).sort((a, b) => b.score - a.score).slice(0, n).map((h) => h.card.id);
+  it("「メガルカリオexデッキ」はそのデッキでよく使われるカード", () => {
+    const ids = top("メガルカリオexデッキ");
+    expect(ids).toContain("b3-081");
+    expect(ids).toContain("a2-092");
+  });
+  it("「ミライドンexと相性がいいカード」はレアコイルが上位", () => {
+    expect(top("ミライドンexと相性がいいカード", 3)).toContain("a1-098");
+  });
+  it("「大会でよく使われるサポート」はサポートだけで、アカギが入る", () => {
+    const hits = engine.search("大会でよく使われるサポート", 20);
+    expect(hits.every((h) => h.card.kind === "supporter")).toBe(true);
+    expect(hits.map((h) => h.card.id)).toContain("a2-150");
   });
 });

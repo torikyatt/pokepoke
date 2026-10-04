@@ -111,6 +111,7 @@
         - 'opponent shuffle their hand'
     - id: draw.search_pokemon
       ja: 山札からポケモンを持ってくる
+      supplies: [supply.search.pokemon]
       match:
         - '[Pp]ut (a|1|2|3) random (?!(Item|Supporter|Pokémon Tool|Stadium))[^.]* from (your|their) deck (into|onto) (your|their) (hand|Bench)'
         - 'puts? a random (Basic )?(\[[A-Z]\] )?Pokémon from (your|their) deck into'

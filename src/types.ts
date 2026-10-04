@@ -83,6 +83,8 @@ export interface Selector {
   stages?: Stage[];
   groups?: CardGroup[];
   preHpMax?: number; // 進化元のHPがこれ以下
+  hpMax?: number; // そのポケモン自身のHPがこれ以下（ルチアなど）
+  rules?: Rule[]; // メガシンカex だけ など
   etypes?: EnergyType[]; // トラッシュに送る・使うエネのタイプ
   repeat?: true; // 毎ターン使える（特性・スタジアム・どうぐ）
   kinds?: ("pokemon" | "trainer")[]; // ポケモン（のワザ）だけ・トレーナーズだけ
@@ -119,12 +121,65 @@ export interface AppSet {
   released: string;
 }
 
+/** 大会で使われたデッキタイプ（アーキタイプ） */
+export interface AppArchetype {
+  id: string;
+  nameJa: string; // 「メガルカリオex＆ルカリオ」
+  nameEn: string;
+  keys: string[]; // デッキ名になっているカード
+  share: number; // 勝ち越したデッキの中での割合
+  decks: number;
+  cards: { id: string; rate: number }[]; // 採用率（10%以上）
+}
+/** 大会データ（Limitless の大会結果を集計したもの） */
+export interface AppMeta {
+  fetchedAt: string;
+  days: number;
+  tournaments: number;
+  decks: number;
+  usage: Record<string, number>; // カードごとの採用率
+  archetypes: AppArchetype[];
+  // 一緒に使われる組: [a, b, 一緒に入っていたデッキ数, aのデッキのうちbも入っている割合, bのデッキのうちaも入っている割合]
+  pairs: [string, string, number, number, number][];
+}
+/** トレーナーズが効く相手の条件（data/trainer-synergy.yaml） */
+export interface HelpTarget {
+  types?: EnergyType[];
+  stages?: Stage[];
+  groups?: CardGroup[];
+  rules?: Rule[];
+  notRules?: Rule[];
+  retreatMin?: number;
+  attacks?: string[]; // ワザの英語名
+  cost?: { type: EnergyType; min: number };
+  multiType?: boolean;
+  tags?: string[];
+  kinds?: CardKind[];
+}
+export interface AppHelp {
+  card: string; // トレーナーズ
+  to: HelpTarget;
+  label: string;
+  weight: number;
+}
+
+/** 攻略記事で紹介されている組み合わせ */
+export interface AppCombo {
+  cards: string[];
+  reason: string;
+  deck: string;
+  source: string;
+}
+
 export interface AppData {
   builtAt: string;
   sets: AppSet[];
   cards: AppCard[];
   tags: AppTag[];
   lexicon: LexEntry[];
+  meta?: AppMeta;
+  combos?: AppCombo[];
+  helps?: AppHelp[];
 }
 
 export const TYPE_JA: Record<EnergyType, string> = {

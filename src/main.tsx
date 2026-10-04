@@ -106,7 +106,8 @@ function App() {
   useEffect(() => {
     loadData()
       .then((data) => {
-        setCtx({ data, engine: createEngine(data), synergy: createSynergy(data), byId: new Map(data.cards.map((c) => [c.id, c])) });
+        const synergy = createSynergy(data);
+        setCtx({ data, engine: createEngine(data, { partners: synergy.partners }), synergy, byId: new Map(data.cards.map((c) => [c.id, c])) });
       })
       .catch((e) => setError(String(e)));
   }, []);

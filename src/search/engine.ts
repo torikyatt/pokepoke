@@ -26,13 +26,20 @@ export type Cond = { id: string; label: string; weight?: number } & (
   | { kind: "weakness"; type: EnergyType }
   | { kind: "name"; name: string }
   | { kind: "text"; term: string }
+  | { kind: "deck"; archs: string[] } // 大会のデッキタイプに入っているカード
+  | { kind: "partner"; cards: string[] } // そのカードと相性のいいカード
+  | { kind: "meta" } // 大会でよく使われるカード
 );
+
+/** 並べる順の点数に効く条件（ないときは図鑑順で並べる） */
+export const SCORED_KINDS: Cond["kind"][] = ["tag", "variable", "name", "text", "deck", "partner", "meta"];
 
 export interface Hit {
   card: AppCard;
   score: number;
   matched: string[]; // 一致した条件のID
   effects: string[]; // 一致したワザ・特性の名前
+  note?: string; // 大会データでの数字（「採用率 95%」など）
 }
 
 const OP_JA: Record<Op, string> = { eq: "", ge: "以上", le: "以下" };
@@ -53,7 +60,12 @@ const CMP = "(以上|以下|まで|以内|未満|超え|超)?";
 // 検索文から外す言葉（全文検索語に残しても意味がない）
 const FILLER = /^(によつて|よつて|について|の|が|を|に|で|と|は|も|や|へ|な|だ|から|まで|して|する|できる|される|いる|ある|いい|よい|系|やつ|もの|こと|かんじ|感じ|よう|ような|ように|ようにする|ほしい|欲しい|さがして|探して|おしえて|教えて|ください|かど|ぽけもん|ひつよう|必要|えねが|えねは|でいい|強い|つよい|一覧|全部)+|(の|が|を|に|で|と|は|も|や|へ|な|だ|する|できる|いい|系|やつ|もの|かど|かんじ|よう|ような|ように|ようにする|でいい)+$/g;
 
-export function createEngine(data: AppData) {
+export interface EngineOptions {
+  /** 相性のいいカード（「〇〇と相性がいい」の検索に使う） */
+  partners?: (c: AppCard, limit?: number) => { card: AppCard; score: number }[];
+}
+
+export function createEngine(data: AppData, opts: EngineOptions = {}) {
   const tagJa = new Map(data.tags.map((t) => [t.id, t.ja]));
   // 表現辞書（正規化済み表現 → 項目）
   const lex = new Map<string, LexEntry[]>();
@@ -66,6 +78,55 @@ export function createEngine(data: AppData) {
   }
   // カード名（正規化）。3文字以上だけ（短い名前は他の言葉に紛れる）
   const names = [...new Set(data.cards.map((c) => normalize(c.nameJa).replace(/ /g, "")))].filter((n) => n.length >= 3).sort((a, b) => b.length - a.length);
+  // 大会のデッキタイプ: 「メガルカリオex＆ルカリオ」のような名前全体と、デッキ名になっているカードの名前（ex を省いた形も）
+  const archetypes = data.meta?.archetypes ?? [];
+  const archById = new Map(archetypes.map((a) => [a.id, a]));
+  const deckWords: { word: string; archs: string[]; label: string }[] = [];
+  {
+    const byWord = new Map<string, { archs: Set<string>; label: string }>();
+    const addWord = (w: string, arch: string, label: string) => {
+      if (w.length < 2) return;
+      const e = byWord.get(w) ?? byWord.set(w, { archs: new Set(), label }).get(w)!;
+      e.archs.add(arch);
+    };
+    const byIdAll = new Map(data.cards.map((c) => [c.id, c]));
+    for (const a of archetypes) {
+      addWord(normalize(a.nameJa).replace(/ /g, ""), a.id, a.nameJa);
+      for (const k of a.keys) {
+        const nm = byIdAll.get(k)?.nameJa;
+        if (!nm) continue;
+        const w = normalize(nm).replace(/ /g, "");
+        addWord(w, a.id, nm);
+        addWord(w.replace(/ex$/, ""), a.id, nm.replace(/ex$/, ""));
+      }
+    }
+    for (const [word, v] of byWord) deckWords.push({ word, archs: [...v.archs], label: v.label });
+    deckWords.sort((a, b) => b.word.length - a.word.length);
+  }
+  // 「〇〇と相性がいい」の〇〇に使うカード名（2文字以上）
+  const partnerNames = [...new Set(data.cards.map((c) => normalize(c.nameJa).replace(/ /g, "")))].filter((n) => n.length >= 2).sort((a, b) => b.length - a.length);
+  const cardsByName = new Map<string, AppCard[]>();
+  for (const c of data.cards) {
+    const n = normalize(c.nameJa).replace(/ /g, "");
+    (cardsByName.get(n) ?? cardsByName.set(n, []).get(n)!).push(c);
+  }
+  const partnerCache = new Map<string, Map<string, number>>();
+  const partnerScores = (ids: string[]) => {
+    const key = ids.join(",");
+    let m = partnerCache.get(key);
+    if (!m) {
+      m = new Map();
+      for (const id of ids) {
+        const c = data.cards.find((x) => x.id === id);
+        if (!c || !opts.partners) continue;
+        for (const p of opts.partners(c, 80)) m.set(p.card.id, Math.max(m.get(p.card.id) ?? 0, p.score));
+      }
+      partnerCache.set(key, m);
+    }
+    return m;
+  };
+  const usage = data.meta?.usage ?? {};
+
   // 全文検索用の文（カードごと）
   const haystack = new Map<string, { ja: string; en: string; name: string }>();
   for (const c of data.cards) {
@@ -101,13 +162,40 @@ export function createEngine(data: AppData) {
     };
     let q = normalize(query);
 
-    // 1. 数値パターン
     const take = (re: RegExp, f: (m: RegExpExecArray) => void) => {
       q = q.replace(re, (...args) => {
         f(args.slice(0, -2) as unknown as RegExpExecArray);
         return " ";
       });
     };
+    const esc = (w: string) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+    // 0. 実際の使われ方
+    //   「メガルカリオexデッキ」「ルカリオのデッキ」 → 大会のデッキタイプに入っているカード
+    for (const d of deckWords) {
+      take(new RegExp(`${esc(d.word)}(?:の)?(?:でつき|型|がた)`, "g"), () => {
+        const label = d.archs.length === 1 ? `「${archById.get(d.archs[0])!.nameJa}」デッキ` : `「${d.label}」のデッキ`;
+        add({ id: `deck:${d.archs.join(",")}`, kind: "deck", archs: d.archs, label, weight: 2 });
+      });
+    }
+    //   「ミライドンexと相性がいい」「レアコイルと組める」 → 相性のいいカード
+    if (opts.partners) {
+      for (const n of partnerNames) {
+        if (!q.includes(n)) continue;
+        take(new RegExp(`${esc(n)}(?:と|との|に)(?:の)?(?:相性|あいしよう|しなじ|一緒|いつしよ|組み合わせ|くみあわせ|組め|くめ|合う|あう|合わせ|あわせ)(?:が|の)?(?:いい|良い|よい|ある|抜群|ばつぐん)?`, "g"), () => {
+          const ids = cardsByName.get(n)!.map((c) => c.id);
+          add({ id: `partner:${n}`, kind: "partner", cards: ids, label: `「${cardsByName.get(n)![0].nameJa}」と相性がいい`, weight: 2 });
+        });
+      }
+    }
+    //   「大会でよく使われる」「環境で人気」「採用率が高い」 → 大会での採用率
+    if (data.meta) {
+      take(/(?:大会|環境|めたげむ)(?:で|に|の)?(?:よく)?(?:使われ(?:る|て(?:いる|る)?)|つかわれ(?:る|て(?:いる|る)?)|採用され(?:る|て(?:いる|る)?)|入(?:る|つて(?:いる|る)?)|はい(?:る|つて(?:いる|る)?)|人気|にんき|流行|はやり|定番|ていばん)?|(?:採用率|使用率)(?:が|の)?(?:高い|たかい)?/g, () => {
+        add({ id: "meta", kind: "meta", label: "大会でよく使われる", weight: 1 });
+      });
+    }
+
+    // 1. 数値パターン
     take(new RegExp(`(?:にげる|逃げる|にげ|逃げ)(?:ための)?(?:えね|こすと|えねるぎ)?(?:が|は)?(\\d+)(?:個|こ|つ)?${CMP}`, "g"), (m) => {
       const op = opOf(m[2]);
       add({ id: `retreat:${op}${m[1]}`, kind: "retreat", op, n: +m[1], label: `にげる${m[1]}${OP_JA[op]}` });
@@ -125,6 +213,13 @@ export function createEngine(data: AppData) {
     take(new RegExp(`弱点(?:が|は)?(${TYPE_RE})`, "g"), (m) => {
       const t = typeOf(m[1]);
       add({ id: `weakness:${t}`, kind: "weakness", type: t, label: `弱点${TYPE_JA[t]}` });
+    });
+    // 攻略記事でよく使われる言い方: 「ワンパン」は大ダメージ、「速攻」は軽いワザ
+    take(/(?:わんぱん|わんぱんち)(?:できる|で(?:きる)?|する|級)?/g, () => {
+      add({ id: "damage:ge150", kind: "damage", op: "ge", n: 150, label: "150ダメージ以上（ワンパン級）" });
+    });
+    take(/速攻(?:で(?:きる)?|する|型)?/g, () => {
+      add({ id: "costTotal:le1", kind: "costTotal", op: "le", n: 1, label: "1エネ以下で使える（速攻）" });
     });
     let typedSum = 0;
     let typedSeen = false;
@@ -203,6 +298,11 @@ export function createEngine(data: AppData) {
     const weak = of("weakness");
     const soft = conds.filter((c) => c.kind === "tag" || c.kind === "variable");
     const texts = of("text"), nameConds = of("name");
+    const decks = of("deck"), partnerConds = of("partner"), metaCond = of("meta")[0];
+    // デッキタイプ: カードごとの、そのデッキへの採用率（いちばん高いもの）
+    const deckRate = new Map<string, number>();
+    for (const d of decks) for (const id of d.archs) for (const c of archById.get(id)?.cards ?? []) if (c.rate >= 0.15) deckRate.set(c.id, Math.max(deckRate.get(c.id) ?? 0, c.rate));
+    const partnerMaps = partnerConds.map((p) => ({ cond: p, map: partnerScores(p.cards) }));
 
     const hits: Hit[] = [];
     for (const card of data.cards) {
@@ -218,12 +318,20 @@ export function createEngine(data: AppData) {
       if (slot === "attack" && !card.attacks.length) continue;
       const okAttacks = atkConds.length ? card.attacks.filter((a) => atkConds.every((c) => attackOk(a, c))) : card.attacks;
       if (atkConds.length && !okAttacks.length) continue;
+      // 実際の使われ方（デッキタイプ・相性・採用率）もハード条件。満たしたら点を足す
+      if (decks.length && !deckRate.has(card.id)) continue;
+      if (partnerMaps.some((p) => !p.map.has(card.id))) continue;
+      if (metaCond && (usage[card.id] ?? 0) < 0.01) continue;
+      let useScore = 0;
+      if (decks.length) useScore += 4 * deckRate.get(card.id)!;
+      for (const p of partnerMaps) useScore += Math.min(4, p.map.get(card.id)!);
+      if (metaCond) useScore += Math.min(4, 8 * (usage[card.id] ?? 0));
 
       // ソフト条件: ワザ・特性ごとに数え、同じワザ内でそろうと加点
       const effects = effectsOf(card).filter((e) => !slot || e.slot === slot || (e.slot === "text" && slot === "attack" && card.kind !== "pokemon"));
       const matched = new Set<string>();
       const effectNames = new Set<string>();
-      let score = 0;
+      let score = useScore;
       const best = new Map<string, number>();
       for (const e of effects) {
         let local = 0;
@@ -244,6 +352,8 @@ export function createEngine(data: AppData) {
         score += w;
         matched.add(id);
       }
+      // 効果で探したとき、同じくらい当てはまるなら大会でよく使われている（採用率1%以上の）カードを少し上に
+      if (best.size && (usage[card.id] ?? 0) >= 0.01) score += Math.min(0.1, usage[card.id]);
       if (soft.length && !best.size && !nameConds.length && !texts.length) continue;
 
       const h = haystack.get(card.id)!;
@@ -263,7 +373,8 @@ export function createEngine(data: AppData) {
       if ((soft.length || nameConds.length || texts.length) && !matched.size) continue;
       for (const c of conds) if (!["tag", "variable", "name", "text"].includes(c.kind)) matched.add(c.id);
       if (atkConds.length) for (const a of okAttacks) effectNames.add(a.nameJa ?? a.nameEn ?? "");
-      hits.push({ card, score, matched: [...matched], effects: [...effectNames].filter(Boolean) });
+      const note = decks.length ? `採用率 ${Math.round(deckRate.get(card.id)! * 100)}%` : metaCond ? `大会で ${((usage[card.id] ?? 0) * 100).toFixed(1)}%` : undefined;
+      hits.push({ card, score, matched: [...matched], effects: [...effectNames].filter(Boolean), ...(note ? { note } : {}) });
     }
     hits.sort((a, b) => b.score - a.score || order(a.card) - order(b.card));
     return hits.slice(0, limit);
