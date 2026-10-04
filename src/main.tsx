@@ -5,7 +5,7 @@ import { DataContext, type Ctx } from "./context.tsx";
 import { loadData } from "./data/load.ts";
 import "./index.css";
 import { CardPage } from "./pages/CardPage.tsx";
-import { DeckPage, SharePage } from "./pages/DeckPage.tsx";
+import { DeckBuilderPage, DeckListPage, DeckViewPage, SharePage } from "./pages/DeckPage.tsx";
 import { SearchPage } from "./pages/SearchPage.tsx";
 import { SettingsPage } from "./pages/SettingsPage.tsx";
 import { useRoute } from "./router.ts";
@@ -22,7 +22,8 @@ function Routes() {
     case "card":
       return <CardPage id={parts[1]} />;
     case "deck":
-      return <DeckPage />;
+      if (!parts[1]) return <DeckListPage />;
+      return parts[2] === "edit" ? <DeckBuilderPage id={parts[1]} /> : <DeckViewPage id={parts[1]} />;
     case "share":
       return <SharePage code={parts[1] ?? ""} />;
     case "settings":
@@ -40,6 +41,21 @@ function Routes() {
   }
 }
 
+// デッキ編集中は本体アプリと同じく全画面（下のナビを出さない）
+function Shell() {
+  const { parts } = useRoute();
+  const building = parts[0] === "deck" && parts[2] === "edit";
+  return (
+    <>
+      <main className={`mx-auto min-h-dvh max-w-5xl ${building ? "" : "pb-24"}`}>
+        <Routes />
+      </main>
+      <Toast />
+      {!building && <BottomNav />}
+    </>
+  );
+}
+
 function App() {
   const [ctx, setCtx] = useState<Ctx>();
   const [error, setError] = useState<string>();
@@ -54,25 +70,21 @@ function App() {
     return (
       <div className="p-6 text-sm">
         データを読み込めませんでした。新しめのブラウザで開いてください。
-        <pre className="mt-2 text-xs whitespace-pre-wrap text-slate-500">{error}</pre>
+        <pre className="mt-2 text-xs whitespace-pre-wrap text-muted">{error}</pre>
       </div>
     );
   if (!ctx)
     return (
-      <div className="flex h-dvh items-center justify-center text-sm text-slate-500">
-        <div className="text-center">
-          <div className="mx-auto mb-3 h-8 w-8 animate-spin rounded-full border-4 border-slate-300 border-t-red-600" />
+      <div className="flex h-dvh items-center justify-center text-sm text-muted">
+        <div className="text-center font-bold">
+          <div className="mx-auto mb-3 h-8 w-8 animate-spin rounded-full border-4 border-line border-t-accent" />
           カードデータを展開中…
         </div>
       </div>
     );
   return (
     <DataContext.Provider value={ctx}>
-      <main className="mx-auto min-h-dvh max-w-5xl pb-20">
-        <Routes />
-      </main>
-      <Toast />
-      <BottomNav />
+      <Shell />
     </DataContext.Provider>
   );
 }

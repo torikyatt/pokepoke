@@ -1,28 +1,28 @@
 import { useRef, type ReactNode } from "react";
 import { thumbUrl } from "../data/load.ts";
 import { navigate, useRoute } from "../router.ts";
-import { useDecks, useToast } from "../store.ts";
+import { useToast } from "../store.ts";
 import type { AppCard, EnergyType } from "../types.ts";
 import { TYPE_JA } from "../types.ts";
 
 const TYPE_STYLE: Record<EnergyType, string> = {
-  grass: "bg-green-600 text-white",
-  fire: "bg-red-600 text-white",
-  water: "bg-sky-600 text-white",
-  lightning: "bg-yellow-400 text-slate-900",
-  psychic: "bg-purple-600 text-white",
-  fighting: "bg-orange-700 text-white",
-  darkness: "bg-teal-900 text-white",
-  metal: "bg-slate-500 text-white",
-  dragon: "bg-amber-600 text-white",
-  colorless: "bg-slate-200 text-slate-800",
+  grass: "bg-[#5cb85c] text-white",
+  fire: "bg-[#e8574a] text-white",
+  water: "bg-[#3d9be9] text-white",
+  lightning: "bg-[#f2c831] text-[#5a4300]",
+  psychic: "bg-[#a65fd1] text-white",
+  fighting: "bg-[#c4703a] text-white",
+  darkness: "bg-[#2f5a64] text-white",
+  metal: "bg-[#8d99a6] text-white",
+  dragon: "bg-[#c9a43a] text-white",
+  colorless: "bg-white text-[#7a8796] ring-1 ring-[#d5dde7]",
 };
 
-export function EnergyIcon({ type, size = "md" }: { type: EnergyType; size?: "sm" | "md" | "lg" }) {
-  const s = size === "sm" ? "h-4 w-4 text-[9px]" : size === "lg" ? "h-7 w-7 text-sm" : "h-5 w-5 text-[11px]";
+export function EnergyIcon({ type, size = "md" }: { type: EnergyType; size?: "sm" | "md" | "lg" | "xl" }) {
+  const s = { sm: "h-4 w-4 text-[9px]", md: "h-5 w-5 text-[11px]", lg: "h-7 w-7 text-sm", xl: "h-9 w-9 text-base" }[size];
   const label = type === "colorless" ? "無" : type === "dragon" ? "竜" : TYPE_JA[type];
   return (
-    <span title={TYPE_JA[type]} className={`inline-flex shrink-0 items-center justify-center rounded-full font-bold leading-none ${s} ${TYPE_STYLE[type]}`}>
+    <span title={TYPE_JA[type]} className={`inline-flex shrink-0 items-center justify-center rounded-full font-extrabold leading-none shadow-sm ${s} ${TYPE_STYLE[type]}`}>
       {label}
     </span>
   );
@@ -31,7 +31,7 @@ export function EnergyIcon({ type, size = "md" }: { type: EnergyType; size?: "sm
 export function Cost({ cost }: { cost: Partial<Record<EnergyType, number>> }) {
   const list = (Object.entries(cost) as [EnergyType, number][]).flatMap(([t, n]) => Array(n).fill(t) as EnergyType[]);
   list.sort((a, b) => (a === "colorless" ? 1 : 0) - (b === "colorless" ? 1 : 0));
-  if (!list.length) return <span className="text-xs text-slate-400">なし</span>;
+  if (!list.length) return <span className="text-xs text-muted">なし</span>;
   return (
     <span className="inline-flex gap-0.5">
       {list.map((t, i) => (
@@ -41,61 +41,73 @@ export function Cost({ cost }: { cost: Partial<Record<EnergyType, number>> }) {
   );
 }
 
-export function Chip({ children, onClick, active, tone = "slate", title }: { children: ReactNode; onClick?: () => void; active?: boolean; tone?: "slate" | "blue" | "amber"; title?: string }) {
-  const tones = {
-    slate: active ? "bg-slate-800 text-white dark:bg-slate-100 dark:text-slate-900" : "bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-200",
-    blue: "bg-blue-100 text-blue-900 dark:bg-blue-900/60 dark:text-blue-100",
-    amber: "bg-amber-100 text-amber-900 dark:bg-amber-900/50 dark:text-amber-100",
-  };
-  const cls = `inline-flex shrink-0 items-center gap-1 rounded-full px-2.5 py-1 text-xs whitespace-nowrap ${tones[tone]}`;
+/** 丸い選択チップ（選ぶとティール色） */
+export function Chip({ children, onClick, active, tone = "plain", title }: { children: ReactNode; onClick?: () => void; active?: boolean; tone?: "plain" | "match" | "text"; title?: string }) {
+  const base = "inline-flex shrink-0 items-center gap-1 rounded-full px-3 py-1.5 text-xs font-bold whitespace-nowrap transition";
+  const cls = active
+    ? "bg-accent text-white shadow-[inset_0_2px_4px_rgb(0_0_0/0.15)]"
+    : tone === "match"
+      ? "bg-[#dff4f1] text-accent-deep"
+      : tone === "text"
+        ? "bg-[#fdf1d8] text-[#9a6b12]"
+        : "neu-sm text-ink";
   return onClick ? (
-    <button type="button" title={title} onClick={onClick} className={`${cls} active:opacity-70`}>
+    <button type="button" title={title} onClick={onClick} className={`${base} ${cls} active:scale-95`} aria-pressed={active}>
       {children}
     </button>
   ) : (
-    <span title={title} className={cls}>
+    <span title={title} className={`${base} ${cls}`}>
       {children}
     </span>
   );
 }
 
-/** カード画像。タップで詳細、長押しで onLongPress（デッキに追加） */
-export function CardImage({ card, onLongPress, className = "", footer }: { card: AppCard; onLongPress?: () => void; className?: string; footer?: ReactNode }) {
+/** アプリと同じトグルスイッチ */
+export function Toggle({ on, onChange, label }: { on: boolean; onChange: (v: boolean) => void; label?: string }) {
+  return (
+    <button type="button" role="switch" aria-checked={on} onClick={() => onChange(!on)} className="flex items-center gap-2">
+      {label && <span className="text-sm font-extrabold text-muted">{label}</span>}
+      <span className={`relative h-8 w-14 rounded-full transition-colors ${on ? "bg-gradient-to-r from-accent-deep to-accent" : "neu-in"}`}>
+        <span className={`absolute top-1 h-6 w-6 rounded-full bg-white shadow-md transition-all ${on ? "left-7" : "left-1"}`} />
+      </span>
+    </button>
+  );
+}
+
+/** 長押しとタップを分けて扱うボタン */
+export function Pressable({ onTap, onLongPress, children, className = "", label }: { onTap?: () => void; onLongPress?: () => void; children: ReactNode; className?: string; label?: string }) {
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const long = useRef(false);
   const start = useRef<{ x: number; y: number }>(undefined);
   const cancel = () => clearTimeout(timer.current);
   return (
-    <div className={`relative ${className}`}>
-      <button
-        type="button"
-        className="no-callout block w-full touch-manipulation"
-        onPointerDown={(e) => {
-          long.current = false;
-          start.current = { x: e.clientX, y: e.clientY };
-          if (!onLongPress) return;
-          timer.current = setTimeout(() => {
-            long.current = true;
-            navigator.vibrate?.(30);
-            onLongPress();
-          }, 450);
-        }}
-        onPointerMove={(e) => {
-          if (start.current && Math.hypot(e.clientX - start.current.x, e.clientY - start.current.y) > 10) cancel();
-        }}
-        onPointerUp={cancel}
-        onPointerLeave={cancel}
-        onPointerCancel={cancel}
-        onContextMenu={(e) => e.preventDefault()}
-        onClick={() => {
-          if (!long.current) navigate(`/card/${card.id}`);
-        }}
-        aria-label={card.nameJa}
-      >
-        <Thumb card={card} />
-      </button>
-      {footer}
-    </div>
+    <button
+      type="button"
+      aria-label={label}
+      className={`no-callout block w-full touch-manipulation transition-transform active:scale-[0.97] ${className}`}
+      onPointerDown={(e) => {
+        long.current = false;
+        start.current = { x: e.clientX, y: e.clientY };
+        if (!onLongPress) return;
+        timer.current = setTimeout(() => {
+          long.current = true;
+          navigator.vibrate?.(25);
+          onLongPress();
+        }, 450);
+      }}
+      onPointerMove={(e) => {
+        if (start.current && Math.hypot(e.clientX - start.current.x, e.clientY - start.current.y) > 10) cancel();
+      }}
+      onPointerUp={cancel}
+      onPointerLeave={cancel}
+      onPointerCancel={cancel}
+      onContextMenu={(e) => e.preventDefault()}
+      onClick={() => {
+        if (!long.current) onTap?.();
+      }}
+    >
+      {children}
+    </button>
   );
 }
 
@@ -109,7 +121,7 @@ export function Thumb({ card, className = "" }: { card: AppCard; className?: str
       draggable={false}
       width={160}
       height={223}
-      className={`aspect-[367/512] w-full rounded-md bg-slate-200 object-cover shadow-sm dark:bg-slate-800 ${className}`}
+      className={`aspect-[367/512] w-full rounded-md bg-line object-cover ${className}`}
       onError={(e) => {
         const img = e.currentTarget;
         if (img.src !== card.image) img.src = card.image;
@@ -118,55 +130,61 @@ export function Thumb({ card, className = "" }: { card: AppCard; className?: str
   );
 }
 
+/** 一覧のカード。左下に枚数タブ（アプリと同じ形） */
+export function PoolCard({ card, count, maxed, onTap, onLongPress, compact }: { card: AppCard; count?: number; maxed?: boolean; onTap?: () => void; onLongPress?: () => void; compact?: boolean }) {
+  return (
+    <Pressable onTap={onTap} onLongPress={onLongPress} label={card.nameJa} className="relative rounded-md shadow-[2px_3px_6px_rgb(150_165_185/0.45)]">
+      <Thumb card={card} className={maxed ? "opacity-45" : ""} />
+      {!!count && (
+        <span className={`count-tab absolute bottom-0 left-0 flex w-[56%] items-center justify-center font-extrabold ${compact ? "h-[19%] text-sm" : "h-[17%] text-lg"}`}>
+          {count}
+        </span>
+      )}
+    </Pressable>
+  );
+}
+
 export function Toast() {
   const { message, tone } = useToast();
   if (!message) return null;
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-20 z-50 flex justify-center px-4">
-      <div className={`rounded-lg px-4 py-2 text-sm shadow-lg ${tone === "error" ? "bg-red-600 text-white" : "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900"}`}>
-        {message}
-      </div>
+    <div className="pointer-events-none fixed inset-x-0 bottom-28 z-[60] flex justify-center px-4">
+      <div className={`pop-in rounded-full px-4 py-2 text-sm font-bold shadow-lg ${tone === "error" ? "bg-danger text-white" : "bg-badge text-white"}`}>{message}</div>
     </div>
   );
 }
 
 export function BottomNav() {
   const { parts } = useRoute();
-  const deck = useDecks((s) => s.decks.find((d) => d.id === s.currentId));
   const tab = parts[0] === "deck" || parts[0] === "share" ? "deck" : parts[0] === "settings" ? "settings" : "search";
-  const item = (key: string, label: string, path: string, icon: ReactNode, badge?: string) => (
-    <button
-      type="button"
-      onClick={() => navigate(path)}
-      className={`relative flex flex-1 flex-col items-center gap-0.5 py-2 text-[11px] ${tab === key ? "text-red-600 dark:text-red-400" : "text-slate-500"}`}
-    >
+  const item = (key: string, label: string, path: string, icon: ReactNode) => (
+    <button type="button" onClick={() => navigate(path)} className={`flex flex-1 flex-col items-center gap-0.5 py-2 text-[11px] font-bold ${tab === key ? "text-accent" : "text-muted"}`}>
       {icon}
       {label}
-      {badge && <span className="absolute top-1 left-1/2 ml-2 rounded-full bg-red-600 px-1.5 text-[10px] leading-4 text-white">{badge}</span>}
     </button>
   );
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur dark:border-slate-800 dark:bg-slate-900/95">
+    <nav className="neu fixed inset-x-0 bottom-0 z-40 rounded-t-3xl pb-[env(safe-area-inset-bottom)]">
       <div className="mx-auto flex max-w-3xl">
-        {item("search", "検索", "/", <IconSearch />)}
-        {item("deck", "デッキ", "/deck", <IconDeck />, deck ? `${deck.cards.length}` : undefined)}
+        {item("search", "カード", "/", <IconSearch />)}
+        {item("deck", "デッキ", "/deck", <IconDeck />)}
         {item("settings", "設定", "/settings", <IconGear />)}
       </div>
     </nav>
   );
 }
 
-const svg = "h-6 w-6 fill-none stroke-current stroke-2";
-const IconSearch = () => (
-  <svg viewBox="0 0 24 24" className={svg} aria-hidden>
+const svg = "h-6 w-6 fill-none stroke-current stroke-[2.2]";
+export const IconSearch = ({ className = svg }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} aria-hidden>
     <circle cx="11" cy="11" r="7" />
     <path d="m20 20-3.5-3.5" strokeLinecap="round" />
   </svg>
 );
-const IconDeck = () => (
-  <svg viewBox="0 0 24 24" className={svg} aria-hidden>
-    <rect x="6" y="3" width="12" height="16" rx="2" />
-    <path d="M9 21h10a2 2 0 0 0 2-2V7" strokeLinecap="round" />
+export const IconDeck = ({ className = svg }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} aria-hidden>
+    <rect x="5" y="4" width="12" height="16" rx="2" />
+    <path d="M9 2h8a2 2 0 0 1 2 2v12" strokeLinecap="round" />
   </svg>
 );
 const IconGear = () => (
@@ -175,19 +193,48 @@ const IconGear = () => (
     <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1" strokeLinecap="round" />
   </svg>
 );
+export const IconSort = () => (
+  <svg viewBox="0 0 32 32" className="h-8 w-8" aria-hidden>
+    <rect x="5" y="4" width="15" height="21" rx="2.5" fill="none" stroke="currentColor" strokeWidth="2.4" />
+    <path d="M9 10h7M9 14h4" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+    <path d="M21 17v11M27 17v11M18.5 20.5h11M18.5 25h11" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+  </svg>
+);
 
-export function Header({ title, back, right }: { title: ReactNode; back?: boolean; right?: ReactNode }) {
+export function Header({ title, back, right }: { title: ReactNode; back?: boolean | (() => void); right?: ReactNode }) {
   return (
-    <header className="sticky top-0 z-30 flex items-center gap-2 border-b border-slate-200 bg-white/95 px-4 py-3 backdrop-blur dark:border-slate-800 dark:bg-slate-900/95">
-      {back && (
-        <button type="button" onClick={() => history.back()} className="-ml-1 rounded p-1 text-slate-500" aria-label="戻る">
-          <svg viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current stroke-2" aria-hidden>
-            <path d="m15 18-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
-      )}
-      <h1 className="min-w-0 flex-1 truncate text-base font-bold">{title}</h1>
-      {right}
+    <header className="sticky top-0 z-30 bg-canvas/95 px-4 pt-3 pb-2 backdrop-blur">
+      <div className="neu flex items-center gap-2 rounded-2xl px-3 py-2.5">
+        {back && (
+          <button type="button" onClick={() => (typeof back === "function" ? back() : history.back())} className="neu-sm neu-press -ml-0.5 flex h-8 w-8 items-center justify-center rounded-full text-muted" aria-label="戻る">
+            <svg viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current stroke-[2.5]" aria-hidden>
+              <path d="m15 18-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+        )}
+        <h1 className="min-w-0 flex-1 truncate text-base font-extrabold">{title}</h1>
+        {right}
+      </div>
     </header>
+  );
+}
+
+/** 画面下からせり上がるシート */
+export function Sheet({ open, onClose, title, children, footer }: { open: boolean; onClose: () => void; title: string; children: ReactNode; footer?: ReactNode }) {
+  if (!open) return null;
+  return (
+    <div className="fixed inset-0 z-50 flex flex-col justify-end" role="dialog" aria-modal="true" aria-label={title}>
+      <button type="button" aria-label="閉じる" className="absolute inset-0 bg-[#3d4757]/35" onClick={onClose} />
+      <div className="sheet-up relative mx-auto flex max-h-[88dvh] w-full max-w-3xl flex-col rounded-t-3xl bg-panel shadow-2xl">
+        <div className="flex items-center justify-between px-5 pt-4 pb-2">
+          <h2 className="text-lg font-extrabold">{title}</h2>
+          <button type="button" onClick={onClose} className="neu-sm neu-press flex h-8 w-8 items-center justify-center rounded-full text-muted" aria-label="閉じる">
+            ✕
+          </button>
+        </div>
+        <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-4">{children}</div>
+        {footer && <div className="border-t border-line px-5 pt-3 pb-[max(1rem,env(safe-area-inset-bottom))]">{footer}</div>}
+      </div>
+    </div>
   );
 }

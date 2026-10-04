@@ -70,6 +70,7 @@ for (const xs of groups.values()) {
   const kind = kindOf(x);
   const prints: Print[] = sorted.map((p) => ({
     id: p.id, set: p.set_code, setName: p.set_name, rarity: p.rarity, image: p.image,
+    released: p.release_date ?? undefined, builderNr: p.deckBuilderNr ?? undefined,
   }));
   const card: Card = {
     id: x.id,

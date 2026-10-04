@@ -75,7 +75,7 @@ export default function ReviewPage() {
           <Chip active={filter === "tag"} onClick={() => setFilter("tag")}>タグで絞る</Chip>
           <Chip active={filter === "all"} onClick={() => setFilter("all")}>全部</Chip>
           {filter === "tag" && (
-            <select value={tag} onChange={(e) => setTag(e.target.value)} className="rounded border px-2 dark:bg-slate-900">
+            <select value={tag} onChange={(e) => setTag(e.target.value)} className="rounded border px-2 ">
               <option value="">タグを選ぶ</option>
               {data.tags.map((t) => (
                 <option key={t.id} value={t.id}>
@@ -84,8 +84,8 @@ export default function ReviewPage() {
               ))}
             </select>
           )}
-          <input value={word} onChange={(e) => setWord(e.target.value)} placeholder="ID・名前" className="rounded border px-2 dark:bg-slate-900" />
-          <span className="text-slate-500">{cards.length} 種</span>
+          <input value={word} onChange={(e) => setWord(e.target.value)} placeholder="ID・名前" className="rounded border px-2 " />
+          <span className="text-muted">{cards.length} 種</span>
         </div>
         <datalist id="tag-ids">
           {data.tags.map((t) => (
@@ -96,28 +96,28 @@ export default function ReviewPage() {
         </datalist>
 
         {cards.slice(0, limit).map((c) => (
-          <div key={c.id} className="flex gap-3 rounded-lg bg-white p-3 dark:bg-slate-900">
+          <div key={c.id} className="flex gap-3 rounded-lg neu p-3">
             <div className="w-16 shrink-0">
               <Thumb card={c} />
-              <div className="mt-1 text-[10px] text-slate-500">{c.id}</div>
+              <div className="mt-1 text-[10px] text-muted">{c.id}</div>
             </div>
             <div className="min-w-0 flex-1 space-y-2">
               <div className="font-bold">
-                {c.nameJa} <span className="font-normal text-slate-500">{c.nameEn}</span>
+                {c.nameJa} <span className="font-normal text-muted">{c.nameEn}</span>
               </div>
               {slotsOf(c).map(([slot, e]) => {
                 const cur = effective(c, slot, e);
                 return (
-                  <div key={slot} className="border-t border-slate-100 pt-2 dark:border-slate-800">
-                    <div className="text-xs text-slate-500">
+                  <div key={slot} className="border-t border-line pt-2 ">
+                    <div className="text-xs text-muted">
                       {slot} {e.nameJa} / {e.nameEn}
                     </div>
                     <div>{e.textJa}</div>
-                    <div className="text-xs text-slate-500">{e.textEn}</div>
+                    <div className="text-xs text-muted">{e.textEn}</div>
                     {e.machine && e.textEn && (
                       <textarea
                         defaultValue={e.textJa}
-                        className="mt-1 w-full rounded border p-1 text-xs dark:bg-slate-950"
+                        className="mt-1 w-full rounded border p-1 text-xs "
                         onBlur={async (ev) => {
                           const ja = ev.target.value.trim();
                           const h = await hashOf(e.textEn!);
@@ -127,14 +127,14 @@ export default function ReviewPage() {
                     )}
                     <div className="mt-1 flex flex-wrap gap-1">
                       {cur.map((t) => (
-                        <Chip key={t} tone="blue" onClick={() => edit(c.id, slot, t, false, e.tags)}>
+                        <Chip key={t} tone="match" onClick={() => edit(c.id, slot, t, false, e.tags)}>
                           {engine.tagJa.get(t) ?? t} ×
                         </Chip>
                       ))}
                       <input
                         list="tag-ids"
                         placeholder="＋タグ"
-                        className="w-28 rounded border px-1 text-xs dark:bg-slate-950"
+                        className="w-28 rounded border px-1 text-xs "
                         onKeyDown={(ev) => {
                           if (ev.key !== "Enter") return;
                           const v = (ev.target as HTMLInputElement).value.trim();
@@ -150,7 +150,7 @@ export default function ReviewPage() {
           </div>
         ))}
         {cards.length > limit && (
-          <button type="button" className="w-full rounded bg-slate-200 py-2 dark:bg-slate-800" onClick={() => setLimit((n) => n + 40)}>
+          <button type="button" className="w-full rounded neu py-2" onClick={() => setLimit((n) => n + 40)}>
             もっと見る
           </button>
         )}

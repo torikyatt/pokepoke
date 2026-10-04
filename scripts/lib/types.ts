@@ -29,6 +29,8 @@ export interface Print {
   setName: string;
   rarity: string;
   image: string;
+  released?: string; // 発売日（YYYY-MM-DD）
+  builderNr?: number; // アプリのデッキ編集画面での並び順
 }
 
 export interface Card {

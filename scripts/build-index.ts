@@ -5,7 +5,7 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 
 import { join } from "node:path";
 import { loadTaxonomy } from "./lib/taxonomy.ts";
 import type { Card, Effect } from "./lib/types.ts";
-import type { AppAttack, AppCard, AppData, AppEffect, EnergyType, LexEntry, Slot } from "../src/types.ts";
+import type { AppAttack, AppCard, AppData, AppEffect, AppSet, EnergyType, LexEntry, Slot } from "../src/types.ts";
 
 const ROOT = join(import.meta.dirname, "..");
 const DATA = join(ROOT, "data");
@@ -76,6 +76,12 @@ const out: AppCard[] = cards.map((c) => {
     attacks,
     prints: c.prints.map((p) => ({ id: p.id, set: p.set, setName: p.setName, rarity: p.rarity })),
     image: c.prints[0].image,
+    order: Math.min(...c.prints.map((p) => p.builderNr ?? 99999)),
+    released: c.prints.map((p) => p.released ?? "9999").sort()[0],
+    rarities: [...new Set(c.prints.map((p) => p.rarity))],
+    sets: [...new Set(c.prints.map((p) => p.set))],
+    maxDamage: Math.max(0, ...c.attacks.map((a) => a.damage ?? 0)),
+    ...(c.attacks.length ? { minCost: Math.min(...c.attacks.map((a) => a.costTotal)) } : {}),
     tags: [...new Set([...(ability?.tags ?? []), ...attacks.flatMap((a) => a.tags), ...(text?.tags ?? [])])].sort(),
     refs: ct.refs,
   };
@@ -91,8 +97,37 @@ const out: AppCard[] = cards.map((c) => {
   return card;
 });
 
+// 収録パックの日本語名: Game8 の収録パック名（「最強の遺伝子ピカチュウ」など）の共通の頭の部分
+const g8: { set: string; pack?: string }[] = JSON.parse(readFileSync(join(DATA, "game8/cards.json"), "utf8"));
+const packNames = new Map<string, Map<string, number>>();
+for (const c of g8) {
+  if (!c.pack || c.pack === "-") continue;
+  const m = packNames.get(c.set) ?? packNames.set(c.set, new Map()).get(c.set)!;
+  m.set(c.pack, (m.get(c.pack) ?? 0) + 1);
+}
+const commonPrefix = (a: string, b: string) => {
+  let i = 0;
+  while (i < a.length && a[i] === b[i]) i++;
+  return a.slice(0, i);
+};
+const setJa = (code: string) => {
+  const g8code = ({ pa: "PROMO-A", pb: "PROMO-B" } as Record<string, string>)[code] ?? code.charAt(0).toUpperCase() + code.slice(1);
+  const top = [...(packNames.get(g8code) ?? [])].sort((a, b) => b[1] - a[1]).map(([n]) => n);
+  if (g8code.startsWith("PROMO") || !top.length) return g8code.replace("PROMO", "プロモ");
+  return top.length > 1 && commonPrefix(top[0], top[1]).length >= 3 ? commonPrefix(top[0], top[1]) : top[0];
+};
+const setMap = new Map<string, AppSet>();
+for (const c of cards) {
+  for (const p of c.prints) {
+    const cur = setMap.get(p.set);
+    if (!cur) setMap.set(p.set, { code: p.set, name: p.setName, nameJa: setJa(p.set), released: p.released ?? "" });
+    else if (p.released && (!cur.released || p.released < cur.released)) cur.released = p.released;
+  }
+}
+
 const data: AppData = {
   builtAt: new Date().toISOString(),
+  sets: [...setMap.values()].sort((a, b) => a.released.localeCompare(b.released) || a.code.localeCompare(b.code)),
   cards: out,
   tags: tax.map((t) => ({
     id: t.id, ja: t.ja,

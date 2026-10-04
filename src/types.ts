@@ -58,7 +58,13 @@ export interface AppCard {
   attacks: AppAttack[];
   text?: AppEffect;
   prints: AppPrint[];
-  image: string; // 高解像度画像（オンライン時）
+  image: string;
+  order: number; // アプリのデッキ編集画面と同じ並び（図鑑順）
+  released: string; // 最初の収録の発売日
+  rarities: string[]; // 収録されているレアリティ（◊ ◊◊ … ☆ … Crown Rare, Promo）
+  sets: string[]; // 収録パック（PocketDecks のセットコード）
+  maxDamage: number; // ワザの最大ダメージ（ワザが無ければ 0）
+  minCost?: number; // いちばん軽いワザのエネ数 // 高解像度画像（オンライン時）
   tags: string[]; // 全効果のタグの和集合
   refs: string[]; // 効果文が名前で指しているカードID
 }
@@ -87,8 +93,16 @@ export interface LexEntry {
   weight: number;
 }
 
+export interface AppSet {
+  code: string; // PocketDecks のセットコード（a1, pa …）
+  name: string; // 英語名
+  nameJa: string; // 日本語名（Game8 の収録パック名から）
+  released: string;
+}
+
 export interface AppData {
   builtAt: string;
+  sets: AppSet[];
   cards: AppCard[];
   tags: AppTag[];
   lexicon: LexEntry[];

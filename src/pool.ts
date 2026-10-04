@@ -1,0 +1,159 @@
+// カード一覧の並べ替えと詳細な絞り込み（検索画面とデッキ編集画面で共通）
+import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
+import type { AppCard, CardGroup, CardKind, EnergyType, Rule, Stage } from "./types.ts";
+
+export type SortKey = "order" | "score" | "hp" | "damage" | "retreat" | "cost" | "name" | "new" | "rarity";
+
+export const SORTS: { key: SortKey; label: string; desc: boolean }[] = [
+  { key: "order", label: "図鑑順", desc: false },
+  { key: "score", label: "一致度順", desc: true },
+  { key: "hp", label: "HP", desc: true },
+  { key: "damage", label: "最大ダメージ", desc: true },
+  { key: "retreat", label: "にげるエネ", desc: false },
+  { key: "cost", label: "ワザのエネ数", desc: false },
+  { key: "rarity", label: "レアリティ", desc: true },
+  { key: "new", label: "新しい順", desc: true },
+  { key: "name", label: "名前順", desc: false },
+];
+
+export interface Filters {
+  types: EnergyType[];
+  kinds: CardKind[];
+  stages: Stage[];
+  rules: Rule[];
+  ability: "" | "yes" | "no";
+  hpMin?: number;
+  hpMax?: number;
+  retreat: number[]; // 4 は「4以上」
+  weakness: EnergyType[];
+  damageMin?: number;
+  costMax?: number;
+  tags: string[]; // どれかを持つ（親タグは子タグも含む）
+  groups: CardGroup[];
+  sets: string[];
+  rarities: string[];
+}
+
+export const EMPTY_FILTERS: Filters = {
+  types: [], kinds: [], stages: [], rules: [], ability: "", retreat: [], weakness: [], tags: [], groups: [], sets: [], rarities: [],
+};
+
+export function activeCount(f: Filters): number {
+  let n = 0;
+  for (const v of Object.values(f)) {
+    if (Array.isArray(v)) n += v.length ? 1 : 0;
+    else if (v !== undefined && v !== "") n += 1;
+  }
+  return n;
+}
+
+const has = <T>(list: T[], v: T | undefined) => !list.length || (v !== undefined && list.includes(v));
+
+export function matchFilters(c: AppCard, f: Filters): boolean {
+  if (f.types.length && !f.types.some((t) => c.type === t || c.typeRefs.includes(t))) return false;
+  if (!has(f.kinds, c.kind)) return false;
+  if (f.stages.length && !has(f.stages, c.stage)) return false;
+  if (f.rules.length && (c.kind !== "pokemon" || !f.rules.includes(c.rule))) return false;
+  if (f.ability === "yes" && !c.ability) return false;
+  if (f.ability === "no" && (c.kind !== "pokemon" || c.ability)) return false;
+  if (f.hpMin !== undefined && (c.hp ?? -1) < f.hpMin) return false;
+  if (f.hpMax !== undefined && (c.hp === undefined || c.hp > f.hpMax)) return false;
+  if (f.retreat.length && (c.retreat === undefined || !f.retreat.includes(Math.min(c.retreat, 4)))) return false;
+  if (f.weakness.length && !has(f.weakness, c.weakness)) return false;
+  if (f.damageMin !== undefined && c.maxDamage < f.damageMin) return false;
+  if (f.costMax !== undefined && (c.minCost === undefined || c.minCost > f.costMax)) return false;
+  if (f.tags.length && !f.tags.some((t) => c.tags.some((x) => x === t || x.startsWith(t + ".")))) return false;
+  if (f.groups.length && !f.groups.some((g) => c.groups.includes(g))) return false;
+  if (f.sets.length && !f.sets.some((s) => c.sets.includes(s))) return false;
+  if (f.rarities.length && !f.rarities.some((r) => c.rarities.includes(r))) return false;
+  return true;
+}
+
+// レアリティの順位（◊ < ◊◊ < … < ☆ < ☆☆ < ☆☆☆ < 王冠）。プロモは最下位
+export const RARITIES: { key: string; label: string }[] = [
+  { key: "◊", label: "◆1" }, { key: "◊◊", label: "◆2" }, { key: "◊◊◊", label: "◆3" }, { key: "◊◊◊◊", label: "◆4" },
+  { key: "☆", label: "★1" }, { key: "☆☆", label: "★2" }, { key: "☆☆☆", label: "★3" }, { key: "Crown Rare", label: "👑" }, { key: "Promo", label: "プロモ" },
+];
+const RANK = new Map(RARITIES.map((r, i) => [r.key, r.key === "Promo" ? 0 : i + 1]));
+// カードの代表レアリティ = 通常版（いちばん低いもの）
+const baseRarity = (c: AppCard) => {
+  const ranks = c.rarities.filter((r) => r !== "Promo").map((r) => RANK.get(r) ?? 0);
+  return ranks.length ? Math.min(...ranks) : 0;
+};
+
+const collator = new Intl.Collator("ja");
+export function sortHits<T extends { card: AppCard; score: number }>(list: T[], key: SortKey, desc: boolean): T[] {
+  const val = (h: T): number | string => {
+    const c = h.card;
+    switch (key) {
+      case "score": return h.score;
+      case "hp": return c.hp ?? -1;
+      case "damage": return c.maxDamage;
+      case "retreat": return c.retreat ?? -1;
+      case "cost": return c.minCost ?? 99;
+      case "rarity": return baseRarity(c);
+      case "new": return c.released;
+      case "name": return c.nameJa;
+      default: return c.order;
+    }
+  };
+  const sign = desc ? -1 : 1;
+  return [...list].sort((a, b) => {
+    const x = val(a), y = val(b);
+    const d = typeof x === "string" ? collator.compare(x, y as string) : x - (y as number);
+    return d * sign || a.card.order - b.card.order || a.card.id.localeCompare(b.card.id, "en", { numeric: true });
+  });
+}
+
+interface PoolState {
+  columns: 3 | 5;
+  sort: SortKey;
+  desc: boolean;
+  filters: Filters;
+  setColumns: (n: 3 | 5) => void;
+  setSort: (key: SortKey, desc: boolean) => void;
+  setFilters: (f: Filters) => void;
+}
+export const usePool = create<PoolState>()(
+  persist(
+    (set) => ({
+      columns: 5,
+      sort: "order",
+      desc: false,
+      filters: EMPTY_FILTERS,
+      setColumns: (columns) => set({ columns }),
+      setSort: (sort, desc) => set({ sort, desc }),
+      setFilters: (filters) => set({ filters }),
+    }),
+    {
+      name: "pokepoke.pool",
+      version: 1,
+      storage: createJSONStorage(() => ({
+        getItem: (k) => {
+          try {
+            return localStorage.getItem(k);
+          } catch {
+            return null;
+          }
+        },
+        setItem: (k, v) => {
+          try {
+            localStorage.setItem(k, v);
+          } catch {
+            /* noop */
+          }
+        },
+        removeItem: (k) => {
+          try {
+            localStorage.removeItem(k);
+          } catch {
+            /* noop */
+          }
+        },
+      })),
+      // 絞り込みは保存しない（開き直したら全カード）
+      partialize: (s) => ({ columns: s.columns, sort: s.sort, desc: s.desc }),
+    },
+  ),
+);
