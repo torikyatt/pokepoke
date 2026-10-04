@@ -168,7 +168,9 @@ export interface AppHelp {
 export interface AppCombo {
   cards: string[];
   reason: string;
+  reasonEn: string;
   deck: string;
+  deckEn: string;
   source: string;
 }
 

@@ -1,5 +1,5 @@
 # 攻略記事で紹介されている、カードどうしの組み合わせ（相性のいいカードに「なぜ合うか」として出す）。
-# 理由は記事の内容をもとに、短く自分の言葉でまとめたもの。記事の文章はそのまま載せない。
+# 理由は記事の内容をもとに、短く自分の言葉でまとめたもの（reasonEn は英語表示用）。記事の文章はそのまま載せない。
 #
 # cards の書き方:
 #   名前            … 同じ名前のカードが複数あれば、大会でいちばん使われているもの
@@ -8,105 +8,898 @@
 # 1つの組み合わせに3枚以上書くと、その中の全部の組を結ぶ。
 
 - deck: メガルカリオexデッキ
+  deckEn: Mega Lucario ex
   source: https://game8.jp/pokemon-tcg-pocket/781960
   combos:
     - cards: [メガルカリオex, ルカリオ@a2]
       reason: ルカリオの特性で闘ワザのダメージが上がり、メガルカリオexのワンパン圏が広がる
+      reasonEn: "Lucario's Ability raises Fighting damage, widening what Mega Lucario ex can one-hit-KO"
     - cards: [メガルカリオex, いにしえの闘技場]
       reason: 闘技場で打点を上乗せして、メガシンカexもワンパンを狙える
+      reasonEn: Arena of Antiquity adds damage so even Mega Evolution ex can be taken down in one hit
     - cards: [メガルカリオex, コルニ]
       reason: コルニで打点を上乗せして、高HPのexを一撃で倒す
+      reasonEn: "Korrina's boost lets Mega Lucario ex knock out high-HP Pokémon ex in one attack"
     - cards: [サワムラー@a1, アカギ]
       reason: ベンチに狙撃でダメージを入れ、アカギで引きずり出してとどめを刺す
+      reasonEn: "Hitmonlee snipes the Bench, then Cyrus drags the damaged Pokémon out to finish it"
     - cards: [サワムラー@a1, メガルカリオex]
       reason: サワムラーでベンチを削り、メガルカリオexで取りきる役割分担
+      reasonEn: Hitmonlee softens the Bench while Mega Lucario ex takes the Knock Outs
 
 - deck: スイクンex＆セグレイブデッキ
+  deckEn: Suicune ex / Arctibax
   source: https://game8.jp/pokemon-tcg-pocket/712693
   combos:
     - cards: [セグレイブ, パオジアンex]
       reason: セグレイブのエネ加速で、パオジアンexの大技を毎ターン撃てる
+      reasonEn: "Arctibax's Energy acceleration lets Chien-Pao ex use its big attack every turn"
     - cards: [スイクンex, セグレイブ]
       reason: スイクンexの特性で毎ターン1枚引けるので、セグレイブまでの進化がそろいやすい
+      reasonEn: "Suicune ex draws a card each turn, making it easier to assemble the Arctibax line"
     - cards: [セビエ, セグレイブ, ふしぎなアメ]
       reason: 2進化のセグレイブを早く立てる
+      reasonEn: Gets the Stage 2 Arctibax line onto the field quickly
     - cards: [スイクンex, マーズ]
       reason: 押し込んだあとマーズで相手の手札を減らし、反撃の手を絞る
+      reasonEn: "After pressing the attack, Mars shrinks the opponent's hand to limit their comeback"
 
 - deck: エーフィ＆ダークライデッキ
+  deckEn: Espeon / Darkrai
   source: https://game8.jp/pokemon-tcg-pocket/700110
   combos:
     - cards: [イーブイ@pb, エーフィ@b3a]
       reason: イーブイの特性で、場に出したターンにすぐエーフィへ進化できる
+      reasonEn: "Eevee's Ability lets it evolve into Espeon the same turn it comes into play"
     - cards: [ダークライ@b2b, エーフィ@b3a]
       reason: エーフィでねむりにし、ダークライの特性で番の終わりごとにダメージを足す
+      reasonEn: "Espeon puts the opponent to sleep and Darkrai's Ability adds damage at the end of each turn"
     - cards: [ダークライ@b2b, ププリン]
       reason: ププリンでねむりにして、ダークライの特性ダメージを重ねる
+      reasonEn: "Igglybuff puts the opponent to sleep, stacking Darkrai's Ability damage"
     - cards: [メガチルタリスex, トレーニングエリア]
       reason: トレーニングエリアで打点が上がり、終盤に高HPのexを倒しきれる
+      reasonEn: "Training Area's boost lets Mega Altaria ex finish off high-HP Pokémon ex late in the game"
 
 - deck: フーパex＆ダークライexデッキ
+  deckEn: Hoopa ex / Darkrai ex
   source: https://game8.jp/pokemon-tcg-pocket/802550
   combos:
     - cards: [フーパex, ダークライex, いんちきバリ]
       reason: 軽いワザにダメージを上乗せし、序盤からバトル場とベンチを削り続ける
+      reasonEn: "Deceptive Needle adds chip damage to cheap attacks, wearing down both the Active and Bench from the start"
     - cards: [フーパex, アカギ]
       reason: ベンチに入れたダメージを、アカギで呼び出して取りきる
+      reasonEn: Cyrus pulls out the Benched Pokémon Hoopa ex already damaged so you can finish it
     - cards: [フーパex, サザンドラ]
       reason: フーパexで削り、サザンドラの高打点で倒しきる
+      reasonEn: "Hoopa ex chips away and Hydreigon's high damage closes out Knock Outs"
 
 - deck: ビークインex＆ツボツボexデッキ
+  deckEn: Vespiquen ex / Shuckle ex
   source: https://game8.jp/pokemon-tcg-pocket/802573
   combos:
     - cards: [ビークインex, ツボツボex]
       reason: ツボツボexを壁にして時間を稼ぎ、弱ったらビークインexのワザでトラッシュして打点にする
+      reasonEn: "Shuckle ex walls and buys time; once worn down, Vespiquen ex discards it to power its attack"
     - cards: [ビークインex, あまくかおる森]
       reason: あまくかおる森で草のたねを補充し、ビークインexのワザを毎ターン撃てる
+      reasonEn: Fragrant Forest refills Grass Basics so Vespiquen ex can use its attack every turn
     - cards: [ビークインex, オーガポンex（みどりのめん）]
       reason: オーガポンexがいると、エネの付いた味方がねむりなどの特殊状態にならない
+      reasonEn: Teal Mask Ogerpon ex keeps your Energy-attached Pokémon safe from Special Conditions like Sleep
 
 - deck: バタフリー＆メガジュカインexデッキ
+  deckEn: Butterfree / Mega Sceptile ex
   source: https://game8.jp/pokemon-tcg-pocket/794691
   combos:
     - cards: [キャタピー@b3b, トランセル@b3b, バタフリー@b3b]
       reason: キャタピーの特性で山札からトランセルに進化し、2ターン目からバタフリーで攻撃できる
+      reasonEn: "Caterpie's Ability evolves into Metapod from the deck, so Butterfree can attack from turn two"
     - cards: [バタフリー@b3b, あまくかおる森, そうじゅくエキス]
       reason: 山札を減らして、進化に必要なカードを引きやすくする
+      reasonEn: Thins the deck so the evolution cards you need are easier to draw
     - cards: [バタフリー@b3b, メガジュカインex]
       reason: バタフリーで序盤を戦い、打点不足をメガジュカインexの大ダメージで補う
+      reasonEn: "Butterfree fights early and Mega Sceptile ex's big damage covers its lack of power"
 
 - deck: メガレックウザex＆ウガツホムラデッキ
+  deckEn: Mega Rayquaza ex / Gouging Fire
   source: https://game8.jp/pokemon-tcg-pocket/802553
   combos:
     - cards: [ハクリュー@b4, にじいろの洞窟]
       reason: 2タイプのエネが要るドラゴンのエネ事故を減らし、毎ターンエネを回せる
+      reasonEn: "Rainbow Cave smooths out the two Energy types Dragons need, keeping Energy flowing every turn"
     - cards: [ハクリュー@b4, メガレックウザex]
       reason: ハクリューでエネを送り、メガレックウザexの大技を早く撃てるようにする
+      reasonEn: Dragonair sends Energy along so Mega Rayquaza ex can use its big attack sooner
     - cards: [ウガツホムラ, ブーストエナジー古代]
       reason: 後攻2ターン目から高打点を連発して、相手のエースより先に殴れる
+      reasonEn: "Lets Gouging Fire hit hard from the second turn and outpace the opponent's main attacker"
     - cards: [ウガツホムラ, オーリム博士]
       reason: オーリム博士で古代ポケモンのウガツホムラにエネを付けて起動を早める
+      reasonEn: Professor Sada attaches Energy to the Ancient Gouging Fire to get it attacking sooner
 
 - deck: エレザード＆メガライボルトexデッキ
+  deckEn: Heliolisk / Mega Manectric ex
   source: https://game8.jp/pokemon-tcg-pocket/750439
   combos:
     - cards: [エレザード@b4, シトロンのリュック]
       reason: 1エネのベンチ全体攻撃にリュックで打点を上乗せし、相手のたねポケモンをまとめて倒す
+      reasonEn: "Clemont's Backpack boosts Heliolisk's one-Energy spread attack to wipe out Basic Pokémon on the Bench"
     - cards: [エレザード@b4, ロケット団のボス]
       reason: 相手の手札のたねポケモンをベンチに出させて、全体攻撃でまとめて倒す
+      reasonEn: "Team Rocket's Boss forces Basics from the opponent's hand onto their Bench, right into the spread attack"
     - cards: [エレザード@b4, メガライボルトex]
       reason: エレザードで先にポイントを取り、ポイントで強くなるメガライボルトexで仕上げる
+      reasonEn: "Heliolisk takes early points and Mega Manectric ex, which grows with your points, finishes the game"
     - cards: [シトロン, シトロンのリュック]
       reason: シトロンで手札を整えつつ、リュックの出番を作る
+      reasonEn: Clemont fetches the Backpack and the attackers that use it
 
 - deck: ミライドンex＆ジバコイルデッキ
+  deckEn: Miraidon ex / Magnezone
   source: https://game8.jp/pokemon-tcg-pocket/785697
   combos:
     - cards: [レアコイル@a1, ミライドンex]
       reason: レアコイルが特性でためたエネを、ミライドンexが場に出たときに集めて打点にする
+      reasonEn: Miraidon ex collects the Energy Magneton built up with its Ability and turns it into damage
     - cards: [オドリドリ（ぱちぱち）, レアコイル@a1]
       reason: オドリドリの特性でexの攻撃をしのぎ、その間にベンチのレアコイルにエネをためる
+      reasonEn: Oricorio walls Pokémon ex attacks while the Benched Magneton charges up
     - cards: [フトゥー博士, ミライドンex]
       reason: 傷ついたミライドンexを山札に戻してポイントを渡さず、もう一度出し直す
+      reasonEn: "Professor Turo shuffles a damaged Miraidon ex back into the deck, denying points so you can replay it"
     - cards: [レアコイル@a1, ジバコイル]
       reason: エネをためたレアコイルをそのまま進化させ、中盤の打点役にする
+      reasonEn: Evolve the Energy-loaded Magneton straight into Magnezone for midgame damage
+
+- deck: メガチルタリスex＆パンプジンデッキ
+  deckEn: "Mega Altaria ex & Gourgeist"
+  source: https://game8.jp/pokemon-tcg-pocket/734808
+  combos:
+    - cards: [メガチルタリスex, パンプジン]
+      reason: 1エネで70を出せるパンプジンで序盤を戦い、メガチルタリスexで大型を倒す役割分担
+      reasonEn: "Gourgeist hits for 70 with one Energy early on, while Mega Altaria ex takes down the big targets"
+    - cards: [リーシャン, モノマネむすめ]
+      reason: リーシャンでグッズを止めると相手の手札がたまり、モノマネむすめで引ける枚数が増える
+      reasonEn: "Chingling locks Items so the opponent's hand grows, and Copycat then draws more cards"
+    - cards: [ジラーチ, アカギ]
+      reason: ジラーチで好きなポケモンに30ずつダメージを入れ、アカギで引きずり出して倒す
+      reasonEn: "Jirachi spreads 30 damage where needed, then Cyrus drags the damaged Pokémon out to finish it"
+
+- deck: メガアブソルex＆サザンドラデッキ
+  deckEn: "Mega Absol ex & Hydreigon"
+  source: https://game8.jp/pokemon-tcg-pocket/734803
+  combos:
+    - cards: [メガアブソルex, サザンドラ]
+      reason: 打点の低いメガアブソルexを、130を出せるサザンドラが補って高HPのポケモンも倒せる
+      reasonEn: "Hydreigon's 130 damage covers Mega Absol ex's low output so high-HP Pokémon can be taken down"
+    - cards: [サザンドラ, いんちきバリ]
+      reason: いんちきバリの追加ダメージで、サザンドラがHP140のポケモンを一撃で倒せるようになる
+      reasonEn: "Deceptive Needle's extra 10 damage lets Hydreigon knock out 140-HP Pokémon in one hit"
+    - cards: [メガアブソルex, オトシドリ]
+      reason: オトシドリの特性で悪ポケモンのにげるが軽くなり、メガアブソルexを入れ替えやすい
+      reasonEn: "Bombirdier's Ability reduces Darkness Pokémon's Retreat Cost, making Mega Absol ex easy to switch"
+
+- deck: メガジュカインexデッキ
+  deckEn: Mega Sceptile ex
+  source: https://game8.jp/pokemon-tcg-pocket/781958
+  combos:
+    - cards: [セレビィ@pb, メガジュカインex]
+      reason: セレビィの特性でメガジュカインexが進化前のワザも使え、ジュプトルの狙撃と合わせて大きく削れる
+      reasonEn: "Celebi's Ability lets Mega Sceptile ex use its pre-evolution attacks, adding Grovyle's snipe to its damage"
+    - cards: [ゲッコウガ, メガジュカインex]
+      reason: ゲッコウガの特性でベンチを削りつつ、メガジュカインexの大ダメージで倒しきる
+      reasonEn: "Greninja's Ability chips the Bench while Mega Sceptile ex finishes with heavy damage"
+    - cards: [キモリ, 小さなふうせん]
+      reason: たねのキモリをすぐベンチに下げられるので、進化までの時間を安全に稼げる
+      reasonEn: "Treecko can retreat right away, buying safe time to evolve"
+    - cards: [アオイ, メガジュカインex]
+      reason: 2進化のメガジュカインexを山札から直接手札に加え、進化事故を減らせる
+      reasonEn: "Juliana fetches the Stage 2 Mega Sceptile ex straight from the deck, reducing evolution misses"
+
+- deck: メガリザードンYex＆エンテイexデッキ
+  deckEn: "Mega Charizard Y ex & Entei ex"
+  source: https://game8.jp/pokemon-tcg-pocket/750407
+  combos:
+    - cards: [リザード@b2b, メガリザードンYex]
+      reason: リザードの特性でバトル場に炎エネを足し、メガリザードンYexの大技を早く撃てる
+      reasonEn: "Charmeleon's Ability adds Fire Energy to the Active, so Mega Charizard Y ex attacks sooner"
+    - cards: [にじいろの洞窟, フレイムパッチ]
+      reason: 洞窟でトラッシュに送った炎エネを、フレイムパッチでバトル場の炎ポケモンに付け直せる
+      reasonEn: Fire Energy discarded with Rainbow Cave is reattached to the Active Fire Pokémon with Flame Patch
+    - cards: [ミツル, メガリザードンYex]
+      reason: ミツルで2進化のメガリザードンYexにエネを足し、次の番の攻撃を間に合わせる
+      reasonEn: Wally adds Energy to the Stage 2 Mega Charizard Y ex so it can attack next turn
+    - cards: [エンテイex, フレイムパッチ]
+      reason: 追加の炎エネで強くなるエンテイexに、フレイムパッチでトラッシュの炎エネを足せる
+      reasonEn: "Entei ex gets stronger with extra Fire Energy, which Flame Patch supplies from the discard pile"
+    - cards: [まもりのポンチョ, ヒトカゲ]
+      reason: 育てている途中のヒトカゲをベンチ狙撃から守り、進化まで残せる
+      reasonEn: Protects a developing Charmander on the Bench from snipe damage until it evolves
+    - cards: [リーリエ, メガリザードンYex]
+      reason: 大技の反動で傷ついた2進化のメガリザードンYexを、リーリエで大きく回復できる
+      reasonEn: "Lillie heals the Stage 2 Mega Charizard Y ex after its big attack's recoil"
+
+- deck: ジバコイルex＆オドリドリデッキ
+  deckEn: "Magnezone ex & Oricorio"
+  source: https://game8.jp/pokemon-tcg-pocket/667007
+  combos:
+    - cards: [レアコイル@a1, ジバコイルex]
+      reason: レアコイルの特性でためた雷エネを使い、ジバコイルexの大技を早く撃てる
+      reasonEn: "Magneton's Ability stores Lightning Energy so Magnezone ex can use its big attack sooner"
+    - cards: [オドリドリ（ぱちぱち）, ジバコイルex]
+      reason: exに強いオドリドリとex以外に強いジバコイルexで、相手を選ばず戦える
+      reasonEn: "Oricorio walls ex attackers while Magnezone ex handles the rest, covering every matchup"
+    - cards: [シトロン, レアコイル@a1]
+      reason: シトロンで山札からレアコイルを持ってこられ、進化と山札の圧縮が同時にできる
+      reasonEn: "Clemont fetches Magneton from the deck, speeding evolution while thinning the deck"
+    - cards: [まもりのポンチョ, オーガポンex（みどりのめん）]
+      reason: HPの低いオーガポンexをベンチ狙撃から守り、特性を置き続けられる
+      reasonEn: Keeps the low-HP Teal Mask Ogerpon ex safe from Bench snipes so its Ability stays in play
+
+- deck: メガヤミラミex＆ゲッコウガデッキ
+  deckEn: "Mega Sableye ex & Greninja"
+  source: https://game8.jp/pokemon-tcg-pocket/794464
+  combos:
+    - cards: [メガヤミラミex, ゲッコウガ]
+      reason: メガヤミラミexの反撃ダメージに、ゲッコウガの特性ダメージを重ねて足りない火力を補う
+      reasonEn: "Greninja's Ability damage stacks on Mega Sableye ex's counter damage to make up the missing firepower"
+    - cards: [メガヤミラミex, ダークライex]
+      reason: ダークライexの特性ダメージを足して、メガヤミラミexがexを一撃で倒せる打点に届く
+      reasonEn: "Darkrai ex's Ability damage pushes Mega Sableye ex to one-hit-KO ex Pokémon"
+    - cards: [リーシャン, しあわせタマゴ]
+      reason: HPの低いリーシャンが倒されても、しあわせタマゴで手札が5枚まで戻る
+      reasonEn: "When the low-HP Chingling is knocked out, Lucky Egg refills the hand to five cards"
+
+- deck: メガバシャーモex＆ゲッコウガデッキ
+  deckEn: "Mega Blaziken ex & Greninja"
+  source: https://game8.jp/pokemon-tcg-pocket/734700
+  combos:
+    - cards: [メガバシャーモex, ゲッコウガ]
+      reason: ゲッコウガの特性ダメージを足して、メガバシャーモexで多くのポケモンを一撃で倒せる
+      reasonEn: "Greninja's Ability damage lets Mega Blaziken ex one-hit-KO most Pokémon"
+    - cards: [メガバシャーモex, クイタラン@b1]
+      reason: クイタランで先にベンチを削っておけば、ゲッコウガ抜きでもメガバシャーモexで倒しきれる
+      reasonEn: Heatmor pre-damages the Bench so Mega Blaziken ex can finish targets even without Greninja
+    - cards: [ポワルン（たいようのすがた）, ハイキングコース]
+      reason: スタジアムが出ているとポワルンのワザで相手をやけどにでき、ダメージを積める
+      reasonEn: "With a Stadium in play, Sunny Castform burns the opponent to stack extra damage"
+    - cards: [ポワルン（たいようのすがた）, メガバシャーモex]
+      reason: 序盤にポワルンでやけどとダメージを入れておき、メガバシャーモexの一撃で倒しきる
+      reasonEn: Sunny Castform burns and chips early so Mega Blaziken ex can finish in one hit
+    - cards: [アオイ, ゲッコウガ]
+      reason: 2進化のゲッコウガを山札から手札に加え、ラインをそろえやすくする
+      reasonEn: "Juliana adds the Stage 2 Greninja from the deck, completing the line more reliably"
+
+- deck: ロケット団のマタドガスex＆フーパexデッキ
+  deckEn: "Team Rocket's Weezing ex & Hoopa ex"
+  source: https://game8.jp/pokemon-tcg-pocket/811886
+  combos:
+    - cards: [ロケット団のマタドガスex, フーパex]
+      reason: 進化したときにどくとやけどを入れ、フーパexの攻撃と合わせて序盤から削り続ける
+      reasonEn: "Evolving inflicts Poison and Burn, which stack with Hoopa ex's attacks from the early game"
+    - cards: [ロケット団のマタドガスex, メガヤミラミex]
+      reason: どく・やけどの毎ターンのダメージに、メガヤミラミexの打点を重ねて倒しきる
+      reasonEn: "Poison and Burn tick damage plus Mega Sableye ex's hits close out knockouts"
+    - cards: [メガヤミラミex, いんちきバリ]
+      reason: バトル場にいる悪ポケモンのメガヤミラミexが、番の終わりに追加で10ダメージを与える
+      reasonEn: Mega Sableye ex in the Active Spot deals an extra 10 damage at the end of each turn
+
+- deck: マスカーニャex＆オーガポンexデッキ
+  deckEn: "Meowscarada ex & Ogerpon ex"
+  source: https://game8.jp/pokemon-tcg-pocket/763998
+  combos:
+    - cards: [ニャオハ@pa, あまくかおる森]
+      reason: ニャオハのワザと森で草ポケモンを手札に集め、山札を減らして進化をそろえる
+      reasonEn: "Sprigatito's attack and the forest both gather Grass Pokémon, thinning the deck for evolutions"
+    - cards: [マスカーニャex, マスカーニャ]
+      reason: ex相手に強い非exのマスカーニャと組み合わせ、相手の回復を無視して大ダメージを通す
+      reasonEn: "Pairs with the non-ex Meowscarada, which punishes ex Pokémon, to push big damage through healing"
+    - cards: [マスカーニャex, アカギ]
+      reason: ベンチに残ったダメージを持つポケモンをアカギで呼び出し、確実に倒しきる
+      reasonEn: Cyrus pulls out damaged Benched Pokémon so Meowscarada ex can finish them
+
+- deck: エルフーンex＆アリアドスデッキ
+  deckEn: "Whimsicott ex & Ariados"
+  source: https://game8.jp/pokemon-tcg-pocket/734738
+  combos:
+    - cards: [エルフーンex, アリアドス@b1a]
+      reason: アリアドスの特性で相手のにげるエネが増え、その数で強くなるエルフーンexの打点が上がる
+      reasonEn: "Ariados raises the opponent's Retreat Cost, which boosts Whimsicott ex's damage"
+    - cards: [エルフーンex, ロケット団のベトベトバズーカ]
+      reason: 相手のにげるエネを増やして、エルフーンexのダメージをさらに上乗せする
+      reasonEn: "Increases the opponent's Retreat Cost to add even more damage to Whimsicott ex"
+    - cards: [アリアドス@b1a, ロケット団のベトベトバズーカ]
+      reason: どちらも相手のにげるを重くし、逃げを封じながら火力も伸ばせる
+      reasonEn: "Both raise the opponent's Retreat Cost, trapping them while increasing damage"
+
+- deck: メガサメハダーexデッキ
+  deckEn: Mega Sharpedo ex
+  source: https://game8.jp/pokemon-tcg-pocket/802520
+  combos:
+    - cards: [キバニア@b4, ミクリ]
+      reason: HP50のキバニアをミクリで山札から進化させ、後攻1ターン目からメガサメハダーexを出せる
+      reasonEn: "Wallace evolves the 50-HP Carvanha from the deck, getting Mega Sharpedo ex out from the first turn"
+    - cards: [ギャラドス@a4, タマンタ]
+      reason: タマンタでベンチにエネを付けて並べ、ギャラドスのワザでトラッシュして打点に変える
+      reasonEn: "Mantyke powers up the Bench, then Gyarados discards those Benched Pokémon for damage"
+    - cards: [ギャラドス@a4, メガサメハダーex]
+      reason: 弱ったメガサメハダーexをギャラドスのワザでトラッシュし、相手にポイントを渡さない
+      reasonEn: "Gyarados discards a damaged Mega Sharpedo ex from the Bench so the opponent can't take the points"
+    - cards: [パオジアンex, ミクリ]
+      reason: 水ポケモンの進化を助けるミクリと、水エネを使い切る大技のパオジアンexで火力をつなぐ
+      reasonEn: Wallace keeps Water evolutions flowing while Chien-Pao ex provides a big finishing attack
+
+- deck: ゾロアークexデッキ
+  deckEn: Zoroark ex
+  source: https://game8.jp/pokemon-tcg-pocket/781858
+  combos:
+    - cards: [ゾロア@b3, ゾロアークex]
+      reason: ゾロアのワザで山札からゾロアークexに進化でき、進化事故を防げる
+      reasonEn: "Zorua's attack evolves into Zoroark ex straight from the deck, preventing evolution misses"
+    - cards: [ゾロアークex, オトシドリ@b3]
+      reason: ベンチの悪ポケモンの数で強くなるゾロアークexに、悪のオトシドリが数とにげる補助を足す
+      reasonEn: "Bombirdier adds a Benched Darkness Pokémon for Zoroark ex's damage and cuts its Retreat Cost"
+    - cards: [フーパex, オトシドリ@b3]
+      reason: 高HPのフーパexで受けつつ、オトシドリの特性で軽く入れ替えて戦える
+      reasonEn: "Tank with high-HP Hoopa ex and switch it out cheaply thanks to Bombirdier's Ability"
+    - cards: [ゾロアークex, フーパex]
+      reason: ゾロアークexが育つまでの間、悪のフーパexが壁になりつつベンチの数も稼ぐ
+      reasonEn: "Hoopa ex stalls while Zoroark ex develops, and counts toward its Benched Darkness total"
+
+- deck: メガディアンシーex＆メガサーナイトexデッキ
+  deckEn: "Mega Diancie ex & Mega Gardevoir ex"
+  source: https://game8.jp/pokemon-tcg-pocket/794353
+  combos:
+    - cards: [メガサーナイトex, メガディアンシーex]
+      reason: メガサーナイトexが超エネを3個配り、超エネの数で強くなるメガディアンシーexの打点が一気に上がる
+      reasonEn: "Mega Gardevoir ex hands out three Psychic Energy, instantly powering up Mega Diancie ex, which scales with Psychic Energy"
+    - cards: [メロエッタ@pb, ラルトス]
+      reason: バトル場のメロエッタの特性で毎ターン超ポケモンを手札に加え、ラルトスなど進化前をそろえる
+      reasonEn: "Meloetta in the Active Spot fetches a Psychic Pokémon each turn, gathering Ralts and other pieces"
+    - cards: [ふしぎな広場, メロエッタ@pb]
+      reason: 広場で超ポケモンのにげるが軽くなり、メロエッタを出し入れしながら特性を使える
+      reasonEn: Peculiar Plaza lowers Psychic Retreat Costs so Meloetta can move in and out to use its Ability
+    - cards: [カルネ, メガディアンシーex]
+      reason: 超エネが多く付くメガディアンシーexを、カルネで大きく回復して粘れる
+      reasonEn: "Mega Diancie ex carries plenty of Psychic Energy, so Diantha can heal it for a lot"
+
+- deck: フライゴンexデッキ
+  deckEn: Flygon ex
+  source: https://game8.jp/pokemon-tcg-pocket/781978
+  combos:
+    - cards: [フライゴンex, アカギ]
+      reason: フライゴンexの特性で相手全体にダメージがたまるので、アカギで傷ついたポケモンを引き出して倒す
+      reasonEn: "Flygon ex's Ability damages every opposing Pokémon, so Cyrus can drag out a damaged one to finish"
+    - cards: [フライゴンex, にじいろの洞窟]
+      reason: 2タイプのエネが要るフライゴンexのエネ事故を、にじいろの洞窟で減らせる
+      reasonEn: "Rainbow Cave reduces Energy misses for Flygon ex, which needs two Energy types"
+    - cards: [フライゴンex, ゴツゴツメット]
+      reason: バトル場で耐えるフライゴンexに付け、殴られるたびに反撃ダメージを重ねる
+      reasonEn: "Put on Flygon ex as it tanks in the Active Spot to add counter damage every time it's hit"
+    - cards: [アオイ, フライゴンex]
+      reason: 2進化のフライゴンexを山札から直接手札に加え、進化を間に合わせる
+      reasonEn: Juliana fetches the Stage 2 Flygon ex straight from the deck so it evolves on time
+
+- deck: ミロカロスex＆ダークライデッキ
+  deckEn: "Milotic ex & Darkrai"
+  source: https://game8.jp/pokemon-tcg-pocket/794366
+  combos:
+    - cards: [ヒンバス@a4a, ミクリ]
+      reason: HP50以下のヒンバスを、ミクリで出したその番にミロカロスexへ進化させられる
+      reasonEn: "Wallace evolves the low-HP Feebas into Milotic ex the same turn it's played"
+    - cards: [ミロカロスex, ダークライ@b2b]
+      reason: ミロカロスexのワザでねむりにし、ダークライの特性ダメージを毎ターン重ねる
+      reasonEn: "Milotic ex's attack causes Sleep, and Darkrai's Ability adds damage every turn"
+    - cards: [ヒンバス@a4a, スピーダー]
+      reason: 前に出てしまったヒンバスを軽く下げ、ミロカロスexに進化する準備をする
+      reasonEn: Retreat a Feebas that started Active cheaply and get it ready to evolve into Milotic ex
+
+- deck: デデンネexデッキ
+  deckEn: Dedenne ex
+  source: https://game8.jp/pokemon-tcg-pocket/794354
+  combos:
+    - cards: [ピチュー@a4, デデンネex]
+      reason: ピチューのワザでベンチのデデンネexに雷エネを足し、2ターン目から攻撃できる
+      reasonEn: "Pichu's attack puts Lightning Energy on the Benched Dedenne ex so it can attack from turn two"
+    - cards: [デデンネex, ゴツゴツメット]
+      reason: どうぐの数で強くなるデデンネexの打点を伸ばしつつ、反撃ダメージも狙える
+      reasonEn: "Adds to Dedenne ex's Tool count for more damage and punishes attackers too"
+    - cards: [デデンネex, 大きなマント]
+      reason: どうぐの数を増やしながらHPも上がり、デデンネexが倒されにくくなる
+      reasonEn: "Raises Dedenne ex's Tool count and its HP at the same time"
+    - cards: [デデンネex, はじまりの平原]
+      reason: HPの低いたねのデデンネexを、はじまりの平原で倒されにくくする
+      reasonEn: Starting Plains makes the low-HP Basic Dedenne ex harder to knock out
+    - cards: [ピチュー@a4, オドリドリ（ぱちぱち）]
+      reason: どちらも2エネで動くので、ピチューのエネ加速でオドリドリもすぐ戦える
+      reasonEn: "Both need two Energy, so Pichu's acceleration gets Oricorio fighting quickly too"
+
+- deck: ヒスイゾロアークexデッキ
+  deckEn: Hisuian Zoroark ex
+  source: https://game8.jp/pokemon-tcg-pocket/794365
+  combos:
+    - cards: [ヒスイゾロアークex, ユキメノコ@pb]
+      reason: ユキメノコのワザで手札のポケモンをトラッシュでき、トラッシュの数で強くなるヒスイゾロアークexの打点が上がる
+      reasonEn: "Froslass discards Pokémon from the hand, boosting Hisuian Zoroark ex, which scales with Pokémon in the discard pile"
+    - cards: [ヒスイゾロアークex, トレーニングエリア]
+      reason: 1進化のヒスイゾロアークexの打点が上がり、必要なトラッシュの枚数が減る
+      reasonEn: "Training Area boosts the Stage 1 Hisuian Zoroark ex, so it needs fewer Pokémon in the discard"
+    - cards: [ヒスイゾロアークex, タマンタ]
+      reason: タマンタのワザでベンチのたねに水エネを付け、ヒスイゾロアークexの起動を早める
+      reasonEn: Mantyke attaches Water Energy to Benched Basics to get Hisuian Zoroark ex attacking sooner
+    - cards: [ユキメノコ@pb, ゆうがなマント]
+      reason: 1進化のユキメノコのHPを上げ、手札を削りながら長く戦える
+      reasonEn: "Raises the Stage 1 Froslass's HP so it can keep fighting while discarding"
+
+- deck: こいぬまみれデッキ
+  deckEn: Puppy Pile
+  source: https://game8.jp/pokemon-tcg-pocket/794468
+  combos:
+    - cards: [こいぬ大好きガール, ワンパチ@b3b]
+      reason: こいぬまみれを持つポケモンを山札からまとめて集め、ワンパチの打点を一気に上げる
+      reasonEn: "Gathers Pokémon with Puppy Pile from the deck, quickly boosting Yamper's damage"
+    - cards: [ワンパチ@b3b, エレキコード]
+      reason: 雷ポケモンのワンパチが倒されても、付いた雷エネをベンチの後続に残せる
+      reasonEn: "If the Lightning-type Yamper is knocked out, its Energy moves on to the Bench"
+    - cards: [ガーディ@pb, パピモッチ@b3b]
+      reason: タイプの違うこいぬを並べても、ワザ「こいぬまみれ」の数として数えられる
+      reasonEn: "Puppies of different types all count toward Puppy Pile's damage"
+    - cards: [エレキジェネレーター, ワンパチ@b3b]
+      reason: ベンチの雷ポケモンのワンパチに、エレキジェネレーターでエネを足せる
+      reasonEn: Electric Generator adds Energy to a Benched Lightning-type Yamper
+
+- deck: コライドンex＆ダークライデッキ
+  deckEn: "Koraidon ex & Darkrai"
+  source: https://game8.jp/pokemon-tcg-pocket/785691
+  combos:
+    - cards: [コライドンex, ダークライ@b2b]
+      reason: ダークライでねむりにして時間を稼ぐ間に場にエネをため、コライドンexを出して一気に攻撃する
+      reasonEn: "Darkrai's Sleep buys time to build Energy on the field, then Koraidon ex comes in and attacks at once"
+    - cards: [コライドンex, ブーストエナジー古代]
+      reason: 古代のポケモンのコライドンexのHPが40上がり、場に長く残れる
+      reasonEn: "The Ancient Booster raises Koraidon ex's HP by 40 so it stays in play longer"
+    - cards: [コルニ, いにしえの闘技場]
+      reason: どちらもex相手に闘ポケモンの打点を上げるので、重ねればHPの高いexも倒せる
+      reasonEn: "Both boost Fighting damage against ex Pokémon; stacked, they take down high-HP ex"
+
+- deck: ハバタクカミex＆メガサーナイトexデッキ
+  deckEn: "Flutter Mane ex & Mega Gardevoir ex"
+  source: https://game8.jp/pokemon-tcg-pocket/785689
+  combos:
+    - cards: [ハバタクカミex, メガサーナイトex]
+      reason: 序盤はハバタクカミexでトレーナーズを止めて時間を稼ぎ、メガサーナイトexでエネを配って押し切る
+      reasonEn: "Flutter Mane ex locks Trainers early to buy time, then Mega Gardevoir ex spreads Energy to take over"
+    - cards: [メガサーナイトex, カルネ]
+      reason: ワザで超エネを3個配れるので、カルネで超エネをトラッシュしてもすぐ取り戻せる
+      reasonEn: "Its attack hands out three Psychic Energy, easily covering what Diantha discards when healing"
+
+- deck: テラパゴスexデッキ
+  deckEn: Terapagos ex
+  source: https://game8.jp/pokemon-tcg-pocket/785685
+  combos:
+    - cards: [テラパゴスex, ピチュー@a4]
+      reason: ピチューでベンチのテラパゴスexに雷エネを足し、エネのタイプの数を増やす
+      reasonEn: "Pichu adds Lightning Energy to the Benched Terapagos ex, increasing its Energy-type count"
+    - cards: [テラパゴスex, ブビィ@a4]
+      reason: ブビィで炎エネを足し、タイプの数で強くなるテラパゴスexの打点を上げる
+      reasonEn: "Magby adds Fire Energy, boosting Terapagos ex, which scales with Energy types"
+    - cards: [テラパゴスex, タマンタ]
+      reason: タマンタで水エネを足し、3タイプそろえてテラパゴスexの打点を伸ばす
+      reasonEn: Mantyke adds Water Energy so Terapagos ex reaches three types for more damage
+    - cards: [テラパゴスex, はじまりの平原]
+      reason: たねのテラパゴスexのHPが20上がり、倒されにくくなる
+      reasonEn: Starting Plains gives the Basic Terapagos ex 20 more HP
+    - cards: [テラパゴスex, イリマ]
+      reason: 傷ついた無色のテラパゴスexを手札にもどし、ポイントを渡さず出し直せる
+      reasonEn: Ilima returns a damaged Colorless Terapagos ex to the hand to deny points and replay it
+
+- deck: タケルライコ＆カイリューデッキ
+  deckEn: "Raging Bolt & Dragonite"
+  source: https://game8.jp/pokemon-tcg-pocket/785790
+  combos:
+    - cards: [タケルライコ, オーリム博士]
+      reason: トラッシュの複数タイプのエネを古代のタケルライコに付け、相手のバトルポケモンをきぜつさせる大技を撃つ
+      reasonEn: Professor Sada attaches mixed Energy from the discard to the Ancient Raging Bolt so it can use its knockout attack
+    - cards: [タケルライコ, カイリュー@a1]
+      reason: どちらも複数タイプのエネを使い、カイリューでベンチを削ってからタケルライコで倒しきる
+      reasonEn: "Both use mixed Energy; Dragonite spreads damage, then Raging Bolt finishes"
+
+- deck: メガサーナイトexデッキ
+  deckEn: Mega Gardevoir ex
+  source: https://game8.jp/pokemon-tcg-pocket/758602
+  combos:
+    - cards: [メロエッタ@pb, キルリア]
+      reason: メロエッタの特性で毎ターン超ポケモンを手札に加え、キルリアなど進化先をそろえる
+      reasonEn: "Meloetta's Ability fetches a Psychic Pokémon each turn, gathering Kirlia and other evolutions"
+    - cards: [メガサーナイトex, ミュウツーex@pa]
+      reason: メガサーナイトexが超エネを配り、エネの重いミュウツーexの大技を早く撃てる
+      reasonEn: Mega Gardevoir ex spreads Psychic Energy so Mewtwo ex can use its costly attack sooner
+    - cards: [メガサーナイトex, イエッサンex（メス）]
+      reason: エネを配ってイエッサンexのワザをすぐ使え、特性の回復で場持ちもよくなる
+      reasonEn: "Energy from Mega Gardevoir ex powers Indeedee ex right away, and its healing Ability keeps things alive"
+    - cards: [ミミッキュex, メガサーナイトex]
+      reason: 最初のダメージを受けないミミッキュexが壁になり、メガサーナイトexの進化までの時間を稼ぐ
+      reasonEn: "Mimikyu ex ignores the first hit it takes, stalling while Mega Gardevoir ex evolves"
+
+- deck: ミミッキュex＆ゲッコウガデッキ
+  deckEn: "Mimikyu ex & Greninja"
+  source: https://game8.jp/pokemon-tcg-pocket/758665
+  combos:
+    - cards: [ミミッキュex, ゲッコウガ]
+      reason: ミミッキュexが1回ダメージを受けずに耐える間に、ゲッコウガの特性で相手を削る
+      reasonEn: "Mimikyu ex shrugs off the first hit while Greninja's Ability chips the opponent"
+    - cards: [ゲッコウガ, ギラティナex]
+      reason: 特性でエネを自分にためるギラティナexと、特性で削るゲッコウガで手数を増やす
+      reasonEn: "Giratina ex powers itself up with its Ability while Greninja's Ability adds steady damage"
+    - cards: [ギラティナex, アカギ]
+      reason: ゲッコウガで傷つけたベンチのポケモンをアカギで呼び出し、ギラティナexで倒す
+      reasonEn: Cyrus pulls up a Benched Pokémon damaged by Greninja for Giratina ex to finish
+
+- deck: ミュウツーex＆サーナイトデッキ
+  deckEn: "Mewtwo ex & Gardevoir"
+  source: https://game8.jp/pokemon-tcg-pocket/646835
+  combos:
+    - cards: [サーナイト@a1, ミュウツーex@a1]
+      reason: サーナイトの特性で毎ターンバトル場のミュウツーexに超エネを足し、大技を連打できる
+      reasonEn: "Gardevoir's Ability adds Psychic Energy to the Active Mewtwo ex each turn so it can keep using its big attack"
+    - cards: [カプ・テテフ, アカギ]
+      reason: カプ・テテフでエネの付いたベンチのポケモンを削り、アカギで引き出して倒す
+      reasonEn: "Tapu Lele damages a powered-up Benched Pokémon, then Cyrus drags it out for the knockout"
+    - cards: [ルナアーラex, ギラティナex]
+      reason: 特性で自分に超エネをためるギラティナexから、ルナアーラexの特性でバトル場へエネを移す
+      reasonEn: "Giratina ex builds Psychic Energy with its Ability, and Lunala ex's Ability moves it to the Active Pokémon"
+    - cards: [ヒカリ, ギラティナex]
+      reason: ベンチでエネをためたギラティナexから、ヒカリでバトルポケモンへエネを移せる
+      reasonEn: Dawn moves Energy that Giratina ex stored on the Bench to the Active Pokémon
+
+- deck: ピカチュウexデッキ
+  deckEn: Pikachu ex
+  source: https://game8.jp/pokemon-tcg-pocket/645293
+  combos:
+    - cards: [ピチュー@a4, ピカチュウex@a1]
+      reason: ピチューでベンチのピカチュウexに雷エネを付け、2ターン目から攻撃できる
+      reasonEn: Pichu puts Lightning Energy on the Benched Pikachu ex so it can attack on turn two
+    - cards: [ゼラオラ, エレメンタルつけかえ]
+      reason: 最初の番にゼラオラの特性で付いた雷エネを、ベンチからバトル場へ付け替えて早く攻撃する
+      reasonEn: The Lightning Energy Zeraora gets on your first turn is moved to the Active Pokémon to attack sooner
+    - cards: [ピカチュウex@a1, ゼラオラ]
+      reason: ベンチの雷ポケモンの数で強くなるピカチュウexの数になりつつ、自分でエネも用意できる
+      reasonEn: "Zeraora counts toward Pikachu ex's Benched Lightning total and powers itself up"
+    - cards: [ピカチュウex@a1, オドリドリ（ぱちぱち）]
+      reason: 雷のベンチ要員を兼ねながら、exの攻撃を受けないオドリドリで終盤を耐える
+      reasonEn: Oricorio adds to the Lightning Bench count and walls ex attackers late in the game
+
+- deck: リザードンex＆ファイヤーexデッキ
+  deckEn: "Charizard ex & Moltres ex"
+  source: https://game8.jp/pokemon-tcg-pocket/646857
+  combos:
+    - cards: [ファイヤーex, ヒトカゲ]
+      reason: ファイヤーexのワザでベンチのヒトカゲたちに炎エネを配り、リザードンexの準備を進める
+      reasonEn: "Moltres ex's attack spreads Fire Energy to Benched Charmander, setting up Charizard ex"
+    - cards: [ファイヤーex, リザードンex@a1]
+      reason: エネを多く使うリザードンexに、ファイヤーexのワザでベンチから先にエネを用意できる
+      reasonEn: Moltres ex pre-loads Fire Energy on the Bench for the Energy-hungry Charizard ex
+    - cards: [フレイムパッチ, リザードンex@a1]
+      reason: 大技でトラッシュした炎エネを、フレイムパッチでリザードンexに戻して連打する
+      reasonEn: Flame Patch returns the Fire Energy Charizard ex discards so it can attack again
+
+- deck: フシギバナex＆ナッシーexデッキ
+  deckEn: "Venusaur ex & Exeggutor ex"
+  source: https://game8.jp/pokemon-tcg-pocket/647002
+  combos:
+    - cards: [フシギバナex@a1, エリカ]
+      reason: ワザで自分を回復するフシギバナexに、エリカの回復を重ねて毎ターン耐える
+      reasonEn: "Venusaur ex heals itself with its attack, and Erika's healing on top lets it tank every turn"
+    - cards: [ナッシーex, フシギバナex@a1]
+      reason: ナッシーexで前に立って時間を稼ぎ、その間にベンチでフシギバナexを育てる
+      reasonEn: Exeggutor ex holds the Active Spot while Venusaur ex develops on the Bench
+    - cards: [リーフマント, フシギバナex@a1]
+      reason: 草ポケモンのHPが30上がり、回復と合わせてとても倒れにくくなる
+      reasonEn: "Leaf Cape adds 30 HP to the Grass Pokémon, making it very hard to take down alongside healing"
+
+- deck: ギャラドスex＆オリジンパルキアデッキ
+  deckEn: "Gyarados ex & Origin Forme Palkia"
+  source: https://game8.jp/pokemon-tcg-pocket/650625
+  combos:
+    - cards: [マナフィ, ギャラドスex]
+      reason: マナフィのワザでベンチに水エネを2つ配り、ギャラドスexの準備を早める
+      reasonEn: "Manaphy's attack hands out Water Energy to two Benched Pokémon, speeding up Gyarados ex"
+    - cards: [マナフィ, オリジンパルキア]
+      reason: ベンチのオリジンパルキアにも水エネを配り、続けてアタッカーを出せる
+      reasonEn: Also powers up Origin Forme Palkia on the Bench so attackers keep coming
+    - cards: [オリジンパルキア, ギャラドスex]
+      reason: 非exのオリジンパルキアで削り、ギャラドスexで倒しきる段階的な攻め
+      reasonEn: "The non-ex Origin Forme Palkia chips damage first, then Gyarados ex finishes"
+    - cards: [カスミ, ギャラドスex]
+      reason: コインが続けば一気に水エネが付き、ギャラドスexの攻撃を早められる
+      reasonEn: "Lucky flips with Misty attach lots of Water Energy, getting Gyarados ex attacking sooner"
+
+- deck: スターミーex＆パルキアexデッキ
+  deckEn: "Starmie ex & Palkia ex"
+  source: https://game8.jp/pokemon-tcg-pocket/644971
+  combos:
+    - cards: [マナフィ, パルキアex@a2]
+      reason: エネの重いパルキアexに、マナフィのワザでベンチのうちから水エネを用意する
+      reasonEn: "Manaphy pre-loads Water Energy on the Energy-hungry Palkia ex while it's on the Bench"
+    - cards: [カスミ, パルキアex@a2]
+      reason: コインが続けば一気に水エネが付き、パルキアexの大技を早く撃てる
+      reasonEn: "Lucky Misty flips attach lots of Water Energy for Palkia ex's big attack"
+    - cards: [スターミーex, パルキアex@a2]
+      reason: 2エネで動くスターミーexで序盤を削り、パルキアexの大技で一気に押し込む
+      reasonEn: "Starmie ex attacks for two Energy early, then Palkia ex's big attack takes over"
+    - cards: [カイ, スターミーex]
+      reason: 水エネの付いたポケモン全員を回復でき、殴り合いを続けやすい
+      reasonEn: "Irida heals every Pokémon with Water Energy, keeping the trade going"
+
+- deck: ゲンガーexデッキ
+  deckEn: Gengar ex
+  source: https://game8.jp/pokemon-tcg-pocket/650475
+  combos:
+    - cards: [ニンフィアex, ゲンガーex]
+      reason: ニンフィアexへ進化したときに2枚引けるので、ゲンガーexへの進化に必要なカードがそろいやすい
+      reasonEn: "Evolving into Sylveon ex draws two cards, helping you find the pieces for Gengar ex"
+    - cards: [ジュペッタ, ゲンガーex]
+      reason: ジュペッタでエネ付けを止め、ゲンガーexでサポートを止めて、相手の動きを二重にしばる
+      reasonEn: "Banette blocks Energy attachment and Gengar ex blocks Supporters, locking the opponent twice over"
+    - cards: [ゲンガー@a1, マーズ]
+      reason: ゲンガーのワザでサポートを止めつつ、マーズで相手の手札も減らして立て直しを遅らせる
+      reasonEn: "Gengar's attack shuts off Supporters while Mars shrinks the opponent's hand"
+
+- deck: セレビィexデッキ
+  deckEn: Celebi ex
+  source: https://game8.jp/pokemon-tcg-pocket/658630
+  combos:
+    - cards: [セレビィex, ジャローダ@a1a]
+      reason: ジャローダの特性で草エネが2個分になり、エネの数だけコインを投げるセレビィexの打点が大きく伸びる
+      reasonEn: "Serperior makes each Grass Energy count double, so Celebi ex flips far more coins"
+    - cards: [セレビィex, エリカ]
+      reason: 草ポケモンのセレビィexを大きく回復し、長く場に残して攻撃を続ける
+      reasonEn: "Erika heals the Grass-type Celebi ex for a lot, keeping it attacking longer"
+    - cards: [セレビィex, リーフィアex]
+      reason: バトル場のリーフィアexが特性で草エネを配り、セレビィexのエネを素早く増やす
+      reasonEn: "Leafeon ex in the Active Spot hands out Grass Energy, quickly powering Celebi ex"
+
+- deck: ディアルガexデッキ
+  deckEn: Dialga ex
+  source: https://game8.jp/pokemon-tcg-pocket/666424
+  combos:
+    - cards: [ディアルガex, アルセウスex]
+      reason: ディアルガexのワザでベンチのアルセウスexに鋼エネを2つ付け、次のアタッカーを育てる
+      reasonEn: "Dialga ex's attack puts two Metal Energy on the Benched Arceus ex, setting up the next attacker"
+    - cards: [ディアルガex, ゴツゴツメット]
+      reason: 前でエネを配りながら耐えるディアルガexが、殴られるたびに反撃ダメージを返す
+      reasonEn: Dialga ex tanks while accelerating Energy and punishes every hit it takes
+    - cards: [アルセウスex, ディアルガex]
+      reason: ベンチを並べるほど強いアルセウスexの数を、エネを受け取ったベンチ要員がそのまま稼ぐ
+      reasonEn: "Arceus ex scales with Bench size, and the Benched Pokémon Dialga ex powers up count toward it"
+
+- deck: パルキアexデッキ
+  deckEn: Palkia ex
+  source: https://game8.jp/pokemon-tcg-pocket/666423
+  combos:
+    - cards: [シャワーズ@a1a, マナフィ]
+      reason: マナフィでベンチに配った水エネを、シャワーズの特性でバトル場に集められる
+      reasonEn: "Vaporeon's Ability gathers the Water Energy Manaphy spread on the Bench into the Active Pokémon"
+    - cards: [シャワーズ@a1a, パルキアex@a2]
+      reason: エネの重いパルキアexに、ベンチの水エネを何回でも付け替えて大技を連打する
+      reasonEn: Vaporeon moves Benched Water Energy onto Palkia ex as often as needed to keep its big attack going
+    - cards: [カイ, シャワーズ@a1a]
+      reason: 水エネを付けたポケモンが多いので、カイの回復が全員に効く
+      reasonEn: "With Water Energy everywhere, Irida heals the whole team"
+
+- deck: ムウマージexデッキ
+  deckEn: Mismagius ex
+  source: https://game8.jp/pokemon-tcg-pocket/666514
+  combos:
+    - cards: [ミュウex, かけだし調査員]
+      reason: 傷ついたミュウexを手札にもどして、相手にポイントを渡さず出し直せる
+      reasonEn: "Budding Expeditioner returns a damaged Mew ex to the hand, denying points and letting you replay it"
+    - cards: [ムウマージex, 幻の石板]
+      reason: 山札の上が超ポケモンなら手札に加わり、ムウマなど進化ラインがそろいやすい
+      reasonEn: "Mythical Slab grabs a Psychic Pokémon off the top, helping complete the Misdreavus line"
+    - cards: [ムウマージex, ギラティナex]
+      reason: ベンチで自分にエネをためるギラティナexと役割を分けて、攻め手を切らさない
+      reasonEn: Giratina ex powers itself on the Bench as a second attacker so the offense never stalls
+
+- deck: ルカリオデッキ
+  deckEn: Lucario
+  source: https://game8.jp/pokemon-tcg-pocket/666497
+  combos:
+    - cards: [ルカリオ@a2, オコリザル@a1]
+      reason: ルカリオの特性で闘ポケモンの打点が20上がり、軽いエネで動くオコリザルの火力が大きく伸びる
+      reasonEn: "Lucario adds 20 to Fighting attacks, greatly boosting the cheap-to-power Primeape"
+    - cards: [ルカリオ@a2, マーシャドー]
+      reason: 倒された次の番に強くなるマーシャドーに、ルカリオの打点上昇を重ねて高HPも倒す
+      reasonEn: "Marshadow hits harder after a knockout, and Lucario's bonus lets it take down high-HP targets"
+    - cards: [ルカリオ@a2, ラムパルド]
+      reason: ルカリオの打点上昇でラムパルドが一撃で倒せる相手が広がる
+      reasonEn: "Lucario's bonus widens the range of Pokémon Rampardos can one-hit-KO"
+    - cards: [ルカリオ@a2, ガブリアスex]
+      reason: 闘ポケモンのガブリアスexの打点不足を、ルカリオの特性で補う
+      reasonEn: "Lucario's Ability makes up for the Fighting-type Garchomp ex's lower damage"
+
+- deck: カメックスexデッキ
+  deckEn: Blastoise ex
+  source: https://game8.jp/pokemon-tcg-pocket/650439
+  combos:
+    - cards: [マナフィ, カメックスex]
+      reason: マナフィでベンチのゼニガメ系に水エネを配り、水エネが多いほど伸びるカメックスexの大技を早く撃つ
+      reasonEn: Manaphy spreads Water Energy to the Benched Squirtle line so Blastoise ex reaches its boosted attack sooner
+    - cards: [カスミ, カメックスex]
+      reason: カスミでエネが一気に増えれば、追加ダメージ込みの大技に早く届く
+      reasonEn: A good Misty flip loads Blastoise ex with enough Energy for its bonus damage early
+    - cards: [ふしぎなアメ, カメックスex]
+      reason: カメールを飛ばしてゼニガメから直接カメックスexへ進化し、立ち上がりを早める
+      reasonEn: Rare Candy skips Wartortle and evolves Squirtle straight into Blastoise ex
+
+- deck: カイリキーexデッキ
+  deckEn: Machamp ex
+  source: https://game8.jp/pokemon-tcg-pocket/650470
+  combos:
+    - cards: [ナゲツケサルex, カイリキーex]
+      reason: ナゲツケサルexが倒されたとき闘エネをベンチのカイリキーexへ移し、重いワザをすぐ撃てる
+      reasonEn: "When Passimian ex is Knocked Out, its Fighting Energy moves to the Benched Machamp ex for an immediate big attack"
+    - cards: [ふしぎなアメ, カイリキーex]
+      reason: ゴーリキーを飛ばしてワンリキーから直接カイリキーexへ進化させる
+      reasonEn: Rare Candy turns Machop directly into Machamp ex
+    - cards: [ナゲツケサルex, マーズ]
+      reason: ナゲツケサルexが倒されて追い込まれた場面で、マーズで相手の手札を減らし逆転を狙う
+      reasonEn: "After Passimian ex goes down, Mars trims the opponent's hand to set up a comeback"
+
+- deck: アルセウスexデッキ（ピチュー・ゼラオラ）
+  deckEn: Arceus ex (Pichu / Zeraora)
+  source: https://game8.jp/pokemon-tcg-pocket/672193
+  combos:
+    - cards: [ピチュー, アルセウスex]
+      reason: ピチューのワザでベンチのアルセウスexに雷エネを先に付け、次の番から攻撃を始める
+      reasonEn: "Pichu's attack gives the Benched Arceus ex Lightning Energy so it can start attacking next turn"
+    - cards: [ゼラオラ, エレメンタルつけかえ]
+      reason: ゼラオラが特性で自分に付けた雷エネを、エレメンタルつけかえでバトル場へ回す
+      reasonEn: Elemental Switch moves the Lightning Energy Zeraora gives itself onto the Active Pokémon
+    - cards: [アルセウスex, ゼラオラ]
+      reason: ベンチでエネを作るゼラオラが、ベンチの数で強くなるアルセウスexの頭数も稼ぐ
+      reasonEn: "Zeraora builds Energy on the Bench while also adding to Arceus ex's Bench count"
+    - cards: [アルセウスex, レッド]
+      reason: ベンチの数ぶん伸びる打点にレッドを重ねて、exポケモンを一撃で倒す
+      reasonEn: "Red stacks on Arceus ex's Bench-based damage to one-hit-KO Pokémon ex"
+
+- deck: ルギアexデッキ
+  deckEn: Lugia ex
+  source: https://game8.jp/pokemon-tcg-pocket/707999
+  combos:
+    - cards: [ホウオウex, ルギアex]
+      reason: ホウオウexが炎・水・雷のエネをベンチに配り、それを全部使うルギアexの大技をそろえる
+      reasonEn: "Ho-Oh ex hands out Fire, Water and Lightning Energy—exactly the mix Lugia ex's big attack needs"
+    - cards: [ブビィ, ピチュー, ルギアex]
+      reason: ベビィのワザで炎や雷のエネをベンチのルギアexに少しずつ付けていく
+      reasonEn: Magby and Pichu each toss Fire or Lightning Energy onto the Benched Lugia ex
+    - cards: [ヒカリ, ルギアex]
+      reason: ベンチでためたエネをヒカリでバトル場のルギアexへ移し、3色をそろえる
+      reasonEn: Dawn moves Energy from the Bench onto the Active Lugia ex to complete its three colors
+    - cards: [コトネ, ホウオウex]
+      reason: ダメージを受けたホウオウexをベンチに下げて、倒される前にエネ配りを続けさせる
+      reasonEn: Lyra pulls a damaged Ho-Oh ex back to the Bench so it can keep supplying Energy later
+
+- deck: レックウザexデッキ（マナフィ・パルキア）
+  deckEn: Rayquaza ex (Manaphy / Palkia)
+  source: https://game8.jp/pokemon-tcg-pocket/685153
+  combos:
+    - cards: [マナフィ, レックウザex]
+      reason: 色を問わないレックウザexに、マナフィでベンチから水エネを先に付けておく
+      reasonEn: Manaphy pre-loads the colorless-cost Rayquaza ex with Water Energy on the Bench
+    - cards: [マナフィ, パルキアex@a2]
+      reason: 水エネを3つ使うパルキアexの準備を、マナフィのエネ配りで短くする
+      reasonEn: "Manaphy shortens the setup for Palkia ex, which spends three Water Energy per attack"
+    - cards: [レックウザex, パルキアex@a2]
+      reason: どちらも相手のベンチまで削るので、ダメージを散らして一気に複数を倒しにいける
+      reasonEn: "Both spread damage onto the opponent's Bench, setting up multiple Knock Outs at once"
+
+- deck: カイリューexデッキ（ベビィ）
+  deckEn: Dragonite ex (Babies)
+  source: https://game8.jp/pokemon-tcg-pocket/700622
+  combos:
+    - cards: [ピチュー, タマンタ, ミニリュウ]
+      reason: ベビィのワザでベンチのミニリュウに雷と水のエネを付け、カイリューexの準備を進める
+      reasonEn: Pichu and Mantyke toss Lightning and Water Energy onto the Benched Dratini to prepare Dragonite ex
+    - cards: [コトネ, カイリューex]
+      reason: 撃った次の番にワザが使えないカイリューexをコトネで下げ、入れ替えて大技を連発する
+      reasonEn: "Lyra swaps out Dragonite ex after its big attack locks it, so you can rotate and keep swinging"
+    - cards: [ピィ, ふしぎなアメ, カイリューex]
+      reason: ピィで進化パーツを探し、アメでミニリュウから一気にカイリューexへ進化する
+      reasonEn: Cleffa digs for evolution pieces and Rare Candy jumps Dratini straight to Dragonite ex
+
+- deck: 新ピカチュウexデッキ
+  deckEn: Pikachu ex (Thunderbolt)
+  source: https://game8.jp/pokemon-tcg-pocket/679350
+  combos:
+    - cards: [ピチュー, ピカチュウex@a2b]
+      reason: ピチューのワザでベンチのピカチュウexに雷エネを先に付け、エネを全部使う大技を早く撃つ
+      reasonEn: Pichu tosses Lightning Energy onto the Benched Pikachu ex so its discard-all attack comes online sooner
+    - cards: [ゼラオラ, エレメンタルつけかえ, ピカチュウex@a2b]
+      reason: ゼラオラが作った雷エネをバトル場のピカチュウexに移し、エネを捨てた後もすぐ立て直す
+      reasonEn: "Elemental Switch moves Zeraora's Lightning Energy to Pikachu ex, refueling it after it discards everything"
+    - cards: [ピカチュウex@a2b, ピカチュウex@a1]
+      reason: 大技で一気に倒す新ピカチュウexと、ベンチの数で殴る旧ピカチュウexで攻め方を使い分ける
+      reasonEn: The burst-damage Pikachu ex and the Bench-scaling Pikachu ex share Energy support and give two lines of attack
+
+- deck: ダクギラデッキ
+  deckEn: Darkrai ex / Giratina ex
+  source: https://game8.jp/pokemon-tcg-pocket/679161
+  combos:
+    - cards: [ギラティナex, ダークライex]
+      reason: どちらもエネを自分で増やせる攻め役で、ダークライexのエネ付けダメージで削った相手をギラティナexで倒す
+      reasonEn: "Darkrai ex chips with every Darkness attachment, setting up Giratina ex's heavy hit to finish"
+    - cards: [ギラティナex, はじまりの平原]
+      reason: たねポケモンのギラティナexのHPが上がり、ワザの反動にも耐えやすくなる
+      reasonEn: "Starting Plains raises the Basic Giratina ex's HP, offsetting its self-damage"
+    - cards: [ダークライex, ゴツゴツメット]
+      reason: 殴られるたびに返すダメージと、エネ付けのダメージを重ねて相手を削り切る
+      reasonEn: "Rocky Helmet recoil plus Darkrai ex's attachment damage wears the opponent down"
+    - cards: [イエッサンex（メス）, はじまりの平原]
+      reason: HPの上がったたねポケモンを、イエッサンexの特性で毎番回復して長持ちさせる
+      reasonEn: Indeedee ex heals a little every turn on Basics whose HP Starting Plains already boosted
+
+- deck: ライコウexデッキ（ジバコイル）
+  deckEn: Raikou ex (Magnezone)
+  source: https://game8.jp/pokemon-tcg-pocket/712749
+  combos:
+    - cards: [ライコウex, レアコイル@a1]
+      reason: ライコウexが毎番1枚引いて進化先を探し、レアコイルは自分でエネを増やして攻め役になる
+      reasonEn: Raikou ex draws every turn to find evolutions while Magneton powers itself up
+    - cards: [ライコウex, アカギ]
+      reason: ライコウexがベンチに散らしたダメージを、アカギで呼び出した相手にまとめて生かす
+      reasonEn: Cyrus drags out a Pokémon that Raikou ex already chipped on the Bench so you can finish it
+    - cards: [ライコウex, ゼラオラ, エレメンタルつけかえ]
+      reason: ゼラオラの雷エネをつけかえでライコウexへ回し、後攻でも早く攻撃を始める
+      reasonEn: "Zeraora's Energy goes to Raikou ex via Elemental Switch for a fast start"
+
+- deck: エンテイex＆バクフーンデッキ
+  deckEn: Entei ex / Typhlosion
+  source: https://game8.jp/pokemon-tcg-pocket/712763
+  combos:
+    - cards: [エンテイex, バクフーン@a4]
+      reason: バクフーンの特性で相手を毎番やけどにして、エンテイexの攻撃に追加のダメージを重ねる
+      reasonEn: "Typhlosion burns the opponent every turn, adding steady damage on top of Entei ex's attacks"
+    - cards: [ブビィ, エンテイex]
+      reason: ブビィのワザでベンチのエンテイexに炎エネを先に付け、追加ダメージ込みの大技に早く届く
+      reasonEn: Magby tosses Fire Energy to the Benched Entei ex so its boosted attack is ready sooner
+    - cards: [ふしぎなアメ, バクフーン@a4]
+      reason: マグマラシを飛ばしてヒノアラシから直接バクフーンへ進化し、やけどを早く始める
+      reasonEn: Rare Candy jumps Cyndaquil straight to Typhlosion to start the burns early
+
+- deck: サンダースexデッキ
+  deckEn: Jolteon ex
+  source: https://game8.jp/pokemon-tcg-pocket/734809
+  combos:
+    - cards: [イーブイ@pb, サンダースex]
+      reason: バトル場ですぐ進化できるイーブイから、最初の番にサンダースexを立てて相手のエネ付けをとがめる
+      reasonEn: "Eevee can evolve right away in the Active Spot, getting Jolteon ex out on turn one to punish attachments"
+    - cards: [イーブイ@pb, サンダース@pa]
+      reason: 進化したばかりで打点が上がるサンダースを、すぐ進化できるイーブイから出して序盤から削る
+      reasonEn: "The quick-evolving Eevee pairs with Jolteon's evolve-this-turn bonus for early damage"
+    - cards: [イーブイのバッグ, サンダースex]
+      reason: イーブイの進化系であるサンダースexの打点を上げたり、まとめて回復したりできる
+      reasonEn: "Eevee Bag boosts or heals Jolteon ex, since it evolves from Eevee"
+    - cards: [トレーニングエリア, サンダースex]
+      reason: 1進化のサンダースexのワザの打点を上げ、倒せる相手を増やす
+      reasonEn: "Training Area adds damage to the Stage 1 Jolteon ex's attacks"
+
+- deck: サザンドラデッキ
+  deckEn: Hydreigon
+  source: https://game8.jp/pokemon-tcg-pocket/735224
+  combos:
+    - cards: [ふしぎなアメ, サザンドラ@b1]
+      reason: ジヘッドを飛ばしてモノズから直接サザンドラへ進化し、特性のエネ加速を早く始める
+      reasonEn: Rare Candy evolves Deino straight into Hydreigon to start its Energy Ability early
+    - cards: [ピィ, ハルカ, サザンドラ@b1]
+      reason: 山札からポケモンを手札に加えて、2進化ラインのそろわない事故を減らす
+      reasonEn: "Cleffa and May pull Pokémon from the deck, reducing bricks with the Stage 2 line"
+    - cards: [サザンドラ@b1, リーリエ]
+      reason: 特性でエネを足すたびに自分が受ける反動ダメージを、リーリエで大きく回復する
+      reasonEn: Lillie heals the self-damage Hydreigon takes each time its Ability adds Energy
+    - cards: [アブソル@pa, サザンドラ@b1]
+      reason: アブソルでベンチの小さなポケモンを先に削り、その間にサザンドラを育てる
+      reasonEn: Absol snipes small Benched Pokémon while Hydreigon gets set up

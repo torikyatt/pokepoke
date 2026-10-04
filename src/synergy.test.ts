@@ -114,9 +114,13 @@ describe("コインをやり直せるカード", () => {
 });
 
 describe.skipIf(!data.meta)("実際の使われ方（攻略記事・大会データ）", () => {
-  it("攻略記事の定番コンボ: レアコイル（ボルトチャージ）↔ ミライドンex がいちばん上", () => {
-    expect(partnersOf("a1-098")[0].card.id).toBe("b3a-019");
-    expect(partnersOf("a1-098")[0].reasons.some((r) => r.startsWith("定番コンボ"))).toBe(true);
+  it("攻略記事の定番コンボ: レアコイル（ボルトチャージ）の上位に、ミライドンex とシトロン", () => {
+    const top = partnersOf("a1-098").slice(0, 3);
+    for (const id of ["b3a-019", "b1a-068"]) {
+      const p = top.find((x) => x.card.id === id);
+      expect(p, id).toBeDefined();
+      expect(p!.reasons.some((r) => r.startsWith("定番コンボ"))).toBe(true);
+    }
   });
   it("大会で一緒に使われる: メガルカリオex の上位に、ルカリオ（特性）といにしえの闘技場", () => {
     const top = partnersOf("b3-081").slice(0, 6).map((p) => p.card.id);
