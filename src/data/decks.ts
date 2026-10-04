@@ -32,6 +32,7 @@ type Raw = {
 };
 
 let loading: Promise<DeckIndex> | undefined;
+let loaded: DeckIndex | undefined; // 一度読み込んだら、次からは最初の描画で使う（ページの高さが変わらないように）
 export function loadDecks(): Promise<DeckIndex> {
   loading ??= import("virtual:decks").then(async ({ default: packed }) => {
     const bin = Uint8Array.from(atob(packed), (c) => c.charCodeAt(0));
@@ -54,14 +55,16 @@ export function loadDecks(): Promise<DeckIndex> {
       for (const [id] of d.cards) (byCard.get(id) ?? byCard.set(id, []).get(id)!).push(i);
     });
     const newest = Math.max(0, ...raw.tournaments.map(([, date]) => Date.parse(date)));
-    return { fetchedAt: raw.fetchedAt, decks, byCard, newest };
+    loaded = { fetchedAt: raw.fetchedAt, decks, byCard, newest };
+    return loaded;
   });
   return loading;
 }
 
 export function useTournamentDecks(): DeckIndex | undefined {
-  const [index, setIndex] = useState<DeckIndex>();
+  const [index, setIndex] = useState<DeckIndex | undefined>(() => loaded);
   useEffect(() => {
+    if (loaded) return;
     let alive = true;
     loadDecks().then((x) => alive && setIndex(x));
     return () => {

@@ -11,9 +11,15 @@ export function PrintGallery({ card, index, onIndex }: { card: AppCard; index: n
   const n = card.prints.length;
   // 外から（収録の一覧をタップしたとき）指定された絵柄へスクロールする
   const fromScroll = useRef(false);
+  const mounted = useRef(false);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    // 開いた直後は何もしない（進化ラインから移ってきたときのスクロール位置を崩さない）
+    if (!mounted.current) {
+      mounted.current = true;
+      return;
+    }
     if (fromScroll.current) {
       fromScroll.current = false;
       return;

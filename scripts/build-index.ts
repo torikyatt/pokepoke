@@ -5,6 +5,7 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 
 import { join } from "node:path";
 import { load as loadYaml } from "js-yaml";
 import { jaImageIndex } from "./lib/game8.ts";
+import { basePrint, orderedPrints } from "./lib/prints.ts";
 import { requireInfoOf, selectorOf } from "./lib/targets.ts";
 import { loadTaxonomy } from "./lib/taxonomy.ts";
 import type { Card, Effect } from "./lib/types.ts";
@@ -164,8 +165,9 @@ const out: AppCard[] = cards.map((c) => {
     evolvesFrom: c.evolvesFrom,
     evolvesTo: c.evolvesTo,
     attacks,
-    prints: c.prints.map((p) => printOf(c, p)),
-    image: c.prints[0].image,
+    // 絵柄は「いちばん基本のもの」を先頭に（一覧・詳細・サムネイルはこれ）
+    prints: orderedPrints(c.prints).map((p) => printOf(c, p)),
+    image: basePrint(c.prints).image,
     ...(jaImageOf(c) ? { imageJa: jaImageOf(c) } : {}),
     ...(existsSync(join(ROOT, "public/thumbs-ja", `${c.id}.webp`)) ? { jaThumb: true as const } : {}),
     order: Math.min(...c.prints.map((p) => p.builderNr ?? 99999)),

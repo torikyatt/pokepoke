@@ -1,7 +1,15 @@
 import { useMemo, useState } from "react";
 import { Chip, Cost, EnergyIcon, PoolCard, Thumb } from "../components/ui.tsx";
 import { useData } from "../context.tsx";
-import { closeDetail, openCard } from "../detail.ts";
+import { closeDetail, openCard, setScrollAnchor } from "../detail.ts";
+
+/** 進化ラインから開く: 移った先でも進化ラインが画面の同じ高さに来るようにする */
+function openFromEvo(button: HTMLElement, id: string) {
+  const section = button.closest<HTMLElement>("[data-anchor]");
+  const scroller = section?.closest<HTMLElement>(".overflow-y-auto");
+  if (section && scroller) setScrollAnchor("evo", section.getBoundingClientRect().top - scroller.getBoundingClientRect().top);
+  openCard(id);
+}
 import { PrintLine } from "../components/prints.tsx";
 import { PrintGallery } from "../components/print-gallery.tsx";
 import { CardDecks } from "../components/tournament-decks.tsx";
@@ -86,7 +94,7 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
         </section>
 
         {line.reduce((n, l) => n + l.cards.length, 0) > 1 && (
-          <section>
+          <section data-anchor="evo">
             <h2 className="mb-2 text-sm font-extrabold text-muted">進化ライン</h2>
             {/* 段ごとに、進化できるカードを全部（別のパックのものも）並べる */}
             <div className="neu space-y-1 rounded-2xl p-3">
@@ -97,7 +105,7 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
                     <span className="w-10 shrink-0 pt-1 text-[10px] font-extrabold text-muted">{level.label}</span>
                     <div className="flex min-w-0 flex-1 flex-wrap gap-1.5">
                       {level.cards.map((c) => (
-                        <button key={c.id} type="button" onClick={() => openCard(c.id)} title={c.nameJa} className={`w-12 shrink-0 rounded-md ${c.id === card.id ? "ring-[3px] ring-accent" : ""}`}>
+                        <button key={c.id} type="button" onClick={(e) => openFromEvo(e.currentTarget, c.id)} title={c.nameJa} className={`w-12 shrink-0 rounded-md ${c.id === card.id ? "ring-[3px] ring-accent" : ""}`}>
                           <Thumb card={c} />
                         </button>
                       ))}

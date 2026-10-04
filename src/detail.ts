@@ -7,6 +7,7 @@
 import { create } from "zustand";
 
 const MAX = 50;
+let anchor: { name: string; top: number } | undefined;
 
 interface DetailState {
   stack: string[];
@@ -25,7 +26,10 @@ const push = (sheet: number, card: string) => history.pushState({ sheet, card } 
 export function openCard(id: string) {
   const s = useDetail.getState();
   if (s.open) {
-    if (s.stack[s.pos] === id) return;
+    if (s.stack[s.pos] === id) {
+      anchor = undefined;
+      return;
+    }
     const stack = [...s.stack.slice(0, s.pos + 1), id].slice(-MAX);
     useDetail.setState({ stack, pos: stack.length - 1 });
     push(stack.length - 1, id);
@@ -33,6 +37,17 @@ export function openCard(id: string) {
     useDetail.setState({ stack: [id], pos: 0, open: true, snap: "full" });
     push(0, id);
   }
+}
+
+// 進化ラインなどから別のカードへ移ったとき、同じ欄が画面の同じ高さに来るようにする（見比べやすいように）
+/** 次に開くカードで、data-anchor={name} の欄をスクロール枠の上から top px の位置に合わせる */
+export function setScrollAnchor(name: string, top: number) {
+  anchor = { name, top };
+}
+export function takeScrollAnchor() {
+  const a = anchor;
+  anchor = undefined;
+  return a;
 }
 
 /** 閉じたときのカードと履歴のまま開き直す */

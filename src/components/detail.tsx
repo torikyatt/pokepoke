@@ -3,7 +3,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useAddToDeck, useData } from "../context.tsx";
 import { DECK_SIZE } from "../deck.ts";
-import { backDetail, closeDetail, reopenDetail, useDetail } from "../detail.ts";
+import { backDetail, closeDetail, reopenDetail, takeScrollAnchor, useDetail } from "../detail.ts";
 import { CardDetail } from "../pages/CardPage.tsx";
 import { useDecks, useFavorites, useToast } from "../store.ts";
 import type { AppCard } from "../types.ts";
@@ -112,8 +112,19 @@ function useScrollMemory(ref: React.RefObject<HTMLDivElement | null>, key: strin
   const mem = useRef(new Map<string, number>());
   const cur = useRef(key);
   useLayoutEffect(() => {
-    ref.current?.scrollTo(0, mem.current.get(key) ?? 0);
+    const el = ref.current;
     cur.current = key;
+    if (!el) return;
+    // 進化ラインから移ってきたときは、進化ラインが前と同じ高さに来るように
+    const a = takeScrollAnchor();
+    const target = a && el.querySelector<HTMLElement>(`[data-anchor="${a.name}"]`);
+    if (a && target) {
+      const align = () => (el.scrollTop = target.getBoundingClientRect().top - el.getBoundingClientRect().top + el.scrollTop - a.top);
+      align();
+      requestAnimationFrame(align); // 後から高さが変わる欄があっても合わせ直す
+      return;
+    }
+    el.scrollTo(0, mem.current.get(key) ?? 0);
   }, [key]);
   useEffect(() => {
     const el = ref.current;
