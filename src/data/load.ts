@@ -1,7 +1,7 @@
 // 埋め込みデータの展開と画像URL
 import packed from "virtual:app-data";
 import thumbs from "virtual:thumbs";
-import type { AppCard, AppData } from "../types.ts";
+import type { AppCard, AppData, AppPrint } from "../types.ts";
 
 export type ImageLang = "ja" | "en";
 
@@ -32,6 +32,13 @@ export const thumbUrl = (card: AppCard, lang: ImageLang) => thumbUrls(card, lang
 /** 詳細画面の大きい画像（日本語は Game8、英語は PocketDecks） */
 export function largeUrl(card: AppCard, lang: ImageLang): string {
   return lang === "ja" && card.imageJa ? card.imageJa : card.image;
+}
+
+/** 絵柄（収録）ごとの大きい画像。英語は収録番号から作る。日本語が無い絵柄は英語 */
+export function printImageUrl(p: AppPrint, lang: ImageLang): string {
+  const at = p.id.lastIndexOf("-");
+  const en = `https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/${p.id.slice(0, at)}/${p.id.slice(at + 1)}.webp`;
+  return lang === "ja" && p.imageJa ? p.imageJa : en;
 }
 
 export const isSingleFile = __SINGLE__;

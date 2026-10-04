@@ -71,6 +71,7 @@ function printOf(c: Card, p: Card["prints"][number]): AppPrint {
   const out: AppPrint = { id: p.id, set: p.set, setName: p.setName, rarity: p.rarity };
   const g = (g8Match[c.id]?.g8 ?? []).map((id) => g8ById.get(id)).find((x) => x && x.set === g8SetOf(p.set) && x.number === Number(p.id.split("-").pop()));
   if (!g) return out;
+  if (g.image) out.imageJa = g.image;
   const setJa = setJaOf(p.set);
   if (g.pack && g.pack !== "-") {
     const sub = g.pack.startsWith(setJa) ? g.pack.slice(setJa.length) : g.pack === setJa ? "" : g.pack;

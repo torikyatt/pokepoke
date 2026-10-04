@@ -1,10 +1,9 @@
 import { useMemo, useState } from "react";
 import { Chip, Cost, EnergyIcon, PoolCard, Thumb } from "../components/ui.tsx";
 import { useData } from "../context.tsx";
-import { largeUrl, thumbUrl } from "../data/load.ts";
 import { closeDetail, openCard } from "../detail.ts";
-import { useSettings } from "../store.ts";
 import { PrintLine } from "../components/prints.tsx";
+import { PrintGallery } from "../components/print-gallery.tsx";
 import { CardDecks } from "../components/tournament-decks.tsx";
 import { navigate, searchPath } from "../router.ts";
 import type { AppAttack, AppCard, AppEffect } from "../types.ts";
@@ -19,8 +18,7 @@ export function CardDetail({ id, keepOpen, actions }: { id: string; keepOpen?: b
   const usage = card ? synergy.usage(card) : undefined;
   const { data } = useData();
   const line = useMemo(() => (card && card.kind === "pokemon" ? synergy.evolutionLine(card) : []), [card, synergy]);
-  const [hires, setHires] = useState(true);
-  const lang = useSettings((s) => s.imageLang);
+  const [printIndex, setPrintIndex] = useState(0); // 表示中の絵柄
   if (!card) return <p className="p-6 text-center text-sm font-bold text-muted">カードが見つかりません</p>;
 
   // 効果のタグを押すと、そのタグで検索する（スマホは詳細を閉じてから）
@@ -37,13 +35,7 @@ export function CardDetail({ id, keepOpen, actions }: { id: string; keepOpen?: b
       <div className="mx-auto max-w-3xl space-y-5 px-4 py-4">
         <div className="flex gap-4">
           <div className="w-32 shrink-0 @sm:w-40 @lg:w-56">
-            <img
-              key={`${card.id}-${lang}`}
-              src={hires ? largeUrl(card, lang) : thumbUrl(card, lang)}
-              onError={() => setHires(false)}
-              alt={card.nameJa}
-              className="aspect-[367/512] w-full rounded-xl bg-line object-cover shadow-[3px_5px_12px_rgb(150_165_185/0.55)]"
-            />
+            <PrintGallery card={card} index={printIndex} onIndex={setPrintIndex} />
           </div>
           <div className="min-w-0 flex-1 space-y-2 text-sm">
             <div>
@@ -197,8 +189,8 @@ export function CardDetail({ id, keepOpen, actions }: { id: string; keepOpen?: b
         <section>
           <h2 className="mb-1 text-sm font-extrabold text-muted">収録</h2>
           <ul className="neu space-y-1.5 rounded-2xl p-3">
-            {card.prints.map((p) => (
-              <li key={p.id} className="flex items-center gap-2">
+            {card.prints.map((p, i) => (
+              <li key={p.id} onClick={() => setPrintIndex(i)} className={`-mx-1.5 flex cursor-pointer items-center gap-2 rounded-lg px-1.5 ${card.prints.length > 1 && i === printIndex ? "bg-[#dff4f1]" : ""}`}>
                 <div className="min-w-0 flex-1">
                   <PrintLine p={p} />
                   {p.how && p.how.includes("|") && <div className="mt-0.5 truncate text-[10px] font-bold text-muted">{p.how.split(/[|｜]/).slice(1).join(" / ")}</div>}
