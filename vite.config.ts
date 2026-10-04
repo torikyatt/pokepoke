@@ -15,11 +15,16 @@ function embeddedData(single: boolean): Plugin {
   return {
     name: "pokepoke-embedded-data",
     resolveId(id) {
-      if (id === "virtual:app-data" || id === "virtual:thumbs") return "\0" + id;
+      if (id === "virtual:app-data" || id === "virtual:thumbs" || id === "virtual:decks") return "\0" + id;
     },
     load(id) {
       if (id === "\0virtual:app-data") {
         const gz = gzipSync(readFileSync("src/data/app-data.json"), { level: 9 });
+        return `export default ${JSON.stringify(gz.toString("base64"))};`;
+      }
+      // 大会のデッキリスト。カード詳細で必要になってから import() する（Web版は別ファイルになる）
+      if (id === "\0virtual:decks") {
+        const gz = gzipSync(readFileSync("src/data/decks.json"), { level: 9 });
         return `export default ${JSON.stringify(gz.toString("base64"))};`;
       }
       if (id === "\0virtual:thumbs") {

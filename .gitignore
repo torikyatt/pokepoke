@@ -4,3 +4,4 @@ dist-single/
 data/game8/cache/
 src/data/app-data.json
 data/meta/cache/
+src/data/decks.json

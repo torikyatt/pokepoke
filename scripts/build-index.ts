@@ -206,24 +206,27 @@ type RawMeta = Omit<AppMeta, "archetypes"> & { archetypes: (Omit<AppArchetype, "
 const metaFile = join(DATA, "meta/meta.json");
 const rawMeta: RawMeta | undefined = existsSync(metaFile) ? JSON.parse(readFileSync(metaFile, "utf8")) : undefined;
 let meta: AppMeta | undefined;
+/** デッキ名（英語）に出てくるカード名を、そのデッキのカードの中から探して日本語のデッキ名にする */
+function archName(name: string, candidates: string[]): { nameJa: string; keys: string[] } {
+  const lower = name.toLowerCase();
+  const keys = candidates
+    .map((id) => outById.get(id)!)
+    .filter((c) => c && lower.includes(c.nameEn.toLowerCase()))
+    .map((c) => ({ c, at: lower.indexOf(c.nameEn.toLowerCase()), len: c.nameEn.length }))
+    // 「Lucario」は「Mega Lucario ex」の一部でもあるので、長い名前に含まれる短い名前は、別の場所にも出てくるときだけ数える
+    .filter((k, _, all) => !all.some((o) => o !== k && o.len > k.len && o.c.nameEn.toLowerCase().includes(k.c.nameEn.toLowerCase()) && lower.split(k.c.nameEn.toLowerCase()).length - 1 <= 1))
+    .sort((x, y) => x.at - y.at);
+  const uniq = [...new Map(keys.map((k) => [k.c.nameEn, k.c])).values()];
+  return { nameJa: uniq.length ? uniq.map((c) => c.nameJa).join("＆") : name, keys: uniq.map((c) => c.id) };
+}
 if (rawMeta) {
   const archetypes = rawMeta.archetypes.map((a): AppArchetype => {
-    // デッキ名（英語）に出てくるカード名を、よく入っているカードの中から探して日本語にする
-    const lower = a.name.toLowerCase();
-    const keys = a.cards
-      .filter((x) => x.rate >= 0.3)
-      .map((x) => outById.get(x.id)!)
-      .filter((c) => c && lower.includes(c.nameEn.toLowerCase()))
-      .map((c) => ({ c, at: lower.indexOf(c.nameEn.toLowerCase()), len: c.nameEn.length }))
-      // 「Lucario」は「Mega Lucario ex」の一部でもあるので、長い名前に含まれる短い名前は、別の場所にも出てくるときだけ数える
-      .filter((k, _, all) => !all.some((o) => o !== k && o.len > k.len && o.c.nameEn.toLowerCase().includes(k.c.nameEn.toLowerCase()) && lower.split(k.c.nameEn.toLowerCase()).length - 1 <= 1))
-      .sort((x, y) => x.at - y.at);
-    const uniq = [...new Map(keys.map((k) => [k.c.nameEn, k.c])).values()];
+    const named = archName(a.name, a.cards.filter((x) => x.rate >= 0.3).map((x) => x.id));
     return {
       id: a.id,
       nameEn: a.name,
-      nameJa: uniq.length ? uniq.map((c) => c.nameJa).join("＆") : a.name,
-      keys: uniq.map((c) => c.id),
+      nameJa: named.nameJa,
+      keys: named.keys,
       share: a.share,
       decks: a.decks,
       cards: a.cards.filter((x) => outById.has(x.id)).map((x) => ({ id: x.id, rate: x.rate })),
@@ -252,6 +255,32 @@ if (existsSync(combosFile)) {
   for (const d of doc) for (const c of d.combos) combos.push({ cards: c.cards.map(resolve), reason: c.reason, deck: d.deck, source: d.source });
   console.log(`攻略記事の組み合わせ: ${combos.length} 件`);
 }
+
+// 大会のデッキリスト（data/meta/decks.json）→ src/data/decks.json（カード詳細の「このカードを使ったデッキ」用。必要になってから読み込む）
+const decksFile = join(DATA, "meta/decks.json");
+if (existsSync(decksFile)) {
+  type RawDeck = [number, string, string, number, number, number, number, string, string, number];
+  const raw = JSON.parse(readFileSync(decksFile, "utf8")) as { fetchedAt: string; tournaments: [string, string, number][]; decks: RawDeck[] };
+  const archNames = new Map((meta?.archetypes ?? []).map((a) => [a.id, a.nameJa]));
+  const archs: string[][] = []; // [ID, 日本語名]
+  const archIndex = new Map<string, number>();
+  const decks: (string | number)[][] = [];
+  let dropped = 0;
+  for (const [t, archId, archEn, place, w, l, ties, energy, cardsStr, dup] of raw.decks) {
+    const ids = cardsStr.split(" ").map((x) => x.split("*")[0]);
+    if (ids.some((id) => !outById.has(id))) {
+      dropped++;
+      continue;
+    }
+    if (!archIndex.has(archId)) {
+      archIndex.set(archId, archs.length);
+      archs.push([archId, archNames.get(archId) ?? archName(archEn, ids).nameJa]);
+    }
+    decks.push([t, archIndex.get(archId)!, place, w, l, ties, energy, cardsStr, dup]);
+  }
+  writeFileSync(join(ROOT, "src/data/decks.json"), JSON.stringify({ fetchedAt: raw.fetchedAt, tournaments: raw.tournaments, archetypes: archs, decks }));
+  console.log(`大会のデッキリスト: ${decks.length} 件（${archs.length} デッキタイプ）${dropped ? ` ・ 知らないカードを含むため除外 ${dropped} 件` : ""}`);
+} else writeFileSync(join(ROOT, "src/data/decks.json"), JSON.stringify({ fetchedAt: "", tournaments: [], archetypes: [], decks: [] }));
 
 // トレーナーズが効く相手（効果文を読んで書いた表）
 const helpsFile = join(DATA, "trainer-synergy.yaml");

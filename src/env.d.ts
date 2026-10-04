@@ -12,3 +12,8 @@ declare module "virtual:thumbs" {
   const thumbs: Record<string, string> | null;
   export default thumbs;
 }
+
+declare module "virtual:decks" {
+  const base64Gzip: string;
+  export default base64Gzip;
+}

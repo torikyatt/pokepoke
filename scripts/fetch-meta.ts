@@ -9,6 +9,7 @@
 // API: https://docs.limitlesstcg.com/developer.html （キー不要。5分に50回までなので、7秒に1回にする）
 // キャッシュ: data/meta/cache/（コミットしない）
 // 出力:       data/meta/meta.json（集計結果。コミットする）
+//             data/meta/decks.json（勝ち越し・五分のデッキリスト。同じ構成はまとめる。カード詳細の「このカードを使ったデッキ」に使う）
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
@@ -53,9 +54,10 @@ interface Tournament {
 }
 interface Entry {
   placing: number | null;
+  player?: string;
   record?: { wins: number; losses: number; ties: number };
   deck?: { id: string; name: string };
-  decklist?: { pokemon?: Line[]; trainer?: Line[] };
+  decklist?: { pokemon?: Line[]; trainer?: Line[]; energy?: string[] };
 }
 interface Line {
   count: number;
@@ -110,6 +112,10 @@ interface Deck {
   cards: Map<string, number>;
   good: boolean;
   recent: boolean;
+  tid: string;
+  placing: number | null;
+  record?: { wins: number; losses: number; ties: number };
+  energy: string[];
 }
 const decks: Deck[] = [];
 const byTournament = new Map(tournaments.map((t) => [t.id, t]));
@@ -130,7 +136,17 @@ for (const file of readdirSync(CACHE)) {
     }
     if (cards.size < 4) continue;
     const r = e.record;
-    decks.push({ arch: e.deck.id, name: e.deck.name, cards, good: !!r && r.wins > r.losses, recent: isRecent(byTournament.get(tid)!) });
+    decks.push({
+      arch: e.deck.id,
+      name: e.deck.name,
+      cards,
+      good: !!r && r.wins > r.losses,
+      recent: isRecent(byTournament.get(tid)!),
+      tid,
+      placing: e.placing,
+      record: r,
+      energy: (e.decklist.energy ?? []).map((x) => x.toLowerCase()),
+    });
   }
 }
 // 勝ち越したデッキだけを数える。デッキタイプと採用率は直近の大会、一緒に使われる組は前の大会も含める
@@ -206,4 +222,52 @@ writeFileSync(
     0,
   ).replace(/\],\[/g, "],\n["),
 );
+// ---- デッキリスト（勝ち越し・五分）。同じ構成はまとめ、いちばん良い成績のものを残す ----
+const ENERGY = new Set(["grass", "fire", "water", "lightning", "psychic", "fighting", "darkness", "metal"]);
+const listed = new Map<string, { d: Deck; dup: number }>();
+const scoreOf = (d: Deck) => (d.record ? d.record.wins - d.record.losses : -99) * 1000 - (d.placing ?? 999);
+for (const d of decks) {
+  const r = d.record;
+  if (!r || r.wins < r.losses) continue;
+  const total = [...d.cards.values()].reduce((a, b) => a + b, 0);
+  if (total !== 20) continue; // 20枚そろっていないリストは使えない
+  const key = `${d.arch}|${[...d.cards].sort().map(([c, n]) => `${c}*${n}`).join(",")}|${[...d.energy].sort().join(",")}`;
+  const cur = listed.get(key);
+  if (!cur) listed.set(key, { d, dup: 1 });
+  else {
+    cur.dup++;
+    const t0 = byTournament.get(cur.d.tid)!, t1 = byTournament.get(d.tid)!;
+    // 成績が良いほう、同じなら新しい大会のほうを残す
+    if (scoreOf(d) > scoreOf(cur.d) || (scoreOf(d) === scoreOf(cur.d) && t1.date > t0.date)) cur.d = d;
+  }
+}
+const usedT = [...new Set([...listed.values()].map((x) => x.d.tid))];
+const tIndex = new Map(usedT.map((t, i) => [t, i]));
+const deckOut = {
+  source: "Limitless TCG (play.limitlesstcg.com) tournament API",
+  fetchedAt,
+  // [大会名, 日付, 参加人数]
+  tournaments: usedT.map((t) => {
+    const x = byTournament.get(t)!;
+    return [x.name, x.date.slice(0, 10), x.players];
+  }),
+  // [大会, デッキタイプID, デッキタイプ名, 順位, 勝, 負, 分, エネ, カード（ID*枚数）, 同じ構成の数]
+  decks: [...listed.values()]
+    .sort((a, b) => byTournament.get(b.d.tid)!.date.localeCompare(byTournament.get(a.d.tid)!.date) || scoreOf(b.d) - scoreOf(a.d))
+    .map(({ d, dup }) => [
+      tIndex.get(d.tid),
+      d.arch,
+      d.name,
+      d.placing ?? 0,
+      d.record!.wins,
+      d.record!.losses,
+      d.record!.ties,
+      d.energy.filter((e) => ENERGY.has(e)).join(","),
+      [...d.cards].sort((a, b) => a[0].localeCompare(b[0], "en", { numeric: true })).map(([c, n]) => (n > 1 ? `${c}*${n}` : c)).join(" "),
+      dup,
+    ]),
+};
+writeFileSync(join(DIR, "decks.json"), JSON.stringify(deckOut).replace(/\],\[/g, "],\n["));
+console.log(`デッキリスト ${deckOut.decks.length} 件（勝ち越し・五分、同じ構成をまとめたあと）・ ${usedT.length} 大会`);
+
 console.log(`アーキタイプ ${archOut.length} 件 ・ 組み合わせ ${pairsOut.length} 件 ・ 使われたカード ${single.size} 種（直近 ${recentCount.size} 種）`);

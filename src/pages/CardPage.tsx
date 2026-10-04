@@ -5,6 +5,7 @@ import { largeUrl, thumbUrl } from "../data/load.ts";
 import { closeDetail, openCard } from "../detail.ts";
 import { useSettings } from "../store.ts";
 import { PrintLine } from "../components/prints.tsx";
+import { CardDecks } from "../components/tournament-decks.tsx";
 import { navigate, searchPath } from "../router.ts";
 import type { AppAttack, AppCard, AppEffect } from "../types.ts";
 import { GROUP_JA, KIND_JA, RULE_JA, STAGE_JA, TYPE_JA } from "../types.ts";
@@ -207,6 +208,8 @@ export function CardDetail({ id, keepOpen, actions }: { id: string; keepOpen?: b
             ))}
           </ul>
         </section>
+
+        <CardDecks card={card} keepOpen={keepOpen} />
       </div>
     </div>
   );
