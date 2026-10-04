@@ -3,7 +3,6 @@ import { PoolFab, PoolGrid, PoolToolbar, QueryBox, usePoolResults } from "../com
 import { Chip } from "../components/ui.tsx";
 import { useAddToDeck, useData } from "../context.tsx";
 import { navigate, searchPath, useRoute } from "../router.ts";
-import { useMisses } from "../store.ts";
 
 export const EXAMPLES = [
   "エネ加速できる炎のカード",
@@ -34,7 +33,6 @@ export function SearchPage() {
   const { data, engine } = useData();
   const { params } = useRoute();
   const addToDeck = useAddToDeck();
-  const logMiss = useMisses((s) => s.log);
   const q = params.get("q") ?? "";
   const tagParam = params.get("tag") ?? "";
   const excluded = new Set(csv(params.get("x")));
@@ -61,7 +59,6 @@ export function SearchPage() {
           }}
           onSubmit={(v) => {
             clearTimeout(timer.current);
-            if (v.trim() && !engine.parse(v).some((c) => c.kind !== "text")) logMiss(v);
             go({ q: v.trim() }, v.trim() !== q);
           }}
           conds={parsed}

@@ -1,4 +1,4 @@
-// 状態管理（Zustand）。デッキとミスログは localStorage に保存する。
+// 状態管理（Zustand）。デッキと設定は localStorage に保存する。
 // localStorage が使えない環境（プライベートブラウズ等）でも落ちないよう、読み書きは try/catch で包む
 import { create } from "zustand";
 import { createJSONStorage, persist, type StateStorage } from "zustand/middleware";
@@ -87,32 +87,6 @@ export const useDecks = create<DeckState>()(
   ),
 );
 
-// ミスログ: 条件が何も取れなかった検索文（SPEC 4.4）。書き出して表現辞書の追加に使う
-export interface Miss {
-  q: string;
-  at: string;
-}
-interface MissState {
-  misses: Miss[];
-  log: (q: string) => void;
-  clear: () => void;
-}
-export const useMisses = create<MissState>()(
-  persist(
-    (set) => ({
-      misses: [],
-      log: (q) =>
-        set((s) => {
-          const t = q.trim();
-          if (!t || s.misses.some((m) => m.q === t)) return s;
-          return { misses: [...s.misses, { q: t, at: new Date().toISOString() }].slice(-500) };
-        }),
-      clear: () => set({ misses: [] }),
-    }),
-    { name: "pokepoke.misses", storage: createJSONStorage(() => safeStorage), version: 1 },
-  ),
-);
-
 // 設定
 interface SettingsState {
   imageLang: "ja" | "en"; // カード画像の言語
@@ -151,3 +125,10 @@ export const useToast = create<ToastState>()((set) => ({
     toastTimer = setTimeout(() => set({ message: undefined }), 2200);
   },
 }));
+
+// 以前のミスログ（廃止）の保存データを消す
+try {
+  localStorage.removeItem("pokepoke.misses");
+} catch {
+  /* noop */
+}

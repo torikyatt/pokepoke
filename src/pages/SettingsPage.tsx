@@ -1,14 +1,12 @@
 import { Header } from "../components/ui.tsx";
 import { useData } from "../context.tsx";
 import { isSingleFile } from "../data/load.ts";
-import { download } from "../deck.ts";
 import { navigate } from "../router.ts";
-import { useMisses, useSettings } from "../store.ts";
+import { useSettings } from "../store.ts";
 import { Chip } from "../components/ui.tsx";
 
 export function SettingsPage() {
   const { data } = useData();
-  const { misses, clear } = useMisses();
   const { imageLang, setImageLang } = useSettings();
   return (
     <div>
@@ -27,40 +25,6 @@ export function SettingsPage() {
           <p className="text-xs text-muted">日本語の画像が無いカードは英語で表示します。{isSingleFile && "オフライン版で英語を選ぶと、ネットにつながっているときだけ英語の画像を読み込みます。"}</p>
         </section>
 
-        <section className="neu space-y-2 rounded-3xl p-4">
-          <h2 className="font-extrabold">ミスログ</h2>
-          <p className="text-xs text-muted">条件が何も見つからなかった検索文です。書き出したファイルを Claude Code に渡すと、表現辞書に言い回しを追加できます。</p>
-          <div className="flex gap-2">
-            <button
-              type="button"
-              disabled={!misses.length}
-              onClick={() => download(`pokepoke-misses-${new Date().toISOString().slice(0, 10)}.json`, JSON.stringify({ format: "pokepoke-misses", misses }, null, 1))}
-              className="btn-ok rounded-full px-4 py-2 disabled:opacity-40"
-            >
-              書き出し（{misses.length} 件）
-            </button>
-            <button
-              type="button"
-              disabled={!misses.length}
-              onClick={() => {
-                if (confirm("ミスログを消しますか？")) clear();
-              }}
-              className="neu neu-press rounded-full px-4 py-2 font-bold disabled:opacity-40"
-            >
-              消去
-            </button>
-          </div>
-          {misses.length > 0 && (
-            <ul className="neu-in max-h-60 space-y-1 overflow-y-auto rounded-2xl p-3 text-xs font-bold">
-              {[...misses].reverse().map((m) => (
-                <li key={m.at} className="flex gap-2">
-                  <span className="shrink-0 text-muted">{new Date(m.at).toLocaleDateString("ja-JP")}</span>
-                  <span>{m.q}</span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
 
         {!isSingleFile && (
           <section className="neu space-y-2 rounded-3xl p-4">

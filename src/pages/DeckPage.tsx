@@ -7,7 +7,7 @@ import { thumbUrl } from "../data/load.ts";
 import { useSettings } from "../store.ts";
 import { canAdd, checkDeck, DECK_SIZE, decodeShare, download, encodeShare, fromFile, guessEnergy, MAX_ENERGY, MAX_SAME_NAME, toFile } from "../deck.ts";
 import { navigate } from "../router.ts";
-import { useDecks, useMisses, useToast, type Deck } from "../store.ts";
+import { useDecks, useToast, type Deck } from "../store.ts";
 import type { AppCard, EnergyType } from "../types.ts";
 import { TYPE_JA } from "../types.ts";
 import { useQueryConds } from "./SearchPage.tsx";
@@ -102,7 +102,6 @@ export function DeckBuilderPage({ id }: { id: string }) {
   const { add, removeCard, select } = useDecks();
   const { slotSize, setSlotSize } = useSettings();
   const show = useToast((s) => s.show);
-  const logMiss = useMisses((s) => s.log);
   const [searchOpen, setSearchOpen] = useState(false);
   const [input, setInput] = useState("");
   const [q, setQ] = useState("");
@@ -185,7 +184,6 @@ export function DeckBuilderPage({ id }: { id: string }) {
               }}
               onSubmit={(v) => {
                 clearTimeout(timer.current);
-                if (v.trim() && !engine.parse(v).some((c) => c.kind !== "text")) logMiss(v);
                 setQ(v.trim());
                 setExcluded(new Set());
               }}
