@@ -18,10 +18,15 @@ export function CardDecks({ card, keepOpen }: { card: AppCard; keepOpen?: boolea
   const index = useTournamentDecks();
   const [arch, setArch] = useState<string>();
   const [shown, setShown] = useState(PAGE);
+  // 2年分あるので、既定は新しい大会から（同じ日なら成績の良い順）
+  const [order, setOrder] = useState<"new" | "best">("new");
   const all = useMemo(() => {
     if (!index) return [];
-    return (index.byCard.get(card.id) ?? []).map((i) => index.decks[i]).sort((a, b) => strength(a) - strength(b) || b.date.localeCompare(a.date));
-  }, [index, card.id]);
+    const list = (index.byCard.get(card.id) ?? []).map((i) => index.decks[i]);
+    return order === "new"
+      ? list.sort((a, b) => b.date.localeCompare(a.date) || strength(a) - strength(b))
+      : list.sort((a, b) => strength(a) - strength(b) || b.date.localeCompare(a.date));
+  }, [index, card.id, order]);
   // よく使われているデッキタイプ（絞り込み用）
   const archs = useMemo(() => {
     const m = new Map<string, { name: string; n: number }>();
@@ -43,9 +48,18 @@ export function CardDecks({ card, keepOpen }: { card: AppCard; keepOpen?: boolea
         <p className="neu rounded-2xl p-4 text-center text-xs font-bold text-muted">勝ち越したデッキでの使用はまだ見つかっていません</p>
       ) : (
         <div className="space-y-2.5">
-          <p className="text-[11px] font-bold text-muted">
-            勝ち越し・五分のデッキ {total} 件（同じ構成をまとめて {all.length} 種類）。成績の良い順
-          </p>
+          <div className="flex items-center gap-2">
+            <p className="min-w-0 flex-1 text-[11px] font-bold text-muted">
+              勝ち越し・五分のデッキ {total} 件（同じ構成をまとめて {all.length} 種類）
+            </p>
+            <div className="neu-in flex shrink-0 rounded-full p-0.5 text-[11px] font-bold">
+              {(["new", "best"] as const).map((o) => (
+                <button key={o} type="button" onClick={() => { setOrder(o); setShown(PAGE); }} className={`rounded-full px-2.5 py-1 ${order === o ? "bg-white text-accent shadow" : "text-muted"}`}>
+                  {o === "new" ? "新しい順" : "成績順"}
+                </button>
+              ))}
+            </div>
+          </div>
           {archs.length > 1 && (
             <div className="flex flex-wrap gap-1.5">
               <Chip active={!arch} onClick={() => { setArch(undefined); setShown(PAGE); }}>
