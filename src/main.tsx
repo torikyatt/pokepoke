@@ -102,7 +102,8 @@ function Shell() {
       ))}
       {/* 下のタブやデッキ編集の ✓ ボタンから少し離して浮かせる */}
       <DetailDock bottom={building ? "max(1.5rem, calc(env(safe-area-inset-bottom) + 0.5rem))" : "calc(4.4rem + env(safe-area-inset-bottom))"} />
-      <DetailNav bottom={building ? "max(1.5rem, calc(env(safe-area-inset-bottom) + 0.5rem))" : "calc(4.4rem + env(safe-area-inset-bottom))"} />
+      {/* 詳細を半分で止めているときは、中身の邪魔にならないよう画面のいちばん下まで下げる */}
+      <DetailNav bottom={half ? "max(0.5rem, env(safe-area-inset-bottom))" : building ? "max(1.5rem, calc(env(safe-area-inset-bottom) + 0.5rem))" : "calc(4.4rem + env(safe-area-inset-bottom))"} />
       <DetailSheet />
       <Toast />
       {!building && <BottomNav />}
