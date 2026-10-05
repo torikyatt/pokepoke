@@ -22,6 +22,7 @@ export interface CardTags {
   attacks: string[][];
   text?: string[];
   refs: string[]; // 効果文が名前で指しているカードID
+  refHow?: Record<string, string>; // 名前そのもの以外で指しているときの指し方（mega_ex / team_rocket / evolves:Riolu / attack:Puppy Pile …）
   slotRefs: Record<string, string[]>; // 効果ごとの名前指定（ability / attack0 … / text）
 }
 
@@ -75,39 +76,48 @@ for (const c of cards) {
 }
 // 長い名前から当てる（"Arceus ex" を "Arceus" より先に）。3文字以下は誤爆するので除く
 const names = [...byName.keys()].filter((n) => n.length > 3).sort((a, b) => b.length - a.length);
-const GROUPS: [RegExp, (c: Card) => boolean][] = [
-  [/“Team Rocket” in its name|Team Rocket" in its name/, (c) => c.groups.includes("team_rocket")],
-  [/Ultra Beasts?\b/, (c) => c.groups.includes("ultra_beast")],
-  [/Ancient Pokémon/, (c) => c.groups.includes("ancient")],
-  [/Future Pokémon/, (c) => c.groups.includes("future")],
-  [/Mega Evolution Pokémon ex/, (c) => c.rule === "mega_ex"],
+const GROUPS: [RegExp, (c: Card) => boolean, string][] = [
+  [/“Team Rocket” in its name|Team Rocket" in its name/, (c) => c.groups.includes("team_rocket"), "team_rocket"],
+  [/Ultra Beasts?\b/, (c) => c.groups.includes("ultra_beast"), "ultra_beast"],
+  [/Ancient Pokémon/, (c) => c.groups.includes("ancient"), "ancient"],
+  [/Future Pokémon/, (c) => c.groups.includes("future"), "future"],
+  [/Mega Evolution Pokémon ex/, (c) => c.rule === "mega_ex", "mega_ex"],
 ];
 
-function refsOf(card: Card, texts: string[]): string[] {
-  const refs = new Set<string>();
+/** 効果文が指しているカードと、その指し方（名前そのもの以外: グループ・進化元・ワザの名前） */
+function refsWithHow(card: Card, texts: string[]): Map<string, string | undefined> {
+  const how = new Map<string, string | undefined>();
+  const put = (id: string, h?: string) => {
+    if (!how.has(id) || (how.get(id) && !h)) how.set(id, h); // 名前そのものでも指していれば、それを優先
+  };
   const own = new Set([card.nameEn, ...card.attacks.map((a) => a.nameEn ?? "")]);
   for (const raw of texts) {
     let t = clean(raw);
-    for (const [re, pick] of GROUPS) if (re.test(t)) for (const c of cards) if (pick(c)) refs.add(c.id);
+    for (const [re, pick, h] of GROUPS) if (re.test(t)) for (const c of cards) if (pick(c)) put(c.id, h);
     for (const m of t.matchAll(/evolves? from ([A-Z][\w'.-]*(?: [A-Z][\w'.-]*)*)/g)) {
-      for (const id of byEvolvesFrom.get(m[1]) ?? []) refs.add(id);
+      for (const id of byEvolvesFrom.get(m[1]) ?? []) put(id, `evolves:${m[1]}`);
     }
     for (const [atk, ids] of byAttack) {
       if (own.has(atk) || atk.length < 5) continue;
-      if (new RegExp(`(used ${esc(atk)}|the ${esc(atk)} attack|${esc(atk)} attack)`).test(t)) for (const id of ids) refs.add(id);
+      if (new RegExp(`(used ${esc(atk)}|the ${esc(atk)} attack|${esc(atk)} attack)`).test(t)) for (const id of ids) put(id, `attack:${atk}`);
     }
     for (const n of names) {
       if (n === card.nameEn) continue;
       const re = new RegExp(`(?<![\\w'])${esc(n)}(?![\\w'])`);
       if (re.test(t)) {
-        for (const id of byName.get(n)!) refs.add(id);
+        for (const id of byName.get(n)!) put(id);
         t = t.replace(new RegExp(esc(n), "g"), " "); // 短い名前で二重に当てない
       }
     }
   }
-  refs.delete(card.id);
-  return [...refs];
+  how.delete(card.id);
+  return how;
 }
+
+function refsOf(card: Card, texts: string[]): string[] {
+  return [...refsWithHow(card, texts).keys()];
+}
+
 const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 // ---- 付与 ----
@@ -144,7 +154,10 @@ for (const c of cards) {
     else if (slot === "text") ct.text = tags;
     else ct.attacks.push(tags);
   }
-  ct.refs = refsOf(c, texts);
+  const how = refsWithHow(c, texts);
+  ct.refs = [...how.keys()];
+  const hows = Object.fromEntries([...how].filter(([, h]) => h)) as Record<string, string>;
+  if (Object.keys(hows).length) ct.refHow = hows;
   out[c.id] = ct;
 }
 

@@ -267,6 +267,27 @@ export function createSynergy(data: AppData) {
   const statusSuppliers = data.cards.filter((c) => STATUS_KINDS.some((k) => c.supplies[`supply.status.${k}`]));
   const accelSels = (c: AppCard) => (c.supplies["supply.energy.many"] ?? []).filter((s) => !s.self);
 
+  // 名前指定の理由の書き方
+  const jaNameOf = new Map(data.cards.map((c) => [c.nameEn, c.nameJa]));
+  const jaAttackOf = new Map(data.cards.flatMap((c) => c.attacks.filter((a) => a.nameEn && a.nameJa).map((a) => [a.nameEn!, a.nameJa!] as [string, string])));
+  const GROUP_REF: Record<string, [string, string]> = {
+    mega_ex: ["メガシンカex", "Mega Evolution ex"],
+    team_rocket: ["「ロケット団」のポケモン", "“Team Rocket” Pokémon"],
+    ultra_beast: ["ウルトラビースト", "Ultra Beasts"],
+    ancient: ["古代のポケモン", "Ancient Pokémon"],
+    future: ["未来のポケモン", "Future Pokémon"],
+  };
+  /** 名前指定の理由。how が無いのは名前そのもので指しているとき。dir: names＝x が c を指す／named＝c が x を指す */
+  function refReason(how: string | undefined, c: AppCard, dir: "names" | "named"): [string, string] {
+    if (!how) return dir === "names" ? [`効果で「${c.nameJa}」を名指し`, `Its effect names ${c.nameEn}`] : ["効果でこのカードを名指し", "Its effect names this card"];
+    const [kind, arg] = [how.split(":")[0], how.slice(how.indexOf(":") + 1)];
+    let what: [string, string];
+    if (kind === "evolves") what = [`「${jaNameOf.get(arg) ?? arg}」から進化するポケモン`, `Pokémon that evolve from ${arg}`];
+    else if (kind === "attack") what = [`ワザ「${jaAttackOf.get(arg) ?? arg}」を持つポケモン`, `Pokémon with the ${arg} attack`];
+    else what = GROUP_REF[kind] ?? [kind, kind];
+    return [`効果で${what[0]}を指定`, `Its effect targets ${what[1]}`];
+  }
+
   function partners(x: AppCard, limit = 30): Partner[] {
     const out = new Map<string, Partner>();
     // 進化ラインのカード（進化元・進化先・同じ名前）は「進化ライン」に出すので、相性のいいカードには出さない
@@ -319,12 +340,12 @@ export function createSynergy(data: AppData) {
       if (c) push(c, h.weight, h.label, h.labelEn);
     }
 
-    // 名前指定
+    // 名前指定。理由には、どう指しているか（名前・メガシンカex・ロケット団・〇〇から進化・ワザの名前）を書く
     for (const id of x.refs) {
       const c = byId.get(id);
-      if (c) push(c, 3, "効果で名指し", "Named in its effect");
+      if (c) push(c, 3, ...refReason(x.refHow?.[id], c, "names"));
     }
-    for (const c of data.cards) if (c.refs.includes(x.id)) push(c, 3, "このカードを名指し", "Names this card");
+    for (const c of data.cards) if (c.refs.includes(x.id)) push(c, 3, ...refReason(c.refHow?.[x.id], c, "named"));
 
     // 供給 → 要求（x が相手を助ける）
     for (const [s, sels] of Object.entries(x.supplies)) {

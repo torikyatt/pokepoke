@@ -4,7 +4,7 @@
   "description": "ポケポケのカード検索・デッキビルダー",
   "scripts": {
     "dev": "npm run build-index && vite",
-    "build": "npm run build-index && vite build && vite build --mode single && tsx scripts/finish-build.ts",
+    "build": "npm run build-index && vite build && vite build --mode single && tsx scripts/finish-build.ts && tsx scripts/share-pages.ts",
     "preview": "vite preview",
     "test": "npm run build-index && vitest run",
     "typecheck": "tsc -p .",

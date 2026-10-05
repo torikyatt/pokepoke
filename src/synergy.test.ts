@@ -356,3 +356,16 @@ describe("トラッシュに送るカードと数えるカードの種類", () =
   });
   it("ポケモンなら何でも数えるヒスイゾロアークexには、ベンチのポケモンを捨てるギャラドスも結ぶ", () => expect(linked("ヒスイゾロアークex", "ギャラドス")).toBe(true));
 });
+
+describe("名前指定の理由", () => {
+  it("名前そのものでなく、メガシンカexというくくりで指しているときは「メガシンカexを指定」と書く", () => {
+    const lucario = data.cards.find((c) => c.nameJa === "メガルカリオex")!;
+    const serena = partnersOf(lucario.id).find((p) => p.card.nameJa === "セレナ")!;
+    expect(serena.reasons).toContain("効果でメガシンカexを指定");
+    expect(serena.reasons.join()).not.toMatch(/名指し/);
+  });
+  it("名前そのもので指しているときだけ「名指し」と書く", () => {
+    const nidoF = data.cards.find((c) => c.nameJa === "ニドラン♀")!;
+    expect(partnersOf(nidoF.id).find((p) => p.card.nameJa === "ニドラン♂")!.reasons).toContain("効果で「ニドラン♂」を名指し");
+  });
+});

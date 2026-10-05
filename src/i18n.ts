@@ -35,3 +35,6 @@ export const setName = (s: AppSet | undefined, lang: Lang, fallback = "") => (s 
 
 /** 日付（言語に合わせた書き方） */
 export const dateStr = (d: Date | string | number, lang: Lang) => new Date(d).toLocaleDateString(lang === "en" ? "en-US" : "ja-JP");
+
+/** サイトのタイトル（タブ・共有） */
+export const siteTitle = (lang: Lang) => (lang === "en" ? "POKÉPOKE INDECKS – Pokémon TCG Pocket Card Search & Deck Builder" : "POKÉPOKE INDECKS｜ポケポケのカード図鑑");

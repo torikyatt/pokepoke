@@ -1,7 +1,7 @@
 import { lazy, StrictMode, Suspense, useEffect, useLayoutEffect, useState, useSyncExternalStore } from "react";
 import { createRoot } from "react-dom/client";
 import { BottomNav, Logo, Toast } from "./components/ui.tsx";
-import { DataContext, type Ctx } from "./context.tsx";
+import { DataContext, useData, type Ctx } from "./context.tsx";
 import { loadData } from "./data/load.ts";
 import "./index.css";
 import { parseHash, scrollPos, useNav, type Tab } from "./nav.ts";
@@ -15,7 +15,7 @@ import { PoolScope } from "./pool.ts";
 import { RouteContext, useHash, useRoute } from "./router.ts";
 import { createEngine } from "./search/engine.ts";
 import { createSynergy } from "./synergy.ts";
-import { useLang, useT } from "./i18n.ts";
+import { cardName, siteTitle, useLang, useT } from "./i18n.ts";
 
 // 本番ビルドでは import.meta.env.DEV が false になり、レビューページは含まれない
 const ReviewPage = import.meta.env.DEV ? lazy(() => import("./pages/ReviewPage.tsx")) : null;
@@ -114,8 +114,14 @@ function Layout() {
   const lang = useLang();
   useEffect(() => {
     document.documentElement.lang = lang;
-    document.title = lang === "en" ? "POKÉPOKE INDECKS – Pokémon TCG Pocket Card Search & Deck Builder" : "POKÉPOKE INDECKS｜ポケポケのカード図鑑";
   }, [lang]);
+  // タブのタイトル: カード詳細を開いている間は、先頭をカード名にする
+  const { byId } = useData();
+  const openId = useDetail((s) => (s.open ? s.stack[s.pos] : undefined));
+  const openCard = openId ? byId.get(openId) : undefined;
+  useEffect(() => {
+    document.title = openCard ? `${cardName(openCard, lang)}｜POKÉPOKE INDECKS` : siteTitle(lang);
+  }, [openCard, lang]);
   return useIsDesktop() ? <Desktop /> : <Shell />;
 }
 

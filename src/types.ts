@@ -74,6 +74,7 @@ export interface AppCard {
   minCost?: number; // いちばん軽いワザのエネ数 // 高解像度画像（オンライン時）
   tags: string[]; // 全効果のタグの和集合
   refs: string[]; // 効果文が名前で指しているカードID
+  refHow?: Record<string, string>; // 名前そのもの以外で指しているときの指し方（mega_ex / team_rocket / evolves:Riolu / attack:Puppy Pile …）
   supplies: Record<string, Selector[]>; // 場に作るもの（シナジーの供給）と、その効く相手
   requires: Record<string, RequireInfo>; // 何があると強いか（シナジーの要求）
 }

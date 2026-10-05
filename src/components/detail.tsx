@@ -9,6 +9,7 @@ import { useDecks, useFavorites, useToast } from "../store.ts";
 import type { AppCard } from "../types.ts";
 import { IconHeart, Thumb } from "./ui.tsx";
 import { cardName, useLang, useT } from "../i18n.ts";
+import { isSingleFile } from "../data/load.ts";
 
 /** お気に入りの登録・解除（カード名の横に置く小さなボタン） */
 export function FavToggle({ card }: { card: AppCard }) {
@@ -103,7 +104,9 @@ function useShareCard() {
   const t = useT();
   const lang = useLang();
   return async (card: AppCard) => {
-    const url = `${location.href.split("#")[0]}#/card/${card.id}`;
+    // 公開しているサイトでは、カード名と画像がリンクのプレビューに出る共有用ページ（/c/<ID>）を渡す（scripts/share-pages.ts）
+    const base = location.href.split("#")[0].replace(/[^/]*$/, "");
+    const url = import.meta.env.DEV || isSingleFile ? `${location.href.split("#")[0]}#/card/${card.id}` : `${base}c/${card.id}`;
     const title = `${cardName(card, lang)} | POKÉPOKE INDECKS`;
     try {
       if (navigator.share) await navigator.share({ title, url });

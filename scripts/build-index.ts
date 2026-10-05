@@ -18,7 +18,7 @@ import type { AppArchetype, AppAttack, AppCard, AppCombo, AppData, AppHelp, AppM
 const ROOT = join(import.meta.dirname, "..");
 const DATA = join(ROOT, "data");
 const cards: Card[] = JSON.parse(readFileSync(join(DATA, "cards.json"), "utf8"));
-const tags: Record<string, { ability?: string[]; attacks: string[][]; text?: string[]; refs: string[]; slotRefs?: Record<string, string[]> }> = JSON.parse(
+const tags: Record<string, { ability?: string[]; attacks: string[][]; text?: string[]; refs: string[]; refHow?: Record<string, string>; slotRefs?: Record<string, string[]> }> = JSON.parse(
   readFileSync(join(DATA, "tags.json"), "utf8"),
 );
 const tax = loadTaxonomy(DATA);
@@ -205,6 +205,7 @@ const out: AppCard[] = cards.map((c) => {
     ...(c.attacks.length ? { minCost: Math.min(...c.attacks.map((a) => a.costTotal)) } : {}),
     tags: [...new Set([...(ability?.tags ?? []), ...attacks.flatMap((a) => a.tags), ...(text?.tags ?? [])])].sort(),
     refs: ct.refs,
+    ...(ct.refHow ? { refHow: ct.refHow } : {}),
     supplies,
     requires,
   };
