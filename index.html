@@ -13,6 +13,33 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // 古いURL（GitHub Pages）から引っ越してきたとき、転送ページが #move=…&to=… で渡すデッキ・お気に入り・設定を受け取る。
+      // すでにこのサイトで保存しているものは消さず、デッキは足し、お気に入りは合わせる。アプリより先に動かす
+      (function () {
+        try {
+          var m = /^#move=([^&]*)&to=(.*)$/.exec(location.hash);
+          if (!m) return;
+          var d = JSON.parse(decodeURIComponent(escape(atob(m[1].replace(/-/g, "+").replace(/_/g, "/")))));
+          for (var k in d) {
+            if (!/^pokepoke\./.test(k)) continue;
+            var cur = localStorage.getItem(k);
+            if (cur == null) { localStorage.setItem(k, d[k]); continue; }
+            var a = JSON.parse(cur), b = JSON.parse(d[k]);
+            if (k === "pokepoke.decks") {
+              var ids = {};
+              a.state.decks.forEach(function (x) { ids[x.id] = 1; });
+              b.state.decks.forEach(function (x) { if (!ids[x.id]) a.state.decks.push(x); });
+              if (!a.state.currentId) a.state.currentId = b.state.currentId;
+            } else if (k === "pokepoke.favorites") {
+              b.state.ids.forEach(function (x) { if (a.state.ids.indexOf(x) < 0) a.state.ids.push(x); });
+            } else continue; // 設定などは、こちらで選んだものを優先する
+            localStorage.setItem(k, JSON.stringify(a));
+          }
+          history.replaceState(null, "", location.pathname + location.search + (decodeURIComponent(m[2]) || "#/"));
+        } catch (e) {}
+      })();
+    </script>
     <noscript>このページはJavaScriptが必要です。JavaScriptが動くブラウザで開いてください。</noscript>
     <script type="module" src="./src/main.tsx"></script>
   </body>

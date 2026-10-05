@@ -19,7 +19,20 @@ const html = `<!doctype html>
 <meta name="robots" content="noindex">
 <link rel="canonical" href="${url}">
 <title>POKÉPOKE INDECKS に引っ越しました</title>
-<script>location.replace(${js} + location.hash);</script>
+<script>
+  // このブラウザに保存してあるデッキ・お気に入り・設定（localStorage はサイトごとに別なので）を、新しいサイトに渡す
+  (function () {
+    var d = {}, n = 0;
+    try {
+      for (var i = 0; i < localStorage.length; i++) {
+        var k = localStorage.key(i);
+        if (k && k.indexOf("pokepoke.") === 0 && k !== "pokepoke.nav") { d[k] = localStorage.getItem(k); n++; }
+      }
+    } catch (e) {}
+    var to = n ? "#move=" + btoa(unescape(encodeURIComponent(JSON.stringify(d)))).replace(/\\+/g, "-").replace(/\\//g, "_").replace(/=+$/, "") + "&to=" + encodeURIComponent(location.hash) : location.hash;
+    location.replace(${js} + to);
+  })();
+</script>
 <noscript><meta http-equiv="refresh" content="0; url=${url}"></noscript>
 <style>
   body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #e8edf3; color: #3d4757;
