@@ -477,7 +477,7 @@ export function DetailNav({ bottom }: { bottom: string }) {
   const prev = listPos > 0 ? byId.get(list[listPos - 1]) : undefined;
   const next = listPos < list.length - 1 ? byId.get(list[listPos + 1]) : undefined;
   // スワイプしている間、指が STEP 動くごとに1枚ずつ切り替わる（左へ動かすと次のカード）
-  const STEP = 60;
+  const STEP = 30;
   const onDown = (e: React.PointerEvent) => {
     drag.current = { x: e.clientX, steps: 0, moved: false };
   };
