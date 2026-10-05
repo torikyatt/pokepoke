@@ -420,7 +420,7 @@ export function DetailSheet() {
 
 /**
  * 閉じた詳細のしまい場所。タップか上へスワイプで、最後に見ていたカードを履歴ごと開き直す。
- * 表示は開き直したときの前・次の一覧に合わせる（後ろに重ねるのは一覧の次のカード、数字は一覧の何枚目か）
+ * 表示はカード名だけ。後ろに重ねるのは、開き直したときの前・次の一覧で次に来るカード
  */
 export function DetailDock({ bottom }: { bottom: string }) {
   const { byId } = useData();
@@ -455,8 +455,6 @@ export function DetailDock({ bottom }: { bottom: string }) {
           })}
       </span>
       <span className="min-w-0 text-left leading-tight">
-        <span className="block text-[9px] font-bold text-muted">{t("最後に見たカード", "Last viewed")}
-          {inList && <span className="ml-1 tabular-nums">{listPos + 1}/{list.length}</span>}</span>
         <span className="block truncate text-xs font-extrabold">{cardName(cards[0], lang)}</span>
       </span>
       <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-canvas text-[10px] text-muted">▲</span>
