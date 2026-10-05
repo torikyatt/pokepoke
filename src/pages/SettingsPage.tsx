@@ -49,21 +49,6 @@ export function SettingsPage({ embedded }: { embedded?: boolean }) {
           </p>
         </section>
 
-        {!isSingleFile && (
-          <section className="neu space-y-2 rounded-3xl p-4">
-            <h2 className="font-extrabold">{t("オフライン版", "Offline version")}</h2>
-            <p className="text-xs text-muted">
-              {t(
-                "全データとサムネイルを1つに詰めたHTMLファイルです（約30MB）。保存してブラウザで開けば、ネットが無くても使えます。iPhoneの「ファイル」アプリのプレビューではJavaScriptが動かないので、ブラウザかHTMLビューアで開いてください。",
-                "A single HTML file (about 30 MB) with all data and thumbnails. Save it and open it in a browser to use it without a connection. The iPhone Files app preview doesn't run JavaScript, so open it in a browser or an HTML viewer.",
-              )}
-            </p>
-            <a href="pokepoke.html" download className="neu neu-press inline-block rounded-full px-4 py-2 font-bold">
-              {t("pokepoke.html をダウンロード", "Download pokepoke.html")}
-            </a>
-          </section>
-        )}
-
         <section className="neu space-y-1 rounded-3xl p-4">
           <h2 className="font-extrabold">{t("データ", "Data")}</h2>
           <p className="text-xs text-muted">

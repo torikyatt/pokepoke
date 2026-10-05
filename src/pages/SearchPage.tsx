@@ -100,7 +100,7 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
         {!q && !tagParam && !favOnly && (
           <div className="mb-3">
             {!wide && <h1 className="mb-1 text-lg font-extrabold tracking-wider text-ink">POKÉPOKE LAB</h1>}
-            <p className="mb-2 text-xs font-bold text-muted">{t("ふだんの言葉で探せます。ローマ字（hakase・dakurai）でもOK（タップで詳細・長押しでデッキに追加）", "Search in plain words (tap for details, long-press to add to your deck)")}</p>
+            <p className="mb-2 text-xs font-bold text-muted">{t("ふだんの言葉で探せます（タップで詳細・長押しでデッキに追加）", "Search in plain words (tap for details, long-press to add to your deck)")}</p>
             <div className={wide ? "flex flex-wrap gap-2 pb-2" : "scrollbar-none -mx-4 flex gap-2 overflow-x-auto px-4 pb-2"}>
               {(lang === "en" ? EXAMPLES_EN : EXAMPLES).map((ex) => (
                 <Chip key={ex} onClick={() => go({ q: ex }, false)}>
