@@ -47,6 +47,8 @@
   "type": "module",
   "dependencies": {
     "html-to-image": "^1.11.13",
+    "jsqr": "^1.4.0",
+    "qrcode-generator": "^2.0.4",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "zustand": "^5.0.15"

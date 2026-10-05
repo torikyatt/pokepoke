@@ -15,6 +15,7 @@ import type { AppCard, EnergyType } from "../types.ts";
 import { useQueryConds } from "./SearchPage.tsx";
 import { mainPrint, packLabel, PrintLine, SetBadge, useMultiPackSets } from "../components/prints.tsx";
 import { cardName, useLang, useT } from "../i18n.ts";
+import { deckFromImage, qrImage, shareUrlOf } from "../deck-qr.ts";
 
 export const ZONE_TYPES: EnergyType[] = ["grass", "fire", "water", "lightning", "psychic", "fighting", "darkness", "metal"];
 
@@ -31,20 +32,36 @@ const SLOT_VISIBLE = { s: 10, m: 7, l: 5 } as const;
 
 // ---------------- 一覧 ----------------
 
-export function DeckListPage() {
+/** 「読み込み」: JSON の書き出しファイルか、デッキの画像（QR コード入り）から取り込む */
+export function useImportDeckFile() {
   const { byId } = useData();
-  const { decks, create, select, importDecks } = useDecks();
+  const importDecks = useDecks((s) => s.importDecks);
   const show = useToast((s) => s.show);
-  const fileRef = useRef<HTMLInputElement>(null);
   const t = useT();
-  const onImport = async (file: File) => {
+  return async (file: File) => {
     try {
+      if (file.type.startsWith("image/")) {
+        const d = await deckFromImage(file);
+        if (!d) return show(t("画像からデッキのQRコードが見つかりませんでした", "No deck QR code found in the image"), "error");
+        importDecks([{ name: d.name, energy: d.energy, cards: d.cards.filter((id) => byId.has(id)) }]);
+        return show(t(`「${d.name}」を画像から読み込みました`, `Imported “${d.name}” from the image`));
+      }
       const n = importDecks(fromFile(JSON.parse(await file.text()), byId));
       show(t(`${n} 個のデッキを読み込みました`, `Imported ${n} deck${n === 1 ? "" : "s"}`));
     } catch (e) {
       show(e instanceof Error ? e.message : t("読み込めませんでした", "Couldn't import"), "error");
     }
   };
+}
+/** 読み込みで選べるファイル（書き出したJSONと、デッキの画像） */
+export const IMPORT_ACCEPT = "application/json,.json,image/*";
+
+export function DeckListPage() {
+  const { byId } = useData();
+  const { decks, create, select } = useDecks();
+  const fileRef = useRef<HTMLInputElement>(null);
+  const t = useT();
+  const onImport = useImportDeckFile();
   return (
     <div>
       <Header
@@ -57,7 +74,7 @@ export function DeckListPage() {
             <input
               ref={fileRef}
               type="file"
-              accept="application/json,.json"
+              accept={IMPORT_ACCEPT}
               className="hidden"
               onChange={(e) => {
                 const f = e.target.files?.[0];
@@ -242,7 +259,7 @@ export function useDeckExport(deck: Deck | undefined) {
     setExporting(true);
     try {
       // オンラインなら高解像度画像、取れなければサムネイルで書き出す（SPEC 5.3）
-      const imgs = [...imageRef.current.querySelectorAll("img")];
+      const imgs = [...imageRef.current.querySelectorAll<HTMLImageElement>("img[data-id]")];
       await Promise.all(
         imgs.map(
           (img) =>
@@ -297,7 +314,7 @@ export function useDeckExport(deck: Deck | undefined) {
   const image = deck && (
     <>
       <div style={{ position: "fixed", left: -10000, top: 0 }} aria-hidden>
-        <DeckImage ref={imageRef} deck={deck} cards={deckCards(deck, byId)} />
+        <DeckImage ref={imageRef} deck={deck} cards={deckCards(deck, byId)} qr={qrImage(shareUrlOf(deck))} />
       </div>
       {preview && (
         <ImagePreview
@@ -529,7 +546,7 @@ export function DeckList({ cards }: { cards: AppCard[] }) {
 }
 
 /** 画像にするデッキ: 左にカード20枚、右にカードの一覧（名前と枚数） */
-function DeckImage({ deck, cards, ref }: { deck: Deck; cards: AppCard[]; ref: React.Ref<HTMLDivElement> }) {
+function DeckImage({ deck, cards, qr, ref }: { deck: Deck; cards: AppCard[]; qr: { url: string; size: number }; ref: React.Ref<HTMLDivElement> }) {
   const lang = useSettings((s) => s.imageLang);
   const uiLang = useLang();
   const t = useT();
@@ -590,7 +607,16 @@ function DeckImage({ deck, cards, ref }: { deck: Deck; cards: AppCard[]; ref: Re
           )}
         </div>
       </div>
-      <div style={{ marginTop: 12, fontSize: 13, color: "#8794a7", textAlign: "right", fontWeight: 700, whiteSpace: "nowrap" }}>POKÉPOKE LAB</div>
+      {/* 下のバー: デッキの QR コード（読み取るか、この画像を「読み込み」で選ぶと取り込める） */}
+      <div style={{ marginTop: 16, display: "flex", alignItems: "center", gap: 18, padding: "12px 18px", ...panel }}>
+        {/* 縮めずに1マスちょうどで描く（ぼやけると読み取れない） */}
+        <img src={qr.url} alt="" width={qr.size} height={qr.size} style={{ width: qr.size, height: qr.size, imageRendering: "pixelated", flexShrink: 0 }} />
+        <div style={{ flex: 1, minWidth: 0, fontSize: 16, fontWeight: 700, color: "#5b6779", lineHeight: 1.6 }}>
+          <div style={{ fontSize: 18, fontWeight: 800, color: "#3d4757" }}>{t("デッキコード", "Deck code")}</div>
+          <div>{t("このQRコードをカメラで読み取るか、この画像をPOKÉPOKE LABの「読み込み」で選ぶと、デッキを取り込めます。", "Scan this QR code, or choose this image in POKÉPOKE LAB's “Import”, to import the deck.")}</div>
+        </div>
+        <div style={{ alignSelf: "flex-end", fontSize: 13, color: "#8794a7", fontWeight: 700, whiteSpace: "nowrap" }}>POKÉPOKE LAB</div>
+      </div>
     </div>
   );
 }

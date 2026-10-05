@@ -3,12 +3,12 @@ import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { DetailPane } from "../components/detail.tsx";
 import { EnergyIcon, Pressable, Thumb, Toast } from "../components/ui.tsx";
 import { useData } from "../context.tsx";
-import { checkDeck, DECK_SIZE, download, fromFile, toFile } from "../deck.ts";
+import { checkDeck, DECK_SIZE, download, toFile } from "../deck.ts";
 import { openCard } from "../detail.ts";
 import { parseHash, useNav } from "../nav.ts";
 import { RouteContext, navigate, useHash } from "../router.ts";
 import { useDecks, useSettings, useToast, type Deck } from "../store.ts";
-import { deckCards, DeckList, EnergyZone, SharePage, useDeckExport } from "./DeckPage.tsx";
+import { deckCards, DeckList, EnergyZone, IMPORT_ACCEPT, SharePage, useDeckExport, useImportDeckFile } from "./DeckPage.tsx";
 import { SearchPage } from "./SearchPage.tsx";
 import { SettingsPage } from "./SettingsPage.tsx";
 import { cardName, useLang, useT } from "../i18n.ts";
@@ -116,7 +116,7 @@ function Modal({ title, onClose, children }: { title: string; onClose: () => voi
 /** 右の列: デッキの切り替え・中身・エネルギー・書き出し */
 function DeckColumn({ deck }: { deck?: Deck }) {
   const { byId } = useData();
-  const { decks, create, select, update, remove, importDecks } = useDecks();
+  const { decks, create, select, update, remove } = useDecks();
   const { deckView, setDeckView } = useSettings();
   const show = useToast((s) => s.show);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -126,14 +126,7 @@ function DeckColumn({ deck }: { deck?: Deck }) {
   const t = useT();
   const lang = useLang();
 
-  const onImport = async (file: File) => {
-    try {
-      const n = importDecks(fromFile(JSON.parse(await file.text()), byId));
-      show(t(`${n} 個のデッキを読み込みました`, `Imported ${n} deck${n === 1 ? "" : "s"}`));
-    } catch (e) {
-      show(e instanceof Error ? e.message : t("読み込めませんでした", "Couldn't import"), "error");
-    }
-  };
+  const onImport = useImportDeckFile();
   const small = "neu-sm neu-press rounded-full px-3 py-1.5 text-xs font-extrabold disabled:opacity-40";
   const btn = "neu-sm neu-press rounded-2xl py-2 text-xs font-extrabold disabled:opacity-40";
 
@@ -162,7 +155,7 @@ function DeckColumn({ deck }: { deck?: Deck }) {
         <input
           ref={fileRef}
           type="file"
-          accept="application/json,.json"
+          accept={IMPORT_ACCEPT}
           className="hidden"
           onChange={(e) => {
             const f = e.target.files?.[0];

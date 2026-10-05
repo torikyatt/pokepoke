@@ -81,10 +81,37 @@ export function fromFile(json: unknown, byId: Map<string, AppCard>): DeckFile["d
 // ---- 共有URL（#/share/<code>）----
 const b64url = (s: string) => btoa(unescape(encodeURIComponent(s))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 const unb64url = (s: string) => decodeURIComponent(escape(atob(s.replace(/-/g, "+").replace(/_/g, "/"))));
+// 共有コード（v2）: 「2~エネ~カード~名前」。QR コードに入れても目が細かくなりすぎないよう短く書く
+//   エネ: タイプの1文字（G R W L P F D M N C）、カード: 「カードIDx枚数」を . でつなぐ、名前: URL エンコード
+//   例: 2~F~b3-081x3.a2-092x2.pa-007x2~%E3%83%A1%E3%82%AC
+// 以前の形（JSON を base64url にしたもの）も読める
+const E_CODE: Record<EnergyType, string> = {
+  grass: "G", fire: "R", water: "W", lightning: "L", psychic: "P", fighting: "F", darkness: "D", metal: "M", dragon: "N", colorless: "C",
+};
+const E_OF = Object.fromEntries(Object.entries(E_CODE).map(([k, v]) => [v, k])) as Record<string, EnergyType>;
 export function encodeShare(d: Pick<Deck, "name" | "cards" | "energy">): string {
-  return b64url(JSON.stringify({ n: d.name, e: d.energy, c: d.cards.join(",") }));
+  const counts = new Map<string, number>();
+  for (const id of d.cards) counts.set(id, (counts.get(id) ?? 0) + 1);
+  const cards = [...counts].map(([id, n]) => (n > 1 ? `${id}x${n}` : id)).join(".");
+  return `2~${d.energy.map((e) => E_CODE[e]).join("")}~${cards}~${encodeURIComponent(d.name)}`;
 }
 export function decodeShare(code: string): { name: string; energy: EnergyType[]; cards: string[] } {
+  if (code.startsWith("2~")) {
+    const [, e = "", c = "", ...rest] = code.split("~");
+    const raw = rest.join("~");
+    let name = raw;
+    try {
+      name = decodeURIComponent(raw); // ブラウザによってはすでに戻してあることがある
+    } catch {
+      /* そのまま */
+    }
+    name ||= tr("共有デッキ", "Shared deck");
+    const cards = c.split(".").filter(Boolean).flatMap((x) => {
+      const [id, n] = x.split("x");
+      return Array<string>(Math.min(20, Math.max(1, Number(n) || 1))).fill(id);
+    });
+    return { name, energy: [...e].map((ch) => E_OF[ch]).filter(Boolean), cards };
+  }
   const o = JSON.parse(unb64url(code));
   return { name: String(o.n ?? tr("共有デッキ", "Shared deck")), energy: o.e ?? [], cards: String(o.c ?? "").split(",").filter(Boolean) };
 }
