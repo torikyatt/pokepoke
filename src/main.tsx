@@ -6,6 +6,7 @@ import { loadData } from "./data/load.ts";
 import "./index.css";
 import { parseHash, scrollPos, useNav, type Tab } from "./nav.ts";
 import { DetailDock, DetailSheet } from "./components/detail.tsx";
+import { useDetail } from "./detail.ts";
 import { Desktop } from "./pages/Desktop.tsx";
 import { DeckBuilderPage, DeckListPage, DeckViewPage, SharePage } from "./pages/DeckPage.tsx";
 import { SearchPage } from "./pages/SearchPage.tsx";
@@ -80,11 +81,21 @@ function Shell() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
   const building = active === "deck" && parseHash(base.deck).parts[2] === "edit";
+  // ページの下の余白: 下に浮かぶもの（タブ・「最近見たカード」・半分開いた詳細）に最後の行が隠れず、スクロールで出せるように
+  const docked = useDetail((s) => s.stack.length > 0 && !s.open);
+  const half = useDetail((s) => s.open && s.snap === "half");
+  const bottomPad = half
+    ? "calc(47dvh + 1.5rem)" // 半分開いた詳細シート（高さ 94dvh の半分）の上まで
+    : building
+      ? undefined // デッキ編集は自分で余白を持つ
+      : docked
+        ? "calc(9.5rem + env(safe-area-inset-bottom))" // 下のタブ＋「最近見たカード」
+        : "6rem";
   return (
     <>
       {TABS.filter((t) => t === active || visited.includes(t)).map((t) => (
         <RouteContext.Provider key={t} value={base[t]}>
-          <main hidden={t !== active} className={`mx-auto min-h-dvh max-w-5xl ${t === "deck" && building ? "" : "pb-24"}`}>
+          <main hidden={t !== active} className="mx-auto min-h-dvh max-w-5xl" style={{ paddingBottom: bottomPad }}>
             <Routes />
           </main>
         </RouteContext.Provider>
