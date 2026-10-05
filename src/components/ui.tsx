@@ -272,18 +272,62 @@ export function Header({ title, back, right }: { title: ReactNode; back?: boolea
 
 /** 画面下からせり上がるシート（PCでは画面の真ん中に出す）。
  *  backdrop-blur などの中に置かれても画面全体に出るよう、body の直下に描く */
+/** 下から出るシート。上の帯（つまみ・タイトル）を下へスワイプしても閉じられる */
 export function Sheet({ open, onClose, title, children, footer }: { open: boolean; onClose: () => void; title: string; children: ReactNode; footer?: ReactNode }) {
   const t = useT();
+  const panel = useRef<HTMLDivElement>(null);
+  const backdrop = useRef<HTMLButtonElement>(null);
+  const drag = useRef<{ y: number; dy: number; lastY: number; lastT: number; v: number } | null>(null);
   if (!open) return null;
+  const move = (dy: number, animate: boolean) => {
+    const p = panel.current, b = backdrop.current;
+    if (p) {
+      p.style.transition = animate ? "transform 200ms cubic-bezier(.2,.8,.2,1)" : "none";
+      p.style.transform = dy ? `translateY(${dy}px)` : "";
+    }
+    if (b) {
+      b.style.transition = animate ? "opacity 200ms" : "none";
+      b.style.opacity = String(Math.max(0, 1 - dy / ((p?.offsetHeight ?? 600) * 0.8)));
+    }
+  };
+  const onDown = (e: React.PointerEvent) => {
+    if ((e.target as HTMLElement).closest("button")) return; // ✕ はそのまま押せる
+    drag.current = { y: e.clientY, dy: 0, lastY: e.clientY, lastT: e.timeStamp, v: 0 };
+    e.currentTarget.setPointerCapture(e.pointerId);
+  };
+  const onMove = (e: React.PointerEvent) => {
+    const d = drag.current;
+    if (!d) return;
+    const dt = e.timeStamp - d.lastT;
+    if (dt > 0) d.v = (e.clientY - d.lastY) / dt;
+    d.lastY = e.clientY;
+    d.lastT = e.timeStamp;
+    d.dy = Math.max(0, e.clientY - d.y);
+    move(d.dy, false);
+  };
+  const onUp = (e: React.PointerEvent) => {
+    const d = drag.current;
+    drag.current = null;
+    if (!d) return;
+    // 下へ払った・半分近くまで下ろした → 閉じる（下まで下ろしてから）。それ以外は元の位置へ
+    const speed = e.timeStamp - d.lastT > 90 ? 0 : d.v;
+    if (speed > 0.5 || d.dy > Math.min(160, (panel.current?.offsetHeight ?? 400) * 0.35)) {
+      move(panel.current?.offsetHeight ?? 800, true);
+      setTimeout(onClose, 180);
+    } else move(0, true);
+  };
   return createPortal(
     <div className="fixed inset-0 z-50 flex flex-col justify-end lg:items-center lg:justify-center lg:p-6" role="dialog" aria-modal="true" aria-label={title}>
-      <button type="button" aria-label={t("閉じる", "Close")} className="absolute inset-0 bg-[#3d4757]/35" onClick={onClose} />
-      <div className="sheet-up relative mx-auto flex max-h-[88dvh] w-full max-w-3xl flex-col rounded-t-3xl bg-panel shadow-2xl lg:max-w-2xl lg:rounded-3xl">
-        <div className="flex items-center justify-between px-5 pt-4 pb-2">
-          <h2 className="text-lg font-extrabold">{title}</h2>
-          <button type="button" onClick={onClose} className="neu-sm neu-press flex h-8 w-8 items-center justify-center rounded-full text-muted" aria-label={t("閉じる", "Close")}>
-            ✕
-          </button>
+      <button ref={backdrop} type="button" aria-label={t("閉じる", "Close")} className="absolute inset-0 bg-[#3d4757]/35" onClick={onClose} />
+      <div ref={panel} className="sheet-up relative mx-auto flex max-h-[88dvh] w-full max-w-3xl flex-col rounded-t-3xl bg-panel shadow-2xl lg:max-w-2xl lg:rounded-3xl">
+        <div onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerCancel={onUp} className="cursor-grab touch-none select-none">
+          <span aria-hidden className="mx-auto mt-2 block h-1 w-10 rounded-full bg-[#c5cfdb] lg:hidden" />
+          <div className="flex items-center justify-between px-5 pt-2 pb-2 lg:pt-4">
+            <h2 className="text-lg font-extrabold">{title}</h2>
+            <button type="button" onClick={onClose} className="neu-sm neu-press flex h-8 w-8 items-center justify-center rounded-full text-muted" aria-label={t("閉じる", "Close")}>
+              ✕
+            </button>
+          </div>
         </div>
         <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-4">{children}</div>
         {footer && <div className="border-t border-line px-5 pt-3 pb-[max(1rem,env(safe-area-inset-bottom))]">{footer}</div>}
