@@ -204,3 +204,21 @@ describe("化石の進化ライン", () => {
     }
   });
 });
+
+describe("タイプの名指しを守る", () => {
+  it("メガルカリオex（闘）に、水・鋼だけを加速するマナフィ・ディアルガexは出さない", () => {
+    const ids = partnersOf("b3-081").map((p) => p.card.id);
+    expect(ids).not.toContain("pa-048");
+    expect(ids).not.toContain("a2-119");
+  });
+  it("マナフィの効果から結ぶ相手は水のポケモンだけ", () => {
+    for (const p of partnersOf("pa-048")) {
+      const rule = p.reasons.every((r) => !/^定番コンボ|^大会で一緒|名指し/.test(r));
+      if (rule && p.card.kind === "pokemon" && p.card.type !== "colorless") expect([p.card.type, ...p.card.attacks.flatMap((a) => Object.keys(a.cost))]).toContain("water");
+    }
+  });
+  it("「[R], [W], or [L] Energy」のような並べ書きも全部のタイプとして読む", async () => {
+    const { typesBefore } = await import("./card-text.ts");
+    expect(typesBefore("Move a [R], [W], or [L] Energy from your Benched Pokémon", "Energy")).toEqual(["fire", "water", "lightning"]);
+  });
+});

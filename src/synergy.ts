@@ -6,8 +6,9 @@
 // これに加えて、実際の使われ方からも結ぶ:
 //   ・攻略記事で紹介されている定番の組み合わせ（data/combos.yaml）
 //   ・大会で勝ち越したデッキに一緒に入っていることが多い組（data/meta/meta.json。どのデッキにも入る定番どうしは除いてある）
-import type { AppArchetype, AppCard, AppCombo, AppData, HelpTarget, Selector } from "./types.ts";
+import type { AppArchetype, AppCard, AppCombo, AppData, EnergyType, HelpTarget, Selector } from "./types.ts";
 import { STAGE_JA, TYPE_EN, TYPE_JA } from "./types.ts";
+import { namedTypes } from "./card-text.ts";
 
 // 供給の種類ごとの説明（相手のカードが「供給する側」「要求する側」のときのラベル）
 const SUPPLY: Record<string, { give: string; need: string; giveEn: string; needEn: string }> = {
@@ -70,6 +71,32 @@ export function createSynergy(data: AppData) {
     return out;
   };
 
+  /** ワザのコストに出てくるタイプ（無色以外） */
+  const costTypeCache = new Map<string, EnergyType[]>();
+  const costTypes = (c: AppCard): EnergyType[] => {
+    let r = costTypeCache.get(c.id);
+    if (!r) {
+      r = [...new Set(c.attacks.flatMap((a) => (Object.keys(a.cost) as EnergyType[]).filter((t) => t !== "colorless" && (a.cost[t] ?? 0) > 0)))];
+      costTypeCache.set(c.id, r);
+    }
+    return r;
+  };
+
+  // タイプの食い違い: 片方の効果文がタイプを名指ししている（「[W] Energy を付ける」「[N] Pokémon に」など）のに、
+  // もう片方のタイプにもワザのコストにもそのタイプが無ければ、効果の上では結ばない（無色のポケモンはどのタイプでも使える）
+  const namedCache = new Map<string, EnergyType[]>();
+  const named = (c: AppCard) => namedCache.get(c.id) ?? namedCache.set(c.id, namedTypes(c)).get(c.id)!;
+  const ownTypes = (c: AppCard): EnergyType[] | undefined =>
+    c.kind !== "pokemon" || !c.type || c.type === "colorless" ? undefined : [c.type, ...costTypes(c)];
+  const typeFits = (x: AppCard, y: AppCard) => {
+    for (const [a, b] of [[x, y], [y, x]] as const) {
+      const n = named(a);
+      const own = ownTypes(b);
+      if (n.length && own && !own.some((t) => n.includes(t))) return false;
+    }
+    return true;
+  };
+
   /** supplier の供給 s（効く相手 sel）が receiver に届くか */
   function reaches(sel: Selector, supplier: AppCard, receiver: AppCard, s: string): boolean {
     if (receiver.id === supplier.id || receiver.nameEn === supplier.nameEn) return false;
@@ -90,6 +117,12 @@ export function createSynergy(data: AppData) {
     if (sel.etypes?.length) {
       const want = receiver.requires[s]?.etypes;
       if (want?.length && !want.some((t) => sel.etypes!.includes(t))) return false;
+      // エネ加速で付くエネのタイプを、受け手のワザが使えるか（数えるエネのタイプが書いていなければ、ワザのコストのタイプで見る）。
+      // 例: マナフィ（水）・ディアルガex（鋼）は闘のメガルカリオexには結ばない。無色だけのワザなら、どのタイプでも使える
+      if (s === "supply.energy.many" && !want?.length) {
+        const typed = costTypes(receiver);
+        if (typed.length && !typed.some((t) => sel.etypes!.includes(t))) return false;
+      }
     }
     return true;
   }
@@ -179,6 +212,10 @@ export function createSynergy(data: AppData) {
         p.reasonsEn.push(reasonEn);
       }
     };
+    // 効果から読んだ結びつき（供給と要求・場にためたエネ・エネ加速など）は、タイプが食い違えば結ばない
+    const pushRule = (card: AppCard, score: number, reason: string, reasonEn: string) => {
+      if (typeFits(x, card)) push(card, score, reason, reasonEn);
+    };
     // 攻略記事で紹介されている組み合わせ（いちばん強く結ぶ）
     // 同じ組を複数の記事が紹介していても、2つ目からは少しだけ足す（記事の数だけで順位が決まらないように）
     const comboSeen = new Set<string>();
@@ -220,31 +257,32 @@ export function createSynergy(data: AppData) {
     for (const [s, sels] of Object.entries(x.supplies)) {
       for (const y of requirers.get(s) ?? []) {
         const ok = sels.filter((sel) => reaches(sel, x, y, s));
-        if (ok.length) push(y, weightOf(s, ok, y), SUPPLY[s]?.need ?? s, SUPPLY[s]?.needEn ?? s);
+        if (ok.length) pushRule(y, weightOf(s, ok, y), SUPPLY[s]?.need ?? s, SUPPLY[s]?.needEn ?? s);
       }
     }
     // 要求 ← 供給（相手が x を助ける）
     for (const r of Object.keys(x.requires)) {
       for (const y of suppliers.get(r) ?? []) {
         const ok = y.supplies[r].filter((sel) => reaches(sel, y, x, r));
-        if (ok.length) push(y, weightOf(r, ok, x), SUPPLY[r]?.give ?? r, SUPPLY[r]?.giveEn ?? r);
+        if (ok.length) pushRule(y, weightOf(r, ok, x), SUPPLY[r]?.give ?? r, SUPPLY[r]?.giveEn ?? r);
       }
     }
 
     // 場にためたエネ（レアコイルのボルトチャージなど）は、同じタイプのポケモンと、無色エネを多く使うワザでも生きる
     const usesType = (c: AppCard, t: string) => c.kind === "pokemon" && c.type === t && c.attacks.some((a) => (a.cost[c.type!] ?? 0) > 0);
-    const colorlessHeavy = (c: AppCard) => c.kind === "pokemon" && c.attacks.some((a) => (a.cost.colorless ?? 0) >= 2);
+    // 無色エネを多く使うワザに回せるのは、タイプが無色のポケモンだけと見る（他のタイプは自分のタイプのエネが要る）
+    const colorlessHeavy = (c: AppCard) => c.kind === "pokemon" && c.type === "colorless" && c.attacks.some((a) => (a.cost.colorless ?? 0) >= 2);
     const bankOf = (c: AppCard) => c.supplies["supply.energy.bank"]?.[0]?.etypes ?? [];
     for (const t of bankOf(x)) {
       for (const c of data.cards) {
-        if (usesType(c, t)) push(c, 0.6, `${TYPE_JA[t]}タイプ（ためた${TYPE_JA[t]}エネを使える）`, `${TYPE_EN[t]} type (uses the stored ${TYPE_EN[t]} Energy)`);
-        else if (colorlessHeavy(c)) push(c, 0.4, "無色エネを多く使う", "Uses lots of Colorless Energy");
+        if (usesType(c, t)) pushRule(c, 0.6, `${TYPE_JA[t]}タイプ（ためた${TYPE_JA[t]}エネを使える）`, `${TYPE_EN[t]} type (uses the stored ${TYPE_EN[t]} Energy)`);
+        else if (colorlessHeavy(c)) pushRule(c, 0.4, "無色エネを多く使う", "Uses lots of Colorless Energy");
       }
     }
     for (const b of suppliers.get("supply.energy.bank") ?? []) {
       const ts = bankOf(b);
-      if (x.type && ts.includes(x.type) && usesType(x, x.type)) push(b, 0.6, `${TYPE_JA[x.type]}エネを場にためられる`, `Stores ${TYPE_EN[x.type]} Energy on the field`);
-      else if (colorlessHeavy(x)) push(b, 0.4, "無色コストに回せるエネをためられる", "Stores Energy usable for Colorless costs");
+      if (x.type && ts.includes(x.type) && usesType(x, x.type)) pushRule(b, 0.6, `${TYPE_JA[x.type]}エネを場にためられる`, `Stores ${TYPE_EN[x.type]} Energy on the field`);
+      else if (colorlessHeavy(x)) pushRule(b, 0.4, "無色コストに回せるエネをためられる", "Stores Energy usable for Colorless costs");
     }
 
     // 同じポケモンたちを支える2枚（例: にじいろの洞窟はドラゴンのエネ事故を減らし、ハクリューはドラゴンにエネを送る）
@@ -256,7 +294,7 @@ export function createSynergy(data: AppData) {
         if (ry.size < 3) continue;
         let n = 0;
         for (const id of rx) if (ry.has(id)) n++;
-        if (n >= 3 && n / Math.min(rx.size, ry.size) >= 0.3) push(y, 0.5, "同じポケモンを支える", "Supports the same Pokémon");
+        if (n >= 3 && n / Math.min(rx.size, ry.size) >= 0.3) pushRule(y, 0.5, "同じポケモンを支える", "Supports the same Pokémon");
       }
     }
 
@@ -264,13 +302,13 @@ export function createSynergy(data: AppData) {
     if (accelSels(x).length) {
       for (const c of data.cards) {
         for (const t of x.accelTypes) {
-          if (t !== "colorless" && c.type === t && heavyOf(c) && accelSels(x).some((sel) => reaches(sel, x, c, "supply.energy.many"))) push(c, 2, `${TYPE_JA[t]}エネ加速の受け手`, `Receives ${TYPE_EN[t]} Energy acceleration`);
+          if (t !== "colorless" && c.type === t && heavyOf(c) && accelSels(x).some((sel) => reaches(sel, x, c, "supply.energy.many"))) pushRule(c, 2, `${TYPE_JA[t]}エネ加速の受け手`, `Receives ${TYPE_EN[t]} Energy acceleration`);
         }
       }
     }
     if (x.type && heavyOf(x)) {
       for (const c of suppliers.get("supply.energy.many") ?? []) {
-        if (c.accelTypes.includes(x.type) && accelSels(c).some((sel) => reaches(sel, c, x, "supply.energy.many"))) push(c, 2, `${TYPE_JA[x.type]}エネを加速できる`, `Accelerates ${TYPE_EN[x.type]} Energy`);
+        if (c.accelTypes.includes(x.type) && accelSels(c).some((sel) => reaches(sel, c, x, "supply.energy.many"))) pushRule(c, 2, `${TYPE_JA[x.type]}エネを加速できる`, `Accelerates ${TYPE_EN[x.type]} Energy`);
       }
     }
 

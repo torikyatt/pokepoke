@@ -3,6 +3,7 @@
 //     コイキング「… evolves from this Pokémon onto this Pokémon」→ 自分の進化先だけ
 //     大きなふうせん「The Stage 2 Pokémon this card is attached to …」→ 2進化だけ
 import type { CardGroup, EnergyType, Selector, Stage } from "../../src/types.ts";
+import { typesBefore } from "../../src/card-text.ts";
 
 const CODE: Record<string, EnergyType> = {
   G: "grass", R: "fire", W: "water", L: "lightning", P: "psychic", F: "fighting", D: "darkness", M: "metal", C: "colorless", N: "dragon",
@@ -34,8 +35,8 @@ export function selectorOf(supply: string, raw: string, refs: string[]): Selecto
     return sel;
   }
   if (refs.length && supply !== "supply.trash.fill" && supply !== "supply.bench.fill") sel.ids = refs;
-  const types = [...t.matchAll(/\[([GRWLPFDMN])\] Pokémon/g)].map((m) => CODE[m[1]]);
-  if (types.length) sel.types = [...new Set(types)];
+  const types = typesBefore(t, "Pokémon");
+  if (types.length) sel.types = types;
   if (supply === "supply.evolve.help") {
     if (/Stage 2/.test(t)) sel.stages = ["stage2"];
   } else {
@@ -59,6 +60,11 @@ export function selectorOf(supply: string, raw: string, refs: string[]): Selecto
   if (groups.length) sel.groups = groups;
   if (/effect of your Trainer cards/.test(t)) sel.kinds = ["trainer"];
   else if (/for an attack of/.test(t)) sel.kinds = ["pokemon"];
+  // エネ加速: 付けるエネのタイプ（マナフィ「take a [W] Energy」→ 水だけ）。タイプの書いていないエネはどれでも
+  if (supply === "supply.energy.many") {
+    const et = typesBefore(t, "Energy");
+    if (et.length) sel.etypes = et;
+  }
   if (supply === "supply.trash.energy") {
     const et = [...t.matchAll(/\[([GRWLPFDMCN])\](?! Pokémon)/g)].map((m) => CODE[m[1]]);
     sel.types = undefined;
@@ -69,7 +75,9 @@ export function selectorOf(supply: string, raw: string, refs: string[]): Selecto
 
 /** 要求する側の条件（トラッシュのエネの種類など） */
 export function requireInfoOf(require: string, raw: string): { etypes?: EnergyType[] } {
-  if (require !== "supply.trash.energy" && require !== "supply.energy.bank") return {};
-  const et = [...clean(raw).matchAll(/\[([GRWLPFDMCN])\](?! Pokémon)/g)].map((m) => CODE[m[1]]);
+  if (require !== "supply.trash.energy" && require !== "supply.energy.bank" && require !== "supply.energy.many") return {};
+  // 付いているエネの数で強くなるワザは、数えるエネのタイプ（メガルカリオex「extra [F] Energy」→ 闘だけ）
+  const et =
+    require === "supply.energy.many" ? typesBefore(clean(raw), "Energy") : [...clean(raw).matchAll(/\[([GRWLPFDMCN])\](?! Pokémon)/g)].map((m) => CODE[m[1]]);
   return et.length ? { etypes: [...new Set(et)] } : {};
 }
