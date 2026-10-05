@@ -20,6 +20,19 @@ export interface Ctx {
 //   n: 回数 / q: その言葉が入っていた検索文（最後のもの・例として）
 
 // last: 最後に探された日時（ISO・UTC）。日時順に並べるのに使う（あとから足した列なので、古い行には無い）
+// reports: カードの誤りの報告（カード詳細の左上のボタンから）。report_images: 添付された画像（JPEG・端末で縮めたもの）
+
+/** 誤りの報告の種類（キー → 表示名）。画面（src/components/report-error.tsx）と同じ並び */
+export const REPORT_CATEGORIES: Record<string, string> = {
+  info: "カード名・効果文などのカード情報",
+  image: "カード画像",
+  evolution: "進化ライン",
+  partners: "相性のいいカード",
+  combos: "定番の組み合わせ",
+  tournament: "大会での使われ方",
+  search: "検索結果",
+  other: "その他",
+};
 
 let ready: Promise<unknown> | undefined;
 /** 表がなければ作る（最初の1回だけ）。あとから足した列（last）も足す */
@@ -28,6 +41,12 @@ export function ensure(db: D1Like) {
     .exec(
       "CREATE TABLE IF NOT EXISTS searches (day TEXT NOT NULL, q TEXT NOT NULL, lang TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, hits INTEGER, opened INTEGER NOT NULL DEFAULT 0, last TEXT, PRIMARY KEY (day, q, lang))\n" +
         "CREATE TABLE IF NOT EXISTS misses (day TEXT NOT NULL, term TEXT NOT NULL, lang TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, q TEXT, last TEXT, PRIMARY KEY (day, term, lang))",
+    )
+    .then(() =>
+      db.exec(
+        "CREATE TABLE IF NOT EXISTS reports (id INTEGER PRIMARY KEY AUTOINCREMENT, at TEXT NOT NULL, card TEXT NOT NULL, category TEXT NOT NULL, body TEXT NOT NULL, lang TEXT NOT NULL, images INTEGER NOT NULL DEFAULT 0)\n" +
+          "CREATE TABLE IF NOT EXISTS report_images (report_id INTEGER NOT NULL, idx INTEGER NOT NULL, data BLOB NOT NULL, PRIMARY KEY (report_id, idx))",
+      ),
     )
     .then(async () => {
       // 前からある表に last 列を足す（もうあれば失敗するので、そのままにする）

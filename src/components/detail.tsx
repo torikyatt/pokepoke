@@ -5,6 +5,7 @@ import { useAddToDeck, useData } from "../context.tsx";
 import { DECK_SIZE } from "../deck.ts";
 import { backDetail, closeDetail, reopenDetail, setCloseAnimator, stepCard, takeScrollAnchor, useDetail } from "../detail.ts";
 import { CardDetail } from "../pages/CardPage.tsx";
+import { ReportErrorSheet } from "./report-error.tsx";
 import { useDecks, useFavorites, useToast } from "../store.ts";
 import type { AppCard } from "../types.ts";
 import { IconHeart, Thumb } from "./ui.tsx";
@@ -92,6 +93,13 @@ const BackIcon = () => (
   </svg>
 );
 
+/** 誤りの報告（旗） */
+const FlagIcon = () => (
+  <svg viewBox="0 0 24 24" className="h-4 w-4 fill-none stroke-current stroke-[2.3]" aria-hidden>
+    <path d="M5 21V4m0 0h11l-2 4 2 4H5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
 const ShareIcon = () => (
   <svg viewBox="0 0 24 24" className="h-4 w-4 fill-none stroke-current stroke-[2.3]" aria-hidden>
     <path d="M12 15V3m0 0L8 7m4-4 4 4M7 11H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-1" strokeLinecap="round" strokeLinejoin="round" />
@@ -127,12 +135,18 @@ function DetailHeader({ card }: { card?: AppCard }) {
   const t = useT();
   const lang = useLang();
   const share = useShareCard();
+  const [reporting, setReporting] = useState(false);
   return (
     <div className="flex items-center gap-2">
-      <div className="flex w-16 shrink-0">
+      <div className="flex w-16 shrink-0 gap-2">
         {pos > 0 && (
           <IconBtn label={t("1つ前のカードへ", "Previous card")} onClick={backDetail}>
             <BackIcon />
+          </IconBtn>
+        )}
+        {card && (
+          <IconBtn label={t("誤りを報告", "Report an error")} onClick={() => setReporting(true)}>
+            <FlagIcon />
           </IconBtn>
         )}
       </div>
@@ -149,6 +163,7 @@ function DetailHeader({ card }: { card?: AppCard }) {
           <span className="text-sm font-extrabold">✕</span>
         </IconBtn>
       </div>
+      <ReportErrorSheet open={reporting} onClose={() => setReporting(false)} card={card} />
     </div>
   );
 }

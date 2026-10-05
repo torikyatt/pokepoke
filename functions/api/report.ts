@@ -1,10 +1,11 @@
 // GET /api/report?key=合言葉[&days=30][&sort=time][&format=tsv]   sort=time で新しい順（ふだんは回数順） … 集めた検索ワードの集計（サイトの持ち主が見る用）
 //   合言葉は Cloudflare Pages の設定の REPORT_KEY。設定していなければ、このページは無い（404）
+//   ・誤りの報告              … カード詳細の左上のボタンから送られたもの（新しい順・画像つき）
 //   ・辞書で読めなかった言葉    … 検索文の中で読めなかった部分（ほかの言葉で当たっていても）。辞書に足す候補
 //   ・0件だった検索            … 辞書に無い言い回しか、条件に合うカードが無いか
 //   ・よく探される言葉
 //   ・カードが開かれなかった検索 … 参考。試しに探しただけ・合うカードが少なかっただけのことも多く、結果の誤りとは限らない
-import { ensure, type Ctx } from "../../server/search-db.ts";
+import { ensure, REPORT_CATEGORIES, type Ctx } from "../../server/search-db.ts";
 
 interface Row {
   q: string;
@@ -13,6 +14,16 @@ interface Row {
   opened: number;
   hits: number | null;
   last: string;
+}
+
+interface Report {
+  id: number;
+  at: string;
+  card: string;
+  category: string;
+  body: string;
+  lang: string;
+  images: number;
 }
 
 interface Miss {
@@ -53,13 +64,18 @@ export async function onRequestGet({ request, env }: Ctx) {
     .bind(since, since)
     .all<Miss>();
 
+  const { results: reports } = await env.DB.prepare("SELECT id, at, card, category, body, lang, images FROM reports WHERE at >= ? ORDER BY id DESC LIMIT 200")
+    .bind(since)
+    .all<Report>();
+
   const zero = rows.filter((r) => r.hits === 0);
   const unopened = rows.filter((r) => (r.hits ?? 0) > 0 && r.opened === 0);
   const top = rows.slice(0, 200);
   const topTitle = byTime ? "最近の検索" : "よく探される言葉";
   const tsv = (rs: Row[]) => rs.map((r) => [r.q, r.lang, r.n, r.hits ?? "", r.opened, when(r.last)].join("\t")).join("\n");
   const missTsv = misses.map((m) => [m.term, m.lang, m.n, m.q ?? "", when(m.last)].join("\t")).join("\n");
-  const all = `# 検索ワード（直近${days}日・${since}〜）\n## 辞書で読めなかった言葉（言葉\t言語\t回数\t例の検索文\t最後）\n${missTsv}\n# 以下は 言葉\t言語\t回数\t件数\t開いた回数\t最後\n## 0件だった検索\n${tsv(zero)}\n## ${topTitle}\n${tsv(top)}\n## カードが開かれなかった検索（参考。結果の誤りとは限らない）\n${tsv(unopened)}\n`;
+  const reportTsv = reports.map((r) => [when(r.at), r.card, REPORT_CATEGORIES[r.category] ?? r.category, r.body.replace(/\s+/g, " "), r.images ? `画像${r.images}枚` : ""].join("\t")).join("\n");
+  const all = `# 検索ワード（直近${days}日・${since}〜）\n## 誤りの報告（日時\t対象カード\t種類\t内容\t画像）\n${reportTsv}\n## 辞書で読めなかった言葉（言葉\t言語\t回数\t例の検索文\t最後）\n${missTsv}\n# 以下は 言葉\t言語\t回数\t件数\t開いた回数\t最後\n## 0件だった検索\n${tsv(zero)}\n## ${topTitle}\n${tsv(top)}\n## カードが開かれなかった検索（参考。結果の誤りとは限らない）\n${tsv(unopened)}\n`;
   if (url.searchParams.get("format") === "tsv") return new Response(all, { headers: { ...HEAD, "Content-Type": "text/plain; charset=utf-8" } });
 
   const total = rows.reduce((s, r) => s + r.n, 0);
@@ -83,6 +99,11 @@ th:first-child,td:first-child{text-align:left;word-break:break-all}th{color:#879
 .en{font-size:10px;color:#22998b;font-weight:700}
 td.ex{text-align:left;color:#8794a7;font-size:12px;word-break:break-all}
 td.t{color:#8794a7;font-size:11px;white-space:nowrap}
+.rep{border-top:1px solid #d5dde7;padding:8px 0}.rep:first-of-type{border-top:0}
+.rh{display:flex;flex-wrap:wrap;gap:6px;align-items:baseline}.rh .t{margin-left:auto;color:#8794a7;font-size:11px}
+.cat{font-size:11px;font-weight:700;color:#fff;background:#22998b;border-radius:999px;padding:1px 8px}
+.rb{margin:4px 0 0;white-space:pre-wrap;word-break:break-all}
+.imgs{display:flex;gap:6px;margin-top:6px}.imgs img{width:88px;height:88px;object-fit:cover;border-radius:8px;background:#d5dde7}
 nav a.on{background:#22998b;color:#fff}
 nav{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 nav a,button{font:inherit;font-size:12px;font-weight:700;color:#22998b;background:#eef2f7;border:0;border-radius:999px;padding:6px 12px;text-decoration:none;cursor:pointer;box-shadow:2px 2px 5px rgb(176 189 206/.6),-2px -2px 5px #fff}
@@ -92,6 +113,11 @@ nav a,button{font:inherit;font-size:12px;font-weight:700;color:#22998b;backgroun
 <nav>${[7, 30, 90].map((d) => link({ days: d }, `${d}日`, d === days)).join("")}
 ${link({ sort: "count" }, "回数順", !byTime)}${link({ sort: "time" }, "新しい順", byTime)}
 <button type="button" id="copy">全部をコピー（Claude に渡す用）</button><span id="done" class="note"></span></nav>
+<section><h2>誤りの報告 <small>${reports.length}件</small></h2><p class="note">カード詳細の左上のボタンから送られたもの（新しい順）。画像はタップで大きく</p>
+${reports.length ? reports
+    .map((r) => `<div class="rep"><div class="rh"><b>${esc(r.card || "（カードの指定なし）")}</b><span class="cat">${esc(REPORT_CATEGORIES[r.category] ?? r.category)}</span>${r.lang === "en" ? '<span class="en">EN</span>' : ""}<span class="t">${when(r.at)}</span></div>
+${r.body ? `<p class="rb">${esc(r.body)}</p>` : ""}${r.images ? `<div class="imgs">${Array.from({ length: r.images }, (_, i) => { const src = `/api/report-image?key=${encodeURIComponent(env.REPORT_KEY!)}&id=${r.id}&i=${i}`; return `<a href="${src}" target="_blank" rel="noreferrer"><img src="${src}" loading="lazy" alt="添付画像${i + 1}"></a>`; }).join("")}</div>` : ""}</div>`)
+    .join("") : '<p class="note">まだありません</p>'}</section>
 <section><h2>辞書で読めなかった言葉 <small>${misses.length}語</small></h2><p class="note">検索文の中で読めなかった部分（ほかの言葉で当たって結果が出ていても）。辞書に足す言い回しの候補</p>
 ${misses.length ? `<table><thead><tr><th>言葉</th><th>回数</th><th>例の検索文</th><th>最後</th></tr></thead><tbody>${misses
     .map((m) => `<tr><td>${esc(m.term)}${m.lang === "en" ? ' <span class="en">EN</span>' : ""}</td><td>${m.n}</td><td class="ex">${esc(m.q ?? "")}</td><td class="t">${when(m.last)}</td></tr>`)
