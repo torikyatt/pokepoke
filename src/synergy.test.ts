@@ -210,7 +210,7 @@ describe("タイプの名指しを守る", () => {
     const ids = partnersOf("b3-081").map((p) => p.card.id);
     expect(ids).not.toContain("pa-048");
     expect(ids).not.toContain("a2-119");
-    // どのタイプでもよい加速（レジギガス・エネコロロ）でも、闘エネ指定の条件は満たせない
+    // 無色エネを付けるレジギガス・エネコロロでは、闘エネ指定の条件は満たせない
     expect(ids).not.toContain("b3-134");
     expect(ids).not.toContain("a3-130");
   });
@@ -223,5 +223,7 @@ describe("タイプの名指しを守る", () => {
   it("「[R], [W], or [L] Energy」のような並べ書きも全部のタイプとして読む", async () => {
     const { typesBefore } = await import("./card-text.ts");
     expect(typesBefore("Move a [R], [W], or [L] Energy from your Benched Pokémon", "Energy")).toEqual(["fire", "water", "lightning"]);
+    // [C] は「どのタイプでも」ではなく無色エネ（レジギガス）
+    expect(typesBefore("Take a [C] Energy from your Energy Zone", "Energy")).toEqual(["colorless"]);
   });
 });

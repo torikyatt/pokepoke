@@ -6,12 +6,15 @@ const CODE: Record<string, EnergyType> = {
 };
 const clean = (s: string) => s.replace(/\[\s*([A-Z])\s*\]/g, "[$1]").replace(/Pokemon/g, "Pokémon").replace(/\s+/g, " ");
 
-/** 「[R], [W], or [L] Energy」「[G] or [P] Pokémon」のように並べて書いたタイプも全部拾う（noun: Energy / Pokémon） */
-export function typesBefore(text: string, noun: "Energy" | "Pokémon", withColorless = false): EnergyType[] {
+/**
+ * 「[R], [W], or [L] Energy」「[G] or [P] Pokémon」のように並べて書いたタイプも全部拾う（noun: Energy / Pokémon）。
+ * [C] も「無色」というタイプとして読む（レジギガス「Take a [C] Energy」は無色エネを付ける。闘エネの代わりにはならない）
+ */
+export function typesBefore(text: string, noun: "Energy" | "Pokémon"): EnergyType[] {
   const t = clean(text);
   const out = new Set<EnergyType>();
   const re = new RegExp(`((?:\\[[A-Z]\\](?:\\s*,\\s*(?:or\\s+|and\\s+)?|\\s+or\\s+|\\s+and\\s+)?)+)\\s*${noun}`, "g");
-  for (const m of t.matchAll(re)) for (const x of m[1].matchAll(/\[([A-Z])\]/g)) if (CODE[x[1]] && (withColorless || x[1] !== "C")) out.add(CODE[x[1]]);
+  for (const m of t.matchAll(re)) for (const x of m[1].matchAll(/\[([A-Z])\]/g)) if (CODE[x[1]]) out.add(CODE[x[1]]);
   return [...out];
 }
 
