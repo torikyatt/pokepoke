@@ -241,6 +241,29 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     });
   }
 
+  // カード名・ワザ名・特性名など（正規化）。読めなかった言葉がこれとぴったり同じなら、名前で探しただけなので記録しない
+  const exactNames = new Set<string>();
+  for (const c of data.cards) {
+    for (const n of [c.nameJa, ...effectsOf(c).map((e) => e.nameJa ?? "")]) if (n) exactNames.add(normalize(n).replace(/ /g, ""));
+    for (const n of [c.nameEn, ...effectsOf(c).map((e) => e.nameEn ?? "")]) if (n) exactNames.add(enKey(n));
+  }
+  // ワザ名・特性名（正規化）→ そのワザ・特性を持つカード。検索の言葉（空白で区切った1つ）がぴったり同じなら、それで探す
+  // （「つるのムチ」「ハイドロポンプ」が「つる」「どろ」のような辞書の言葉に分けられないように）
+  const effectNames = new Map<string, { ja: string; en: string; ids: string[] }>();
+  const effectNamesEn = new Map<string, { ja: string; en: string; ids: string[] }>();
+  for (const c of data.cards) {
+    for (const e of [...(c.ability ? [c.ability] : []), ...c.attacks]) {
+      const ja = e.nameJa ?? e.nameEn ?? "", en = e.nameEn ?? e.nameJa ?? "";
+      for (const [m, k] of [[effectNames, ja ? normalize(ja).replace(/ /g, "") : ""], [effectNamesEn, en ? enKey(en) : ""]] as const) {
+        if (k.length < 2) continue;
+        const v = m.get(k) ?? m.set(k, { ja, en, ids: [] }).get(k)!;
+        if (!v.ids.includes(c.id)) v.ids.push(c.id);
+      }
+    }
+  }
+  const effectCond = (k: string, v: { ja: string; en: string; ids: string[] }): Cond => ({
+    id: `effect:${k}`, kind: "name", name: k, ids: v.ids, weight: 3, label: `ワザ・特性「${v.ja}」`, en: `Attack/Ability "${v.en}"`,
+  });
   const dfCache = new Map<string, number>(); // 全文検索語ごとの、その言葉を含むカードの数
   const signatures = buildSignatures(data.lexicon); // タグの言い回しを概念の組にしたもの（ゆるい読み取り用）
 
@@ -269,7 +292,8 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
   /**
    * 検索文を条件に分解し、読めなかった言葉も返す。
    *   unread: 辞書・タグで読めず、全文検索のまま残った言葉と、意味が分からず捨てた短い言葉（「コインでエネ付与」の「えね付与」）。
-   *           ほかの言葉で当たって件数が出ていても、辞書に足すべき言い回しを見つけるために記録する
+   *           ほかの言葉で当たって件数が出ていても、辞書に足すべき言い回しを見つけるために記録する。
+   *           カード名・ワザ名・特性名とぴったり同じ言葉は、名前で探しただけなので入れない
    */
   function explain(query: string): { conds: Cond[]; unread: string[] } {
     const dropped: string[] = [];
@@ -395,6 +419,11 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       });
     }
 
+    // 英語のワザ名・特性名だけの検索（「vine whip」）
+    if (effectNamesEn.has(q.trim()) && !lexEn.has(q.trim()) && !enNames.has(q.trim())) {
+      add(effectCond(q.trim(), effectNamesEn.get(q.trim())!));
+      q = "";
+    }
     // 英語の検索文（アルファベットが3文字以上続くときだけ）
     if (/[a-z]{3,}/.test(q)) parseEn();
 
@@ -497,6 +526,12 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     const segments = q.split(" ").filter(Boolean);
     const rest: string[] = [];
     for (let seg of segments) {
+      // ワザ名・特性名とぴったり同じ言葉（カード名と同じもの・辞書の言葉「ほのお」「かみなり」は、これまでどおり読む）
+      const eff = effectNames.get(seg);
+      if (eff && !cardsByName.has(seg) && !lex.has(seg)) {
+        add(effectCond(seg, eff));
+        continue;
+      }
       for (const n of names) {
         if (seg.includes(n)) {
           add({ id: `name:${n}`, kind: "name", name: n, label: `名前「${n}」`, en: `Name "${n}"`, weight: 3 });
@@ -631,7 +666,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     // 1つの言葉が親子の両方に当たるとき（「手札を減らす」→ 手札干渉・手札を山札にもどさせる）は、わざとなので残す
     const tags = conds.filter((c): c is Extract<Cond, { kind: "tag" }> => c.kind === "tag");
     const out = conds.filter((c) => c.kind !== "tag" || !tags.some((d) => d.tag.startsWith(`${c.tag}.`) && d.word !== c.word));
-    const unread = [...new Set([...out.flatMap((c) => (c.kind === "text" ? [c.term] : [])), ...dropped])];
+    const unread = [...new Set([...out.flatMap((c) => (c.kind === "text" ? [c.term] : [])), ...dropped])].filter((w) => !exactNames.has(w));
     return { conds: out, unread };
   }
 
@@ -735,6 +770,9 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
           // 名前で探したときも、大会でよく使われているものを少し上に（hakase → 博士の研究が先）
           score += (n.weight ?? 3) + Math.min(0.1, usage[card.id] ?? 0);
           matched.add(n.id);
+          // ワザ名・特性名で探したときは、そのワザ・特性の名前を結果に出す
+          if (n.id.startsWith("effect:"))
+            for (const e of effectsOf(card)) if (e.nameJa && normalize(e.nameJa).replace(/ /g, "") === n.name || (e.nameEn && enKey(e.nameEn) === n.name)) effectNames.set(e.nameJa ?? e.nameEn ?? "", e.nameEn ?? e.nameJa ?? "");
         }
       }
       for (const t of texts) {

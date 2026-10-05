@@ -64,12 +64,25 @@ describe("受け入れテスト", () => {
     expect(engine.explain("コインでエネ加速").unread).toEqual([]);
     expect(engine.explain("トラッシュからグッズを拾ってくる").unread).toEqual([]);
     expect(engine.explain("相手を毒にしたい").unread).toEqual([]);
+    // ワザ名・特性名で探しただけなら、読めなかった言葉にしない
+    expect(engine.explain("かおりのわな").unread).toEqual([]);
+    expect(engine.explain("つるのムチ").unread).toEqual([]);
   });
 
   it("相手のポケモンを手札に戻す → 手札・山札にもどす（ポケモンを持ってくる・回収 には読まない）", () => {
     const tagsOf = (q: string) => engine.parse(q).flatMap((c) => (c.kind === "tag" ? [c.tag] : []));
     expect(tagsOf("相手のポケモンを手札に戻す")).toEqual(["field.bounce"]);
     expect(tagsOf("ポケモンを手札に加える")).toEqual(["draw.search_pokemon"]);
+  });
+
+  it("ワザ名・特性名だけで探すと、そのワザ・特性を持つカード（辞書の言葉に分けない）", () => {
+    const has = (q: string, name: string) => engine.search(q, 999).every((h) => [...(h.card.ability ? [h.card.ability] : []), ...h.card.attacks].some((e) => e.nameJa === name || e.nameEn === name));
+    expect(engine.search("つるのムチ", 999).length).toBeGreaterThan(3);
+    expect(has("つるのムチ", "つるのムチ")).toBe(true);
+    expect(has("ハイドロポンプ", "ハイドロポンプ")).toBe(true);
+    expect(has("vine whip", "Vine Whip")).toBe(true);
+    // 辞書の言葉でもあるもの（タイプ名など）は、これまでどおり
+    expect(engine.parse("ほのお").map((c) => c.kind)).toEqual(["type"]);
   });
 
   it("エネ加速できる炎のカード", () => {
