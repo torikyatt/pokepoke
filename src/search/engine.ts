@@ -5,7 +5,7 @@
 // タイプ・種別・数値は「ハード条件」（満たさないカードは除外）、タグは「ソフト条件」（一致の重みで並べる）。
 import { normalize } from "./normalize.ts";
 import { looseRomaji, romajiKey } from "./romaji.ts";
-import { ACTIONS, buildSignatures, conceptsOf, GENERIC, KINDS, matchSignatures, SOURCES, subset, widen } from "./concepts.ts";
+import { ACTIONS, buildSignatures, conceptsOf, GENERIC, KINDS, kindWordsOf, matchSignatures, SOURCES, subset, widen } from "./concepts.ts";
 import type { AppCard, AppData, AppEffect, CardGroup, CardKind, EnergyType, LexEntry, LexTarget, Rule, Stage } from "../types.ts";
 import { GROUP_EN, GROUP_JA, KIND_EN, KIND_JA, STAGE_EN, STAGE_JA, TYPE_EN, TYPE_JA } from "../types.ts";
 
@@ -534,25 +534,34 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     {
       const tagConds = () => conds.filter((c): c is Extract<Cond, { kind: "tag" }> => c.kind === "tag");
       const hadText = conds.some((c) => c.kind === "text");
-      const kindWords = conds.filter((c) => c.kind === "cardKind" && c.word).map((c) => ({ c, cs: conceptsOf(c.word!) }));
+      // 種類の言葉が「何を」として使われているか（「サポートを〜」「トラッシュからサポート」「トラッシュのサポート」）。
+      // 「〜を回収するサポート」のように最後に付いているのは、種類の絞り込み
+      const asObj = (concept: string) =>
+        kindWordsOf(concept).some((w) => qAll.includes(`${w}を`) || qAll.includes(`から${w}`) || qAll.includes(`の${w}`) || qAll.includes(`${w}が`));
       const added: Set<string>[] = [];
+      // 言い回しを詳しくする概念か: 添え物（相手・手札…）は数えない。種類の言葉は「何を」として使われているときだけ
+      const adds = (x: string) => (KINDS.has(x) ? asObj(x) : !GENERIC.has(x));
       for (const sig of matchSignatures(signatures, conceptsOf(qAll))) {
         const have = tagConds();
         if (have.some((t) => t.tag === sig.tag || t.tag.startsWith(`${sig.tag}.`))) continue; // 同じか、もっと詳しいタグがもう当たっている
+        // この言い回しに入りきらない（残る）タグの言葉でもう使われた概念。同じ言葉を2つの読み取りに使い回さない
+        const remaining = have.filter((t) => !(t.word && subset(conceptsOf(t.word), sig.concepts)));
+        const usedElsewhere = new Set(remaining.flatMap((t) => (t.word ? [...conceptsOf(t.word)] : [])));
         // 辞書で当たったタグのうち、この言い回しの一部でしかないもの（言葉の概念がこの組より小さく、すっぽり入る）
         const subsumed = have.filter((t) => {
           const cs = t.word ? conceptsOf(t.word) : new Set<string>();
           // 増えた概念が「相手」「手札」のような添え物だけなら、詳しくなったとは言えない
-          return cs.size > 0 && subset(cs, sig.concepts) && [...sig.concepts].some((x) => !cs.has(x) && !GENERIC.has(x));
+          return cs.size > 0 && subset(cs, sig.concepts) && [...sig.concepts].some((x) => !cs.has(x) && !usedElsewhere.has(x) && adds(x));
         });
         const doing = [...sig.concepts].some((x) => ACTIONS.has(x) || SOURCES.has(x));
-        const asObject = doing && kindWords.some((k) => [...k.cs].some((x) => sig.concepts.has(x)));
+        const kindConcepts = new Set(conds.flatMap((c) => (c.kind === "cardKind" && c.word ? [...conceptsOf(c.word)] : [])));
+        const asObject = doing && [...sig.concepts].some((x) => KINDS.has(x) && kindConcepts.has(x) && asObj(x));
         // 同じ系統（energy.accel など）のタグが辞書でもう当たっているなら、言い回しをはっきり広げるときだけ
         // すでに当たった親タグを、検索文にある別の言葉（「グッズ」など）で詳しくできるなら、親を子に置きかえる
         const parent = have.find((t) => sig.tag.startsWith(`${t.tag}.`));
         if (parent && !subsumed.includes(parent)) {
           const ps = parent.word ? conceptsOf(parent.word) : new Set<string>();
-          if ([...sig.concepts].some((x) => !ps.has(x) && (!GENERIC.has(x) || KINDS.has(x)))) subsumed.push(parent);
+          if ([...sig.concepts].some((x) => !ps.has(x) && !usedElsewhere.has(x) && adds(x))) subsumed.push(parent);
         }
         const family = sig.tag.split(".").slice(0, 2).join(".");
         const sibling = have.some((t) => !subsumed.includes(t) && t.tag.split(".").slice(0, 2).join(".") === family);
@@ -569,7 +578,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
         const bigger = tagConds().some((o) => {
           if (o === t || !o.word || o.word === t.word) return false;
           const os = conceptsOf(o.word);
-          return subset(cs, os) && [...os].some((x) => !cs.has(x) && !GENERIC.has(x));
+          return subset(cs, os) && [...os].some((x) => !cs.has(x) && adds(x));
         });
         if (bigger) conds.splice(conds.indexOf(t), 1);
       }
@@ -583,11 +592,8 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
             const cs = conceptsOf(c.term);
             if (cs.size ? [...cs].every((x) => used.has(x) || GENERIC.has(x)) : c.term.length <= 4) conds.splice(i, 1);
           } else if (c.kind === "cardKind" && c.word) {
-            const cs = widen(conceptsOf(c.word));
-            const viaTag = [...cs].some((x) => used.has(x) && KINDS.has(x)) && [...used].some((x) => ACTIONS.has(x) || SOURCES.has(x));
-            // 「ポケモンを入れ替える」「グッズを拾う」: 種類の言葉のすぐ後が「を」なら、それは「何を」であって種類の絞り込みではない
-            const object = new RegExp(`${c.word}を`).test(qAll);
-            if (viaTag || object) conds.splice(i, 1);
+            // 「ポケモンを入れ替える」「グッズを拾う」: 種類の言葉が「何を」として使われているなら、種類の絞り込みではない
+            if ([...conceptsOf(c.word)].some((x) => KINDS.has(x) && asObj(x))) conds.splice(i, 1);
           }
         }
       }

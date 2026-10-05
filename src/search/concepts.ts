@@ -125,6 +125,9 @@ export const widen = (cs: Iterable<string>) => {
   if (out.has("basic")) out.add("pokemon");
   return out;
 };
+/** 種類の概念の言い方（正規化ずみ）。「何を」として使われているかを見分けるのに使う */
+export const kindWordsOf = (concept: string) => ENTRIES.filter(([, c]) => c === concept).map(([w]) => w);
+
 /** 検索文の言葉のうち、それだけでは条件にならない添え物（手札・相手・ポケモン・回収する…）。タグが当たっていれば全文検索語にしない */
 export const GENERIC = new Set(["hand", "opp", "self", "pokemon", "active", "recover", "fetch", "up", "down", "attach", "draw", "count"]);
 
