@@ -312,14 +312,11 @@ export function DetailSheet() {
         className={`group fixed inset-x-0 bottom-0 z-50 mx-auto flex h-[94dvh] max-w-3xl flex-col rounded-t-3xl bg-canvas shadow-[0_-6px_24px_rgb(61_71_87/0.22)] [backface-visibility:hidden] will-change-transform transition-transform duration-300 ease-[cubic-bezier(.2,.8,.2,1)] ${open ? "" : "pointer-events-none"}`}
         style={{ transform: SHEET_TRANSFORM[at] }}
       >
-        {/* 半分で止まる位置の合図: ふちが光り、上に「ここで離すと…」が出る */}
-        <div aria-hidden className="pointer-events-none absolute inset-0 z-10 rounded-t-3xl opacity-0 shadow-[0_-4px_22px_4px_rgb(47_181_165/0.6),inset_0_0_0_2px_rgb(47_181_165/0.85)] transition-opacity duration-150 group-data-[hint=1]:opacity-100" />
-        <div aria-hidden className="pointer-events-none absolute -top-10 left-1/2 z-10 -translate-x-1/2 translate-y-1 rounded-full bg-accent px-3 py-1 text-xs font-extrabold whitespace-nowrap text-white opacity-0 shadow-lg transition duration-150 group-data-[hint=1]:translate-y-0 group-data-[hint=1]:opacity-100">
-          {t("ここで離すと半分の高さで止まります", "Release here to keep it half open")}
-        </div>
+        {/* 半分で止まる位置の合図: ふちが電球色にふわっと光る */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 z-10 rounded-t-3xl opacity-0 shadow-[0_-6px_30px_8px_rgb(255_190_105/0.6),inset_0_0_0_2px_rgb(255_205_130/0.9),inset_0_14px_22px_-12px_rgb(255_214_150/0.75)] transition-opacity duration-200 group-data-[hint=1]:opacity-100" />
         <div ref={header} className="shrink-0 px-3 pt-1 pb-1.5">
           <button type="button" aria-label={snap === "half" ? t("いっぱいに開く", "Expand") : t("半分に下げる", "Lower halfway")} onClick={() => useDetail.setState({ snap: snap === "half" ? "full" : "half" })} className="mx-auto block pt-0.5 pb-1">
-            <span className="block h-1 w-10 rounded-full bg-[#c5cfdb] transition-all duration-150 group-data-[hint=1]:w-16 group-data-[hint=1]:bg-accent" />
+            <span className="block h-1 w-10 rounded-full bg-[#c5cfdb] transition-all duration-150 group-data-[hint=1]:w-16 group-data-[hint=1]:bg-[#ffc46b]" />
           </button>
           <DetailHeader card={card} />
         </div>
