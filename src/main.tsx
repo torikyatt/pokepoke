@@ -14,6 +14,7 @@ import { PoolScope } from "./pool.ts";
 import { RouteContext, useHash, useRoute } from "./router.ts";
 import { createEngine } from "./search/engine.ts";
 import { createSynergy } from "./synergy.ts";
+import { useLang, useT } from "./i18n.ts";
 
 // 本番ビルドでは import.meta.env.DEV が false になり、レビューページは含まれない
 const ReviewPage = import.meta.env.DEV ? lazy(() => import("./pages/ReviewPage.tsx")) : null;
@@ -98,12 +99,18 @@ function Shell() {
 }
 
 function Layout() {
+  // 表示言語を <html lang> にも反映する（読み上げ・フォント選び・ブラウザの翻訳提案のため）
+  const lang = useLang();
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
   return useIsDesktop() ? <Desktop /> : <Shell />;
 }
 
 function App() {
   const [ctx, setCtx] = useState<Ctx>();
   const [error, setError] = useState<string>();
+  const t = useT();
   useEffect(() => {
     loadData()
       .then((data) => {
@@ -115,7 +122,7 @@ function App() {
   if (error)
     return (
       <div className="p-6 text-sm">
-        データを読み込めませんでした。新しめのブラウザで開いてください。
+        {t("データを読み込めませんでした。新しめのブラウザで開いてください。", "Couldn't load the data. Please use a recent browser.")}
         <pre className="mt-2 text-xs whitespace-pre-wrap text-muted">{error}</pre>
       </div>
     );
@@ -125,7 +132,7 @@ function App() {
         <div className="text-center font-bold">
           <div className="mb-4 text-2xl font-extrabold tracking-wider text-ink">POKÉPOKE LAB</div>
           <div className="mx-auto mb-3 h-8 w-8 animate-spin rounded-full border-4 border-line border-t-accent" />
-          カードデータを展開中…
+          {t("カードデータを展開中…", "Unpacking card data…")}
         </div>
       </div>
     );

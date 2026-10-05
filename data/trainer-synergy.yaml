@@ -2,6 +2,7 @@
 # ポケモンを名指ししているもの（カツラ・シロナ・マチスなど）は効果文から自動で結ぶので、ここには書かない。
 # ここには「草ポケモン」「2進化ポケモン」「古代のポケモン」「ワザ『サイコキネシス』を持つポケモン」のように、
 # 条件で効く相手が決まるものを書く。相性のいいカードに、label を理由として出す。
+# labelEn は英語表示用。
 #
 # to に書ける条件（全部満たすカードに効く。kinds を書かなければポケモンだけ）
 #   types: [grass]            タイプ
@@ -21,181 +22,236 @@
 a1-219: # エリカ
   - to: { types: [grass] }
     label: 草ポケモンを回復
+    labelEn: Heals Grass Pokémon
 a1a-065: # 幻の石板
   - to: { types: [psychic] }
     label: 山札の上の超ポケモンを手札に
+    labelEn: Puts a Psychic Pokémon from the top of your deck into your hand
 a2a-072: # カイ
   - to: { cost: { type: water, min: 1 } }
     label: 水エネの付いたポケモンをまとめて回復
+    labelEn: Heals all Pokémon with Water Energy
 a2a-075: # セキ
   - to: { types: [metal] }
     label: 鋼ポケモンの受けるダメージを減らす
+    labelEn: Metal Pokémon take less damage
 a3-143: # おさかなネット
   - to: { types: [water], stages: [basic] }
     label: トラッシュの水のたねポケモンを回収
+    labelEn: Recovers Basic Water Pokémon from the discard pile
 a3-147: # リーフマント
   - to: { types: [grass] }
     label: 草ポケモンのHPを+30
+    labelEn: Grass Pokémon get +30 HP
 a3-149: # イリマ
   - to: { types: [colorless] }
     label: ダメージを受けた無色ポケモンを手札にもどす
+    labelEn: Returns a damaged Colorless Pokémon to your hand
 a3a-065: # エレキコード
   - to: { types: [lightning] }
     label: 雷ポケモンが倒されてもエネをベンチに残す
+    labelEn: Keeps Energy on the Bench when a Lightning Pokémon is Knocked Out
 a4-151: # エレメンタルつけかえ
   - to: { types: [fire, water, lightning] }
     label: 炎・水・雷エネをベンチからバトル場へ付け替え
+    labelEn: Moves Fire, Water or Lightning Energy from the Bench to the Active Pokémon
 a4-153: # 鋼鉄のまえかけ
   - to: { types: [metal] }
     label: 鋼ポケモンを守り、特殊状態にならない
+    labelEn: Protects Metal Pokémon and blocks Special Conditions
 a4-154: # ダークペンダント
   - to: { types: [darkness] }
     label: 悪ポケモンに付けて、殴られたら相手の手札を戻させる
+    labelEn: Attach to a Darkness Pokémon; when hit, opponent shuffles a card from hand into deck
 a4-159: # 釣り人
   - to: { types: [water] }
     label: トラッシュの水ポケモンを回収
+    labelEn: Recovers Water Pokémon from the discard pile
 a4-161: # やまおとこ
   - to: { types: [fighting] }
     label: 闘ポケモンの数だけ山札の上を並べ替え
+    labelEn: Reorders the top of your deck for each Fighting Pokémon
 a4a-067: # ウォーターボード
   - to: { types: [water], retreatMin: 1 }
     label: 水ポケモンのにげるを軽くする
+    labelEn: "Lowers Water Pokémon's Retreat Cost"
 a4a-071: # マツバ
   - to: { types: [psychic] }
     label: 超ポケモンの数だけ相手の山札を操作
+    labelEn: "Reorders opponent's deck for each Psychic Pokémon"
 b1-217: # フレイムパッチ
   - to: { types: [fire] }
     label: トラッシュの炎エネを炎ポケモンに付ける
+    labelEn: Attaches Fire Energy from the discard pile to a Fire Pokémon
 b2-148: # メタルコアバリア
   - to: { types: [metal] }
     label: 鋼ポケモンの受けるダメージを-50
+    labelEn: Metal Pokémon take -50 damage
 b2-149: # カルネ
   - to: { types: [psychic], cost: { type: psychic, min: 2 } }
     label: 超エネを2個以上付けた超ポケモンを大きく回復
+    labelEn: Big heal for a Psychic Pokémon with 2+ Psychic Energy
 b2-155: # ふしぎな広場
   - to: { types: [psychic], retreatMin: 1 }
     label: 超ポケモンのにげるを-2
+    labelEn: "Psychic Pokémon's Retreat Cost -2"
 b2a-086: # エレキジェネレーター
   - to: { types: [lightning] }
     label: ベンチの雷ポケモンにエネを付ける
+    labelEn: Attaches Energy to a Benched Lightning Pokémon
 b3-149: # コルニ
   - to: { types: [fighting] }
     label: 闘ポケモンのex相手の火力を+30
+    labelEn: Fighting Pokémon do +30 damage to Pokémon ex
 b3-152: # パラソルおねえさん
   - to: { types: [water], notRules: [ex, mega_ex] }
     label: 水ポケモン（ex以外）を手札にもどして出し直す
+    labelEn: Returns a Water Pokémon (not ex) to hand to play it again
 b3-153: # あまくかおる森
   - to: { types: [grass], stages: [basic] }
     label: 草のたねポケモンを毎ターン山札から持ってこられる
+    labelEn: Search a Basic Grass Pokémon from your deck every turn
 b3-154: # いにしえの闘技場
   - to: { types: [fighting] }
     label: 闘ポケモンのex相手の火力を+20
+    labelEn: Fighting Pokémon do +20 damage to Pokémon ex
 b4-148: # いんちきバリ
   - to: { types: [darkness] }
     label: 悪ポケモンに付けて毎ターン10ダメージ
+    labelEn: Attach to a Darkness Pokémon for 10 damage every turn
 b4-154: # いやしの海辺
   - to: { cost: { type: water, min: 1 } }
     label: 水エネの付いたポケモンを毎ターン回復
+    labelEn: Heals Pokémon with Water Energy every turn
 
 # ---- 進化段階 ----
 a3-155: # リーリエ
   - to: { stages: [stage2] }
     label: 2進化ポケモンを回復
+    labelEn: Heals Stage 2 Pokémon
 b2-150: # かんこうきゃく
   - to: { stages: [stage1] }
     label: 1進化ポケモンを山札から持ってこられる
+    labelEn: Searches Stage 1 Pokémon from your deck
 b2-153: # トレーニングエリア
   - to: { stages: [stage1] }
     label: 1進化ポケモンの火力を+10
+    labelEn: Stage 1 Pokémon do +10 damage
 b2a-087: # 大きなふうせん
   - to: { stages: [stage2], retreatMin: 2 }
     label: 2進化ポケモンのにげるを0にする
+    labelEn: Stage 2 Pokémon have no Retreat Cost
 b3b-065: # ゆうがなマント
   - to: { stages: [stage1] }
     label: 1進化ポケモンのHPを+30
+    labelEn: Stage 1 Pokémon get +30 HP
 b4-152: # フウロ
   - to: { stages: [stage1] }
     label: バトル場の1進化ポケモンを入れ替え
+    labelEn: Switches out an Active Stage 1 Pokémon
 b4-153: # ミツル
   - to: { stages: [stage2] }
     label: 2進化ポケモンにエネを付ける
+    labelEn: Attaches Energy to a Stage 2 Pokémon
 
 # ---- グループ・ルール ----
 a3a-063: # ビーストウォール
   - to: { groups: [ultra_beast] }
     label: ウルトラビーストの受けるダメージを減らす
+    labelEn: Ultra Beasts take less damage
 a3a-066: # ビーストナイト
   - to: { groups: [ultra_beast] }
     label: ウルトラビーストの火力を上げる
+    labelEn: "Boosts Ultra Beasts' damage"
 a3a-069: # ルザミーネ
   - to: { groups: [ultra_beast] }
     label: ウルトラビーストにトラッシュのエネを付ける
+    labelEn: Attaches Energy from the discard pile to an Ultra Beast
 b3a-069: # ブーストエナジー古代
   - to: { groups: [ancient] }
     label: 古代ポケモンのHPを+40
+    labelEn: Ancient Pokémon get +40 HP
 b3a-070: # ブーストエナジー未来
   - to: { groups: [future] }
     label: 未来ポケモンの火力を+20
+    labelEn: Future Pokémon do +20 damage
 b3a-072: # オーリム博士
   - to: { groups: [ancient] }
     label: 古代ポケモンにトラッシュのエネを3個付ける
+    labelEn: Attaches 3 Energy from the discard pile to Ancient Pokémon
 b3a-073: # フトゥー博士
   - to: { groups: [future] }
     label: 未来ポケモンを山札にもどしてポイントを渡さない
+    labelEn: Shuffles a Future Pokémon into your deck to deny points
 b2b-068: # カルム
   - to: { rules: [mega_ex] }
     label: メガシンカexの数だけドロー
+    labelEn: Draws a card for each Mega Evolution Pokémon ex
 
 # ---- 条件 ----
 b1-219: # ヘビーメット
   - to: { retreatMin: 3 }
     label: にげる3以上のポケモンの受けるダメージを-20
+    labelEn: Pokémon with Retreat Cost 3+ take -20 damage
 b2-151: # ジャグラー
   - to: { multiType: true }
     label: いろいろなタイプのエネを集めてバトル場へ
+    labelEn: Gathers Energy of many types onto the Active Pokémon
 b3b-067: # こいぬ大好きガール
   - to: { attacks: [Puppy Pile] }
     label: ワザ「こいぬまみれ」を持つポケモンを山札から集める
+    labelEn: Searches your deck for Pokémon with the Puppy Pile attack
 b4-150: # サイキッカー
   - to: { attacks: [Psychic] }
     label: ワザ「サイコキネシス」を持つポケモンで使える
+    labelEn: Usable with a Pokémon that has the Psychic attack
 b4-151: # シャガ
   - to: { attacks: [Draco Meteor] }
     label: ワザ「りゅうせいぐん」の当たる回数を増やす
+    labelEn: Draco Meteor hits 1 more time
 b2-147: # まもりのポンチョ
   - to: { tags: [passive.ability] }
     label: ベンチで特性を使うポケモンをベンチ狙撃から守る
+    labelEn: Protects Benched Ability users from Bench snipes
 
 # ---- 相手のベンチ ----
 b4a-071: # ロケット団のボス
   - to: { tags: [damage.bench, damage.spread, cond.bench.opp] }
     label: 相手のたねをベンチに出させて、ベンチ攻撃でまとめて狙う
+    labelEn: "Puts opponent's Basic Pokémon onto their Bench to hit with Bench attacks"
 a1a-064: # ポケモンの笛
   - to: { tags: [damage.bench, damage.spread, cond.bench.opp] }
     label: 相手のベンチを増やして狙う
+    labelEn: "Grows opponent's Bench to target it"
 
 # ---- トレーナーズどうし ----
 b3-150: # タクシードライバー
   - to: { kinds: [stadium] }
     label: スタジアムを山札から持ってこられる
+    labelEn: Searches a Stadium from your deck
     weight: 0.6
 a4a-070: # 旅の行商人
   - to: { kinds: [tool] }
     label: どうぐを山札から持ってこられる
+    labelEn: Searches Pokémon Tools from your deck
     weight: 0.6
 b3b-069: # こども部屋
   - to: { kinds: [tool] }
     label: どうぐを山札から持ってこられる
+    labelEn: Searches Pokémon Tools from your deck
     weight: 0.6
 b2a-091: # ペパー
   - to: { kinds: [item, tool] }
     label: グッズ・どうぐを山札から持ってこられる
+    labelEn: Searches Items or Pokémon Tools from your deck
     weight: 0.5
 b4-145: # おとりよせパッド
   - to: { kinds: [item] }
     label: グッズを山札から持ってこられる
+    labelEn: Searches Items from your deck
     weight: 0.5
 b3b-066: # カミツレ
   - to: { kinds: [tool] }
     label: 付けたどうぐを手札にもどして付け直す
+    labelEn: Returns attached Pokémon Tools to hand to reattach
     weight: 0.4

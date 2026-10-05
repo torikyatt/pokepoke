@@ -4,6 +4,7 @@ import type { Engine } from "./search/engine.ts";
 import { useDecks, useToast } from "./store.ts";
 import type { createSynergy } from "./synergy.ts";
 import type { AppCard, AppData } from "./types.ts";
+import { tr } from "./i18n.ts";
 
 export interface Ctx {
   data: AppData;
@@ -28,6 +29,6 @@ export function useAddToDeck() {
     const err = canAdd(deck, card, byId);
     if (err) return show(err, "error");
     st.add(deck.id, card.id);
-    show(`「${card.nameJa}」を ${deck.name} に追加（${deck.cards.length + 1}/20）`);
+    show(tr(`「${card.nameJa}」を ${deck.name} に追加（${deck.cards.length + 1}/20）`, `Added ${card.nameEn} to ${deck.name} (${deck.cards.length + 1}/20)`));
   };
 }

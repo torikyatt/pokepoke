@@ -1,6 +1,7 @@
 // デッキの検証・書き出し・共有URL
 import type { Deck } from "./store.ts";
 import type { AppCard, EnergyType } from "./types.ts";
+import { cardName, getLang, tr } from "./i18n.ts";
 
 export const DECK_SIZE = 20;
 export const MAX_SAME_NAME = 2;
@@ -14,26 +15,26 @@ export interface DeckCheck {
 export function checkDeck(deck: Pick<Deck, "cards" | "energy">, byId: Map<string, AppCard>): DeckCheck {
   const problems: string[] = [];
   const cards = deck.cards.map((id) => byId.get(id)).filter((c): c is AppCard => !!c);
-  if (cards.length !== DECK_SIZE) problems.push(`デッキは${DECK_SIZE}枚ちょうど（今 ${cards.length} 枚）`);
+  if (cards.length !== DECK_SIZE) problems.push(tr(`デッキは${DECK_SIZE}枚ちょうど（今 ${cards.length} 枚）`, `A deck needs exactly ${DECK_SIZE} cards (now ${cards.length})`));
   const byName = new Map<string, number>();
   for (const c of cards) byName.set(c.nameEn, (byName.get(c.nameEn) ?? 0) + 1);
   for (const [name, n] of byName) {
     if (n > MAX_SAME_NAME) {
-      const ja = cards.find((c) => c.nameEn === name)!.nameJa;
-      problems.push(`「${ja}」が ${n} 枚（同名カードは${MAX_SAME_NAME}枚まで）`);
+      const nm = cardName(cards.find((c) => c.nameEn === name)!, getLang());
+      problems.push(tr(`「${nm}」が ${n} 枚（同名カードは${MAX_SAME_NAME}枚まで）`, `${n} copies of ${nm} (max ${MAX_SAME_NAME} with the same name)`));
     }
   }
-  if (!cards.some((c) => c.kind === "pokemon" && c.stage === "basic")) problems.push("たねポケモンが1枚もない");
-  if (!deck.energy.length) problems.push("エネルギーゾーンのタイプが未設定");
-  if (deck.energy.length > MAX_ENERGY) problems.push(`エネルギーゾーンは${MAX_ENERGY}タイプまで`);
+  if (!cards.some((c) => c.kind === "pokemon" && c.stage === "basic")) problems.push(tr("たねポケモンが1枚もない", "No Basic Pokémon"));
+  if (!deck.energy.length) problems.push(tr("エネルギーゾーンのタイプが未設定", "Energy Zone type not set"));
+  if (deck.energy.length > MAX_ENERGY) problems.push(tr(`エネルギーゾーンは${MAX_ENERGY}タイプまで`, `Energy Zone allows up to ${MAX_ENERGY} types`));
   return { ok: !problems.length, problems };
 }
 
 /** 追加できるか（20枚・同名2枚の上限） */
 export function canAdd(deck: Pick<Deck, "cards">, card: AppCard, byId: Map<string, AppCard>): string | undefined {
-  if (deck.cards.length >= DECK_SIZE) return `デッキは${DECK_SIZE}枚まで`;
+  if (deck.cards.length >= DECK_SIZE) return tr(`デッキは${DECK_SIZE}枚まで`, `A deck holds up to ${DECK_SIZE} cards`);
   const same = deck.cards.filter((id) => byId.get(id)?.nameEn === card.nameEn).length;
-  if (same >= MAX_SAME_NAME) return `「${card.nameJa}」はもう${MAX_SAME_NAME}枚入っています`;
+  if (same >= MAX_SAME_NAME) return tr(`「${card.nameJa}」はもう${MAX_SAME_NAME}枚入っています`, `Already ${MAX_SAME_NAME} copies of ${card.nameEn}`);
 }
 
 /** デッキのポケモンのタイプからエネルギーゾーンを推定（多い順に最大3） */
@@ -69,9 +70,9 @@ export function toFile(decks: Deck[]): DeckFile {
 }
 export function fromFile(json: unknown, byId: Map<string, AppCard>): DeckFile["decks"] {
   const f = json as Partial<DeckFile>;
-  if (f?.format !== "pokepoke-decks" || !Array.isArray(f.decks)) throw new Error("POKÉPOKE LAB のデッキファイルではありません");
+  if (f?.format !== "pokepoke-decks" || !Array.isArray(f.decks)) throw new Error(tr("POKÉPOKE LAB のデッキファイルではありません", "Not a POKÉPOKE LAB deck file"));
   return f.decks.map((d) => ({
-    name: String(d.name ?? "読み込んだデッキ"),
+    name: String(d.name ?? tr("読み込んだデッキ", "Imported deck")),
     energy: (d.energy ?? []).slice(0, MAX_ENERGY),
     cards: (d.cards ?? []).filter((id) => byId.has(id)),
   }));
@@ -85,7 +86,7 @@ export function encodeShare(d: Pick<Deck, "name" | "cards" | "energy">): string 
 }
 export function decodeShare(code: string): { name: string; energy: EnergyType[]; cards: string[] } {
   const o = JSON.parse(unb64url(code));
-  return { name: String(o.n ?? "共有デッキ"), energy: o.e ?? [], cards: String(o.c ?? "").split(",").filter(Boolean) };
+  return { name: String(o.n ?? tr("共有デッキ", "Shared deck")), energy: o.e ?? [], cards: String(o.c ?? "").split(",").filter(Boolean) };
 }
 
 export function download(filename: string, content: Blob | string, type = "application/json") {

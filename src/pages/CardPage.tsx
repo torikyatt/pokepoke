@@ -15,7 +15,7 @@ import { PrintGallery } from "../components/print-gallery.tsx";
 import { CardDecks } from "../components/tournament-decks.tsx";
 import { navigate, searchPath } from "../router.ts";
 import type { AppAttack, AppCard, AppEffect } from "../types.ts";
-import { GROUP_JA, KIND_JA, RULE_JA, STAGE_JA, TYPE_JA } from "../types.ts";
+import { cardName, effectName, groupName, kindName, ruleName, stageName, typeName, useLang, useT, type Lang } from "../i18n.ts";
 
 /** カード詳細の中身（スマホは下からのシート、PCは真ん中の列に入れる） */
 export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpen?: boolean; actions?: React.ReactNode; fav?: React.ReactNode }) {
@@ -28,14 +28,16 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
   const { data } = useData();
   const line = useMemo(() => (card && card.kind === "pokemon" ? synergy.evolutionLine(card) : []), [card, synergy]);
   const [printIndex, setPrintIndex] = useState(0); // 表示中の絵柄
-  if (!card) return <p className="p-6 text-center text-sm font-bold text-muted">カードが見つかりません</p>;
+  const t = useT();
+  const lang = useLang();
+  if (!card) return <p className="p-6 text-center text-sm font-bold text-muted">{t("カードが見つかりません", "Card not found")}</p>;
 
   // 効果のタグを押すと、そのタグで検索する（スマホは詳細を閉じてから）
   const searchQ = (q: string) => (keepOpen ? navigate(searchPath({ q })) : closeDetail(() => navigate(searchPath({ q }))));
   const searchTag = (t: string) => (keepOpen ? navigate(searchPath({ tag: t })) : closeDetail(() => navigate(searchPath({ tag: t }))));
-  const tagChip = (t: string) => (
-    <Chip key={t} tone="match" onClick={() => searchTag(t)}>
-      {engine.tagJa.get(t) ?? t}
+  const tagChip = (tag: string) => (
+    <Chip key={tag} tone="match" onClick={() => searchTag(tag)}>
+      {engine.tagLabel(tag, lang)}
     </Chip>
   );
 
@@ -51,19 +53,19 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
             <div className="flex items-start gap-1">
               <div className="min-w-0 flex-1">
                 <div className="text-lg leading-tight font-extrabold">
-                  {card.nameJa}
-                  {card.nameMachine && <MachineBadge />}
+                  {cardName(card, lang)}
+                  {lang === "ja" && card.nameMachine && <MachineBadge />}
                 </div>
-                <div className="truncate text-[11px] font-bold text-muted">{card.nameEn}</div>
+                <div className="truncate text-[11px] font-bold text-muted">{lang === "en" ? card.nameJa : card.nameEn}</div>
               </div>
               {fav}
             </div>
             <div className="flex flex-wrap items-center gap-1">
               {card.type && <EnergyIcon type={card.type} />}
-              <Chip active>{card.kind === "pokemon" ? (card.stage ? STAGE_JA[card.stage] : "ポケモン") : KIND_JA[card.kind]}</Chip>
-              {card.rule !== "normal" && <Chip tone="text">{RULE_JA[card.rule]}</Chip>}
+              <Chip active>{card.kind === "pokemon" ? (card.stage ? stageName(card.stage, lang) : kindName("pokemon", lang)) : kindName(card.kind, lang)}</Chip>
+              {card.rule !== "normal" && <Chip tone="text">{ruleName(card.rule, lang)}</Chip>}
               {card.groups.map((g) => (
-                <Chip key={g}>{GROUP_JA[g]}</Chip>
+                <Chip key={g}>{groupName(g, lang)}</Chip>
               ))}
             </div>
             {actions}
@@ -71,14 +73,14 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
               <dl className="neu-in grid grid-cols-[auto_1fr] gap-x-2.5 gap-y-1 rounded-2xl px-3 py-2 text-xs font-bold [&_dt]:whitespace-nowrap">
                 <dt className="text-muted">HP</dt>
                 <dd className="font-bold">{card.hp}</dd>
-                <dt className="text-muted">弱点</dt>
-                <dd>{card.weakness ? <span className="inline-flex items-center gap-1"><EnergyIcon type={card.weakness} size="sm" />+20</span> : "なし"}</dd>
-                <dt className="text-muted">にげる</dt>
+                <dt className="text-muted">{t("弱点", "Weakness")}</dt>
+                <dd>{card.weakness ? <span className="inline-flex items-center gap-1"><EnergyIcon type={card.weakness} size="sm" />+20</span> : t("なし", "None")}</dd>
+                <dt className="text-muted">{t("にげる", "Retreat")}</dt>
                 <dd>{card.retreat ? <Cost cost={{ colorless: card.retreat }} /> : "0"}</dd>
                 {card.points !== undefined && (
                   <>
-                    <dt className="text-muted">きぜつ時</dt>
-                    <dd>相手が {card.points} ポイント</dd>
+                    <dt className="text-muted">{t("きぜつ時", "If KO'd")}</dt>
+                    <dd>{t(`相手が ${card.points} ポイント`, `Opponent gets ${card.points} point${card.points === 1 ? "" : "s"}`)}</dd>
                   </>
                 )}
               </dl>
@@ -87,26 +89,26 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
         </div>
 
         <section className="space-y-3">
-          {card.ability && <EffectBlock e={card.ability} label="特性" tagChip={tagChip} />}
+          {card.ability && <EffectBlock e={card.ability} label={t("特性", "Ability")} tagChip={tagChip} lang={lang} />}
           {card.attacks.map((a, i) => (
-            <EffectBlock key={i} e={a} label="ワザ" tagChip={tagChip} />
+            <EffectBlock key={i} e={a} label={t("ワザ", "Attack")} tagChip={tagChip} lang={lang} />
           ))}
-          {card.text && <EffectBlock e={card.text} label={KIND_JA[card.kind]} tagChip={tagChip} />}
+          {card.text && <EffectBlock e={card.text} label={kindName(card.kind, lang)} tagChip={tagChip} lang={lang} />}
         </section>
 
         {line.reduce((n, l) => n + l.cards.length, 0) > 1 && (
           <section data-anchor="evo">
-            <h2 className="mb-2 text-sm font-extrabold text-muted">進化ライン</h2>
+            <h2 className="mb-2 text-sm font-extrabold text-muted">{t("進化ライン", "Evolution line")}</h2>
             {/* 段ごとに、進化できるカードを全部（別のパックのものも）並べる */}
             <div className="neu space-y-1 rounded-2xl p-3">
               {line.map((level, i) => (
                 <div key={i}>
                   {i > 0 && <div className="pl-3 text-xs leading-none font-extrabold text-muted">↓</div>}
                   <div className="flex items-start gap-2">
-                    <span className="w-10 shrink-0 pt-1 text-[10px] font-extrabold text-muted">{level.label}</span>
+                    <span className="w-10 shrink-0 pt-1 text-[10px] font-extrabold text-muted">{level.stage ? stageName(level.stage, lang) : level.label}</span>
                     <div className="flex min-w-0 flex-1 flex-wrap gap-1.5">
                       {level.cards.map((c) => (
-                        <button key={c.id} type="button" onClick={(e) => openFromEvo(e.currentTarget, c.id)} title={c.nameJa} className={`w-12 shrink-0 rounded-md ${c.id === card.id ? "ring-[3px] ring-accent" : ""}`}>
+                        <button key={c.id} type="button" onClick={(e) => openFromEvo(e.currentTarget, c.id)} title={cardName(c, lang)} className={`w-12 shrink-0 rounded-md ${c.id === card.id ? "ring-[3px] ring-accent" : ""}`}>
                           <Thumb card={c} />
                         </button>
                       ))}
@@ -120,14 +122,14 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
 
         {partners.length > 0 && (
           <section>
-            <h2 className="mb-2 text-sm font-extrabold text-muted">相性のいいカード</h2>
+            <h2 className="mb-2 text-sm font-extrabold text-muted">{t("相性のいいカード", "Good partners")}</h2>
             {/* スマホは横にスクロール、PCはマウスで横に動かしにくいので折り返して全部並べる */}
             <div className={keepOpen ? "grid grid-cols-[repeat(auto-fill,minmax(4.5rem,1fr))] gap-x-2 gap-y-3" : "scrollbar-none -mx-3 flex gap-2 overflow-x-auto px-3 pb-2"}>
               {partners.map((p) => (
                 <div key={p.card.id} className={keepOpen ? "min-w-0" : "w-24 shrink-0"}>
                   <PoolCard card={p.card} onTap={() => openCard(p.card.id)} onLongPress={() => addToDeck(p.card)} />
                   <div className="mt-1 text-[10px] leading-tight font-bold text-accent-deep">
-                    {p.reasons.slice(0, 2).map((r) => (
+                    {(lang === "en" ? p.reasonsEn : p.reasons).slice(0, 2).map((r) => (
                       <div key={r}>{r}</div>
                     ))}
                   </div>
@@ -139,7 +141,7 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
 
         {combos.length > 0 && (
           <section>
-            <h2 className="mb-2 text-sm font-extrabold text-muted">定番の組み合わせ（攻略記事より）</h2>
+            <h2 className="mb-2 text-sm font-extrabold text-muted">{t("定番の組み合わせ（攻略記事より）", "Known combos (from strategy guides)")}</h2>
             <ul className="space-y-2">
               {combos.map((cb, i) => (
                 <li key={i} className="neu flex gap-3 rounded-2xl p-3">
@@ -149,7 +151,7 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
                       .map((id) => byId.get(id))
                       .filter((c): c is AppCard => !!c)
                       .map((c) => (
-                        <button key={c.id} type="button" onClick={() => openCard(c.id)} className="w-12 shrink-0" aria-label={c.nameJa}>
+                        <button key={c.id} type="button" onClick={() => openCard(c.id)} className="w-12 shrink-0" aria-label={cardName(c, lang)}>
                           <Thumb card={c} className="rounded-[4px]" />
                         </button>
                       ))}
@@ -158,14 +160,16 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
                     <div className="font-extrabold">
                       {cb.cards
                         .filter((id) => id !== card.id)
-                        .map((id) => byId.get(id)?.nameJa)
-                        .join("・")}
+                        .map((id) => byId.get(id))
+                        .filter((c): c is AppCard => !!c)
+                        .map((c) => cardName(c, lang))
+                        .join(lang === "en" ? " / " : "・")}
                     </div>
-                    <p className="mt-0.5 font-medium">{cb.reason}</p>
+                    <p className="mt-0.5 font-medium">{lang === "en" ? cb.reasonEn : cb.reason}</p>
                     <div className="mt-1 flex flex-wrap items-center gap-x-2 text-[10px] font-bold text-muted">
-                      <span>{cb.deck}</span>
+                      <span>{lang === "en" ? cb.deckEn : cb.deck}</span>
                       <a href={cb.source} target="_blank" rel="noreferrer" className="underline">
-                        出典
+                        {t("出典", "Source (Japanese)")}
                       </a>
                     </div>
                   </div>
@@ -177,41 +181,46 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
 
         {usage && data.meta && (
           <section>
-            <h2 className="mb-2 text-sm font-extrabold text-muted">大会での使われ方</h2>
+            <h2 className="mb-2 text-sm font-extrabold text-muted">{t("大会での使われ方", "Tournament usage")}</h2>
             <div className="neu space-y-2 rounded-2xl p-3 text-xs font-bold">
               <div>
                 {usage.rate > 0 ? (
                   <>
-                    勝ち越したデッキの <span className="text-base text-accent-deep tabular-nums">{(usage.rate * 100).toFixed(usage.rate < 0.1 ? 1 : 0)}%</span> に採用
+                    {t("勝ち越したデッキの ", "In ")}
+                    <span className="text-base text-accent-deep tabular-nums">{(usage.rate * 100).toFixed(usage.rate < 0.1 ? 1 : 0)}%</span>
+                    {t(" に採用", " of decks with a winning record")}
                   </>
                 ) : (
-                  <span className="text-muted">最近の大会では、勝ち越したデッキでの採用はほぼありません</span>
+                  <span className="text-muted">{t("最近の大会では、勝ち越したデッキでの採用はほぼありません", "Rarely played in winning decks at recent tournaments")}</span>
                 )}
               </div>
               {usage.archetypes.length > 0 && (
                 <div className="flex flex-wrap gap-1.5">
                   {usage.archetypes.slice(0, 6).map(({ arch, rate }) => (
-                    <Chip key={arch.id} onClick={() => searchQ(`${arch.nameJa}デッキ`)} title="このデッキでよく使われるカードを見る">
-                      {arch.nameJa}デッキ <span className="text-accent-deep">{Math.round(rate * 100)}%</span>
+                    <Chip key={arch.id} onClick={() => searchQ(lang === "en" ? `${arch.nameEn} deck` : `${arch.nameJa}デッキ`)} title={t("このデッキでよく使われるカードを見る", "See cards commonly played in this deck")}>
+                      {lang === "en" ? arch.nameEn : `${arch.nameJa}デッキ`} <span className="text-accent-deep">{Math.round(rate * 100)}%</span>
                     </Chip>
                   ))}
                 </div>
               )}
               <p className="text-[10px] font-medium text-muted">
-                直近{data.meta.days}日・{data.meta.tournaments}大会・勝ち越した{data.meta.decks}デッキ（Limitless TCG の大会結果）。デッキ名の横の%は、そのデッキでの採用率
+                {t(
+                  `直近${data.meta.days}日・${data.meta.tournaments}大会・勝ち越した${data.meta.decks}デッキ（Limitless TCG の大会結果）。デッキ名の横の%は、そのデッキでの採用率`,
+                  `Last ${data.meta.days} days, ${data.meta.tournaments} tournaments, ${data.meta.decks} decks with a winning record (Limitless TCG). The % next to a deck is how often it plays this card.`,
+                )}
               </p>
             </div>
           </section>
         )}
 
         <section>
-          <h2 className="mb-1 text-sm font-extrabold text-muted">収録</h2>
+          <h2 className="mb-1 text-sm font-extrabold text-muted">{t("収録", "Printings")}</h2>
           <ul className="neu space-y-1.5 rounded-2xl p-3">
             {card.prints.map((p, i) => (
               <li key={p.id} onClick={() => setPrintIndex(i)} className={`-mx-1.5 flex cursor-pointer items-center gap-2 rounded-lg px-1.5 ${card.prints.length > 1 && i === printIndex ? "bg-[#dff4f1]" : ""}`}>
                 <div className="min-w-0 flex-1">
                   <PrintLine p={p} />
-                  {p.how && p.how.includes("|") && <div className="mt-0.5 truncate text-[10px] font-bold text-muted">{p.how.split(/[|｜]/).slice(1).join(" / ")}</div>}
+                  {lang === "ja" && p.how && p.how.includes("|") && <div className="mt-0.5 truncate text-[10px] font-bold text-muted">{p.how.split(/[|｜]/).slice(1).join(" / ")}</div>}
                 </div>
                 <span className="shrink-0 text-[10px] font-bold text-muted">{p.id.toUpperCase()}</span>
               </li>
@@ -226,10 +235,18 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
 }
 
 function MachineBadge() {
-  return <span className="ml-1 rounded-full bg-[#fdf1d8] px-1.5 align-middle text-[10px] font-bold text-[#9a6b12]">仮訳</span>;
+  const t = useT();
+  return <span title={t("機械翻訳", "Machine translation")} className="ml-1 rounded-full bg-[#fdf1d8] px-1.5 align-middle text-[10px] font-bold text-[#9a6b12]">{t("仮訳", "MT")}</span>;
 }
 
-function EffectBlock({ e, label, tagChip }: { e: AppEffect; label: string; tagChip: (t: string) => React.ReactNode }) {
+function EffectBlock({ e, label, tagChip, lang }: { e: AppEffect; label: string; tagChip: (t: string) => React.ReactNode; lang: Lang }) {
+  const t = useT();
+  const isAtkOrAbility = e.slot === "attack" || e.slot === "ability";
+  const name = isAtkOrAbility ? effectName(e, lang) : lang === "en" ? "" : (e.nameJa ?? "");
+  const main = lang === "en" ? e.textEn ?? e.textJa : e.textJa;
+  // もう一方の言語の文（日本語表示なら英語原文、英語表示なら日本語）
+  const otherName = lang === "en" ? e.nameJa : e.nameEn;
+  const otherText = lang === "en" ? e.textJa : e.textEn;
   const atk = e.slot === "attack" ? (e as AppAttack) : undefined;
   const dmg = atk?.damage !== undefined ? `${atk.damage}${atk.damageVariable ? (/for each/i.test(atk.textEn ?? "") ? "×" : "+") : ""}` : atk?.damageVariable ? "?" : "";
   return (
@@ -238,17 +255,17 @@ function EffectBlock({ e, label, tagChip }: { e: AppEffect; label: string; tagCh
         <span className="rounded-full bg-badge px-2 py-0.5 text-[10px] font-bold text-white">{label}</span>
         {atk && <Cost cost={atk.cost} />}
         <span className="min-w-0 flex-1 truncate font-extrabold">
-          {e.nameJa ?? (label === "ワザ" || label === "特性" ? e.nameEn : "")}
-          {e.machine && <MachineBadge />}
+          {name}
+          {lang === "ja" && e.machine && <MachineBadge />}
         </span>
         {dmg && <span className="text-xl font-extrabold tabular-nums">{dmg}</span>}
       </div>
-      {e.textJa && <p className="mt-2 text-sm leading-relaxed font-medium">{e.textJa}</p>}
-      {(e.textEn || e.nameEn) && (
+      {main && <p className="mt-2 text-sm leading-relaxed font-medium">{main}</p>}
+      {(otherText || otherName) && (
         <details className="mt-1.5 text-xs text-muted">
-          <summary className="cursor-pointer font-bold select-none">英語原文</summary>
+          <summary className="cursor-pointer font-bold select-none">{t("英語原文", "Japanese text")}</summary>
           <p className="mt-1">
-            {e.nameEn && <b>{e.nameEn}</b>} {e.textEn}
+            {otherName && <b>{otherName}</b>} {otherText}
           </p>
         </details>
       )}
@@ -258,5 +275,6 @@ function EffectBlock({ e, label, tagChip }: { e: AppEffect; label: string; tagCh
 }
 
 export function CardTypeLabel({ card }: { card: AppCard }) {
-  return <span>{card.type ? TYPE_JA[card.type] : KIND_JA[card.kind]}</span>;
+  const lang = useLang();
+  return <span>{card.type ? typeName(card.type, lang) : kindName(card.kind, lang)}</span>;
 }

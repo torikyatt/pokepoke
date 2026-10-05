@@ -7,28 +7,28 @@
 //   ・攻略記事で紹介されている定番の組み合わせ（data/combos.yaml）
 //   ・大会で勝ち越したデッキに一緒に入っていることが多い組（data/meta/meta.json。どのデッキにも入る定番どうしは除いてある）
 import type { AppArchetype, AppCard, AppCombo, AppData, HelpTarget, Selector } from "./types.ts";
-import { STAGE_JA, TYPE_JA } from "./types.ts";
+import { STAGE_JA, TYPE_EN, TYPE_JA } from "./types.ts";
 
 // 供給の種類ごとの説明（相手のカードが「供給する側」「要求する側」のときのラベル）
-const SUPPLY: Record<string, { give: string; need: string }> = {
-  "supply.trash.energy": { give: "トラッシュにエネを送れる", need: "トラッシュのエネを使う" },
-  "supply.trash.fill": { give: "トラッシュを増やせる", need: "トラッシュの枚数で強くなる" },
-  "supply.bench.fill": { give: "ベンチを埋められる", need: "ベンチの数で強くなる" },
-  "supply.energy.many": { give: "エネを増やせる", need: "付いているエネの数で強くなる" },
-  "supply.damage.self": { give: "自分のポケモンにダメージを乗せる", need: "自分のダメージで強くなる" },
-  "supply.status": { give: "状態異常にできる", need: "相手が状態異常だと強くなる" },
-  "supply.status.poison": { give: "どくにできる", need: "相手がどくだと強くなる" },
-  "supply.status.burn": { give: "やけどにできる", need: "相手がやけどだと強くなる" },
-  "supply.status.paralysis": { give: "マヒにできる", need: "相手がマヒだと強くなる" },
-  "supply.status.sleep": { give: "ねむりにできる", need: "相手がねむりだと強くなる" },
-  "supply.status.confusion": { give: "こんらんにできる", need: "相手がこんらんだと強くなる" },
-  "supply.retreat.help": { give: "にげる・入れ替えを助ける", need: "にげるエネが重い" },
-  "supply.evolve.help": { give: "進化を早められる", need: "進化ポケモン" },
-  "supply.opp.bench_damage": { give: "相手のベンチにダメージを与える", need: "ダメージを受けた相手のベンチを狙う" },
-  "supply.energy.fix": { give: "エネ事故を減らせる", need: "複数タイプのエネが要る" },
-  "supply.energy.bank": { give: "場にエネをためられる", need: "場のエネを集められる" },
-  "supply.coin.control": { give: "コインをやり直せる", need: "コインを投げる" },
-  "supply.search.pokemon": { give: "山札から手札に持ってこられる", need: "山札から持ってこられる" },
+const SUPPLY: Record<string, { give: string; need: string; giveEn: string; needEn: string }> = {
+  "supply.trash.energy": { give: "トラッシュにエネを送れる", need: "トラッシュのエネを使う", giveEn: "Can send Energy to the discard pile", needEn: "Uses Energy in the discard pile" },
+  "supply.trash.fill": { give: "トラッシュを増やせる", need: "トラッシュの枚数で強くなる", giveEn: "Can fill the discard pile", needEn: "Stronger with more cards in the discard pile" },
+  "supply.bench.fill": { give: "ベンチを埋められる", need: "ベンチの数で強くなる", giveEn: "Can fill the Bench", needEn: "Stronger with more Benched Pokémon" },
+  "supply.energy.many": { give: "エネを増やせる", need: "付いているエネの数で強くなる", giveEn: "Can add Energy", needEn: "Stronger with more Energy attached" },
+  "supply.damage.self": { give: "自分のポケモンにダメージを乗せる", need: "自分のダメージで強くなる", giveEn: "Puts damage on your own Pokémon", needEn: "Stronger when damaged" },
+  "supply.status": { give: "状態異常にできる", need: "相手が状態異常だと強くなる", giveEn: "Inflicts Special Conditions", needEn: "Stronger vs. Special Conditions" },
+  "supply.status.poison": { give: "どくにできる", need: "相手がどくだと強くなる", giveEn: "Can Poison", needEn: "Stronger vs. Poisoned" },
+  "supply.status.burn": { give: "やけどにできる", need: "相手がやけどだと強くなる", giveEn: "Can Burn", needEn: "Stronger vs. Burned" },
+  "supply.status.paralysis": { give: "マヒにできる", need: "相手がマヒだと強くなる", giveEn: "Can Paralyze", needEn: "Stronger vs. Paralyzed" },
+  "supply.status.sleep": { give: "ねむりにできる", need: "相手がねむりだと強くなる", giveEn: "Can put to Sleep", needEn: "Stronger vs. Asleep" },
+  "supply.status.confusion": { give: "こんらんにできる", need: "相手がこんらんだと強くなる", giveEn: "Can Confuse", needEn: "Stronger vs. Confused" },
+  "supply.retreat.help": { give: "にげる・入れ替えを助ける", need: "にげるエネが重い", giveEn: "Helps retreat / switch", needEn: "Heavy Retreat Cost" },
+  "supply.evolve.help": { give: "進化を早められる", need: "進化ポケモン", giveEn: "Speeds up evolution", needEn: "Evolution Pokémon" },
+  "supply.opp.bench_damage": { give: "相手のベンチにダメージを与える", need: "ダメージを受けた相手のベンチを狙う", giveEn: "Damages the opponent's Bench", needEn: "Targets damaged Benched Pokémon" },
+  "supply.energy.fix": { give: "エネ事故を減らせる", need: "複数タイプのエネが要る", giveEn: "Reduces Energy misses", needEn: "Needs multiple Energy types" },
+  "supply.energy.bank": { give: "場にエネをためられる", need: "場のエネを集められる", giveEn: "Stores Energy on the field", needEn: "Gathers Energy from the field" },
+  "supply.coin.control": { give: "コインをやり直せる", need: "コインを投げる", giveEn: "Can redo coin flips", needEn: "Flips coins" },
+  "supply.search.pokemon": { give: "山札から手札に持ってこられる", need: "山札から持ってこられる", giveEn: "Fetches it from the deck", needEn: "Can be fetched from the deck" },
 };
 // 結びつきの強さ（既定は1）。場にためたエネと集めるカードは、組み合わせ前提の強いシナジー
 const WEIGHT: Record<string, number> = { "supply.energy.bank": 2, "supply.energy.fix": 1.5, "supply.trash.energy": 1.5, "supply.search.pokemon": 1.5 };
@@ -47,6 +47,7 @@ export interface Partner {
   card: AppCard;
   score: number;
   reasons: string[];
+  reasonsEn: string[]; // reasons と同じ並びの英語
 }
 
 export function createSynergy(data: AppData) {
@@ -132,12 +133,12 @@ export function createSynergy(data: AppData) {
     if (t.tags?.length && !c.tags.some((x) => t.tags!.some((g) => x === g || x.startsWith(g + ".")))) return false;
     return true;
   };
-  const helpsBy = new Map<string, { other: string; label: string; weight: number }[]>();
+  const helpsBy = new Map<string, { other: string; label: string; labelEn: string; weight: number }[]>();
   for (const h of data.helps ?? []) {
     for (const c of data.cards) {
       if (c.id === h.card || !helpMatch(h.to, c)) continue;
-      (helpsBy.get(h.card) ?? helpsBy.set(h.card, []).get(h.card)!).push({ other: c.id, label: h.label, weight: h.weight });
-      (helpsBy.get(c.id) ?? helpsBy.set(c.id, []).get(c.id)!).push({ other: h.card, label: h.label, weight: h.weight });
+      (helpsBy.get(h.card) ?? helpsBy.set(h.card, []).get(h.card)!).push({ other: c.id, label: h.label, labelEn: h.labelEn, weight: h.weight });
+      (helpsBy.get(c.id) ?? helpsBy.set(c.id, []).get(c.id)!).push({ other: h.card, label: h.label, labelEn: h.labelEn, weight: h.weight });
     }
   }
 
@@ -162,17 +163,20 @@ export function createSynergy(data: AppData) {
     const out = new Map<string, Partner>();
     // 進化ラインのカード（進化元・進化先・同じ名前）は「進化ライン」に出すので、相性のいいカードには出さない
     const line = x.kind === "pokemon" ? lineNames(x) : new Set([x.nameEn]);
-    const push = (card: AppCard, score: number, reason: string) => {
+    const push = (card: AppCard, score: number, reason: string, reasonEn: string) => {
       if (card.id === x.id || line.has(card.nameEn)) return;
-      const p = out.get(card.id) ?? out.set(card.id, { card, score: 0, reasons: [] }).get(card.id)!;
+      const p = out.get(card.id) ?? out.set(card.id, { card, score: 0, reasons: [], reasonsEn: [] }).get(card.id)!;
       p.score += score;
-      if (!p.reasons.includes(reason)) p.reasons.push(reason);
+      if (!p.reasons.includes(reason)) {
+        p.reasons.push(reason);
+        p.reasonsEn.push(reasonEn);
+      }
     };
     // 攻略記事で紹介されている組み合わせ（いちばん強く結ぶ）
     for (const cb of combosOf.get(x.id) ?? []) {
       for (const id of cb.cards) {
         const c = byId.get(id);
-        if (c) push(c, 4, `定番コンボ（${cb.deck}）`);
+        if (c) push(c, 4, `定番コンボ（${cb.deck}）`, `Known combo (${cb.deckEn})`);
       }
     }
     // 大会で一緒に使われる組。相手が入っている割合が高いほど強く結ぶ
@@ -180,34 +184,39 @@ export function createSynergy(data: AppData) {
       const c = byId.get(u.other);
       if (!c) continue;
       const arch = sharedArch(x.id, c.id);
-      push(c, 0.5 + 2.5 * u.rate, arch ? `大会で一緒に採用（${arch.nameJa}）` : `大会で一緒に採用（${Math.round(u.rate * 100)}%）`);
+      push(
+        c,
+        0.5 + 2.5 * u.rate,
+        arch ? `大会で一緒に採用（${arch.nameJa}）` : `大会で一緒に採用（${Math.round(u.rate * 100)}%）`,
+        arch ? `Played together in tournaments (${arch.nameEn})` : `Played together in tournaments (${Math.round(u.rate * 100)}%)`,
+      );
     }
 
     // トレーナーズの効果が効く相手
     for (const h of helpsBy.get(x.id) ?? []) {
       const c = byId.get(h.other);
-      if (c) push(c, h.weight, h.label);
+      if (c) push(c, h.weight, h.label, h.labelEn);
     }
 
     // 名前指定
     for (const id of x.refs) {
       const c = byId.get(id);
-      if (c) push(c, 3, "効果で名指し");
+      if (c) push(c, 3, "効果で名指し", "Named in its effect");
     }
-    for (const c of data.cards) if (c.refs.includes(x.id)) push(c, 3, "このカードを名指し");
+    for (const c of data.cards) if (c.refs.includes(x.id)) push(c, 3, "このカードを名指し", "Names this card");
 
     // 供給 → 要求（x が相手を助ける）
     for (const [s, sels] of Object.entries(x.supplies)) {
       for (const y of requirers.get(s) ?? []) {
         const ok = sels.filter((sel) => reaches(sel, x, y, s));
-        if (ok.length) push(y, weightOf(s, ok, y), SUPPLY[s]?.need ?? s);
+        if (ok.length) push(y, weightOf(s, ok, y), SUPPLY[s]?.need ?? s, SUPPLY[s]?.needEn ?? s);
       }
     }
     // 要求 ← 供給（相手が x を助ける）
     for (const r of Object.keys(x.requires)) {
       for (const y of suppliers.get(r) ?? []) {
         const ok = y.supplies[r].filter((sel) => reaches(sel, y, x, r));
-        if (ok.length) push(y, weightOf(r, ok, x), SUPPLY[r]?.give ?? r);
+        if (ok.length) push(y, weightOf(r, ok, x), SUPPLY[r]?.give ?? r, SUPPLY[r]?.giveEn ?? r);
       }
     }
 
@@ -217,14 +226,14 @@ export function createSynergy(data: AppData) {
     const bankOf = (c: AppCard) => c.supplies["supply.energy.bank"]?.[0]?.etypes ?? [];
     for (const t of bankOf(x)) {
       for (const c of data.cards) {
-        if (usesType(c, t)) push(c, 0.6, `${TYPE_JA[t]}タイプ（ためた${TYPE_JA[t]}エネを使える）`);
-        else if (colorlessHeavy(c)) push(c, 0.4, "無色エネを多く使う");
+        if (usesType(c, t)) push(c, 0.6, `${TYPE_JA[t]}タイプ（ためた${TYPE_JA[t]}エネを使える）`, `${TYPE_EN[t]} type (uses the stored ${TYPE_EN[t]} Energy)`);
+        else if (colorlessHeavy(c)) push(c, 0.4, "無色エネを多く使う", "Uses lots of Colorless Energy");
       }
     }
     for (const b of suppliers.get("supply.energy.bank") ?? []) {
       const ts = bankOf(b);
-      if (x.type && ts.includes(x.type) && usesType(x, x.type)) push(b, 0.6, `${TYPE_JA[x.type]}エネを場にためられる`);
-      else if (colorlessHeavy(x)) push(b, 0.4, "無色コストに回せるエネをためられる");
+      if (x.type && ts.includes(x.type) && usesType(x, x.type)) push(b, 0.6, `${TYPE_JA[x.type]}エネを場にためられる`, `Stores ${TYPE_EN[x.type]} Energy on the field`);
+      else if (colorlessHeavy(x)) push(b, 0.4, "無色コストに回せるエネをためられる", "Stores Energy usable for Colorless costs");
     }
 
     // 同じポケモンたちを支える2枚（例: にじいろの洞窟はドラゴンのエネ事故を減らし、ハクリューはドラゴンにエネを送る）
@@ -236,7 +245,7 @@ export function createSynergy(data: AppData) {
         if (ry.size < 3) continue;
         let n = 0;
         for (const id of rx) if (ry.has(id)) n++;
-        if (n >= 3 && n / Math.min(rx.size, ry.size) >= 0.3) push(y, 0.5, "同じポケモンを支える");
+        if (n >= 3 && n / Math.min(rx.size, ry.size) >= 0.3) push(y, 0.5, "同じポケモンを支える", "Supports the same Pokémon");
       }
     }
 
@@ -244,13 +253,13 @@ export function createSynergy(data: AppData) {
     if (accelSels(x).length) {
       for (const c of data.cards) {
         for (const t of x.accelTypes) {
-          if (t !== "colorless" && c.type === t && heavyOf(c) && accelSels(x).some((sel) => reaches(sel, x, c, "supply.energy.many"))) push(c, 2, `${TYPE_JA[t]}エネ加速の受け手`);
+          if (t !== "colorless" && c.type === t && heavyOf(c) && accelSels(x).some((sel) => reaches(sel, x, c, "supply.energy.many"))) push(c, 2, `${TYPE_JA[t]}エネ加速の受け手`, `Receives ${TYPE_EN[t]} Energy acceleration`);
         }
       }
     }
     if (x.type && heavyOf(x)) {
       for (const c of suppliers.get("supply.energy.many") ?? []) {
-        if (c.accelTypes.includes(x.type) && accelSels(c).some((sel) => reaches(sel, c, x, "supply.energy.many"))) push(c, 2, `${TYPE_JA[x.type]}エネを加速できる`);
+        if (c.accelTypes.includes(x.type) && accelSels(c).some((sel) => reaches(sel, c, x, "supply.energy.many"))) push(c, 2, `${TYPE_JA[x.type]}エネを加速できる`, `Accelerates ${TYPE_EN[x.type]} Energy`);
       }
     }
 
@@ -265,7 +274,7 @@ export function createSynergy(data: AppData) {
    * 進化ライン: 進化元（たね・1進化）→ このカードと同じ名前のカード → 進化先（1進化・2進化）を、段ごとに全部返す。
    * 進化は名前でつながるので、別のパックのカードも含める（例: リオル3種 → ルカリオ・ルカリオex・メガルカリオex）
    */
-  function evolutionLine(x: AppCard): { label: string; cards: AppCard[] }[] {
+  function evolutionLine(x: AppCard): { label: string; stage?: AppCard["stage"]; cards: AppCard[] }[] {
     const sorted = (ids: Iterable<string>) =>
       [...new Set(ids)].map((id) => byId.get(id)!).filter(Boolean).sort((a, b) => a.order - b.order || a.id.localeCompare(b.id, "en", { numeric: true }));
     const same = data.cards.filter((c) => c.nameEn === x.nameEn && c.kind === x.kind && c.stage === x.stage).map((c) => c.id);
@@ -275,7 +284,7 @@ export function createSynergy(data: AppData) {
     const next2 = sorted(next1.flatMap((c) => c.evolvesTo));
     const label = (cs: AppCard[]) => (cs[0]?.stage ? STAGE_JA[cs[0].stage] : "");
     const self = sorted(same);
-    return [prev2, prev1, self, next1, next2].filter((l) => l.length).map((cards) => ({ label: label(cards), cards }));
+    return [prev2, prev1, self, next1, next2].filter((l) => l.length).map((cards) => ({ label: label(cards), stage: cards[0]?.stage, cards }));
   }
 
   /** 進化ラインにいるカードの名前（相性のいいカードからは除く） */

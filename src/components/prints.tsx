@@ -1,6 +1,7 @@
 // 収録パックの表示（弾ごとに色分けしたバッジ＋日本語の弾名・パック名）
 import { useData } from "../context.tsx";
 import type { AppCard, AppPrint, AppSet } from "../types.ts";
+import { useLang, type Lang } from "../i18n.ts";
 
 // 弾の色（発売順に色相を回す）。プロモは灰色
 const HUES = [205, 350, 140, 30, 270, 180, 55, 315, 95, 240, 10, 160];
@@ -23,11 +24,13 @@ export function SetBadge({ set }: { set: string }) {
 export const RARITY_JA: Record<string, string> = {
   "◊": "◆", "◊◊": "◆◆", "◊◊◊": "◆◆◆", "◊◊◊◊": "◆◆◆◆", "☆": "★", "☆☆": "★★", "☆☆☆": "★★★", "Crown Rare": "👑", Promo: "プロモ",
 };
+export const rarityLabel = (r: string, lang: Lang) => (lang === "en" && r === "Promo" ? "Promo" : RARITY_JA[r] ?? r);
 const RANK = ["◊", "◊◊", "◊◊◊", "◊◊◊◊", "☆", "☆☆", "☆☆☆", "Crown Rare"];
 
-/** 弾名（日本語）＋パック名。弾にパックが複数あって、どれからも出るなら「共通」 */
-export function packLabel(p: AppPrint, sets: AppSet[], multiPack: Set<string>): string {
+/** 弾名（日本語）＋パック名。弾にパックが複数あって、どれからも出るなら「共通」。英語は弾名だけ */
+export function packLabel(p: AppPrint, sets: AppSet[], multiPack: Set<string>, lang: Lang = "ja"): string {
   const set = sets.find((s) => s.code === p.set);
+  if (lang === "en") return set?.name ?? p.setName;
   const name = set?.nameJa ?? p.setName;
   if (p.how) return p.how.split(/[|｜]/)[0];
   if (p.pack) return `${name}・${p.pack}`;
@@ -58,11 +61,12 @@ export function mainPrint(c: AppCard): AppPrint {
 export function PrintLine({ p, compact }: { p: AppPrint; compact?: boolean }) {
   const { data } = useData();
   const multi = useMultiPackSets();
+  const lang = useLang();
   return (
     <span className="flex min-w-0 items-center gap-1.5">
       <SetBadge set={p.set} />
-      <span className={`truncate font-bold ${compact ? "text-[11px]" : "text-xs"}`}>{packLabel(p, data.sets, multi)}</span>
-      <span className="shrink-0 text-[10px] font-bold text-muted">{RARITY_JA[p.rarity] ?? p.rarity}</span>
+      <span className={`truncate font-bold ${compact ? "text-[11px]" : "text-xs"}`}>{packLabel(p, data.sets, multi, lang)}</span>
+      <span className="shrink-0 text-[10px] font-bold text-muted">{rarityLabel(p.rarity, lang)}</span>
     </span>
   );
 }

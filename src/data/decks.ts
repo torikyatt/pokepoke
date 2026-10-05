@@ -9,6 +9,7 @@ export interface TournamentDeck {
   players: number;
   archId: string;
   arch: string; // デッキタイプの日本語名
+  archEn: string; // デッキタイプの英語名
   place: number; // 0 は不明
   wins: number;
   losses: number;
@@ -27,7 +28,7 @@ export interface DeckIndex {
 type Raw = {
   fetchedAt: string;
   tournaments: [string, string, number][];
-  archetypes: [string, string][];
+  archetypes: [string, string, string?][];
   decks: [number, number, number, number, number, number, string, string, number][];
 };
 
@@ -40,9 +41,9 @@ export function loadDecks(): Promise<DeckIndex> {
     const raw: Raw = JSON.parse(await new Response(stream).text());
     const decks = raw.decks.map(([t, a, place, wins, losses, ties, energy, cards, dup]): TournamentDeck => {
       const [tournament, date, players] = raw.tournaments[t];
-      const [archId, arch] = raw.archetypes[a];
+      const [archId, arch, archEn = arch] = raw.archetypes[a];
       return {
-        tournament, date, players, archId, arch, place, wins, losses, ties, dup,
+        tournament, date, players, archId, arch, archEn, place, wins, losses, ties, dup,
         energy: (energy ? energy.split(",") : []) as EnergyType[],
         cards: cards.split(" ").map((x) => {
           const [id, n] = x.split("*");

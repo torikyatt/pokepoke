@@ -3,6 +3,7 @@
 # 各タグ:
 #   id       ドット区切り。親タグで検索すると子タグも一致する（最大3階層）
 #   ja       表示名
+#   en       英語の表示名
 #   match    英語原文に当てる正規表現（どれか1つに一致すれば付与）。文単位で当てる
 #   exclude  一致しても、この正規表現に当たる文なら付与しない
 #   on       付与対象を絞る（attack / ability / trainer / tool）。省略時は全部
@@ -14,25 +15,30 @@
 
 - id: energy
   ja: エネルギー
+  en: Energy
   children:
     - id: energy.accel
       ja: エネ加速
+      en: Energy acceleration
       supplies: [supply.energy.many]
       match:
         - 'provides 2 \[[A-Z]\] Energy'
       children:
         - id: energy.accel.zone
           ja: エネゾーンから加速
+          en: From Energy Zone
           match:
             - '(take|Take|produce|Take an amount of) [^.]*Energy from your Energy Zone'
         - id: energy.accel.trash
           ja: トラッシュから加速
+          en: From discard pile
           requires: [supply.trash.energy]
           match:
             - '[Aa]ttach [^.]*Energy from your discard pile'
             - 'Attach \d+ random Energy from your discard pile'
         - id: energy.accel.other
           ja: 他のポケモンに付ける
+          en: Attach to other Pokémon
           match:
             - '(Energy Zone|discard pile)[^.]*attach (it|them|1 Energy each) to (?!this Pok)'
             - 'Energy Zone and attach it to each of'
@@ -41,12 +47,14 @@
             - 'Energy from your discard pile to (your|that)'
     - id: energy.move
       ja: エネ移動
+      en: Move Energy
       match:
         - '[Mm]ove (a|an|all|2|any amount of|2 random)[^.]*Energy'
         - 'move a random Energy from your opponent'
       children:
         - id: energy.move.gather
           ja: 場のエネを集める
+          en: Gather Energy in play
           # 場にためたエネ（レアコイルのボルトチャージなど）を、戦うポケモンに集める
           requires: [supply.energy.bank]
           match:
@@ -55,6 +63,7 @@
             - 'from your Pokémon in play to your other'
     - id: energy.self_discard
       ja: 自分のエネをトラッシュ
+      en: Discard own Energy
       supplies: [supply.trash.energy, supply.trash.fill]
       match:
         - '[Dd]iscard [^.]*Energy (from|attached to) this Pokémon'
@@ -64,20 +73,24 @@
         - 'discard a random Energy from that Pokémon'
     - id: energy.discard_opp
       ja: 相手のエネを破壊
+      en: Discard opponent's Energy
       match:
         - '[Dd]iscard [^.]*Energy from (your opponent|both Active)'
         - 'Energy attached to all (Pokémon|of your opponent)'
         - '[Dd]iscard [^.]*Energy from your opponent.s Active'
     - id: energy.cost_down
       ja: コスト軽減
+      en: Cost reduction
       children:
         - id: energy.cost_down.attack
           ja: ワザのエネが減る
+          en: Cheaper attacks
           match:
             - 'cost \d+ less'
             - 'can be used for 1 \['
         - id: energy.cost_down.retreat
           ja: にげるエネが減る
+          en: Lower Retreat Cost
           supplies: [supply.retreat.help]
           match:
             - 'Retreat Cost (of [^.]* )?is \d+ less'
@@ -86,11 +99,13 @@
             - 'Retreat Cost of [^.]* is \d+ less'
     - id: energy.manipulate
       ja: エネルギーゾーン操作
+      en: Energy Zone control
       match:
         - 'Change the type of'
       children:
         - id: energy.manipulate.reroll
           ja: エネを引き直す
+          en: Re-roll Energy
           # にじいろの洞窟: 出たエネを捨てて引き直す。エネ事故が減り、捨てたエネはトラッシュへ
           supplies: [supply.energy.fix, supply.trash.energy]
           match:
@@ -98,9 +113,11 @@
 
 - id: draw
   ja: ドロー・サーチ
+  en: Draw & search
   children:
     - id: draw.draw
       ja: ドロー
+      en: Draw
       match:
         - '\b[Dd]raw (a card|\d+ cards?|cards until)'
         - '[Dd]raws? cards until'
@@ -111,6 +128,7 @@
         - 'opponent shuffle their hand'
     - id: draw.search_pokemon
       ja: 山札からポケモンを持ってくる
+      en: Search Pokémon from deck
       supplies: [supply.search.pokemon]
       match:
         - '[Pp]ut (a|1|2|3) random (?!(Item|Supporter|Pokémon Tool|Stadium))[^.]* from (your|their) deck (into|onto) (your|their) (hand|Bench)'
@@ -123,6 +141,7 @@
         - 'Put 2 random cards from among Magneton'
     - id: draw.search_trainer
       ja: 山札からトレーナーズを持ってくる
+      en: Search Trainers from deck
       match:
         - '[Pp]ut a random (Item|Supporter|Pokémon Tool|Stadium) card from your deck'
         - 'Put all (Pokémon Tool|Item) cards you find there'
@@ -131,6 +150,7 @@
         - 'Clemont.s Backpack from your deck'
     - id: draw.deck_look
       ja: 山札を見る・並べ替え
+      en: Look at or reorder deck
       match:
         - '[Ll]ook at (the top|that many cards from the top)'
         - 'put them back in any order'
@@ -138,6 +158,7 @@
         - 'Look at the top card of that player'
     - id: draw.recover
       ja: トラッシュから回収
+      en: Recover from discard pile
       match:
         - 'from (your|your opponent.s) discard pile into your hand'
         - 'from your discard pile and put into your hand'
@@ -147,9 +168,11 @@
 
 - id: damage
   ja: ダメージ
+  en: Damage
   children:
     - id: damage.bench
       ja: ベンチ狙撃
+      en: Bench snipe
       supplies: [supply.opp.bench_damage]
       match:
         - '(damage to|do \d+ damage to) (1|2|each) of your opponent.s (Benched )?Pokémon'
@@ -162,12 +185,14 @@
         - 'damage to 1 of your opponent.s Pokémon'
     - id: damage.spread
       ja: 全体攻撃
+      en: Spread damage
       supplies: [supply.opp.bench_damage]
       match:
         - 'damage (for each heads )?to (each of your opponent.s|all Benched)'
         - 'do \d+ damage to each of your opponent.s Pokémon'
     - id: damage.self
       ja: 自傷
+      en: Self-damage
       supplies: [supply.damage.self]
       match:
         - 'damage to itself'
@@ -178,6 +203,7 @@
         - 'move \d+ damage that your Active Pokémon has on it to this Pokémon'
     - id: damage.ko
       ja: 一撃でたおす・HPを削る
+      en: Instant KO or HP cut
       match:
         - 'Knock Out (your opponent.s Active|the Pokémon in the spot)'
         - 'opponent.s Active Pokémon is Knocked Out'
@@ -187,17 +213,20 @@
         - 'Halve your opponent.s Active'
     - id: damage.direct
       ja: ワザ以外でダメージ
+      en: Non-attack damage
       on: [ability, trainer, tool]
       match:
         - 'do \d+ damage to (your opponent|1 of your opponent|each of your opponent|that Pokémon)'
         - 'move \d+ of its damage to your opponent'
     - id: damage.pierce
       ja: 弱点・効果を無視
+      en: Ignores Weakness or effects
       match:
         - 'isn.t affected by (Weakness|any effects)'
         - 'apply Weakness as'
     - id: damage.boost
       ja: 火力アップ
+      en: Damage boost
       match:
         - '(do|does) \+\d+ damage'
         - 'takes \+\d+ damage'
@@ -205,19 +234,23 @@
         - 'is chosen 1 more time'
     - id: damage.delayed
       ja: 時間差でダメージ・きぜつ
+      en: Delayed damage or KO
       match:
         - 'At the end of your opponent.s next turn, (do|Knock)'
     - id: damage.multi_hit
       ja: 連続攻撃
+      en: Multi-hit
       match:
         - 'used twice in a row'
         - 'chosen at random \d+ times'
 
 - id: heal
   ja: 回復
+  en: Healing
   children:
     - id: heal.hp
       ja: HP回復
+      en: Heal HP
       match:
         - '[Hh]eals? (\d+|all) damage'
         - '[Hh]eal from this Pokémon'
@@ -228,6 +261,7 @@
       children:
         - id: heal.hp.bench
           ja: ベンチ・味方も回復
+          en: Heal Bench or allies
           match:
             - '[Hh]eals? \d+ damage from (each of|1 of) (your|their)'
             - '[Hh]eal \d+ damage from each of your Benched'
@@ -237,6 +271,7 @@
             - 'move \d+ damage that your Active Pokémon'
     - id: heal.status
       ja: 状態異常を回復・防ぐ
+      en: Cure or prevent Special Conditions
       match:
         - 'recovers? from'
         - 'remove a random Special Condition'
@@ -245,55 +280,65 @@
 
 - id: defense
   ja: 防御
+  en: Defense
   children:
     - id: defense.reduce
       ja: ダメージ軽減
+      en: Damage reduction
       match:
         - 'takes? -\d+ damage'
         - '(Defending Pokémon|opponent.s Active Pokémon) do -\d+ damage'
     - id: defense.no_damage
       ja: ダメージを受けない
+      en: Prevent damage
       match:
         - '[Pp]revent all damage'
         - 'prevent that damage'
         - 'When this Pokémon is first damaged by an attack after coming into play, prevent'
     - id: defense.no_effect
       ja: ワザの効果を受けない
+      en: Immune to attack effects
       match:
         - 'effects of—attacks'
         - 'Prevent all effects of attacks'
     - id: defense.hp_up
       ja: HPアップ
+      en: HP boost
       match:
         - 'gets \+\d+ HP'
     - id: defense.counter
       ja: 反撃
+      en: Counterattack
       match:
         - 'damage to the Attacking Pokémon'
         - 'the Attacking Pokémon is (now|Knocked)'
         - 'damage to the new Active Pokémon'
     - id: defense.survive
       ja: きぜつしない
+      en: Survive a Knock Out
       match:
         - 'is not Knocked Out'
         - 'can.t get any points for it'
     - id: defense.no_weakness
       ja: 弱点なし
+      en: No Weakness
       match:
         - 'has no Weakness'
 
 - id: status
   ja: 状態異常
+  en: Special Conditions
   # 状態異常にする側。scripts/tag.ts が「相手を状態異常にする文」だけに付ける（条件文・自分が受ける文は除く）
   supplies: [supply.status]
   children:
-    - { id: status.poison, ja: どく, supplies: [supply.status.poison], match: ['Poisoned'] }
-    - { id: status.burn, ja: やけど, supplies: [supply.status.burn], match: ['Burned'] }
-    - { id: status.paralysis, ja: マヒ, supplies: [supply.status.paralysis], match: ['Paralyzed'] }
-    - { id: status.sleep, ja: ねむり, supplies: [supply.status.sleep], match: ['Asleep'] }
-    - { id: status.confusion, ja: こんらん, supplies: [supply.status.confusion], match: ['Confused'] }
+    - { id: status.poison, ja: どく, en: Poisoned, supplies: [supply.status.poison], match: ['Poisoned'] }
+    - { id: status.burn, ja: やけど, en: Burned, supplies: [supply.status.burn], match: ['Burned'] }
+    - { id: status.paralysis, ja: マヒ, en: Paralyzed, supplies: [supply.status.paralysis], match: ['Paralyzed'] }
+    - { id: status.sleep, ja: ねむり, en: Asleep, supplies: [supply.status.sleep], match: ['Asleep'] }
+    - { id: status.confusion, ja: こんらん, en: Confused, supplies: [supply.status.confusion], match: ['Confused'] }
     - id: status.no_attack
       ja: ワザ封じ
+      en: Attack lock
       match:
         - 'Defending Pokémon can.t attack'
         - 'it can.t attack during your opponent'
@@ -301,6 +346,7 @@
         - 'that attack doesn.t happen'
     - id: status.no_retreat
       ja: にげる封じ
+      en: Retreat lock
       match:
         - 'can.t retreat'
         - 'Retreat Cost is \d+ (\[C\] )?more'
@@ -309,20 +355,24 @@
 
 - id: disrupt
   ja: 妨害
+  en: Disruption
   children:
     - id: disrupt.hand
       ja: 手札干渉
+      en: Hand disruption
       match:
         - 'Look at your opponent.s hand'
       children:
         - id: disrupt.hand.discard
           ja: 手札を捨てさせる
+          en: Opponent discards from hand
           match:
             - '[Dd]iscard a random (card|Item card|Pokémon Tool card) from your opponent.s hand'
             - 'Choose a Supporter card you find there and discard it'
             - 'Your opponent discards cards from their hand'
         - id: disrupt.hand.shuffle
           ja: 手札を山札にもどさせる
+          en: Opponent shuffles hand into deck
           match:
             - 'reveals a random card from their hand and shuffles it'
             - 'random card from your opponent.s hand and shuffle it into their deck'
@@ -334,50 +384,63 @@
             - 'Each player shuffles the cards in their hand'
         - id: disrupt.hand.peek
           ja: 手札を見る
+          en: Look at opponent's hand
           match:
             - 'opponent reveal(s)? their hand'
             - 'look at a random (card|Supporter card) from your opponent.s hand'
             - 'Your opponent reveals all of the Supporter cards in their deck'
     - id: disrupt.switch_opp
       ja: 相手を入れ替えさせる
+      en: Switch opponent's Active
       match:
         - '[Ss]witch (in|out) [^.]*opponent.s'
         - 'switch in 1 of your opponent.s'
     - id: disrupt.lock
       ja: 封じ
+      en: Lock
       children:
         - id: disrupt.lock.supporter
           ja: サポート封じ
+          en: Supporter lock
           match: ['can.t use any Supporter cards']
         - id: disrupt.lock.item
           ja: グッズ封じ
+          en: Item lock
           match: ['can.t (play|use) any (Item|Trainer) cards']
         - id: disrupt.lock.ability
           ja: 特性封じ
+          en: Ability lock
           match: ['loses all Abilities', 'have no Abilities']
         - id: disrupt.lock.evolve
           ja: 進化封じ
+          en: Evolution lock
           match: ['can.t play any Pokémon from (their|your) hand to evolve']
         - id: disrupt.lock.energy
           ja: エネ付け封じ
+          en: Energy lock
           match: ['can.t take any Energy from their Energy Zone', 'that Pokémon will be Asleep']
         - id: disrupt.lock.heal
           ja: 回復封じ
+          en: Healing lock
           match: ['can.t be healed']
         - id: disrupt.lock.stadium
           ja: スタジアム封じ
+          en: Stadium lock
           match: ['can.t play any Stadium']
     - id: disrupt.cost_up
       ja: 相手のワザのエネを増やす
+      en: Raise opponent's attack cost
       match:
         - 'cost \d+ \[C\] more'
     - id: disrupt.deck
       ja: 山札を削る
+      en: Discard opponent's deck
       match:
         - '[Dd]iscard the top (card|\d+ cards) of (your opponent.s|each player.s) deck'
         - 'discard the top card of your opponent.s deck'
     - id: disrupt.tool
       ja: どうぐ・スタジアムを壊す
+      en: Remove Tools or Stadium
       match:
         - '[Dd]iscard (all |a |up to \d+ )?Pokémon Tools? (card )?(cards )?(from|attached)'
         - 'shuffle all Pokémon Tools from'
@@ -388,9 +451,11 @@
 
 - id: field
   ja: 場の操作
+  en: Board control
   children:
     - id: field.switch
       ja: 自分の入れ替え・にげる補助
+      en: Switch or retreat help
       supplies: [supply.retreat.help]
       match:
         - '[Ss]witch this Pokémon with'
@@ -399,6 +464,7 @@
         - 'You may switch this Pokémon'
     - id: field.bounce
       ja: 手札・山札にもどす
+      en: Return to hand or deck
       match:
         - '[Pp]ut (your|1 of your) [^.]*(in the Active Spot|in play|that has damage on it)[^.]* into your hand'
         - 'put your opponent.s Active Pokémon into their hand'
@@ -406,6 +472,7 @@
         - 'shuffles their Active Pokémon back into their deck'
     - id: field.evolve
       ja: 進化補助
+      en: Evolution help
       supplies: [supply.evolve.help]
       match:
         - 'onto (this|that|the Basic) Pokémon to evolve it'
@@ -414,9 +481,11 @@
         - 'can evolve into any Pokémon'
     - id: field.devolve
       ja: 退化させる
+      en: Devolve
       match: ['devolve']
     - id: field.bench_fill
       ja: ベンチに出す
+      en: Put onto Bench
       supplies: [supply.bench.fill]
       match:
         - 'from your (deck|discard pile) onto your Bench'
@@ -424,6 +493,7 @@
         - 'onto their Bench'
     - id: field.copy
       ja: ワザ・効果をコピー
+      en: Copy attacks or effects
       match:
         - 'use it as this attack'
         - 'use the chosen attack as this attack'
@@ -431,24 +501,29 @@
         - 'can use any attack from its previous Evolutions'
     - id: field.stadium
       ja: スタジアム関連
+      en: Stadium-related
       match:
         - 'Stadium'
     - id: field.tool
       ja: どうぐ関連
+      en: Pokémon Tool-related
       match:
         - 'Pokémon Tool'
 
 - id: point
   ja: ポイント・きぜつ
+  en: Points & Knock Outs
   children:
     - id: point.on_ko
       ja: 倒したときに効果
+      en: When you Knock Out
       match:
         - 'opponent.s (Active )?Pokémon is Knocked Out by damage from (this|an attack used by)'
         - 'you get 1 more point'
         - 'Whenever your opponent.s Pokémon is Knocked Out'
     - id: point.on_knocked
       ja: 倒されたときに効果
+      en: When Knocked Out
       match:
         - '(this Pokémon|this card is attached to) is Knocked Out by damage'
         - 'and is Knocked Out by damage'
@@ -457,16 +532,20 @@
 
 - id: passive
   ja: 常時効果
+  en: Passive effects
   children:
     - id: passive.ability
       ja: 常時はたらく特性
+      en: Passive Ability
       on: [ability]
       # 「自分の番に1回」でない特性。scripts/tag.ts で判定
     - id: passive.tool
       ja: どうぐで強化
+      en: Boosted by Pokémon Tool
       on: [tool]
     - id: passive.type_boost
       ja: タイプ・グループ全体を強化
+      en: Type or group-wide boost
       match:
         - 'attacks used by (your|each) \[[A-Z]\] Pokémon'
         - 'Attacks used by your \[[A-Z]\] Pokémon'
@@ -479,24 +558,30 @@
 
 - id: cond
   ja: 条件で変わる
+  en: Conditional
   children:
     - id: cond.trash
       ja: トラッシュで変わる
+      en: Depends on discard pile
       children:
         - id: cond.trash.count
           ja: トラッシュの枚数で変わる
+          en: Discard pile count
           requires: [supply.trash.fill]
           match:
             - 'for each [^.]*in your discard pile'
         - id: cond.trash.card
           ja: トラッシュに特定のカード
+          en: Specific card in discard pile
           match:
             - 'If [^.]* is in your discard pile'
     - id: cond.bench
       ja: ベンチで変わる
+      en: Depends on Bench
       children:
         - id: cond.bench.own
           ja: 自分のベンチの数で変わる
+          en: Your Bench count
           requires: [supply.bench.fill]
           match:
             - 'for each (of your Benched|Benched Pokémon|Evolution Pokémon on your Bench)'
@@ -505,11 +590,13 @@
             - 'for each of your Benched'
         - id: cond.bench.opp
           ja: 相手のベンチの数で変わる
+          en: Opponent's Bench count
           match:
             - 'for each of your opponent.s Benched'
             - 'for each Benched Pokémon \(both'
         - id: cond.bench.specific
           ja: 特定のポケモンがいると変わる
+          en: Specific Pokémon in play
           match:
             - 'If [A-Z][^.]* is on your Bench'
             - 'If you have [^.]* in play'
@@ -521,6 +608,7 @@
             - 'that have the [A-Z][\w ]+ attack'
     - id: cond.energy
       ja: エネルギーで変わる
+      en: Depends on Energy
       requires: [supply.energy.many]
       match:
         - 'for each (\[[A-Z]\] )?Energy attached to (this|all of your)'
@@ -537,9 +625,11 @@
         - 'Flip a coin for each (\[[A-Z]\] )?Energy attached'
     - id: cond.damage
       ja: ダメージで変わる
+      en: Depends on damage
       children:
         - id: cond.damage.self
           ja: 自分のダメージで変わる
+          en: Depends on own damage
           requires: [supply.damage.self]
           match:
             - 'this Pokémon has (damage on it|no damage|full HP)'
@@ -549,11 +639,13 @@
             - 'Benched Pokémon have damage on them'
         - id: cond.damage.opp
           ja: 相手のダメージ・HPで変わる
+          en: Opponent's damage or HP
           match:
             - 'opponent.s Active Pokémon has damage on it'
             - 'remaining HP than this Pokémon'
         - id: cond.damage.opp_bench
           ja: 相手のベンチのダメージで変わる
+          en: Damaged opponent's Bench
           requires: [supply.opp.bench_damage]
           match:
             - 'opponent.s Pokémon that ha(s|ve) damage on (it|them)'
@@ -561,18 +653,21 @@
             - 'Benched Pokémon that has damage on it'
     - id: cond.deck
       ja: 山札の中身で変わる
+      en: Depends on deck
       match:
         - 'for each [^.]* in your opponent.s deck'
         - 'Discard the top card of your deck(, and if that card is|\. If that card is)'
         - 'Reveal the top \d+ cards of your deck\. This attack does'
     - id: cond.hand
       ja: 手札の枚数で変わる
+      en: Depends on hand size
       match:
         - 'cards? in (your|their) hand(,| as)'
         - 'for each card in your hand'
         - 'for each card in your opponent.s hand'
     - id: cond.point
       ja: ポイントで変わる
+      en: Depends on points
       match:
         - 'point(s)? you have gotten'
         - 'point(s)? your opponent (has gotten|got)'
@@ -583,6 +678,7 @@
         - 'remaining point that your opponent needs'
     - id: cond.turn
       ja: 前の番・この番の行動で変わる
+      en: Depends on last or this turn
       match:
         - 'during your (opponent.s )?last turn'
         - 'evolved (from [^.]* )?during this turn'
@@ -594,19 +690,21 @@
         - 'Knocked Out during this game'
     - id: cond.status
       ja: 相手が状態異常だと変わる
+      en: If opponent has Special Condition
       requires: [supply.status]
       match:
         - 'If your opponent.s Active Pokémon is affected by a Special Condition'
         - 'for each Special Condition affecting'
       # どの状態異常かが決まっているものは、その状態異常にできるカードとだけ結ぶ
       children:
-        - { id: cond.status.poison, ja: 相手がどくだと変わる, requires: [supply.status.poison], match: ['If your opponent.s Active Pokémon is Poisoned'] }
-        - { id: cond.status.burn, ja: 相手がやけどだと変わる, requires: [supply.status.burn], match: ['If your opponent.s Active Pokémon is Burned'] }
-        - { id: cond.status.paralysis, ja: 相手がマヒだと変わる, requires: [supply.status.paralysis], match: ['If your opponent.s Active Pokémon is Paralyzed'] }
-        - { id: cond.status.sleep, ja: 相手がねむりだと変わる, requires: [supply.status.sleep], match: ['If your opponent.s Active Pokémon is Asleep', 'if your opponent.s Active Pokémon is Asleep'] }
-        - { id: cond.status.confusion, ja: 相手がこんらんだと変わる, requires: [supply.status.confusion], match: ['If your opponent.s Active Pokémon is Confused'] }
+        - { id: cond.status.poison, ja: 相手がどくだと変わる, en: If opponent is Poisoned, requires: [supply.status.poison], match: ['If your opponent.s Active Pokémon is Poisoned'] }
+        - { id: cond.status.burn, ja: 相手がやけどだと変わる, en: If opponent is Burned, requires: [supply.status.burn], match: ['If your opponent.s Active Pokémon is Burned'] }
+        - { id: cond.status.paralysis, ja: 相手がマヒだと変わる, en: If opponent is Paralyzed, requires: [supply.status.paralysis], match: ['If your opponent.s Active Pokémon is Paralyzed'] }
+        - { id: cond.status.sleep, ja: 相手がねむりだと変わる, en: If opponent is Asleep, requires: [supply.status.sleep], match: ['If your opponent.s Active Pokémon is Asleep', 'if your opponent.s Active Pokémon is Asleep'] }
+        - { id: cond.status.confusion, ja: 相手がこんらんだと変わる, en: If opponent is Confused, requires: [supply.status.confusion], match: ['If your opponent.s Active Pokémon is Confused'] }
     - id: cond.target
       ja: 相手の種類で変わる
+      en: Depends on opponent's Pokémon
       match:
         - 'If your opponent.s Active Pokémon is (a|an) '
         - 'If your opponent.s Active Pokémon (has an Ability|has a Pokémon Tool|has .Team Rocket|is Zangoose)'
@@ -616,39 +714,47 @@
         - 'from attacks from (\[[A-Z]\] (or \[[A-Z]\] )?Pokémon|Basic Pokémon|your opponent.s Pokémon ex)'
     - id: cond.tool
       ja: どうぐが付いていると変わる
+      en: If Pokémon Tool attached
       match:
         - 'If this Pokémon has a Pokémon Tool attached'
         - 'for each Pokémon Tool attached'
     - id: cond.stadium
       ja: スタジアムがあると変わる
+      en: If Stadium in play
       match:
         - 'If a Stadium is in play'
 
 - id: coin
   ja: コイン
+  en: Coin flip
   children:
     - id: coin.single
       ja: コイン1回
+      en: 1 coin flip
       match:
         - 'Flip a coin\.'
         - 'flip a coin\.'
         - 'may flip a coin\.'
     - id: coin.multi
       ja: コイン複数回
+      en: Multiple coin flips
       match:
         - '[Ff]lip \d+ coins'
         - 'Flip a coin for each'
     - id: coin.until
       ja: ウラが出るまでコイン
+      en: Flip until tails
       match:
         - 'until you get tails'
     - id: coin.risk
       ja: コイン失敗でデメリット
+      en: Penalty on tails
       match:
         - 'If tails, (this attack does nothing|this Pokémon (also does|is now)|discard|during your next turn)'
         - 'If (both|all) of them are tails, this attack does nothing'
     - id: coin.control
       ja: コインを操作
+      en: Coin flip control
       supplies: [supply.coin.control]
       match:
         - 'ignore all results of those coin flips'
@@ -656,14 +762,17 @@
 
 - id: drawback
   ja: デメリット
+  en: Drawback
   children:
     - id: drawback.cant_attack
       ja: 次の番ワザが使えない
+      en: Can't attack next turn
       match:
         - 'During your next turn, this Pokémon can.t (attack|use)'
         - 'during your next turn, this Pokémon can.t attack'
     - id: drawback.self_status
       ja: 自分が状態異常になる
+      en: Self Special Condition
       match:
         - '^This Pokémon is now'
         - 'your Active Pokémon is now also'
@@ -672,28 +781,33 @@
         - 'it is now Asleep'
     - id: drawback.discard_hand
       ja: 手札を捨てる
+      en: Discard from hand
       supplies: [supply.trash.fill]
       match:
         - '[Dd]iscard (a card|\d+ cards|up to \d+ Pokémon Tool cards) from your hand'
         - 'discard a card from your hand'
     - id: drawback.discard_deck
       ja: 自分の山札を捨てる
+      en: Discard own deck
       supplies: [supply.trash.fill]
       match:
         - '[Dd]iscard the top (card|\d+ cards) of your deck'
         - 'top \d+ cards of each player.s deck'
     - id: drawback.discard_bench
       ja: 自分のベンチをトラッシュ
+      en: Discard own Benched Pokémon
       supplies: [supply.trash.fill]
       match:
         - 'discard (1|any number) of your Benched'
         - 'If you do, discard this Pokémon'
     - id: drawback.ends_turn
       ja: 自分の番が終わる
+      en: Ends your turn
       match:
         - '[Yy]our turn ends'
     - id: drawback.condition
       ja: 使える条件がある
+      en: Usage condition
       match:
         - '[Yy]ou can use this (card|attack) only if'
         - 'this attack does nothing'

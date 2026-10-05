@@ -8,6 +8,7 @@ import { guessEnergy } from "../deck.ts";
 import { useDecks, useToast } from "../store.ts";
 import type { AppCard } from "../types.ts";
 import { Chip, EnergyIcon, Thumb } from "./ui.tsx";
+import { cardName, useLang, useT } from "../i18n.ts";
 
 const PAGE = 8;
 
@@ -15,7 +16,7 @@ const PAGE = 8;
 const strength = (d: TournamentDeck) => (d.place ? d.place / Math.max(d.players, 1) : 1) - (d.wins - d.losses) * 0.001;
 
 type Order = "recommended" | "new" | "best";
-const ORDERS: [Order, string][] = [["recommended", "おすすめ"], ["new", "新しい順"], ["best", "成績順"]];
+const ORDERS: [Order, string, string][] = [["recommended", "おすすめ", "Recommended"], ["new", "新しい順", "Newest"], ["best", "成績順", "Best results"]];
 const DAY = 86400e3;
 const HALF_LIFE_DAYS = 21; // 3週間ごとに重みが半分になる
 
@@ -37,6 +38,8 @@ export function CardDecks({ card, keepOpen }: { card: AppCard; keepOpen?: boolea
   const [shown, setShown] = useState(PAGE);
   // 既定は「おすすめ」（最近の大会で好成績なもの）
   const [order, setOrder] = useState<Order>("recommended");
+  const t = useT();
+  const lang = useLang();
   const all = useMemo(() => {
     if (!index) return [];
     const list = (index.byCard.get(card.id) ?? []).map((i) => index.decks[i]);
@@ -47,9 +50,9 @@ export function CardDecks({ card, keepOpen }: { card: AppCard; keepOpen?: boolea
   }, [index, card.id, order]);
   // よく使われているデッキタイプ（絞り込み用）。おすすめ順では、最近の大会で強いデッキタイプから
   const archs = useMemo(() => {
-    const m = new Map<string, { name: string; n: number; rec: number }>();
+    const m = new Map<string, { name: string; nameEn: string; n: number; rec: number }>();
     for (const d of all) {
-      const x = m.get(d.archId) ?? m.set(d.archId, { name: d.arch, n: 0, rec: 0 }).get(d.archId)!;
+      const x = m.get(d.archId) ?? m.set(d.archId, { name: d.arch, nameEn: d.archEn, n: 0, rec: 0 }).get(d.archId)!;
       x.n += d.dup;
       if (order === "recommended" && index) x.rec += recommendScore(d, index.newest);
     }
@@ -60,21 +63,21 @@ export function CardDecks({ card, keepOpen }: { card: AppCard; keepOpen?: boolea
 
   return (
     <section>
-      <h2 className="mb-2 text-sm font-extrabold text-muted">このカードを使ったデッキ（大会）</h2>
+      <h2 className="mb-2 text-sm font-extrabold text-muted">{t("このカードを使ったデッキ（大会）", "Tournament decks with this card")}</h2>
       {!index ? (
-        <p className="neu rounded-2xl p-4 text-center text-xs font-bold text-muted">大会のデッキを読み込み中…</p>
+        <p className="neu rounded-2xl p-4 text-center text-xs font-bold text-muted">{t("大会のデッキを読み込み中…", "Loading tournament decks…")}</p>
       ) : !all.length ? (
-        <p className="neu rounded-2xl p-4 text-center text-xs font-bold text-muted">勝ち越したデッキでの使用はまだ見つかっていません</p>
+        <p className="neu rounded-2xl p-4 text-center text-xs font-bold text-muted">{t("勝ち越したデッキでの使用はまだ見つかっていません", "Not found in any deck with a winning record yet")}</p>
       ) : (
         <div className="space-y-2.5">
           <div className="flex items-center gap-2">
             <p className="min-w-0 flex-1 text-[11px] font-bold text-muted">
-              勝ち越し・五分のデッキ {total} 件（同じ構成をまとめて {all.length} 種類）
+              {t(`勝ち越し・五分のデッキ ${total} 件（同じ構成をまとめて ${all.length} 種類）`, `${total} decks with an even or winning record (${all.length} unique lists)`)}
             </p>
             <div className="neu-in flex shrink-0 rounded-full p-0.5 text-[11px] font-bold">
-              {ORDERS.map(([o, label]) => (
+              {ORDERS.map(([o, label, en]) => (
                 <button key={o} type="button" onClick={() => { setOrder(o); setShown(PAGE); }} className={`rounded-full px-2 py-1 ${order === o ? "bg-white text-accent shadow" : "text-muted"}`}>
-                  {label}
+                  {lang === "en" ? en : label}
                 </button>
               ))}
             </div>
@@ -82,11 +85,11 @@ export function CardDecks({ card, keepOpen }: { card: AppCard; keepOpen?: boolea
           {archs.length > 1 && (
             <div className="flex flex-wrap gap-1.5">
               <Chip active={!arch} onClick={() => { setArch(undefined); setShown(PAGE); }}>
-                すべて
+                {t("すべて", "All")}
               </Chip>
               {archs.map(([id, a]) => (
                 <Chip key={id} active={arch === id} onClick={() => { setArch(arch === id ? undefined : id); setShown(PAGE); }}>
-                  {a.name} <span className="opacity-70">{a.n}</span>
+                  {lang === "en" ? a.nameEn : a.name} <span className="opacity-70">{a.n}</span>
                 </Chip>
               ))}
             </div>
@@ -96,10 +99,10 @@ export function CardDecks({ card, keepOpen }: { card: AppCard; keepOpen?: boolea
           ))}
           {list.length > shown && (
             <button type="button" onClick={() => setShown((n) => n + PAGE)} className="neu-sm neu-press w-full rounded-full py-2 text-xs font-extrabold text-muted">
-              もっと見る（あと {list.length - shown} 種類）
+              {t(`もっと見る（あと ${list.length - shown} 種類）`, `Show more (${list.length - shown} left)`)}
             </button>
           )}
-          <p className="text-[10px] font-medium text-muted">Limitless TCG の大会結果（{index.fetchedAt.slice(0, 10)} 取得）</p>
+          <p className="text-[10px] font-medium text-muted">{t(`Limitless TCG の大会結果（${index.fetchedAt.slice(0, 10)} 取得）`, `Tournament results from Limitless TCG (fetched ${index.fetchedAt.slice(0, 10)})`)}</p>
         </div>
       )}
     </section>
@@ -110,6 +113,9 @@ function DeckRow({ d, highlight, keepOpen }: { d: TournamentDeck; highlight: str
   const { byId } = useData();
   const importDecks = useDecks((s) => s.importDecks);
   const show = useToast((s) => s.show);
+  const t = useT();
+  const lang = useLang();
+  const archName = lang === "en" ? d.archEn : d.arch;
   // ポケモン → トレーナーズの順、図鑑順に
   const cards = d.cards
     .map(([id, n]) => ({ card: byId.get(id)!, n }))
@@ -117,12 +123,12 @@ function DeckRow({ d, highlight, keepOpen }: { d: TournamentDeck; highlight: str
     .sort((a, b) => Number(a.card.kind !== "pokemon") - Number(b.card.kind !== "pokemon") || a.card.order - b.card.order);
 
   const copy = () => {
-    const name = `${d.arch} ${d.date.slice(5).replace("-", "/")}${d.place ? ` ${d.place}位` : ""}`;
+    const name = `${archName} ${d.date.slice(5).replace("-", "/")}${d.place ? t(` ${d.place}位`, ` #${d.place}`) : ""}`;
     const ids = cards.flatMap(({ card, n }) => Array(n).fill(card.id) as string[]);
     // 大会のリストにエネルギーが無いときは、カードから決める
     importDecks([{ name, energy: d.energy.length ? d.energy.slice(0, 3) : guessEnergy({ cards: ids }, byId), cards: ids }]);
     const id = useDecks.getState().currentId!;
-    show(`「${name}」をマイデッキにコピーしました`);
+    show(t(`「${name}」をマイデッキにコピーしました`, `Copied “${name}” to your decks`));
     // スマホはそのまま編集画面へ。PCは右の列が新しいデッキになる
     if (!keepOpen) closeDetail(() => navigate(`/deck/${id}/edit`));
   };
@@ -130,9 +136,9 @@ function DeckRow({ d, highlight, keepOpen }: { d: TournamentDeck; highlight: str
   return (
     <div className="neu rounded-2xl p-3">
       <div className="flex items-center gap-1.5">
-        <span className="min-w-0 flex-1 truncate text-sm font-extrabold">{d.arch}</span>
-        {d.energy.map((t) => (
-          <EnergyIcon key={t} type={t} size="sm" />
+        <span className="min-w-0 flex-1 truncate text-sm font-extrabold">{archName}</span>
+        {d.energy.map((e) => (
+          <EnergyIcon key={e} type={e} size="sm" />
         ))}
       </div>
       <div className="mt-0.5 flex flex-wrap items-center gap-x-2 text-[10px] font-bold text-muted">
@@ -140,24 +146,24 @@ function DeckRow({ d, highlight, keepOpen }: { d: TournamentDeck; highlight: str
         <span>{d.date}</span>
         {d.place > 0 && (
           <span className="text-accent-deep">
-            {d.place}位／{d.players}人
+            {t(`${d.place}位／${d.players}人`, `#${d.place} of ${d.players}`)}
           </span>
         )}
         <span>
-          {d.wins}勝{d.losses}敗{d.ties ? `${d.ties}分` : ""}
+          {t(`${d.wins}勝${d.losses}敗${d.ties ? `${d.ties}分` : ""}`, `${d.wins}-${d.losses}${d.ties ? `-${d.ties}` : ""}`)}
         </span>
-        {d.dup > 1 && <span>同じ構成 ×{d.dup}</span>}
+        {d.dup > 1 && <span>{t(`同じ構成 ×${d.dup}`, `Same list ×${d.dup}`)}</span>}
       </div>
       <div className="mt-2 grid grid-cols-8 gap-1">
         {cards.map(({ card, n }) => (
-          <button key={card.id} type="button" onClick={() => openCard(card.id)} aria-label={`${card.nameJa} ${n}枚`} className={`relative rounded-[3px] ${card.id === highlight ? "ring-2 ring-accent" : ""}`}>
+          <button key={card.id} type="button" onClick={() => openCard(card.id)} aria-label={t(`${card.nameJa} ${n}枚`, `${cardName(card, lang)} ×${n}`)} className={`relative rounded-[3px] ${card.id === highlight ? "ring-2 ring-accent" : ""}`}>
             <Thumb card={card} className="rounded-[3px]" />
             {n > 1 && <span className="absolute right-0 bottom-0 rounded-tl-[4px] bg-badge px-1 text-[9px] leading-tight font-extrabold text-white">×{n}</span>}
           </button>
         ))}
       </div>
       <button type="button" onClick={copy} className="btn-ok mt-2.5 w-full rounded-full py-2 text-xs tracking-normal">
-        このデッキをコピーして編集
+        {t("このデッキをコピーして編集", "Copy this deck and edit")}
       </button>
     </div>
   );

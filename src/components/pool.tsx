@@ -4,14 +4,14 @@ import { useAddToDeck, useData } from "../context.tsx";
 import { activeCount, EMPTY_FILTERS, matchFilters, RARITIES, SORTS, sortHits, usePool, type Filters, type SortKey } from "../pool.ts";
 import { SCORED_KINDS, type Cond, type Hit } from "../search/engine.ts";
 import type { AppCard, CardGroup, CardKind, EnergyType, Rule, Stage } from "../types.ts";
-import { GROUP_JA, KIND_JA, STAGE_JA } from "../types.ts";
+import { cardName, groupName, kindName, setName, stageName, tagName, useLang, useT } from "../i18n.ts";
 import { useDecks, useFavorites } from "../store.ts";
 import { Chip, EnergyIcon, IconHeart, IconSearch, IconSort, PoolCard, Sheet } from "./ui.tsx";
 
 const TYPES: EnergyType[] = ["grass", "fire", "water", "lightning", "psychic", "fighting", "darkness", "metal", "dragon", "colorless"];
 const KINDS: CardKind[] = ["pokemon", "supporter", "item", "tool", "stadium", "fossil"];
 const STAGES: Stage[] = ["basic", "stage1", "stage2"];
-const RULES: [Rule, string][] = [["normal", "通常"], ["ex", "ex"], ["mega_ex", "メガシンカex"]];
+const RULES: [Rule, string, string][] = [["normal", "通常", "Regular"], ["ex", "ex", "ex"], ["mega_ex", "メガシンカex", "Mega ex"]];
 const GROUPS: CardGroup[] = ["baby", "ultra_beast", "ancient", "future", "team_rocket"];
 const HP_STEPS = Array.from({ length: 23 }, (_, i) => 30 + i * 10);
 const DMG_STEPS = [30, 50, 70, 90, 100, 120, 150, 180, 200];
@@ -22,6 +22,7 @@ export function usePoolResults(conds: Cond[]) {
   const { filters, sort, desc, favOnly } = usePool();
   const favs = useFavorites((s) => s.ids);
   const { data } = useData();
+  const lang = useLang();
   const scored = conds.some((c) => SCORED_KINDS.includes(c.kind));
   // 「〇〇デッキ」「〇〇と相性がいい」「大会でよく使われる」は、図鑑順より関係の深い順のほうが役に立つ
   const usageFirst = conds.some((c) => c.kind === "deck" || c.kind === "partner" || c.kind === "meta");
@@ -31,15 +32,16 @@ export function usePoolResults(conds: Cond[]) {
     const raw: Hit[] = engine.run(conds, Infinity).filter((h) => (!fav || fav.has(h.card.id)) && matchFilters(h.card, filters));
     // 検索文があるときは「一致度順」なら上位50件（SPEC 4.3）。他の並びでは一致したもの全部を並べ替える
     const key: SortKey = sort === "order" && usageFirst ? "score" : sort === "score" && !scored ? "order" : sort;
-    const sorted = sortHits(raw, key, key === sort ? desc : key === "score", data.meta?.usage);
+    const sorted = sortHits(raw, key, key === sort ? desc : key === "score", data.meta?.usage, lang);
     return { hits: key === "score" && !usageFirst ? sorted.slice(0, 50) : sorted, scored, total: raw.length };
-  }, [engine, conds, filters, sort, desc, scored, usageFirst, favOnly, favs, data]);
+  }, [engine, conds, filters, sort, desc, scored, usageFirst, favOnly, favs, data, lang]);
 }
 
 /** n/20・お気に入り・カードの大きさ・虫めがね（PCでは並べ替え・絞り込みも）のバー */
 export function PoolToolbar({ left, searchOpen, onSearch, filter }: { left: ReactNode; searchOpen?: boolean; onSearch?: () => void; filter?: boolean }) {
   const { columns, setColumns, favOnly, setFavOnly } = usePool();
   const nFav = useFavorites((s) => s.ids.length);
+  const t = useT();
   const seg = (on: boolean) => `flex h-7 w-8 items-center justify-center rounded-full transition ${on ? "bg-white text-accent shadow" : "text-muted"}`;
   return (
     <div className="neu flex items-center gap-2 rounded-2xl px-2.5 py-1.5">
@@ -49,17 +51,17 @@ export function PoolToolbar({ left, searchOpen, onSearch, filter }: { left: Reac
         type="button"
         onClick={() => setFavOnly(!favOnly)}
         aria-pressed={favOnly}
-        title="お気に入り"
+        title={t("お気に入り", "Favorites")}
         className={`flex h-8 items-center gap-1 rounded-full px-2.5 text-xs font-extrabold transition ${favOnly ? "bg-[#ffe3e8] text-[#e5566a] shadow-[inset_0_1px_3px_rgb(229_86_106/0.25)]" : "neu-sm neu-press text-muted"}`}
       >
         <IconHeart filled={favOnly} className="h-4 w-4" />
-        お気に入り{nFav > 0 && <span className="tabular-nums">{nFav}</span>}
+        {t("お気に入り", "Favorites")}{nFav > 0 && <span className="tabular-nums">{nFav}</span>}
       </button>
-      <div className="neu-in flex rounded-full p-0.5" role="group" aria-label="カードの大きさ">
-        <button type="button" onClick={() => setColumns(3)} aria-pressed={columns === 3} title="カードを大きく" aria-label="カードを大きく" className={seg(columns === 3)}>
+      <div className="neu-in flex rounded-full p-0.5" role="group" aria-label={t("カードの大きさ", "Card size")}>
+        <button type="button" onClick={() => setColumns(3)} aria-pressed={columns === 3} title={t("カードを大きく", "Larger cards")} aria-label={t("カードを大きく", "Larger cards")} className={seg(columns === 3)}>
           <IconCardsLarge />
         </button>
-        <button type="button" onClick={() => setColumns(5)} aria-pressed={columns === 5} title="カードを小さく" aria-label="カードを小さく" className={seg(columns === 5)}>
+        <button type="button" onClick={() => setColumns(5)} aria-pressed={columns === 5} title={t("カードを小さく", "Smaller cards")} aria-label={t("カードを小さく", "Smaller cards")} className={seg(columns === 5)}>
           <IconCardsSmall />
         </button>
       </div>
@@ -72,7 +74,7 @@ export function PoolToolbar({ left, searchOpen, onSearch, filter }: { left: Reac
       {onSearch && (
         <>
           <span className="h-6 w-px bg-line" />
-          <button type="button" onClick={onSearch} aria-label="検索" aria-pressed={searchOpen} className={`flex h-8 w-8 items-center justify-center rounded-full ${searchOpen ? "neu-in text-accent" : "text-muted"}`}>
+          <button type="button" onClick={onSearch} aria-label={t("検索", "Search")} aria-pressed={searchOpen} className={`flex h-8 w-8 items-center justify-center rounded-full ${searchOpen ? "neu-in text-accent" : "text-muted"}`}>
             <IconSearch className="h-6 w-6 fill-none stroke-current stroke-[2.4]" />
           </button>
         </>
@@ -102,13 +104,16 @@ function QuickAdd({ card }: { card: AppCard }) {
   const deckId = useDecks((s) => s.currentId ?? s.decks[0]?.id);
   const count = useDecks((s) => s.decks.find((d) => d.id === deckId)?.cards.filter((id) => id === card.id).length ?? 0);
   const removeCard = useDecks((s) => s.removeCard);
+  const lang = useLang();
+  const t = useT();
+  const nm = cardName(card, lang);
   const b = "flex h-7 flex-1 items-center justify-center rounded-full text-base font-extrabold leading-none disabled:opacity-35";
   return (
     <div className="mt-1 flex items-center gap-1">
-      <button type="button" aria-label={`${card.nameJa}を1枚外す`} disabled={!count} onClick={() => deckId && removeCard(deckId, card.id)} className={`neu-sm neu-press text-muted ${b}`}>
+      <button type="button" aria-label={t(`${nm}を1枚外す`, `Remove one ${nm}`)} disabled={!count} onClick={() => deckId && removeCard(deckId, card.id)} className={`neu-sm neu-press text-muted ${b}`}>
         −
       </button>
-      <button type="button" aria-label={`${card.nameJa}をデッキに追加`} onClick={() => addToDeck(card)} className={`btn-ok ${b}`}>
+      <button type="button" aria-label={t(`${nm}をデッキに追加`, `Add ${nm} to deck`)} onClick={() => addToDeck(card)} className={`btn-ok ${b}`}>
         ＋
       </button>
     </div>
@@ -117,6 +122,8 @@ function QuickAdd({ card }: { card: AppCard }) {
 
 /** 検索文の入力欄と、一致した条件のチップ（タップで外す） */
 export function QueryBox({ value, onChange, onSubmit, conds, excluded, onToggle, autoFocus }: { value: string; onChange: (v: string) => void; onSubmit?: (v: string) => void; conds: Cond[]; excluded: Set<string>; onToggle: (id: string) => void; autoFocus?: boolean }) {
+  const t = useT();
+  const lang = useLang();
   return (
     <div className="space-y-2">
       <form
@@ -134,22 +141,22 @@ export function QueryBox({ value, onChange, onSubmit, conds, excluded, onToggle,
           autoFocus={autoFocus}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          placeholder="例: エネ加速できる炎のカード"
+          placeholder={t("例: エネ加速できる炎のカード", "e.g. fire energy acceleration")}
           className="min-w-0 flex-1 bg-transparent text-base font-bold outline-none placeholder:font-medium placeholder:text-muted"
         />
         {value && (
-          <button type="button" onClick={() => onChange("")} className="text-muted" aria-label="消す">
+          <button type="button" onClick={() => onChange("")} className="text-muted" aria-label={t("消す", "Clear")}>
             ✕
           </button>
         )}
       </form>
       {conds.length > 0 && (
-        <div className="flex flex-wrap gap-1.5" aria-label="一致した条件（タップで外す）">
+        <div className="flex flex-wrap gap-1.5" aria-label={t("一致した条件（タップで外す）", "Matched conditions (tap to remove)")}>
           {conds.map((c) => {
             const off = excluded.has(c.id);
             return (
-              <Chip key={c.id} tone={c.kind === "text" ? "text" : "match"} title={off ? "タップで戻す" : "タップで外す"} onClick={() => onToggle(c.id)}>
-                <span className={off ? "line-through opacity-50" : ""}>{c.label}</span>
+              <Chip key={c.id} tone={c.kind === "text" ? "text" : "match"} title={off ? t("タップで戻す", "Tap to restore") : t("タップで外す", "Tap to remove")} onClick={() => onToggle(c.id)}>
+                <span className={off ? "line-through opacity-50" : ""}>{lang === "en" ? c.en : c.label}</span>
                 <span aria-hidden>{off ? "↺" : "×"}</span>
               </Chip>
             );
@@ -165,6 +172,7 @@ export function PoolGrid({ hits, counts, maxed, onTap, footer, wide }: { hits: H
   const { columns, favOnly, setFavOnly } = usePool();
   const addToDeck = useAddToDeck(); // 長押しで今のデッキに追加（タップは詳細）
   const nFav = useFavorites((s) => s.ids.length);
+  const t = useT();
   const [shown, setShown] = useState(90);
   const sentinel = useRef<HTMLDivElement>(null);
   useEffect(() => setShown(90), [hits]);
@@ -181,15 +189,19 @@ export function PoolGrid({ hits, counts, maxed, onTap, footer, wide }: { hits: H
         <div className="mb-3 flex items-center gap-2 rounded-2xl bg-[#ffe3e8]/70 px-3 py-2 text-xs font-bold text-[#b8394c]">
           <IconHeart filled className="h-4 w-4 shrink-0" />
           <span className="min-w-0 flex-1 leading-tight">
-            お気に入り {hits.length < nFav ? `${nFav}枚中 ${hits.length}枚` : `${nFav}枚`}
-            <span className="block text-[10px] font-medium text-[#c76676]">−／＋ でそのままデッキに出し入れ</span>
+            {t("お気に入り", "Favorites")} {hits.length < nFav ? t(`${nFav}枚中 ${hits.length}枚`, `${hits.length} of ${nFav}`) : t(`${nFav}枚`, `${nFav}`)}
+            <span className="block text-[10px] font-medium text-[#c76676]">{t("−／＋ でそのままデッキに出し入れ", "Use − / ＋ to add or remove from your deck")}</span>
           </span>
           <button type="button" onClick={() => setFavOnly(false)} className="shrink-0 rounded-full bg-white/80 px-2.5 py-1 text-[11px] font-extrabold">
-            すべてのカード
+            {t("すべてのカード", "All cards")}
           </button>
         </div>
       )}
-      {favOnly && !nFav && <p className="py-10 text-center text-sm font-bold text-muted">まだお気に入りはありません。カード詳細の「♡ お気に入りに追加」で登録できます</p>}
+      {favOnly && !nFav && (
+        <p className="py-10 text-center text-sm font-bold text-muted">
+          {t("まだお気に入りはありません。カード詳細の「♡ お気に入り」で登録できます", "No favorites yet. Add one with “♡ Favorite” on a card’s detail.")}
+        </p>
+      )}
       <div
         className={wide ? `grid ${columns === 5 ? "gap-2" : "gap-3"}` : `grid ${columns === 5 ? "grid-cols-5 gap-2 sm:grid-cols-7 md:grid-cols-8" : "grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5"}`}
         style={wide ? { gridTemplateColumns: `repeat(auto-fill, minmax(${columns === 5 ? 76 : 116}px, 1fr))` } : undefined}
@@ -211,7 +223,9 @@ function FilterButton() {
   const { filters, sort } = usePool();
   const [open, setOpen] = useState(false);
   const n = activeCount(filters);
-  const label = SORTS.find((s) => s.key === sort)?.label;
+  const lang = useLang();
+  const so = SORTS.find((s) => s.key === sort);
+  const label = so && (lang === "en" ? so.en : so.label);
   return (
     <>
       <button type="button" onClick={() => setOpen(true)} className="neu-sm neu-press relative flex items-center gap-1.5 rounded-full py-1.5 pr-3 pl-2 text-xs font-extrabold text-[#5aa9d6]">
@@ -231,14 +245,15 @@ export function PoolFab({ bottom = "bottom-24" }: { bottom?: string }) {
   const { filters, sort } = usePool();
   const [open, setOpen] = useState(false);
   const n = activeCount(filters);
+  const t = useT();
   return (
     <>
       <div className={`fixed right-4 z-40 ${bottom} pb-[env(safe-area-inset-bottom)]`}>
-        <button type="button" onClick={() => setOpen(true)} aria-label="並べ替え・絞り込み" className="neu neu-press relative flex h-16 w-16 items-center justify-center rounded-full text-[#5aa9d6]">
+        <button type="button" onClick={() => setOpen(true)} aria-label={t("並べ替え・絞り込み", "Sort & filter")} className="neu neu-press relative flex h-16 w-16 items-center justify-center rounded-full text-[#5aa9d6]">
           <IconSort />
           {(n > 0 || sort !== "order") && <span className="absolute -top-1 -left-1 flex h-6 min-w-6 items-center justify-center rounded-full bg-accent px-1 text-xs font-extrabold text-white">{n || "↕"}</span>}
         </button>
-        <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} aria-label="いちばん上へ" className="absolute -top-2 -right-1 flex h-7 w-7 items-center justify-center rounded-full bg-badge text-sm text-white shadow">
+        <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} aria-label={t("いちばん上へ", "Back to top")} className="absolute -top-2 -right-1 flex h-7 w-7 items-center justify-center rounded-full bg-badge text-sm text-white shadow">
           ↑
         </button>
       </div>
@@ -280,6 +295,8 @@ export function SortFilterSheet({ open, onClose }: { open: boolean; onClose: () 
   const [sort, setSort] = useState<SortKey>(pool.sort);
   const [desc, setDesc] = useState(pool.desc);
   const [openTag, setOpenTag] = useState<string>();
+  const t = useT();
+  const lang = useLang();
   useEffect(() => {
     if (open) {
       setF(pool.filters);
@@ -301,11 +318,11 @@ export function SortFilterSheet({ open, onClose }: { open: boolean; onClose: () 
     <Sheet
       open={open}
       onClose={onClose}
-      title="並べ替え・絞り込み"
+      title={t("並べ替え・絞り込み", "Sort & filter")}
       footer={
         <div className="flex gap-3">
           <button type="button" onClick={() => { setF(EMPTY_FILTERS); setSort("order"); setDesc(false); }} className="neu neu-press flex-1 rounded-full py-3 font-extrabold text-muted">
-            リセット
+            {t("リセット", "Reset")}
           </button>
           <button
             type="button"
@@ -324,12 +341,12 @@ export function SortFilterSheet({ open, onClose }: { open: boolean; onClose: () 
       }
     >
       <Section
-        title="並べ替え"
+        title={t("並べ替え", "Sort")}
         right={
           <div className="neu-in flex rounded-full p-0.5 text-xs font-bold">
             {[false, true].map((d) => (
               <button key={String(d)} type="button" onClick={() => setDesc(d)} className={`rounded-full px-3 py-1 ${desc === d ? "bg-white text-accent shadow" : "text-muted"}`}>
-                {d ? "大きい順" : "小さい順"}
+                {d ? t("大きい順", "Descending") : t("小さい順", "Ascending")}
               </button>
             ))}
           </div>
@@ -337,106 +354,106 @@ export function SortFilterSheet({ open, onClose }: { open: boolean; onClose: () 
       >
         {SORTS.map((s) => (
           <Chip key={s.key} active={sort === s.key} onClick={() => { setSort(s.key); setDesc(s.desc); }}>
-            {s.label}
+            {lang === "en" ? s.en : s.label}
           </Chip>
         ))}
       </Section>
 
-      <Section title="タイプ">
-        {TYPES.map((t) => (
-          <button key={t} type="button" onClick={() => toggle("types", t)} aria-pressed={f.types.includes(t)} className={`rounded-full p-1 ${f.types.includes(t) ? "ring-[3px] ring-accent" : "opacity-60"}`}>
-            <EnergyIcon type={t} size="xl" />
+      <Section title={t("タイプ", "Type")}>
+        {TYPES.map((ty) => (
+          <button key={ty} type="button" onClick={() => toggle("types", ty)} aria-pressed={f.types.includes(ty)} className={`rounded-full p-1 ${f.types.includes(ty) ? "ring-[3px] ring-accent" : "opacity-60"}`}>
+            <EnergyIcon type={ty} size="xl" />
           </button>
         ))}
       </Section>
-      <Section title="カードの種類">
+      <Section title={t("カードの種類", "Card type")}>
         {KINDS.map((k) => (
           <Chip key={k} active={f.kinds.includes(k)} onClick={() => toggle("kinds", k)}>
-            {KIND_JA[k]}
+            {kindName(k, lang)}
           </Chip>
         ))}
       </Section>
-      <Section title="進化">
+      <Section title={t("進化", "Stage")}>
         {STAGES.map((s) => (
           <Chip key={s} active={f.stages.includes(s)} onClick={() => toggle("stages", s)}>
-            {STAGE_JA[s]}
+            {stageName(s, lang)}
           </Chip>
         ))}
       </Section>
-      <Section title="ルール">
-        {RULES.map(([r, label]) => (
+      <Section title={t("ルール", "Rule")}>
+        {RULES.map(([r, label, en]) => (
           <Chip key={r} active={f.rules.includes(r)} onClick={() => toggle("rules", r)}>
-            {label}
+            {lang === "en" ? en : label}
           </Chip>
         ))}
         <span className="mx-1 h-7 w-px bg-line" />
         <Chip active={f.ability === "yes"} onClick={() => setF({ ...f, ability: f.ability === "yes" ? "" : "yes" })}>
-          特性あり
+          {t("特性あり", "Has Ability")}
         </Chip>
         <Chip active={f.ability === "no"} onClick={() => setF({ ...f, ability: f.ability === "no" ? "" : "no" })}>
-          特性なし
+          {t("特性なし", "No Ability")}
         </Chip>
       </Section>
       <Section title="HP">
-        <NumSelect value={f.hpMin} onChange={(v) => setF({ ...f, hpMin: v })} options={HP_STEPS} placeholder="下限なし" suffix=" 以上" />
+        <NumSelect value={f.hpMin} onChange={(v) => setF({ ...f, hpMin: v })} options={HP_STEPS} placeholder={t("下限なし", "No min")} suffix={t(" 以上", "+")} />
         <span className="self-center text-muted">〜</span>
-        <NumSelect value={f.hpMax} onChange={(v) => setF({ ...f, hpMax: v })} options={HP_STEPS} placeholder="上限なし" suffix=" 以下" />
+        <NumSelect value={f.hpMax} onChange={(v) => setF({ ...f, hpMax: v })} options={HP_STEPS} placeholder={t("上限なし", "No max")} suffix={t(" 以下", " or less")} />
       </Section>
-      <Section title="にげるエネ">
+      <Section title={t("にげるエネ", "Retreat Cost")}>
         {[0, 1, 2, 3, 4].map((n) => (
           <Chip key={n} active={f.retreat.includes(n)} onClick={() => toggle("retreat", n)}>
-            {n === 4 ? "4以上" : n}
+            {n === 4 ? t("4以上", "4+") : n}
           </Chip>
         ))}
       </Section>
-      <Section title="ワザ">
-        <NumSelect value={f.damageMin} onChange={(v) => setF({ ...f, damageMin: v })} options={DMG_STEPS} placeholder="最大ダメージ" suffix=" 以上" />
-        <NumSelect value={f.costMax} onChange={(v) => setF({ ...f, costMax: v })} options={[0, 1, 2, 3, 4]} placeholder="ワザのエネ数" suffix="エネ以下で使える" />
+      <Section title={t("ワザ", "Attacks")}>
+        <NumSelect value={f.damageMin} onChange={(v) => setF({ ...f, damageMin: v })} options={DMG_STEPS} placeholder={t("最大ダメージ", "Max damage")} suffix={t(" 以上", "+")} />
+        <NumSelect value={f.costMax} onChange={(v) => setF({ ...f, costMax: v })} options={[0, 1, 2, 3, 4]} placeholder={t("ワザのエネ数", "Attack cost")} suffix={t("エネ以下で使える", " Energy or less")} />
       </Section>
-      <Section title="弱点">
-        {TYPES.filter((t) => t !== "dragon" && t !== "colorless").map((t) => (
-          <button key={t} type="button" onClick={() => toggle("weakness", t)} aria-pressed={f.weakness.includes(t)} className={`rounded-full p-1 ${f.weakness.includes(t) ? "ring-[3px] ring-accent" : "opacity-60"}`}>
-            <EnergyIcon type={t} size="lg" />
+      <Section title={t("弱点", "Weakness")}>
+        {TYPES.filter((ty) => ty !== "dragon" && ty !== "colorless").map((ty) => (
+          <button key={ty} type="button" onClick={() => toggle("weakness", ty)} aria-pressed={f.weakness.includes(ty)} className={`rounded-full p-1 ${f.weakness.includes(ty) ? "ring-[3px] ring-accent" : "opacity-60"}`}>
+            <EnergyIcon type={ty} size="lg" />
           </button>
         ))}
       </Section>
-      <Section title="効果">
-        {topTags.map((t) => {
-          const selected = f.tags.includes(t.id) || f.tags.some((x) => x.startsWith(t.id + "."));
+      <Section title={t("効果", "Effects")}>
+        {topTags.map((tg) => {
+          const selected = f.tags.includes(tg.id) || f.tags.some((x) => x.startsWith(tg.id + "."));
           return (
-            <Chip key={t.id} active={selected} onClick={() => setOpenTag(openTag === t.id ? undefined : t.id)}>
-              {t.ja} {openTag === t.id ? "▴" : "▾"}
+            <Chip key={tg.id} active={selected} onClick={() => setOpenTag(openTag === tg.id ? undefined : tg.id)}>
+              {tagName(tg, lang)} {openTag === tg.id ? "▴" : "▾"}
             </Chip>
           );
         })}
         {openTag && (
           <div className="neu-in mt-1 flex w-full flex-wrap gap-1.5 rounded-2xl p-3">
-            {[data.tags.find((t) => t.id === openTag)!, ...childTags(openTag), ...childTags(openTag).flatMap((c) => childTags(c.id))].map((t) => (
-              <Chip key={t.id} active={f.tags.includes(t.id)} onClick={() => toggle("tags", t.id)}>
-                {t.id === openTag ? `${t.ja}（すべて）` : t.ja}
+            {[data.tags.find((tg) => tg.id === openTag)!, ...childTags(openTag), ...childTags(openTag).flatMap((c) => childTags(c.id))].map((tg) => (
+              <Chip key={tg.id} active={f.tags.includes(tg.id)} onClick={() => toggle("tags", tg.id)}>
+                {tg.id === openTag ? t(`${tg.ja}（すべて）`, `${tagName(tg, lang)} (all)`) : tagName(tg, lang)}
               </Chip>
             ))}
           </div>
         )}
       </Section>
-      <Section title="グループ">
+      <Section title={t("グループ", "Group")}>
         {GROUPS.map((g) => (
           <Chip key={g} active={f.groups.includes(g)} onClick={() => toggle("groups", g)}>
-            {GROUP_JA[g]}
+            {groupName(g, lang)}
           </Chip>
         ))}
       </Section>
-      <Section title="レアリティ">
+      <Section title={t("レアリティ", "Rarity")}>
         {RARITIES.map((r) => (
           <Chip key={r.key} active={f.rarities.includes(r.key)} onClick={() => toggle("rarities", r.key)}>
-            {r.label}
+            {lang === "en" ? r.en ?? r.label : r.label}
           </Chip>
         ))}
       </Section>
-      <Section title="収録パック">
+      <Section title={t("収録パック", "Expansion")}>
         {sets.map((s) => (
           <Chip key={s.code} active={f.sets.includes(s.code)} onClick={() => toggle("sets", s.code)}>
-            {s.nameJa}
+            {setName(s, lang)}
           </Chip>
         ))}
       </Section>

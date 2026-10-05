@@ -8,26 +8,29 @@ import { CardDetail } from "../pages/CardPage.tsx";
 import { useDecks, useFavorites, useToast } from "../store.ts";
 import type { AppCard } from "../types.ts";
 import { IconHeart, Thumb } from "./ui.tsx";
+import { cardName, useLang, useT } from "../i18n.ts";
 
 /** お気に入りの登録・解除（カード名の横に置く小さなボタン） */
 export function FavToggle({ card }: { card: AppCard }) {
   const on = useFavorites((s) => s.ids.includes(card.id));
   const toggle = useFavorites((s) => s.toggle);
   const show = useToast((s) => s.show);
+  const t = useT();
+  const nm = cardName(card, useLang());
   return (
     <button
       type="button"
       aria-pressed={on}
       onClick={() => {
         toggle(card.id);
-        show(on ? `「${card.nameJa}」をお気に入りから外しました` : `「${card.nameJa}」をお気に入りに登録しました`);
+        show(on ? t(`「${nm}」をお気に入りから外しました`, `Removed ${nm} from favorites`) : t(`「${nm}」をお気に入りに登録しました`, `Added ${nm} to favorites`));
       }}
-      aria-label={on ? "お気に入りから外す" : "お気に入りに追加"}
-      title={on ? "お気に入りから外す" : "お気に入りに追加"}
+      aria-label={on ? t("お気に入りから外す", "Remove from favorites") : t("お気に入りに追加", "Add to favorites")}
+      title={on ? t("お気に入りから外す", "Remove from favorites") : t("お気に入りに追加", "Add to favorites")}
       className={`flex shrink-0 items-center gap-0.5 rounded-full px-2 py-1 text-[10px] font-extrabold transition active:scale-95 ${on ? "bg-[#ffe3e8] text-[#e5566a]" : "neu-sm text-muted"}`}
     >
       <IconHeart filled={on} className="h-3.5 w-3.5" />
-      {on ? "登録済み" : "お気に入り"}
+      {on ? t("登録済み", "Favorited") : t("お気に入り", "Favorite")}
     </button>
   );
 }
@@ -39,32 +42,36 @@ export function DeckButtons({ card }: { card: AppCard }) {
   const removeCard = useDecks((s) => s.removeCard);
   const show = useToast((s) => s.show);
   const n = deck?.cards.filter((id) => id === card.id).length ?? 0;
+  const t = useT();
+  const nm = cardName(card, useLang());
   return (
     <div className="space-y-1">
       <div className="flex items-center gap-1.5">
         <button
           type="button"
-          aria-label="デッキから1枚外す"
+          aria-label={t("デッキから1枚外す", "Remove one from deck")}
           disabled={!n}
           onClick={() => {
             removeCard(deck!.id, card.id);
-            show(`「${card.nameJa}」を1枚外しました（${deck!.cards.length - 1}/${DECK_SIZE}）`);
+            show(t(`「${nm}」を1枚外しました（${deck!.cards.length - 1}/${DECK_SIZE}）`, `Removed one ${nm} (${deck!.cards.length - 1}/${DECK_SIZE})`));
           }}
           className="neu-sm neu-press flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xl font-extrabold text-muted disabled:opacity-35"
         >
           −
         </button>
         <button type="button" onClick={() => addToDeck(card)} className="btn-ok flex h-10 min-w-0 flex-1 items-center justify-center gap-0.5 rounded-full px-2 text-xs tracking-normal whitespace-nowrap">
-          <span className="text-lg leading-none">＋</span>デッキに追加
+          <span className="text-lg leading-none">＋</span>{t("デッキに追加", "Add to deck")}
         </button>
       </div>
       <div className="truncate text-center text-[10px] font-bold text-muted">
         {deck ? (
           <>
-            {deck.name}に <span className={`text-sm tabular-nums ${n ? "text-accent-deep" : "text-ink"}`}>{n}</span> 枚（{deck.cards.length}/{DECK_SIZE}）
+            {t(`${deck.name}に `, `${deck.name}: `)}
+            <span className={`text-sm tabular-nums ${n ? "text-accent-deep" : "text-ink"}`}>{n}</span>
+            {t(` 枚（${deck.cards.length}/${DECK_SIZE}）`, ` (${deck.cards.length}/${DECK_SIZE})`)}
           </>
         ) : (
-          "デッキはまだありません"
+          t("デッキはまだありません", "No decks yet")
         )}
       </div>
     </div>
@@ -87,19 +94,21 @@ const BackIcon = () => (
 /** 戻る（1枚前へ）・カード名・✕（まとめて閉じる） */
 function DetailHeader({ card }: { card?: AppCard }) {
   const { pos } = useDetail();
+  const t = useT();
+  const lang = useLang();
   return (
     <div className="flex items-center gap-2">
       {pos > 0 ? (
-        <IconBtn label="1つ前のカードへ" onClick={backDetail}>
+        <IconBtn label={t("1つ前のカードへ", "Previous card")} onClick={backDetail}>
           <BackIcon />
         </IconBtn>
       ) : (
         <span className="w-7 shrink-0" />
       )}
       <h2 className="min-w-0 flex-1 truncate text-center text-sm font-extrabold">
-        {card?.nameJa}
+        {card && cardName(card, lang)}
       </h2>
-      <IconBtn label="閉じる" onClick={() => closeDetail()}>
+      <IconBtn label={t("閉じる", "Close")} onClick={() => closeDetail()}>
         <span className="text-sm font-extrabold">✕</span>
       </IconBtn>
     </div>
@@ -146,6 +155,8 @@ export function DetailSheet() {
   const { stack, pos, open, snap } = useDetail();
   const id = stack[pos];
   const card = id ? byId.get(id) : undefined;
+  const t = useT();
+  const lang = useLang();
   const sheet = useRef<HTMLDivElement>(null);
   const header = useRef<HTMLDivElement>(null);
   const content = useRef<HTMLDivElement>(null);
@@ -224,7 +235,7 @@ export function DetailSheet() {
       <button
         type="button"
         tabIndex={-1}
-        aria-label="閉じる"
+        aria-label={t("閉じる", "Close")}
         onClick={() => closeDetail()}
         className={`fixed inset-0 z-[49] bg-[#3d4757]/35 transition-opacity duration-300 ${dim > 0 && open ? "" : "pointer-events-none"}`}
         style={{ opacity: open ? dim : 0 }}
@@ -234,12 +245,12 @@ export function DetailSheet() {
         role="dialog"
         aria-modal={full}
         aria-hidden={!open}
-        aria-label={card?.nameJa ?? "カード詳細"}
+        aria-label={card ? cardName(card, lang) : t("カード詳細", "Card details")}
         className={`fixed inset-x-0 bottom-0 z-50 mx-auto flex h-[94dvh] max-w-3xl flex-col rounded-t-3xl bg-canvas shadow-[0_-6px_24px_rgb(61_71_87/0.22)] ${drag === null ? "transition-transform duration-300 ease-[cubic-bezier(.2,.8,.2,1)]" : ""} ${open ? "" : "pointer-events-none"}`}
         style={{ transform }}
       >
         <div ref={header} className="shrink-0 px-3 pt-1 pb-1.5">
-          <button type="button" aria-label={snap === "half" ? "いっぱいに開く" : "半分に下げる"} onClick={() => useDetail.setState({ snap: snap === "half" ? "full" : "half" })} className="mx-auto block pt-0.5 pb-1">
+          <button type="button" aria-label={snap === "half" ? t("いっぱいに開く", "Expand") : t("半分に下げる", "Lower halfway")} onClick={() => useDetail.setState({ snap: snap === "half" ? "full" : "half" })} className="mx-auto block pt-0.5 pb-1">
             <span className="block h-1 w-10 rounded-full bg-[#c5cfdb]" />
           </button>
           <DetailHeader card={card} />
@@ -257,6 +268,8 @@ export function DetailDock({ bottom }: { bottom: string }) {
   const { byId } = useData();
   const { stack, pos, open } = useDetail();
   const startY = useRef(0);
+  const t = useT();
+  const lang = useLang();
   const cards = stack
     .slice(0, pos + 1)
     .reverse()
@@ -270,7 +283,7 @@ export function DetailDock({ bottom }: { bottom: string }) {
       onClick={reopenDetail}
       onTouchStart={(e) => (startY.current = e.touches[0].clientY)}
       onTouchEnd={(e) => e.changedTouches[0].clientY - startY.current < -24 && reopenDetail()}
-      aria-label={`最近見たカード「${cards[0].nameJa}」を開く`}
+      aria-label={t(`最近見たカード「${cards[0].nameJa}」を開く`, `Open recently viewed: ${cards[0].nameEn}`)}
       className="neu neu-press pop-in fixed left-1/2 z-[47] flex max-w-[56vw] -translate-x-1/2 items-center gap-2 rounded-2xl border border-white/70 py-1.5 pr-2.5 pl-2"
       style={{ bottom }}
     >
@@ -288,8 +301,8 @@ export function DetailDock({ bottom }: { bottom: string }) {
           })}
       </span>
       <span className="min-w-0 text-left leading-tight">
-        <span className="block text-[9px] font-bold text-muted">最近見たカード{pos > 0 ? `（${pos + 1}枚）` : ""}</span>
-        <span className="block truncate text-xs font-extrabold">{cards[0].nameJa}</span>
+        <span className="block text-[9px] font-bold text-muted">{t("最近見たカード", "Recently viewed")}{pos > 0 ? t(`（${pos + 1}枚）`, ` (${pos + 1})`) : ""}</span>
+        <span className="block truncate text-xs font-extrabold">{cardName(cards[0], lang)}</span>
       </span>
       <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-canvas text-[10px] text-muted">▲</span>
     </button>
@@ -304,6 +317,9 @@ export function DetailPane() {
   const card = id ? byId.get(id) : undefined;
   const content = useRef<HTMLDivElement>(null);
   useScrollMemory(content, `${pos}:${id}`);
+  const t = useT();
+  const lang = useLang();
+  const last = byId.get(stack[pos]);
   return (
     <div className="flex h-full min-h-0 flex-col">
       {card ? (
@@ -316,14 +332,10 @@ export function DetailPane() {
           <CardDetail key={id} id={id} keepOpen actions={card && <DeckButtons card={card} />} fav={card && <FavToggle card={card} />} />
         ) : (
           <div className="flex h-full flex-col items-center justify-center gap-4 p-8 text-center text-sm font-bold text-muted">
-            <p>
-              左の一覧のカードをクリックすると
-              <br />
-              ここに詳細が出ます
-            </p>
+            <p className="whitespace-pre-line">{t("左の一覧のカードをクリックすると\nここに詳細が出ます", "Click a card in the list on the left\nto see its details here")}</p>
             {stack.length > 0 && (
               <button type="button" onClick={reopenDetail} className="neu-sm neu-press rounded-full px-4 py-2 text-ink">
-                最後に見たカードを開く（{byId.get(stack[pos])?.nameJa}）
+                {t("最後に見たカードを開く", "Open last viewed card")}（{last && cardName(last, lang)}）
               </button>
             )}
           </div>

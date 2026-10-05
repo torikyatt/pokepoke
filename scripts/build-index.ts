@@ -269,7 +269,7 @@ if (existsSync(decksFile)) {
   type RawDeck = [number, string, string, number, number, number, number, string, string, number];
   const raw = JSON.parse(readFileSync(decksFile, "utf8")) as { fetchedAt: string; tournaments: [string, string, number][]; decks: RawDeck[] };
   const archNames = new Map((meta?.archetypes ?? []).map((a) => [a.id, a.nameJa]));
-  const archs: string[][] = []; // [ID, 日本語名]
+  const archs: string[][] = []; // [ID, 日本語名, 英語名]
   const archIndex = new Map<string, number>();
   const decks: (string | number)[][] = [];
   let dropped = 0;
@@ -281,7 +281,7 @@ if (existsSync(decksFile)) {
     }
     if (!archIndex.has(archId)) {
       archIndex.set(archId, archs.length);
-      archs.push([archId, archNames.get(archId) ?? archName(archEn, ids).nameJa]);
+      archs.push([archId, archNames.get(archId) ?? archName(archEn, ids).nameJa, archEn]);
     }
     decks.push([t, archIndex.get(archId)!, place, w, l, ties, energy, cardsStr, dup]);
   }
@@ -293,17 +293,53 @@ if (existsSync(decksFile)) {
 const helpsFile = join(DATA, "trainer-synergy.yaml");
 const helps: AppHelp[] = [];
 if (existsSync(helpsFile)) {
-  const doc = loadYaml(readFileSync(helpsFile, "utf8")) as Record<string, { to: HelpTarget; label: string; weight?: number }[]>;
+  const doc = loadYaml(readFileSync(helpsFile, "utf8")) as Record<string, { to: HelpTarget; label: string; labelEn: string; weight?: number }[]>;
   const tagIds = new Set(tax.map((t) => t.id));
   for (const [id, list] of Object.entries(doc)) {
     const c = outById.get(id);
     if (!c || c.kind === "pokemon") throw new Error(`trainer-synergy.yaml: トレーナーズではない: ${id}`);
     for (const h of list) {
       for (const t of h.to.tags ?? []) if (!tagIds.has(t)) throw new Error(`trainer-synergy.yaml: タグが無い: ${t}（${id}）`);
-      helps.push({ card: id, to: h.to, label: h.label, weight: h.weight ?? 1.2 });
+      if (!h.labelEn) throw new Error(`trainer-synergy.yaml: labelEn が無い: ${id}`);
+      helps.push({ card: id, to: h.to, label: h.label, labelEn: h.labelEn, weight: h.weight ?? 1.2 });
     }
   }
   console.log(`トレーナーズの効く相手: ${helps.length} 件`);
+}
+
+// 英語の検索用の表現辞書（語尾違いは作らず、そのまま使う）
+const lexEnFile = join(DATA, "lexicon-en.yaml");
+const lexiconEn: LexEntry[] = [];
+if (existsSync(lexEnFile)) {
+  const doc = loadYaml(readFileSync(lexEnFile, "utf8")) as Record<string, Record<string, string[]> | string[]>;
+  const tagIds = new Set(tax.map((t) => t.id));
+  const targetOf = (cat: string, key: string): LexEntry["target"] => {
+    switch (cat) {
+      case "tags":
+        if (!tagIds.has(key)) throw new Error(`lexicon-en.yaml: タグが無い: ${key}`);
+        return { tag: key };
+      case "types": return { type: key } as LexEntry["target"];
+      case "kinds": return { kind: key } as LexEntry["target"];
+      case "stages": return { stage: key } as LexEntry["target"];
+      case "rules": return { rule: key } as LexEntry["target"];
+      case "groups": return { group: key } as LexEntry["target"];
+      case "slots": return { slot: key } as LexEntry["target"];
+      default: return { variable: true };
+    }
+  };
+  const seen = new Map<string, number>();
+  for (const [cat, v] of Object.entries(doc)) {
+    const items: [string, string[]][] = Array.isArray(v) ? [["", v]] : Object.entries(v);
+    for (const [key, exprs] of items)
+      for (const expr of exprs) {
+        const e = String(expr).toLowerCase().trim();
+        seen.set(e, (seen.get(e) ?? 0) + 1);
+        lexiconEn.push({ expr: e, target: targetOf(cat, key), weight: 1 });
+      }
+  }
+  // 同じ表現が別の項目にもあれば、両方に結びつけて重みを下げる
+  for (const e of lexiconEn) if (seen.get(e.expr)! > 1) e.weight = 0.7;
+  console.log(`英語の表現辞書: ${lexiconEn.length} 件`);
 }
 
 const data: AppData = {
@@ -311,12 +347,13 @@ const data: AppData = {
   sets: [...setMap.values()].sort((a, b) => a.released.localeCompare(b.released) || a.code.localeCompare(b.code)),
   cards: out,
   tags: tax.map((t) => ({
-    id: t.id, ja: t.ja,
+    id: t.id, ja: t.ja, ...(t.en ? { en: t.en } : {}),
     ...(t.parent ? { parent: t.parent } : {}),
     ...(t.supplies ? { supplies: t.supplies } : {}),
     ...(t.requires ? { requires: t.requires } : {}),
   })),
   lexicon,
+  ...(lexiconEn.length ? { lexiconEn } : {}),
   ...(meta ? { meta } : {}),
   ...(combos.length ? { combos } : {}),
   ...(helps.length ? { helps } : {}),

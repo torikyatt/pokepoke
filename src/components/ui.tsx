@@ -5,6 +5,7 @@ import { useNav, type Tab } from "../nav.ts";
 import { useSettings, useToast } from "../store.ts";
 import type { AppCard, EnergyType } from "../types.ts";
 import { TYPE_JA } from "../types.ts";
+import { cardName, typeName, useLang, useT } from "../i18n.ts";
 
 const TYPE_STYLE: Record<EnergyType, string> = {
   grass: "bg-[#5cb85c] text-white",
@@ -19,20 +20,25 @@ const TYPE_STYLE: Record<EnergyType, string> = {
   colorless: "bg-white text-[#7a8796] ring-1 ring-[#d5dde7]",
 };
 
+const EN_LETTER: Record<EnergyType, string> = { grass: "G", fire: "R", water: "W", lightning: "L", psychic: "P", fighting: "F", darkness: "D", metal: "M", dragon: "N", colorless: "C" };
+
 export function EnergyIcon({ type, size = "md" }: { type: EnergyType; size?: "sm" | "md" | "lg" | "xl" }) {
   const s = { sm: "h-4 w-4 text-[9px]", md: "h-5 w-5 text-[11px]", lg: "h-7 w-7 text-sm", xl: "h-9 w-9 text-base" }[size];
-  const label = type === "colorless" ? "無" : type === "dragon" ? "竜" : TYPE_JA[type];
+  const lang = useLang();
+  // 英語はカードゲームの慣例の1文字（草=G 炎=R 水=W 雷=L 超=P 闘=F 悪=D 鋼=M ドラゴン=N 無色=C）
+  const label = lang === "en" ? EN_LETTER[type] : type === "colorless" ? "無" : type === "dragon" ? "竜" : TYPE_JA[type];
   return (
-    <span title={TYPE_JA[type]} className={`inline-flex shrink-0 items-center justify-center rounded-full font-extrabold leading-none shadow-sm ${s} ${TYPE_STYLE[type]}`}>
+    <span title={typeName(type, lang)} className={`inline-flex shrink-0 items-center justify-center rounded-full font-extrabold leading-none shadow-sm ${s} ${TYPE_STYLE[type]}`}>
       {label}
     </span>
   );
 }
 
 export function Cost({ cost }: { cost: Partial<Record<EnergyType, number>> }) {
+  const t = useT();
   const list = (Object.entries(cost) as [EnergyType, number][]).flatMap(([t, n]) => Array(n).fill(t) as EnergyType[]);
   list.sort((a, b) => (a === "colorless" ? 1 : 0) - (b === "colorless" ? 1 : 0));
-  if (!list.length) return <span className="text-xs text-muted">なし</span>;
+  if (!list.length) return <span className="text-xs text-muted">{t("なし", "None")}</span>;
   return (
     <span className="inline-flex gap-0.5">
       {list.map((t, i) => (
@@ -114,12 +120,13 @@ export function Pressable({ onTap, onLongPress, children, className = "", label 
 
 export function Thumb({ card, className = "" }: { card: AppCard; className?: string }) {
   const lang = useSettings((s) => s.imageLang);
+  const uiLang = useLang();
   const urls = thumbUrls(card, lang);
   return (
     <img
       key={`${card.id}-${lang}`}
       src={urls[0]}
-      alt={card.nameJa}
+      alt={cardName(card, uiLang)}
       loading="lazy"
       decoding="async"
       draggable={false}
@@ -139,8 +146,9 @@ export function Thumb({ card, className = "" }: { card: AppCard; className?: str
 
 /** 一覧のカード。左下に枚数タブ（アプリと同じ形） */
 export function PoolCard({ card, count, maxed, onTap, onLongPress, compact }: { card: AppCard; count?: number; maxed?: boolean; onTap?: () => void; onLongPress?: () => void; compact?: boolean }) {
+  const lang = useLang();
   return (
-    <Pressable onTap={onTap} onLongPress={onLongPress} label={card.nameJa} className="relative rounded-md shadow-[2px_3px_6px_rgb(150_165_185/0.45)]">
+    <Pressable onTap={onTap} onLongPress={onLongPress} label={cardName(card, lang)} className="relative rounded-md shadow-[2px_3px_6px_rgb(150_165_185/0.45)]">
       <Thumb card={card} className={maxed ? "opacity-45" : ""} />
       {!!count && (
         <span className={`count-tab absolute bottom-0 left-0 flex w-[56%] items-center justify-center font-extrabold ${compact ? "h-[19%] text-sm" : "h-[17%] text-lg"}`}>
@@ -163,6 +171,7 @@ export function Toast() {
 
 export function BottomNav() {
   const { active: tab, goTab } = useNav();
+  const t = useT();
   const item = (key: Tab, label: string, _path: string, icon: ReactNode) => (
     <button type="button" onClick={() => goTab(key)} aria-current={tab === key ? "page" : undefined} className={`flex flex-1 flex-col items-center gap-0.5 py-2 text-[11px] font-bold ${tab === key ? "text-accent" : "text-muted"}`}>
       {icon}
@@ -172,9 +181,9 @@ export function BottomNav() {
   return (
     <nav className="neu fixed inset-x-0 bottom-0 z-[46] rounded-t-3xl pb-[env(safe-area-inset-bottom)]">
       <div className="mx-auto flex max-w-3xl">
-        {item("search", "カード", "/", <IconSearch />)}
-        {item("deck", "デッキ", "/deck", <IconDeck />)}
-        {item("settings", "設定", "/settings", <IconGear />)}
+        {item("search", t("カード", "Cards"), "/", <IconSearch />)}
+        {item("deck", t("デッキ", "Decks"), "/deck", <IconDeck />)}
+        {item("settings", t("設定", "Settings"), "/settings", <IconGear />)}
       </div>
     </nav>
   );
@@ -213,11 +222,12 @@ export const IconSort = () => (
 );
 
 export function Header({ title, back, right }: { title: ReactNode; back?: boolean | (() => void); right?: ReactNode }) {
+  const t = useT();
   return (
     <header className="sticky top-0 z-30 bg-canvas/95 px-4 pt-3 pb-2 backdrop-blur">
       <div className="neu flex items-center gap-2 rounded-2xl px-3 py-2.5">
         {back && (
-          <button type="button" onClick={() => (typeof back === "function" ? back() : history.back())} className="neu-sm neu-press -ml-0.5 flex h-8 w-8 items-center justify-center rounded-full text-muted" aria-label="戻る">
+          <button type="button" onClick={() => (typeof back === "function" ? back() : history.back())} className="neu-sm neu-press -ml-0.5 flex h-8 w-8 items-center justify-center rounded-full text-muted" aria-label={t("戻る", "Back")}>
             <svg viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current stroke-[2.5]" aria-hidden>
               <path d="m15 18-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
@@ -233,14 +243,15 @@ export function Header({ title, back, right }: { title: ReactNode; back?: boolea
 /** 画面下からせり上がるシート（PCでは画面の真ん中に出す）。
  *  backdrop-blur などの中に置かれても画面全体に出るよう、body の直下に描く */
 export function Sheet({ open, onClose, title, children, footer }: { open: boolean; onClose: () => void; title: string; children: ReactNode; footer?: ReactNode }) {
+  const t = useT();
   if (!open) return null;
   return createPortal(
     <div className="fixed inset-0 z-50 flex flex-col justify-end lg:items-center lg:justify-center lg:p-6" role="dialog" aria-modal="true" aria-label={title}>
-      <button type="button" aria-label="閉じる" className="absolute inset-0 bg-[#3d4757]/35" onClick={onClose} />
+      <button type="button" aria-label={t("閉じる", "Close")} className="absolute inset-0 bg-[#3d4757]/35" onClick={onClose} />
       <div className="sheet-up relative mx-auto flex max-h-[88dvh] w-full max-w-3xl flex-col rounded-t-3xl bg-panel shadow-2xl lg:max-w-2xl lg:rounded-3xl">
         <div className="flex items-center justify-between px-5 pt-4 pb-2">
           <h2 className="text-lg font-extrabold">{title}</h2>
-          <button type="button" onClick={onClose} className="neu-sm neu-press flex h-8 w-8 items-center justify-center rounded-full text-muted" aria-label="閉じる">
+          <button type="button" onClick={onClose} className="neu-sm neu-press flex h-8 w-8 items-center justify-center rounded-full text-muted" aria-label={t("閉じる", "Close")}>
             ✕
           </button>
         </div>

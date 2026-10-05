@@ -3,10 +3,13 @@ import { useEffect, useRef, useState } from "react";
 import { printImageUrl, thumbUrl } from "../data/load.ts";
 import { useSettings } from "../store.ts";
 import type { AppCard } from "../types.ts";
-import { SetBadge, RARITY_JA } from "./prints.tsx";
+import { SetBadge, rarityLabel } from "./prints.tsx";
+import { cardName, useLang, useT } from "../i18n.ts";
 
 export function PrintGallery({ card, index, onIndex }: { card: AppCard; index: number; onIndex: (i: number) => void }) {
   const lang = useSettings((s) => s.imageLang);
+  const uiLang = useLang();
+  const t = useT();
   const ref = useRef<HTMLDivElement>(null);
   const n = card.prints.length;
   // 外から（収録の一覧をタップしたとき）指定された絵柄へスクロールする
@@ -50,7 +53,7 @@ export function PrintGallery({ card, index, onIndex }: { card: AppCard; index: n
               src={printImageUrl(pr, lang)}
               loading={i === 0 ? "eager" : "lazy"}
               draggable={false}
-              alt={`${card.nameJa}（${pr.id.toUpperCase()}）`}
+              alt={`${cardName(card, uiLang)}（${pr.id.toUpperCase()}）`}
               onError={(e) => {
                 // 日本語 → 英語 → 一覧のサムネイルの順に試す
                 const img = e.currentTarget;
@@ -65,10 +68,10 @@ export function PrintGallery({ card, index, onIndex }: { card: AppCard; index: n
         </div>
         {n > 1 && (
           <>
-            <button type="button" aria-label="前の絵柄" onClick={() => go(-1)} disabled={index === 0} className="absolute top-1/2 left-1 hidden h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-white/85 text-sm font-extrabold text-ink shadow disabled:opacity-0 [@media(hover:hover)]:flex">
+            <button type="button" aria-label={t("前の絵柄", "Previous art")} onClick={() => go(-1)} disabled={index === 0} className="absolute top-1/2 left-1 hidden h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-white/85 text-sm font-extrabold text-ink shadow disabled:opacity-0 [@media(hover:hover)]:flex">
               ‹
             </button>
-            <button type="button" aria-label="次の絵柄" onClick={() => go(1)} disabled={index === n - 1} className="absolute top-1/2 right-1 hidden h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-white/85 text-sm font-extrabold text-ink shadow disabled:opacity-0 [@media(hover:hover)]:flex">
+            <button type="button" aria-label={t("次の絵柄", "Next art")} onClick={() => go(1)} disabled={index === n - 1} className="absolute top-1/2 right-1 hidden h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-white/85 text-sm font-extrabold text-ink shadow disabled:opacity-0 [@media(hover:hover)]:flex">
               ›
             </button>
           </>
@@ -76,14 +79,14 @@ export function PrintGallery({ card, index, onIndex }: { card: AppCard; index: n
       </div>
       {n > 1 && (
         <div className="mt-1.5 space-y-1">
-          <div className="flex justify-center gap-1" role="tablist" aria-label="絵柄">
+          <div className="flex justify-center gap-1" role="tablist" aria-label={t("絵柄", "Artwork")}>
             {card.prints.map((pr, i) => (
               <button
                 key={pr.id}
                 type="button"
                 role="tab"
                 aria-selected={i === index}
-                aria-label={`${i + 1}枚目の絵柄`}
+                aria-label={t(`${i + 1}枚目の絵柄`, `Art ${i + 1}`)}
                 onClick={() => onIndex(i)}
                 className={`h-1.5 rounded-full transition-all ${i === index ? "w-4 bg-accent" : "w-1.5 bg-[#c5cfdb]"}`}
               />
@@ -91,7 +94,7 @@ export function PrintGallery({ card, index, onIndex }: { card: AppCard; index: n
           </div>
           <div className="flex items-center justify-center gap-1 text-[10px] font-bold text-muted">
             <SetBadge set={p.set} />
-            <span>{RARITY_JA[p.rarity] ?? p.rarity}</span>
+            <span>{rarityLabel(p.rarity, uiLang)}</span>
             <span className="tabular-nums">
               {index + 1}/{n}
             </span>

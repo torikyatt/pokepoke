@@ -8,6 +8,7 @@ export type EffectSlot = "attack" | "ability" | "trainer" | "tool";
 export interface TagDef {
   id: string;
   ja: string;
+  en?: string;
   parent?: string;
   match?: string[];
   exclude?: string[];
@@ -31,7 +32,7 @@ export function loadTaxonomy(dataDir = join(import.meta.dirname, "../../data")):
       if (depth > 3) throw new Error(`taxonomy: 4階層目のタグ ${d.id}`);
       if (parent && !d.id.startsWith(parent + ".")) throw new Error(`taxonomy: ${d.id} は ${parent} の下に置けない名前`);
       out.push({
-        id: d.id, ja: d.ja, parent, depth, on: d.on, supplies: d.supplies, requires: d.requires,
+        id: d.id, ja: d.ja, en: d.en, parent, depth, on: d.on, supplies: d.supplies, requires: d.requires,
         match: (d.match ?? []).map((s) => new RegExp(s)),
         exclude: (d.exclude ?? []).map((s) => new RegExp(s)),
       });

@@ -5,7 +5,19 @@ import { useData } from "../context.tsx";
 import { openCard } from "../detail.ts";
 import { usePool } from "../pool.ts";
 import { navigate, searchPath, useRoute } from "../router.ts";
+import { dateStr, useLang, useT } from "../i18n.ts";
 
+export const EXAMPLES_EN = [
+  "fire energy acceleration",
+  "lightning pokemon that hit the bench",
+  "basic with free retreat",
+  "supporter that shrinks opponent's hand",
+  "attack that gets stronger with coin flips",
+  "hp 150+ metal pokemon",
+  "mega lucario ex deck",
+  "pairs with miraidon ex",
+  "popular supporters",
+];
 export const EXAMPLES = [
   "エネ加速できる炎のカード",
   "ベンチに攻撃できる雷ポケモン",
@@ -27,7 +39,7 @@ export function useQueryConds(q: string, excluded: Set<string>, tagParam = "") {
   const { engine } = useData();
   const parsed = useMemo(() => {
     const base = engine.parse(q);
-    if (tagParam && !base.some((c) => c.id === `tag:${tagParam}`)) base.unshift({ id: `tag:${tagParam}`, kind: "tag", tag: tagParam, label: engine.tagJa.get(tagParam) ?? tagParam, weight: 1 });
+    if (tagParam && !base.some((c) => c.id === `tag:${tagParam}`)) base.unshift({ id: `tag:${tagParam}`, kind: "tag", tag: tagParam, label: engine.tagLabel(tagParam, "ja"), en: engine.tagLabel(tagParam, "en"), weight: 1 });
     return base;
   }, [engine, q, tagParam]);
   const conds = useMemo(() => parsed.filter((c) => !excluded.has(c.id)), [parsed, [...excluded].join()]);
@@ -48,7 +60,9 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
   const { parsed, conds } = useQueryConds(q, excluded, tagParam);
   const favOnly = usePool().favOnly;
   const { hits, scored, total } = usePoolResults(conds);
-  const labelOf = useMemo(() => new Map(parsed.map((c) => [c.id, c.label])), [parsed]);
+  const lang = useLang();
+  const t = useT();
+  const labelOf = useMemo(() => new Map(parsed.map((c) => [c.id, lang === "en" ? c.en : c.label])), [parsed, lang]);
 
   const go = (patch: { q?: string; x?: string[] }, replace = true) =>
     navigate(searchPath({ q: patch.q ?? q, x: (patch.x ?? (patch.q !== undefined ? [] : [...excluded])).join(","), tag: patch.q !== undefined ? undefined : tagParam }), { replace });
@@ -76,7 +90,7 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
           left={
             <>
               <span>{hits.length}</span>
-              <span className="text-xs text-muted">{scored && total > hits.length ? `/ ${total}件` : "件"}</span>
+              <span className="text-xs text-muted">{scored && total > hits.length ? t(`/ ${total}件`, `/ ${total}`) : t("件", "cards")}</span>
             </>
           }
         />
@@ -86,9 +100,9 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
         {!q && !tagParam && !favOnly && (
           <div className="mb-3">
             {!wide && <h1 className="mb-1 text-lg font-extrabold tracking-wider text-ink">POKÉPOKE LAB</h1>}
-            <p className="mb-2 text-xs font-bold text-muted">ふだんの言葉で探せます（タップで詳細・長押しでデッキに追加）</p>
+            <p className="mb-2 text-xs font-bold text-muted">{t("ふだんの言葉で探せます（タップで詳細・長押しでデッキに追加）", "Search in plain words (tap for details, long-press to add to your deck)")}</p>
             <div className={wide ? "flex flex-wrap gap-2 pb-2" : "scrollbar-none -mx-4 flex gap-2 overflow-x-auto px-4 pb-2"}>
-              {EXAMPLES.map((ex) => (
+              {(lang === "en" ? EXAMPLES_EN : EXAMPLES).map((ex) => (
                 <Chip key={ex} onClick={() => go({ q: ex }, false)}>
                   {ex}
                 </Chip>
@@ -96,7 +110,7 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
             </div>
           </div>
         )}
-        {q && !favOnly && hits.length === 0 && <p className="py-8 text-center text-sm font-bold text-muted">見つかりませんでした。条件をタップして外すか、絞り込みをゆるめてください。</p>}
+        {q && !favOnly && hits.length === 0 && <p className="py-8 text-center text-sm font-bold text-muted">{t("見つかりませんでした。条件をタップして外すか、絞り込みをゆるめてください。", "Nothing found. Tap a condition to remove it, or loosen the filters.")}</p>}
         <PoolGrid
           hits={hits}
           wide={wide}
@@ -105,20 +119,20 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
           footer={(h) =>
             scored && (
               <div className="mt-1 space-y-0.5 text-[10px] leading-tight font-bold text-muted">
-                {h.note && <div className="truncate text-accent-deep">{h.note}</div>}
+                {h.note && <div className="truncate text-accent-deep">{lang === "en" ? h.noteEn : h.note}</div>}
                 {h.matched
                   .filter((id) => labelOf.has(id) && !(h.note && (id.startsWith("deck:") || id === "meta")))
                   .slice(0, 2)
                   .map((id) => (
                     <div key={id} className="truncate text-accent-deep">✓ {labelOf.get(id)}</div>
                   ))}
-                {h.effects.length > 0 && <div className="truncate">{h.effects.slice(0, 2).join("・")}</div>}
+                {h.effects.length > 0 && <div className="truncate">{(lang === "en" ? h.effectsEn : h.effects).slice(0, 2).join(lang === "en" ? " / " : "・")}</div>}
               </div>
             )
           }
         />
         <p className="mt-8 text-center text-[10px] text-muted">
-          データ {data.cards.length} 種 ・ {new Date(data.builtAt).toLocaleDateString("ja-JP")} 時点
+          {t(`データ ${data.cards.length} 種 ・ ${dateStr(data.builtAt, lang)} 時点`, `${data.cards.length} cards ・ as of ${dateStr(data.builtAt, lang)}`)}
         </p>
       </div>
       {!wide && <PoolFab />}

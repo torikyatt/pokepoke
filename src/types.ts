@@ -94,6 +94,7 @@ export interface Selector {
 export interface AppTag {
   id: string;
   ja: string;
+  en?: string;
   parent?: string;
   supplies?: string[];
   requires?: string[];
@@ -161,6 +162,7 @@ export interface AppHelp {
   card: string; // トレーナーズ
   to: HelpTarget;
   label: string;
+  labelEn: string;
   weight: number;
 }
 
@@ -183,6 +185,7 @@ export interface AppData {
   meta?: AppMeta;
   combos?: AppCombo[];
   helps?: AppHelp[];
+  lexiconEn?: LexEntry[]; // 英語の検索用の表現辞書（data/lexicon-en.yaml）
 }
 
 export const TYPE_JA: Record<EnergyType, string> = {
@@ -196,4 +199,16 @@ export const STAGE_JA: Record<Stage, string> = { basic: "たね", stage1: "1進�
 export const RULE_JA: Record<Rule, string> = { normal: "通常", ex: "ex", mega_ex: "メガシンカex" };
 export const GROUP_JA: Record<CardGroup, string> = {
   ultra_beast: "ウルトラビースト", ancient: "古代", future: "未来", team_rocket: "ロケット団", baby: "ベビー",
+};
+export const TYPE_EN: Record<EnergyType, string> = {
+  grass: "Grass", fire: "Fire", water: "Water", lightning: "Lightning", psychic: "Psychic",
+  fighting: "Fighting", darkness: "Darkness", metal: "Metal", dragon: "Dragon", colorless: "Colorless",
+};
+export const KIND_EN: Record<CardKind, string> = {
+  pokemon: "Pokémon", item: "Item", supporter: "Supporter", tool: "Pokémon Tool", fossil: "Fossil", stadium: "Stadium",
+};
+export const STAGE_EN: Record<Stage, string> = { basic: "Basic", stage1: "Stage 1", stage2: "Stage 2" };
+export const RULE_EN: Record<Rule, string> = { normal: "Regular", ex: "ex", mega_ex: "Mega Evolution ex" };
+export const GROUP_EN: Record<CardGroup, string> = {
+  ultra_beast: "Ultra Beast", ancient: "Ancient", future: "Future", team_rocket: "Team Rocket", baby: "Baby",
 };

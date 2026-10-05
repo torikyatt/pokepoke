@@ -14,6 +14,7 @@ import { useDecks, useToast, type Deck } from "../store.ts";
 import type { AppCard, EnergyType } from "../types.ts";
 import { useQueryConds } from "./SearchPage.tsx";
 import { mainPrint, packLabel, PrintLine, SetBadge, useMultiPackSets } from "../components/prints.tsx";
+import { cardName, useLang, useT } from "../i18n.ts";
 
 export const ZONE_TYPES: EnergyType[] = ["grass", "fire", "water", "lightning", "psychic", "fighting", "darkness", "metal"];
 
@@ -35,22 +36,23 @@ export function DeckListPage() {
   const { decks, create, select, importDecks } = useDecks();
   const show = useToast((s) => s.show);
   const fileRef = useRef<HTMLInputElement>(null);
+  const t = useT();
   const onImport = async (file: File) => {
     try {
       const n = importDecks(fromFile(JSON.parse(await file.text()), byId));
-      show(`${n} 個のデッキを読み込みました`);
+      show(t(`${n} 個のデッキを読み込みました`, `Imported ${n} deck${n === 1 ? "" : "s"}`));
     } catch (e) {
-      show(e instanceof Error ? e.message : "読み込めませんでした", "error");
+      show(e instanceof Error ? e.message : t("読み込めませんでした", "Couldn't import"), "error");
     }
   };
   return (
     <div>
       <Header
-        title="デッキ"
+        title={t("デッキ", "Decks")}
         right={
           <>
             <button type="button" className="neu-sm neu-press rounded-full px-3 py-1.5 text-xs font-bold text-muted" onClick={() => fileRef.current?.click()}>
-              読み込み
+              {t("読み込み", "Import")}
             </button>
             <input
               ref={fileRef}
@@ -74,8 +76,8 @@ export function DeckListPage() {
             <button key={d.id} type="button" onClick={() => { select(d.id); navigate(`/deck/${d.id}`); }} className="neu neu-press rounded-2xl p-3 text-left">
               <div className="mb-2 flex items-center gap-2">
                 <span className="min-w-0 flex-1 truncate font-extrabold">{d.name}</span>
-                {d.energy.map((t) => (
-                  <EnergyIcon key={t} type={t} size="sm" />
+                {d.energy.map((e) => (
+                  <EnergyIcon key={e} type={e} size="sm" />
                 ))}
                 <span className={`rounded-full px-2 py-0.5 text-xs font-extrabold ${ok ? "bg-accent text-white" : "neu-in text-muted"}`}>
                   {d.cards.length}/{DECK_SIZE}
@@ -89,7 +91,7 @@ export function DeckListPage() {
         })}
         <button type="button" onClick={() => navigate(`/deck/${create()}/edit`)} className="neu-in flex min-h-28 flex-col items-center justify-center gap-1 rounded-2xl border-2 border-dashed border-line font-extrabold text-muted">
           <span className="text-3xl leading-none">＋</span>
-          新しいデッキを作る
+          {t("新しいデッキを作る", "New deck")}
         </button>
       </div>
     </div>
@@ -109,6 +111,8 @@ export function DeckBuilderPage({ id }: { id: string }) {
   const [q, setQ] = useState("");
   const [excluded, setExcluded] = useState<Set<string>>(new Set());
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const t = useT();
+  const lang = useLang();
   useEffect(() => select(id), [id]);
 
   const { parsed, conds } = useQueryConds(q, excluded);
@@ -125,7 +129,7 @@ export function DeckBuilderPage({ id }: { id: string }) {
     return m;
   }, [cards]);
 
-  if (!deck) return <Header title="デッキが見つかりません" back={() => navigate("/deck")} />;
+  if (!deck) return <Header title={t("デッキが見つかりません", "Deck not found")} back={() => navigate("/deck")} />;
   const full = deck.cards.length >= DECK_SIZE;
 
   return (
@@ -136,7 +140,7 @@ export function DeckBuilderPage({ id }: { id: string }) {
           <div className="grid grid-cols-10 gap-1.5" style={{ width: `${(1000 / SLOT_VISIBLE[slotSize]).toFixed(2)}%` }}>
             {Array.from({ length: DECK_SIZE }, (_, i) => cards[i]).map((c, i) =>
               c ? (
-                <Pressable key={`${c.id}-${i}`} onTap={() => openCard(c.id)} onLongPress={() => { removeCard(deck.id, c.id); show(`「${c.nameJa}」を1枚外しました`); }} label={`${c.nameJa}（長押しで外す）`} className="pop-in snap-start rounded-[4px] shadow-[1px_2px_3px_rgb(150_165_185/0.5)]">
+                <Pressable key={`${c.id}-${i}`} onTap={() => openCard(c.id)} onLongPress={() => { removeCard(deck.id, c.id); show(t(`「${c.nameJa}」を1枚外しました`, `Removed one ${c.nameEn}`)); }} label={t(`${c.nameJa}（長押しで外す）`, `${cardName(c, lang)} (long-press to remove)`)} className="pop-in snap-start rounded-[4px] shadow-[1px_2px_3px_rgb(150_165_185/0.5)]">
                   <Thumb card={c} className="rounded-[4px]" />
                 </Pressable>
               ) : (
@@ -148,11 +152,11 @@ export function DeckBuilderPage({ id }: { id: string }) {
           </div>
           </div>
           <div className="mt-2 flex items-center justify-end gap-1 text-[11px] font-bold text-muted">
-            {slotSize !== "s" && <span className="mr-auto">← 横にスクロール →</span>}
-            <span className="mr-1">枠の大きさ</span>
+            {slotSize !== "s" && <span className="mr-auto">{t("← 横にスクロール →", "← scroll →")}</span>}
+            <span className="mr-1">{t("枠の大きさ", "Slot size")}</span>
             {(["s", "m", "l"] as const).map((v) => (
               <button key={v} type="button" aria-pressed={slotSize === v} onClick={() => setSlotSize(v)} className={`h-6 w-7 rounded-full ${slotSize === v ? "bg-accent text-white" : "neu-in"}`}>
-                {{ s: "小", m: "中", l: "大" }[v]}
+                {lang === "en" ? { s: "S", m: "M", l: "L" }[v] : { s: "小", m: "中", l: "大" }[v]}
               </button>
             ))}
           </div>
@@ -198,7 +202,7 @@ export function DeckBuilderPage({ id }: { id: string }) {
       </div>
 
       <div className="px-4">
-        <p className="mb-2 text-center text-[11px] font-bold text-muted">タップで詳細 ・ 長押しで追加 ・ 上の枠を長押しで外す</p>
+        <p className="mb-2 text-center text-[11px] font-bold text-muted">{t("タップで詳細 ・ 長押しで追加 ・ 上の枠を長押しで外す", "Tap for details ・ long-press to add ・ long-press a slot above to remove")}</p>
         <PoolGrid
           hits={hits}
           counts={counts}
@@ -210,8 +214,8 @@ export function DeckBuilderPage({ id }: { id: string }) {
       <button
         type="button"
         onClick={() => navigate(`/deck/${deck.id}`, { replace: true })}
-        aria-label="編集を終える"
-        title="編集を終える"
+        aria-label={t("編集を終える", "Done editing")}
+        title={t("編集を終える", "Done editing")}
         className="btn-ok fixed left-4 z-40 flex h-14 w-14 items-center justify-center rounded-full"
         style={{ bottom: "max(1.25rem, env(safe-area-inset-bottom))" }}
       >
@@ -232,6 +236,7 @@ export function useDeckExport(deck: Deck | undefined) {
   const [exporting, setExporting] = useState(false);
   const [preview, setPreview] = useState<string>(); // 作った画像（画面に出して、長押し・右クリックで保存してもらう）
   const lang = useSettings((s) => s.imageLang);
+  const t = useT();
   const savePng = async () => {
     if (!deck || !imageRef.current) return;
     setExporting(true);
@@ -263,7 +268,7 @@ export function useDeckExport(deck: Deck | undefined) {
       const url = await toPng(imageRef.current, { pixelRatio: 2, backgroundColor: "#e6ecf3", skipFonts: true });
       setPreview(url);
     } catch {
-      show("画像を作れませんでした", "error");
+      show(t("画像を作れませんでした", "Couldn't create the image"), "error");
     } finally {
       setExporting(false);
     }
@@ -276,10 +281,10 @@ export function useDeckExport(deck: Deck | undefined) {
       if (navigator.share) await navigator.share({ title: deck.name, url });
       else {
         await navigator.clipboard.writeText(url);
-        show("共有URLをコピーしました");
+        show(t("共有URLをコピーしました", "Share URL copied"));
       }
     } catch {
-      prompt("このURLをコピーしてください", url);
+      prompt(t("このURLをコピーしてください", "Copy this URL"), url);
     }
   };
 
@@ -309,30 +314,32 @@ export function DeckViewPage({ id }: { id: string }) {
   const show = useToast((s) => s.show);
   const { deckView, setDeckView } = useSettings();
   const { savePng, share, exporting, image } = useDeckExport(deck);
-  if (!deck) return <Header title="デッキが見つかりません" back={() => navigate("/deck")} />;
+  const t = useT();
+  const lang = useLang();
+  if (!deck) return <Header title={t("デッキが見つかりません", "Deck not found")} back={() => navigate("/deck")} />;
   const cards = deckCards(deck, byId);
   const check = checkDeck(deck, byId);
 
   const btn = "neu neu-press rounded-2xl py-3 text-sm font-extrabold disabled:opacity-40";
   return (
     <div>
-      <Header title="デッキ" back={() => navigate("/deck")} />
+      <Header title={t("デッキ", "Deck")} back={() => navigate("/deck")} />
       <div className="mx-auto max-w-3xl space-y-4 px-4 pb-8">
         <input
           value={deck.name}
           onChange={(e) => update(deck.id, { name: e.target.value })}
           className="neu-in w-full rounded-full px-4 py-2.5 text-base font-extrabold outline-none"
-          aria-label="デッキ名"
+          aria-label={t("デッキ名", "Deck name")}
         />
 
         <div className="flex items-center justify-between">
           <span className="text-sm font-extrabold text-muted">
-            {cards.length}/{DECK_SIZE} 枚
+            {cards.length}/{DECK_SIZE}{t(" 枚", "")}
           </span>
-          <div className="neu-in flex rounded-full p-0.5 text-xs font-bold" role="tablist" aria-label="表示">
+          <div className="neu-in flex rounded-full p-0.5 text-xs font-bold" role="tablist" aria-label={t("表示", "View")}>
             {(["grid", "list"] as const).map((v) => (
               <button key={v} type="button" role="tab" aria-selected={deckView === v} onClick={() => setDeckView(v)} className={`rounded-full px-4 py-1.5 ${deckView === v ? "bg-white text-accent shadow" : "text-muted"}`}>
-                {v === "grid" ? "カード" : "リスト"}
+                {v === "grid" ? t("カード", "Cards") : t("リスト", "List")}
               </button>
             ))}
           </div>
@@ -345,7 +352,7 @@ export function DeckViewPage({ id }: { id: string }) {
             <div className="grid grid-cols-5 gap-2">
               {Array.from({ length: DECK_SIZE }, (_, i) => cards[i]).map((c, i) =>
                 c ? (
-                  <Pressable key={i} onTap={() => openCard(c.id)} label={c.nameJa} className="rounded-md shadow-[1px_2px_4px_rgb(150_165_185/0.5)]">
+                  <Pressable key={i} onTap={() => openCard(c.id)} label={cardName(c, lang)} className="rounded-md shadow-[1px_2px_4px_rgb(150_165_185/0.5)]">
                     <Thumb card={c} />
                   </Pressable>
                 ) : (
@@ -357,34 +364,34 @@ export function DeckViewPage({ id }: { id: string }) {
         )}
 
         <button type="button" onClick={() => navigate(`/deck/${deck.id}/edit`)} className="btn-ok w-full rounded-full py-4 text-lg">
-          デッキを編集
+          {t("デッキを編集", "Edit deck")}
         </button>
 
         <EnergyZone deck={deck} />
 
         <div className={`rounded-2xl p-4 text-sm font-bold ${check.ok ? "bg-[#dff4f1] text-accent-deep" : "bg-[#fdf1d8] text-[#8a5c0c]"}`}>
-          {check.ok ? "✓ このデッキでバトルできます" : check.problems.map((p) => <div key={p}>・{p}</div>)}
+          {check.ok ? t("✓ このデッキでバトルできます", "✓ This deck is ready to battle") : check.problems.map((p) => <div key={p}>・{p}</div>)}
         </div>
 
         <div className="grid grid-cols-2 gap-3">
           <button type="button" disabled={!cards.length || exporting} onClick={savePng} className={btn}>
-            {exporting ? "画像を作成中…" : "画像で保存"}
+            {exporting ? t("画像を作成中…", "Creating image…") : t("画像で保存", "Save as image")}
           </button>
           <button type="button" disabled={!cards.length} onClick={share} className={btn}>
-            共有URL
+            {t("共有URL", "Share URL")}
           </button>
           <button type="button" onClick={() => download(`${deck.name}.json`, JSON.stringify(toFile([deck]), null, 1))} className={btn}>
-            書き出し（JSON）
+            {t("書き出し（JSON）", "Export (JSON)")}
           </button>
           <button
             type="button"
             onClick={() => {
-              const nid = create(`${deck.name}のコピー`, { cards: [...deck.cards], energy: [...deck.energy] });
+              const nid = create(t(`${deck.name}のコピー`, `${deck.name} (copy)`), { cards: [...deck.cards], energy: [...deck.energy] });
               navigate(`/deck/${nid}`);
             }}
             className={btn}
           >
-            複製
+            {t("複製", "Duplicate")}
           </button>
           <button
             type="button"
@@ -394,19 +401,19 @@ export function DeckViewPage({ id }: { id: string }) {
             }}
             className={btn}
           >
-            全デッキを書き出し
+            {t("全デッキを書き出し", "Export all decks")}
           </button>
           <button
             type="button"
             onClick={() => {
-              if (confirm(`「${deck.name}」を削除しますか？`)) {
+              if (confirm(t(`「${deck.name}」を削除しますか？`, `Delete “${deck.name}”?`))) {
                 remove(deck.id);
                 navigate("/deck");
               }
             }}
             className={`${btn} text-danger`}
           >
-            削除
+            {t("削除", "Delete")}
           </button>
         </div>
       </div>
@@ -421,30 +428,31 @@ export function EnergyZone({ deck }: { deck: Deck }) {
   const { byId } = useData();
   const { update } = useDecks();
   const show = useToast((s) => s.show);
+  const t = useT();
   return (
     <div className="neu rounded-3xl p-4">
       <div className="mb-3 flex items-center justify-between">
-        <h2 className="text-sm font-extrabold text-muted">エネルギー（{MAX_ENERGY}タイプまで）</h2>
+        <h2 className="text-sm font-extrabold text-muted">{t(`エネルギー（${MAX_ENERGY}タイプまで）`, `Energy (up to ${MAX_ENERGY} types)`)}</h2>
         <button type="button" className="text-xs font-bold text-accent-deep" onClick={() => update(deck.id, { energy: guessEnergy(deck, byId) })}>
-          デッキから自動設定
+          {t("デッキから自動設定", "Set from deck")}
         </button>
       </div>
       <div className="flex flex-wrap justify-between gap-1">
-        {ZONE_TYPES.map((t) => {
-          const on = deck.energy.includes(t);
+        {ZONE_TYPES.map((ty) => {
+          const on = deck.energy.includes(ty);
           return (
             <button
-              key={t}
+              key={ty}
               type="button"
               aria-pressed={on}
               onClick={() => {
-                if (on) update(deck.id, { energy: deck.energy.filter((x) => x !== t) });
-                else if (deck.energy.length < MAX_ENERGY) update(deck.id, { energy: [...deck.energy, t] });
-                else show(`エネルギーは${MAX_ENERGY}タイプまで`, "error");
+                if (on) update(deck.id, { energy: deck.energy.filter((x) => x !== ty) });
+                else if (deck.energy.length < MAX_ENERGY) update(deck.id, { energy: [...deck.energy, ty] });
+                else show(t(`エネルギーは${MAX_ENERGY}タイプまで`, `Up to ${MAX_ENERGY} Energy types`), "error");
               }}
               className={`rounded-full p-1 transition ${on ? "ring-[3px] ring-accent" : "opacity-40"}`}
             >
-              <EnergyIcon type={t} size="xl" />
+              <EnergyIcon type={ty} size="xl" />
             </button>
           );
         })}
@@ -457,20 +465,22 @@ export function EnergyZone({ deck }: { deck: Deck }) {
 export function DeckList({ cards }: { cards: AppCard[] }) {
   const { data } = useData();
   const multi = useMultiPackSets();
+  const t = useT();
+  const lang = useLang();
   const rows = [...new Map(cards.map((c) => [c.id, c])).values()].map((c) => ({ card: c, count: cards.filter((x) => x.id === c.id).length, main: mainPrint(c) }));
   // パックごとの枚数（いちばん手に入れやすい収録で数える）
   const byPack = new Map<string, { set: string; label: string; n: number }>();
   for (const r of rows) {
-    const label = packLabel(r.main, data.sets, multi);
+    const label = packLabel(r.main, data.sets, multi, lang);
     const key = `${r.main.set}|${label}`;
     const cur = byPack.get(key) ?? byPack.set(key, { set: r.main.set, label, n: 0 }).get(key)!;
     cur.n += r.count;
   }
-  if (!rows.length) return <p className="neu rounded-3xl p-6 text-center text-sm font-bold text-muted">まだカードがありません</p>;
+  if (!rows.length) return <p className="neu rounded-3xl p-6 text-center text-sm font-bold text-muted">{t("まだカードがありません", "No cards yet")}</p>;
   return (
     <div className="space-y-3">
       <div className="neu rounded-3xl p-3">
-        <h3 className="mb-2 text-xs font-extrabold text-muted">出るパック</h3>
+        <h3 className="mb-2 text-xs font-extrabold text-muted">{t("出るパック", "Where to pull")}</h3>
         <div className="space-y-1.5">
           {[...byPack.values()]
             .sort((a, b) => b.n - a.n)
@@ -478,29 +488,29 @@ export function DeckList({ cards }: { cards: AppCard[] }) {
               <div key={`${p.set}${p.label}`} className="flex items-center gap-1.5">
                 <SetBadge set={p.set} />
                 <span className="min-w-0 flex-1 truncate text-xs font-bold">{p.label}</span>
-                <span className="text-xs font-extrabold tabular-nums">{p.n}枚</span>
+                <span className="text-xs font-extrabold tabular-nums">{t(`${p.n}枚`, `${p.n}`)}</span>
               </div>
             ))}
         </div>
       </div>
       <ul className="neu divide-y divide-line rounded-3xl px-3 py-1">
         {rows.map(({ card, count, main }) => {
-          const others = [...new Set(card.prints.filter((p) => p !== main).map((p) => packLabel(p, data.sets, multi)))].filter((l) => l !== packLabel(main, data.sets, multi));
+          const others = [...new Set(card.prints.filter((p) => p !== main).map((p) => packLabel(p, data.sets, multi, lang)))].filter((l) => l !== packLabel(main, data.sets, multi, lang));
           return (
             <li key={card.id}>
-              <Pressable onTap={() => openCard(card.id)} label={card.nameJa} className="flex items-center gap-3 py-2 text-left">
+              <Pressable onTap={() => openCard(card.id)} label={cardName(card, lang)} className="flex items-center gap-3 py-2 text-left">
                 <div className="w-10 shrink-0">
                   <Thumb card={card} className="rounded-[4px]" />
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <span className="min-w-0 flex-1 truncate text-sm font-extrabold">{card.nameJa}</span>
+                    <span className="min-w-0 flex-1 truncate text-sm font-extrabold">{cardName(card, lang)}</span>
                     <span className="shrink-0 rounded-full bg-badge px-2 py-0.5 text-xs font-extrabold text-white">×{count}</span>
                   </div>
                   <div className="mt-1">
                     <PrintLine p={main} />
                   </div>
-                  {others.length > 0 && <div className="mt-0.5 truncate text-[10px] font-bold text-muted">ほか: {others.join(" / ")}</div>}
+                  {others.length > 0 && <div className="mt-0.5 truncate text-[10px] font-bold text-muted">{t("ほか: ", "Also: ")}{others.join(" / ")}</div>}
                 </div>
               </Pressable>
             </li>
@@ -514,10 +524,12 @@ export function DeckList({ cards }: { cards: AppCard[] }) {
 /** 画像にするデッキ: 左にカード20枚、右にカードの一覧（名前と枚数） */
 function DeckImage({ deck, cards, ref }: { deck: Deck; cards: AppCard[]; ref: React.Ref<HTMLDivElement> }) {
   const lang = useSettings((s) => s.imageLang);
+  const uiLang = useLang();
+  const t = useT();
   const rows = [...new Map(cards.map((c) => [c.id, c])).values()].map((c) => ({ card: c, n: cards.filter((x) => x.id === c.id).length }));
   const groups: [string, typeof rows][] = [
-    ["ポケモン", rows.filter((r) => r.card.kind === "pokemon")],
-    ["トレーナーズ", rows.filter((r) => r.card.kind !== "pokemon")],
+    [t("ポケモン", "Pokémon"), rows.filter((r) => r.card.kind === "pokemon")],
+    [t("トレーナーズ", "Trainers"), rows.filter((r) => r.card.kind !== "pokemon")],
   ];
   const panel = { borderRadius: 24, background: "#eef2f7", boxShadow: "6px 6px 14px rgba(176,189,206,.55), -6px -6px 14px #fff" };
   return (
@@ -526,9 +538,9 @@ function DeckImage({ deck, cards, ref }: { deck: Deck; cards: AppCard[]; ref: Re
         <div style={{ fontSize: 32, fontWeight: 800, flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{deck.name}</div>
         {deck.energy.length > 0 && (
           <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 14px", ...panel, borderRadius: 999 }}>
-            <span style={{ fontSize: 15, fontWeight: 800, color: "#8794a7" }}>エネルギー</span>
-            {deck.energy.map((t) => (
-              <EnergyIcon key={t} type={t} size="lg" />
+            <span style={{ fontSize: 15, fontWeight: 800, color: "#8794a7" }}>{t("エネルギー", "Energy")}</span>
+            {deck.energy.map((e) => (
+              <EnergyIcon key={e} type={e} size="lg" />
             ))}
           </div>
         )}
@@ -537,7 +549,7 @@ function DeckImage({ deck, cards, ref }: { deck: Deck; cards: AppCard[]; ref: Re
       <div style={{ display: "flex", gap: 20, alignItems: "stretch" }}>
         <div style={{ width: 900, flexShrink: 0, display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 12, padding: 16, ...panel }}>
           {cards.map((c, i) => (
-            <img key={i} data-id={c.id} src={thumbUrl(c, lang)} alt={c.nameJa} style={{ width: "100%", aspectRatio: "367/512", borderRadius: 8, objectFit: "cover" }} />
+            <img key={i} data-id={c.id} src={thumbUrl(c, lang)} alt={cardName(c, uiLang)} style={{ width: "100%", aspectRatio: "367/512", borderRadius: 8, objectFit: "cover" }} />
           ))}
         </div>
         <div style={{ flex: 1, minWidth: 0, padding: "14px 18px", ...panel }}>
@@ -546,12 +558,12 @@ function DeckImage({ deck, cards, ref }: { deck: Deck; cards: AppCard[]; ref: Re
               <div key={title} style={{ marginBottom: 12 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: 15, fontWeight: 800, color: "#8794a7", borderBottom: "2px solid #d5dde7", paddingBottom: 4, marginBottom: 6 }}>
                   <span>{title}</span>
-                  <span>{list.reduce((a, r) => a + r.n, 0)}枚</span>
+                  <span>{t(`${list.reduce((a, r) => a + r.n, 0)}枚`, `${list.reduce((a, r) => a + r.n, 0)}`)}</span>
                 </div>
                 {list.map(({ card, n }) => (
                   <div key={card.id} style={{ display: "flex", alignItems: "center", gap: 10, padding: "4px 0" }}>
                     <img data-id={card.id} src={thumbUrl(card, lang)} alt="" style={{ width: 30, aspectRatio: "367/512", borderRadius: 3, objectFit: "cover" }} />
-                    <span style={{ flex: 1, minWidth: 0, fontSize: 19, fontWeight: 700, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{card.nameJa}</span>
+                    <span style={{ flex: 1, minWidth: 0, fontSize: 19, fontWeight: 700, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{cardName(card, uiLang)}</span>
                     <span style={{ fontSize: 19, fontWeight: 800 }}>×{n}</span>
                   </div>
                 ))}
@@ -567,19 +579,20 @@ function DeckImage({ deck, cards, ref }: { deck: Deck; cards: AppCard[]; ref: Re
 
 /** 作った画像を画面に出す。長押し（PCは右クリック）で保存できる */
 function ImagePreview({ url, onClose, onDownload }: { url: string; onClose: () => void; onDownload: () => void }) {
+  const t = useT();
   return createPortal(
-    <div className="fixed inset-0 z-[70] flex flex-col items-center justify-center bg-[#3d4757]/60 p-3" role="dialog" aria-modal="true" aria-label="デッキの画像">
-      <button type="button" aria-label="閉じる" className="absolute inset-0" onClick={onClose} />
+    <div className="fixed inset-0 z-[70] flex flex-col items-center justify-center bg-[#3d4757]/60 p-3" role="dialog" aria-modal="true" aria-label={t("デッキの画像", "Deck image")}>
+      <button type="button" aria-label={t("閉じる", "Close")} className="absolute inset-0" onClick={onClose} />
       <div className="pop-in relative flex max-h-full w-full max-w-4xl flex-col gap-2 rounded-3xl bg-panel p-3 shadow-2xl">
         <div className="flex items-center gap-2">
-          <p className="min-w-0 flex-1 text-xs font-bold text-muted">画像を長押し（PCは右クリック）して保存してください</p>
-          <button type="button" onClick={onClose} className="neu-sm neu-press flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-muted" aria-label="閉じる">
+          <p className="min-w-0 flex-1 text-xs font-bold text-muted">{t("画像を長押し（PCは右クリック）して保存してください", "Long-press the image (right-click on PC) to save it")}</p>
+          <button type="button" onClick={onClose} className="neu-sm neu-press flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-muted" aria-label={t("閉じる", "Close")}>
             ✕
           </button>
         </div>
-        <img src={url} alt="デッキの画像" className="min-h-0 w-full flex-1 rounded-xl object-contain" style={{ WebkitTouchCallout: "default" }} />
+        <img src={url} alt={t("デッキの画像", "Deck image")} className="min-h-0 w-full flex-1 rounded-xl object-contain" style={{ WebkitTouchCallout: "default" }} />
         <button type="button" onClick={onDownload} className="self-end text-[11px] font-bold text-accent-deep underline">
-          ファイルとしてダウンロード
+          {t("ファイルとしてダウンロード", "Download as file")}
         </button>
       </div>
     </div>,
@@ -593,29 +606,31 @@ export function SharePage({ code, embedded }: { code: string; embedded?: boolean
   const { byId } = useData();
   const importDecks = useDecks((s) => s.importDecks);
   const show = useToast((s) => s.show);
+  const t = useT();
+  const lang = useLang();
   let shared: ReturnType<typeof decodeShare> | undefined;
   try {
     shared = decodeShare(code);
   } catch {
     shared = undefined;
   }
-  if (!shared) return <Header title="共有URLを読めませんでした" back={() => navigate("/deck")} />;
+  if (!shared) return <Header title={t("共有URLを読めませんでした", "Couldn't read the share URL")} back={() => navigate("/deck")} />;
   const cards = deckCards(shared, byId);
   const check = checkDeck(shared, byId);
   return (
     <div>
-      {embedded ? <h3 className="px-4 pb-3 text-base font-extrabold">{shared.name}</h3> : <Header title={`共有デッキ: ${shared.name}`} />}
+      {embedded ? <h3 className="px-4 pb-3 text-base font-extrabold">{shared.name}</h3> : <Header title={t(`共有デッキ: ${shared.name}`, `Shared deck: ${shared.name}`)} />}
       <div className="mx-auto max-w-3xl space-y-4 px-4 pb-8">
         <div className="flex items-center gap-2">
-          {shared.energy.map((t) => (
-            <EnergyIcon key={t} type={t} size="lg" />
+          {shared.energy.map((e) => (
+            <EnergyIcon key={e} type={e} size="lg" />
           ))}
-          <span className="text-sm font-bold text-muted">{cards.length} 枚</span>
+          <span className="text-sm font-bold text-muted">{t(`${cards.length} 枚`, `${cards.length} cards`)}</span>
         </div>
         {!check.ok && <div className="text-xs font-bold text-[#8a5c0c]">{check.problems.join(" / ")}</div>}
         <div className="neu grid grid-cols-5 gap-2 rounded-3xl p-3">
           {cards.map((c, i) => (
-            <Pressable key={i} onTap={() => openCard(c.id)} label={c.nameJa}>
+            <Pressable key={i} onTap={() => openCard(c.id)} label={cardName(c, lang)}>
               <Thumb card={c} />
             </Pressable>
           ))}
@@ -625,11 +640,11 @@ export function SharePage({ code, embedded }: { code: string; embedded?: boolean
           className="btn-ok w-full rounded-full py-4 text-lg"
           onClick={() => {
             importDecks([{ name: shared!.name, energy: shared!.energy, cards: shared!.cards.filter((cid) => byId.has(cid)) }]);
-            show("マイデッキに保存しました");
+            show(t("マイデッキに保存しました", "Saved to your decks"));
             navigate(embedded ? useNav.getState().base.search.slice(1) : "/deck");
           }}
         >
-          マイデッキに保存
+          {t("マイデッキに保存", "Save to my decks")}
         </button>
       </div>
     </div>

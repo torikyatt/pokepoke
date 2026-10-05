@@ -57,7 +57,7 @@ export const useDecks = create<DeckState>()(
       currentId: undefined,
       create: (name, init) => {
         const id = newId();
-        const deck: Deck = { id, name: name ?? `デッキ${get().decks.length + 1}`, cards: [], energy: [], updatedAt: Date.now(), ...init };
+        const deck: Deck = { id, name: name ?? `${useSettings.getState().lang === "en" ? "Deck " : "デッキ"}${get().decks.length + 1}`, cards: [], energy: [], updatedAt: Date.now(), ...init };
         set((s) => ({ decks: [...s.decks, deck], currentId: id }));
         return id;
       },
@@ -78,7 +78,7 @@ export const useDecks = create<DeckState>()(
           }),
         })),
       importDecks: (decks) => {
-        const added = decks.map((d) => ({ id: newId(), updatedAt: Date.now(), name: d.name || "読み込んだデッキ", cards: d.cards ?? [], energy: d.energy ?? [] }));
+        const added = decks.map((d) => ({ id: newId(), updatedAt: Date.now(), name: d.name || (useSettings.getState().lang === "en" ? "Imported deck" : "読み込んだデッキ"), cards: d.cards ?? [], energy: d.energy ?? [] }));
         set((s) => ({ decks: [...s.decks, ...added], currentId: added[0]?.id ?? s.currentId }));
         return added.length;
       },
@@ -89,6 +89,8 @@ export const useDecks = create<DeckState>()(
 
 // 設定
 interface SettingsState {
+  lang: "ja" | "en"; // 表示言語（画面の文字・カード名・効果文）
+  setLang: (l: "ja" | "en") => void;
   imageLang: "ja" | "en"; // カード画像の言語
   setImageLang: (l: "ja" | "en") => void;
   deckView: "grid" | "list"; // デッキ内容の見せ方
@@ -99,7 +101,11 @@ interface SettingsState {
 export const useSettings = create<SettingsState>()(
   persist(
     (set) => ({
-      imageLang: "ja",
+      // はじめて開いたときは、ブラウザの言語が日本語なら日本語、それ以外は英語
+      lang: typeof navigator !== "undefined" && !/^ja\b/i.test(navigator.language ?? "ja") ? "en" : "ja",
+      // 表示言語を変えたら、カード画像の言語も合わせる（画像だけ別の言語にもできる）
+      setLang: (lang) => set({ lang, imageLang: lang }),
+      imageLang: typeof navigator !== "undefined" && !/^ja\b/i.test(navigator.language ?? "ja") ? "en" : "ja",
       setImageLang: (imageLang) => set({ imageLang }),
       deckView: "grid",
       setDeckView: (deckView) => set({ deckView }),

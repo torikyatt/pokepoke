@@ -6,17 +6,17 @@ import type { AppCard, CardGroup, CardKind, EnergyType, Rule, Stage } from "./ty
 
 export type SortKey = "order" | "score" | "usage" | "hp" | "damage" | "retreat" | "cost" | "name" | "new" | "rarity";
 
-export const SORTS: { key: SortKey; label: string; desc: boolean }[] = [
-  { key: "order", label: "図鑑順", desc: false },
-  { key: "score", label: "一致度順", desc: true },
-  { key: "usage", label: "大会での採用率", desc: true },
-  { key: "hp", label: "HP", desc: true },
-  { key: "damage", label: "最大ダメージ", desc: true },
-  { key: "retreat", label: "にげるエネ", desc: false },
-  { key: "cost", label: "ワザのエネ数", desc: false },
-  { key: "rarity", label: "レアリティ", desc: true },
-  { key: "new", label: "新しい順", desc: true },
-  { key: "name", label: "名前順", desc: false },
+export const SORTS: { key: SortKey; label: string; en: string; desc: boolean }[] = [
+  { key: "order", label: "図鑑順", en: "Pokédex order", desc: false },
+  { key: "score", label: "一致度順", en: "Best match", desc: true },
+  { key: "usage", label: "大会での採用率", en: "Tournament usage", desc: true },
+  { key: "hp", label: "HP", en: "HP", desc: true },
+  { key: "damage", label: "最大ダメージ", en: "Max damage", desc: true },
+  { key: "retreat", label: "にげるエネ", en: "Retreat Cost", desc: false },
+  { key: "cost", label: "ワザのエネ数", en: "Attack cost", desc: false },
+  { key: "rarity", label: "レアリティ", en: "Rarity", desc: true },
+  { key: "new", label: "新しい順", en: "Newest", desc: true },
+  { key: "name", label: "名前順", en: "Name", desc: false },
 ];
 
 export interface Filters {
@@ -73,9 +73,9 @@ export function matchFilters(c: AppCard, f: Filters): boolean {
 }
 
 // レアリティの順位（◊ < ◊◊ < … < ☆ < ☆☆ < ☆☆☆ < 王冠）。プロモは最下位
-export const RARITIES: { key: string; label: string }[] = [
+export const RARITIES: { key: string; label: string; en?: string }[] = [
   { key: "◊", label: "◆1" }, { key: "◊◊", label: "◆2" }, { key: "◊◊◊", label: "◆3" }, { key: "◊◊◊◊", label: "◆4" },
-  { key: "☆", label: "★1" }, { key: "☆☆", label: "★2" }, { key: "☆☆☆", label: "★3" }, { key: "Crown Rare", label: "👑" }, { key: "Promo", label: "プロモ" },
+  { key: "☆", label: "★1" }, { key: "☆☆", label: "★2" }, { key: "☆☆☆", label: "★3" }, { key: "Crown Rare", label: "👑" }, { key: "Promo", label: "プロモ", en: "Promo" },
 ];
 const RANK = new Map(RARITIES.map((r, i) => [r.key, r.key === "Promo" ? 0 : i + 1]));
 // カードの代表レアリティ = 通常版（いちばん低いもの）
@@ -84,8 +84,8 @@ const baseRarity = (c: AppCard) => {
   return ranks.length ? Math.min(...ranks) : 0;
 };
 
-const collator = new Intl.Collator("ja");
-export function sortHits<T extends { card: AppCard; score: number }>(list: T[], key: SortKey, desc: boolean, usage: Record<string, number> = {}): T[] {
+const collator = { ja: new Intl.Collator("ja"), en: new Intl.Collator("en") };
+export function sortHits<T extends { card: AppCard; score: number }>(list: T[], key: SortKey, desc: boolean, usage: Record<string, number> = {}, lang: "ja" | "en" = "ja"): T[] {
   const val = (h: T): number | string => {
     const c = h.card;
     switch (key) {
@@ -97,14 +97,14 @@ export function sortHits<T extends { card: AppCard; score: number }>(list: T[], 
       case "cost": return c.minCost ?? 99;
       case "rarity": return baseRarity(c);
       case "new": return c.released;
-      case "name": return c.nameJa;
+      case "name": return lang === "en" ? c.nameEn : c.nameJa;
       default: return c.order;
     }
   };
   const sign = desc ? -1 : 1;
   return [...list].sort((a, b) => {
     const x = val(a), y = val(b);
-    const d = typeof x === "string" ? collator.compare(x, y as string) : x - (y as number);
+    const d = typeof x === "string" ? collator[lang].compare(x, y as string) : x - (y as number);
     return d * sign || a.card.order - b.card.order || a.card.id.localeCompare(b.card.id, "en", { numeric: true });
   });
 }

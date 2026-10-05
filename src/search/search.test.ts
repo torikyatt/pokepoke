@@ -129,3 +129,38 @@ describe.skipIf(!data.meta)("実際の使われ方で探す", () => {
     expect(hits.map((h) => h.card.id)).toContain("a2-150");
   });
 });
+
+describe("英語で探す", () => {
+  const kinds = (q: string) => engine.parse(q).map((c) => c.kind);
+  it("タグ・タイプ・数値を英語の言い方から読む", () => {
+    const conds = engine.parse("fire energy acceleration");
+    expect(conds.map((c) => c.id)).toEqual(expect.arrayContaining(["type:fire", "tag:energy.accel"]));
+    expect(engine.parse("hp 150+ metal pokemon").map((c) => c.id)).toEqual(expect.arrayContaining(["hp:ge150", "type:metal"]));
+    expect(engine.parse("basic with free retreat").map((c) => c.id)).toEqual(expect.arrayContaining(["retreat:eq0", "stage:basic"]));
+    expect(engine.parse("weak to fighting").map((c) => c.id)).toContain("weakness:fighting");
+  });
+  it("語尾が変わっても当たる（searches → search）", () => {
+    const hits = engine.search("item that searches pokemon");
+    expect(hits.map((h) => h.card.nameEn)).toContain("Poké Ball");
+    expect(hits.every((h) => h.card.kind === "item")).toBe(true);
+  });
+  it("英語のカード名（アクセント記号・アポストロフィなし）", () => {
+    expect(engine.search("pokedex")[0].card.nameEn).toBe("Pokédex");
+    expect(engine.search("professors research")[0].card.nameEn).toBe("Professor's Research");
+  });
+  it("英語の条件にも日本語と英語の表示名がある", () => {
+    for (const c of engine.parse("draw cards")) expect(c.en && c.label).toBeTruthy();
+  });
+  it("日本語の検索は英語の解析に入らない", () => {
+    expect(kinds("エネ加速できる炎のカード")).not.toContain("text");
+  });
+});
+
+describe.skipIf(!data.meta)("英語で実際の使われ方を探す", () => {
+  it("「mega lucario ex deck」「pairs with miraidon ex」「popular supporters」", () => {
+    expect(engine.parse("mega lucario ex deck")[0].kind).toBe("deck");
+    expect(engine.search("pairs with miraidon ex", 5).map((h) => h.card.id)).toContain("a1-098");
+    const hits = engine.search("popular supporters", 20);
+    expect(hits.every((h) => h.card.kind === "supporter")).toBe(true);
+  });
+});
