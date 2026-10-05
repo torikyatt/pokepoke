@@ -143,6 +143,9 @@ function closeNow(then?: () => void) {
 }
 
 if (typeof window !== "undefined") {
+  // スクロール位置はアプリが自分で戻す（タブごと・main.tsx）。ブラウザに任せると、詳細を閉じて履歴を戻したとき、
+  // 開く前の位置へ跳ね戻る（閉じる動きの間に後ろの一覧をスクロールしていても）。あとから積む履歴もこの設定を引き継ぐ
+  history.scrollRestoration = "manual";
   window.addEventListener("popstate", (e) => {
     const st = e.state;
     if (isSheet(st)) {

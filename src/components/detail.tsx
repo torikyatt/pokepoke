@@ -261,9 +261,10 @@ export function DetailSheet() {
         b.style.transition = "";
         b.style.opacity = "0";
       }
-      // 下りている間は、幕もシートも触れないようにする（後ろの一覧のカードをすぐ押せるように）
+      // 下りている間は、幕もシートも触れないようにし、後ろの固定も先に外す（後ろの一覧をすぐ押せる・スクロールできるように）
       el.style.pointerEvents = "none";
       if (b) b.style.pointerEvents = "none";
+      document.documentElement.style.overflow = "";
       let finished = false;
       const stop = () => {
         finished = true;
