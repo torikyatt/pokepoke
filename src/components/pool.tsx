@@ -4,10 +4,10 @@ import { useAddToDeck, useData } from "../context.tsx";
 import { activeCount, EMPTY_FILTERS, matchFilters, RARITIES, SORTS, sortHits, usePool, type Filters, type SortKey } from "../pool.ts";
 import { SCORED_KINDS, type Cond, type Hit } from "../search/engine.ts";
 import type { AppCard, CardGroup, CardKind, EnergyType, Rule, Stage } from "../types.ts";
-import { cardName, groupName, kindName, setName, stageName, tagName, useLang, useT } from "../i18n.ts";
+import { cardName, effectName, groupName, kindName, setName, stageName, tagName, useLang, useT } from "../i18n.ts";
 import { openCard } from "../detail.ts";
 import { useDecks, useFavorites, useViewed, VIEWED_MAX } from "../store.ts";
-import { Chip, EnergyIcon, IconHeart, IconHistory, IconSearch, IconSort, PoolCard, Sheet } from "./ui.tsx";
+import { Chip, EnergyIcon, IconHeart, IconHistory, IconSearch, IconSort, PoolCard, Pressable, Sheet, Thumb } from "./ui.tsx";
 
 const TYPES: EnergyType[] = ["grass", "fire", "water", "lightning", "psychic", "fighting", "darkness", "metal", "dragon", "colorless"];
 const KINDS: CardKind[] = ["pokemon", "supporter", "item", "tool", "stadium", "fossil"];
@@ -277,12 +277,13 @@ export function PoolFab({ bottom = "bottom-24", history }: { bottom?: string; hi
   );
 }
 
-/** 見たカードの履歴（新しい順・100件まで）。タップで詳細（前・次はこの並び）、長押しでデッキに追加 */
+/** 見たカードの履歴（新しい順・100件まで）をリストで。タップで詳細（前・次はこの並び）、長押しでデッキに追加 */
 function ViewedSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { byId } = useData();
   const { ids, clear } = useViewed();
   const addToDeck = useAddToDeck();
   const t = useT();
+  const lang = useLang();
   const cards = ids.map((id) => byId.get(id)).filter((c): c is AppCard => !!c);
   return (
     <Sheet
@@ -301,19 +302,36 @@ function ViewedSheet({ open, onClose }: { open: boolean; onClose: () => void }) 
       }
     >
       {cards.length ? (
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(4.5rem,1fr))] gap-x-2 gap-y-3 pt-1">
+        <ul className="divide-y divide-line">
           {cards.map((c) => (
-            <PoolCard
-              key={c.id}
-              card={c}
-              onTap={() => {
-                onClose();
-                openCard(c.id, cards.map((x) => x.id));
-              }}
-              onLongPress={() => addToDeck(c)}
-            />
+            <li key={c.id}>
+              <Pressable
+                onTap={() => {
+                  onClose();
+                  openCard(c.id, cards.map((x) => x.id));
+                }}
+                onLongPress={() => addToDeck(c)}
+                label={cardName(c, lang)}
+                className="flex w-full items-center gap-3 py-2 text-left"
+              >
+                <div className="w-10 shrink-0">
+                  <Thumb card={c} className="rounded-[4px]" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-1.5">
+                    {c.type && <EnergyIcon type={c.type} size="sm" />}
+                    <span className="min-w-0 truncate text-sm font-extrabold">{cardName(c, lang)}</span>
+                  </div>
+                  <div className="mt-0.5 truncate text-[11px] font-bold text-muted">
+                    {[c.kind === "pokemon" ? (c.stage ? stageName(c.stage, lang) : kindName(c.kind, lang)) : kindName(c.kind, lang), c.hp ? `HP ${c.hp}` : "", ...[...(c.ability ? [c.ability] : []), ...c.attacks].map((e) => effectName(e, lang))]
+                      .filter(Boolean)
+                      .join(" ・ ")}
+                  </div>
+                </div>
+              </Pressable>
+            </li>
           ))}
-        </div>
+        </ul>
       ) : (
         <p className="py-10 text-center text-sm font-bold text-muted">{t("まだカードを見ていません。カードをタップすると、ここに並びます。", "No cards viewed yet. Cards you open will show up here.")}</p>
       )}
