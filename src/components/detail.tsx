@@ -531,7 +531,7 @@ export function DetailNav({ bottom }: { bottom: string }) {
         finishSwipe(0);
         drag.current = null;
       }}
-      className="neu pop-in fixed left-1/2 z-[52] flex h-[50px] w-[172px] -translate-x-1/2 touch-none items-stretch overflow-hidden rounded-2xl border border-white/70 px-1 select-none"
+      className="neu pop-in fixed left-1/2 z-[52] flex h-[50px] w-[172px] -translate-x-1/2 touch-none items-stretch overflow-hidden rounded-2xl border border-white/70 bg-panel/60 px-1 backdrop-blur-md select-none"
       style={{ bottom }}
     >
       <button type="button" disabled={!prev} onClick={tap(() => finishSwipe(-1))} aria-label={prev ? t(`前のカード「${prev.nameJa}」`, `Previous: ${prev.nameEn}`) : t("前のカードはありません", "No previous card")} className={`${side} justify-start pl-1`}>
