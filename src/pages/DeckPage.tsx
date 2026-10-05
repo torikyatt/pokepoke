@@ -433,13 +433,14 @@ export function EnergyZone({ deck }: { deck: Deck }) {
   const t = useT();
   return (
     <div className="neu rounded-3xl p-4">
-      <div className="mb-3 flex items-center justify-between">
-        <h2 className="text-sm font-extrabold text-muted">{t(`エネルギー（${MAX_ENERGY}タイプまで）`, `Energy (up to ${MAX_ENERGY} types)`)}</h2>
-        <button type="button" className="text-xs font-bold text-accent-deep" onClick={() => update(deck.id, { energy: guessEnergy(deck, byId) })}>
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
+        <h2 className="text-sm font-extrabold whitespace-nowrap text-muted">{t(`エネルギー（${MAX_ENERGY}タイプまで）`, `Energy (up to ${MAX_ENERGY} types)`)}</h2>
+        <button type="button" className="ml-auto text-xs font-bold whitespace-nowrap text-accent-deep" onClick={() => update(deck.id, { energy: guessEnergy(deck, byId) })}>
           {t("デッキから自動設定", "Set from deck")}
         </button>
       </div>
-      <div className="flex flex-wrap justify-between gap-1">
+      {/* 画面の幅にかかわらず8タイプを1列に並べる（狭い画面では丸が小さくなる） */}
+      <div className="grid grid-cols-8 gap-1.5">
         {ZONE_TYPES.map((ty) => {
           const on = deck.energy.includes(ty);
           return (
@@ -452,9 +453,9 @@ export function EnergyZone({ deck }: { deck: Deck }) {
                 else if (deck.energy.length < MAX_ENERGY) update(deck.id, { energy: [...deck.energy, ty] });
                 else show(t(`エネルギーは${MAX_ENERGY}タイプまで`, `Up to ${MAX_ENERGY} Energy types`), "error");
               }}
-              className={`rounded-full p-1 transition ${on ? "ring-[3px] ring-accent" : "opacity-40"}`}
+              className={`@container mx-auto w-full max-w-11 rounded-full p-[3px] transition ${on ? "ring-[3px] ring-accent" : "opacity-40"}`}
             >
-              <EnergyIcon type={ty} size="xl" />
+              <EnergyIcon type={ty} size="fill" />
             </button>
           );
         })}

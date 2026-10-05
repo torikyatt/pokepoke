@@ -22,8 +22,9 @@ const TYPE_STYLE: Record<EnergyType, string> = {
 
 const EN_LETTER: Record<EnergyType, string> = { grass: "G", fire: "R", water: "W", lightning: "L", psychic: "P", fighting: "F", darkness: "D", metal: "M", dragon: "N", colorless: "C" };
 
-export function EnergyIcon({ type, size = "md" }: { type: EnergyType; size?: "sm" | "md" | "lg" | "xl" }) {
-  const s = { sm: "h-4 w-4 text-[9px]", md: "h-5 w-5 text-[11px]", lg: "h-7 w-7 text-sm", xl: "h-9 w-9 text-base" }[size];
+export function EnergyIcon({ type, size = "md" }: { type: EnergyType; size?: "sm" | "md" | "lg" | "xl" | "fill" }) {
+  // fill: 置き場所いっぱいの大きさ（文字は枠の幅に合わせる。@container の中で使う）
+  const s = { sm: "h-4 w-4 text-[9px]", md: "h-5 w-5 text-[11px]", lg: "h-7 w-7 text-sm", xl: "h-9 w-9 text-base", fill: "aspect-square w-full text-[45cqw]" }[size];
   const lang = useLang();
   // 英語はカードゲームの慣例の1文字（草=G 炎=R 水=W 雷=L 超=P 闘=F 悪=D 鋼=M ドラゴン=N 無色=C）
   const label = lang === "en" ? EN_LETTER[type] : type === "colorless" ? "無" : type === "dragon" ? "竜" : TYPE_JA[type];
