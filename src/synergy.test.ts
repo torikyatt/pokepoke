@@ -194,3 +194,13 @@ describe("進化ライン", () => {
     }
   });
 });
+
+describe("化石の進化ライン", () => {
+  it("かいのカセキ → オムナイト → オムスター（化石の詳細でも、オムナイトの詳細でも）", () => {
+    for (const id of ["a1-216", "a1-081"]) {
+      const line = syn.evolutionLine(byId.get(id)!);
+      expect(line.map((l) => l.cards[0].nameEn)).toEqual(["Helix Fossil", "Omanyte", "Omastar"]);
+      expect(line[0].fossil).toBe(true);
+    }
+  });
+});

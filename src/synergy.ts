@@ -157,12 +157,17 @@ export function createSynergy(data: AppData) {
   /** 2枚とも半分以上のデッキに入っているデッキタイプ（いちばん使われているもの） */
   const sharedArch = (a: string, b: string) =>
     (archOf.get(a) ?? []).filter((x) => x.rate >= 0.5).map((x) => x.arch).find((arch) => arch.cards.some((c) => c.id === b && c.rate >= 0.5));
+  // 大会で一緒に使われる組の強さ。一緒に入る割合が低いものと、どのデッキにも入る定番（モノマネむすめ・アカギ・ナツメ・スピーダーなど）は少し下げる
+  const coUseScore = (id: string, rate: number) => {
+    const global = data.meta?.usage[id] ?? 0;
+    return (0.5 + 2.5 * rate) * (rate < 0.2 ? 0.7 : 1) * (global >= 0.6 ? 0.55 : global >= 0.25 ? 0.7 : 1);
+  };
   const accelSels = (c: AppCard) => (c.supplies["supply.energy.many"] ?? []).filter((s) => !s.self);
 
   function partners(x: AppCard, limit = 30): Partner[] {
     const out = new Map<string, Partner>();
     // 進化ラインのカード（進化元・進化先・同じ名前）は「進化ライン」に出すので、相性のいいカードには出さない
-    const line = x.kind === "pokemon" ? lineNames(x) : new Set([x.nameEn]);
+    const line = x.kind === "pokemon" || x.kind === "fossil" ? lineNames(x) : new Set([x.nameEn]);
     const push = (card: AppCard, score: number, reason: string, reasonEn: string) => {
       if (card.id === x.id || line.has(card.nameEn)) return;
       const p = out.get(card.id) ?? out.set(card.id, { card, score: 0, reasons: [], reasonsEn: [] }).get(card.id)!;
@@ -186,7 +191,7 @@ export function createSynergy(data: AppData) {
       const arch = sharedArch(x.id, c.id);
       push(
         c,
-        0.5 + 2.5 * u.rate,
+        coUseScore(c.id, u.rate),
         arch ? `大会で一緒に採用（${arch.nameJa}）` : `大会で一緒に採用（${Math.round(u.rate * 100)}%）`,
         arch ? `Played together in tournaments (${arch.nameEn})` : `Played together in tournaments (${Math.round(u.rate * 100)}%)`,
       );
@@ -274,7 +279,7 @@ export function createSynergy(data: AppData) {
    * 進化ライン: 進化元（たね・1進化）→ このカードと同じ名前のカード → 進化先（1進化・2進化）を、段ごとに全部返す。
    * 進化は名前でつながるので、別のパックのカードも含める（例: リオル3種 → ルカリオ・ルカリオex・メガルカリオex）
    */
-  function evolutionLine(x: AppCard): { label: string; stage?: AppCard["stage"]; cards: AppCard[] }[] {
+  function evolutionLine(x: AppCard): { label: string; stage?: AppCard["stage"]; fossil?: true; cards: AppCard[] }[] {
     const sorted = (ids: Iterable<string>) =>
       [...new Set(ids)].map((id) => byId.get(id)!).filter(Boolean).sort((a, b) => a.order - b.order || a.id.localeCompare(b.id, "en", { numeric: true }));
     const same = data.cards.filter((c) => c.nameEn === x.nameEn && c.kind === x.kind && c.stage === x.stage).map((c) => c.id);
@@ -282,9 +287,10 @@ export function createSynergy(data: AppData) {
     const prev2 = sorted(prev1.flatMap((c) => c.evolvesFrom));
     const next1 = sorted(same.flatMap((id) => byId.get(id)!.evolvesTo));
     const next2 = sorted(next1.flatMap((c) => c.evolvesTo));
-    const label = (cs: AppCard[]) => (cs[0]?.stage ? STAGE_JA[cs[0].stage] : "");
+    // 化石（かせき）は、たねポケモンの代わりに進化のはじまりになる
+    const label = (cs: AppCard[]) => (cs[0]?.stage ? STAGE_JA[cs[0].stage] : cs[0]?.kind === "fossil" ? "化石" : "");
     const self = sorted(same);
-    return [prev2, prev1, self, next1, next2].filter((l) => l.length).map((cards) => ({ label: label(cards), stage: cards[0]?.stage, cards }));
+    return [prev2, prev1, self, next1, next2].filter((l) => l.length).map((cards) => ({ label: label(cards), stage: cards[0]?.stage, ...(cards[0]?.kind === "fossil" ? { fossil: true as const } : {}), cards }));
   }
 
   /** 進化ラインにいるカードの名前（相性のいいカードからは除く） */

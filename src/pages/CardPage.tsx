@@ -26,7 +26,7 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
   const combos = card ? synergy.combos(card) : [];
   const usage = card ? synergy.usage(card) : undefined;
   const { data } = useData();
-  const line = useMemo(() => (card && card.kind === "pokemon" ? synergy.evolutionLine(card) : []), [card, synergy]);
+  const line = useMemo(() => (card && (card.kind === "pokemon" || card.kind === "fossil") ? synergy.evolutionLine(card) : []), [card, synergy]);
   const [printIndex, setPrintIndex] = useState(0); // 表示中の絵柄
   const t = useT();
   const lang = useLang();
@@ -105,7 +105,7 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
                 <div key={i}>
                   {i > 0 && <div className="pl-3 text-xs leading-none font-extrabold text-muted">↓</div>}
                   <div className="flex items-start gap-2">
-                    <span className="w-10 shrink-0 pt-1 text-[10px] font-extrabold text-muted">{level.stage ? stageName(level.stage, lang) : level.label}</span>
+                    <span className="w-10 shrink-0 pt-1 text-[10px] font-extrabold text-muted">{level.stage ? stageName(level.stage, lang) : level.fossil ? kindName("fossil", lang) : level.label}</span>
                     <div className="flex min-w-0 flex-1 flex-wrap gap-1.5">
                       {level.cards.map((c) => (
                         <button key={c.id} type="button" onClick={(e) => openFromEvo(e.currentTarget, c.id)} title={cardName(c, lang)} className={`w-12 shrink-0 rounded-md ${c.id === card.id ? "ring-[3px] ring-accent" : ""}`}>

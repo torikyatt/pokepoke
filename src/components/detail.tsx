@@ -1,6 +1,6 @@
 // カード詳細の入れ物: スマホは下からせり上がるシート、PCは真ん中の列。
 // どちらも上に「戻る・カード名・✕」と、今のデッキの枚数を増減する −／＋ を置く
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { useAddToDeck, useData } from "../context.tsx";
 import { DECK_SIZE } from "../deck.ts";
 import { backDetail, closeDetail, reopenDetail, takeScrollAnchor, useDetail } from "../detail.ts";
@@ -119,14 +119,14 @@ function DetailHeader({ card }: { card?: AppCard }) {
  * 詳細のスクロール位置:
  *   新しく開いたカード … いちばん上から（進化ラインから移ったときだけ、進化ラインを同じ高さに）
  *   戻る・進む・「最近見たカード」で開き直したとき … そのカードで見ていた位置へ
+ * スクロールする枠はカードごとに作り直す（key）。前のカードのスクロール位置が残ったり、
+ * iPhone で位置を変えた直後に描かれず真っ白になったりするのを避ける
  */
 function useScrollMemory(ref: React.RefObject<HTMLDivElement | null>, key: string) {
   const mem = useRef(new Map<string, number>());
-  const cur = useRef(key);
   const nav = useDetail((s) => s.nav);
   useLayoutEffect(() => {
     const el = ref.current;
-    cur.current = key;
     if (!el) return;
     const a = takeScrollAnchor();
     const target = a && el.querySelector<HTMLElement>(`[data-anchor="${a.name}"]`);
@@ -136,20 +136,28 @@ function useScrollMemory(ref: React.RefObject<HTMLDivElement | null>, key: strin
       requestAnimationFrame(align); // 後から高さが変わる欄があっても合わせ直す
       return;
     }
-    el.scrollTo(0, nav.kind === "history" ? (mem.current.get(key) ?? 0) : 0);
+    const y = nav.kind === "history" ? (mem.current.get(key) ?? 0) : 0;
+    if (y) el.scrollTop = y;
   }, [key, nav.seq]);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const on = () => mem.current.set(cur.current, el.scrollTop);
+    const on = () => mem.current.set(key, el.scrollTop);
     el.addEventListener("scroll", on, { passive: true });
     return () => el.removeEventListener("scroll", on);
-  }, []);
+  }, [key]);
 }
 
 const HALF = 0.5; // 半分まで下げたときの位置（シートの高さに対する割合）
+type SheetPos = "full" | "half" | "closed";
+// 位置ごとの見た目。指で動かしている間は DOM を直接書き換え、離したらこの値に揃える（React と同じ文字列にする）
+const SHEET_TRANSFORM: Record<SheetPos, string> = { full: "translate3d(0,0,0)", half: `translate3d(0,${HALF * 100}%,0)`, closed: "translate3d(0,105%,0)" };
+const SHEET_DIM: Record<SheetPos, string> = { full: "1", half: "0", closed: "0" };
 
-/** スマホ: 下からせり上がる詳細。下へスワイプで閉じる。途中で離すと半分の高さで止まり、後ろの画面を見ながら使える */
+/**
+ * スマホ: 下からせり上がる詳細。下へスワイプで閉じる。
+ * 速く・雑に払っても閉じる。半分の高さで止まるのは、ちょうど真ん中あたりでゆっくり離したときだけ（後ろの画面を見ながら使える）
+ */
 export function DetailSheet() {
   const { byId } = useData();
   const { stack, pos, open, snap } = useDetail();
@@ -158,11 +166,14 @@ export function DetailSheet() {
   const t = useT();
   const lang = useLang();
   const sheet = useRef<HTMLDivElement>(null);
+  const backdrop = useRef<HTMLButtonElement>(null);
   const header = useRef<HTMLDivElement>(null);
   const content = useRef<HTMLDivElement>(null);
-  const [drag, setDrag] = useState<number | null>(null);
-  const dragRef = useRef<number | null>(null);
-  useScrollMemory(content, `${pos}:${id}`);
+  const scrollKey = `${pos}:${id}`;
+  useScrollMemory(content, scrollKey);
+  // 中身は開く・閉じる・高さの切り替えでは描き直さない（閉じる動きが引っかからないように）。
+  // −／＋ やお気に入りは、それぞれがストアを見て更新される
+  const body = useMemo(() => id && <CardDetail id={id} actions={card && <DeckButtons card={card} />} fav={card && <FavToggle card={card} />} />, [id, card]);
 
   // いっぱいに開いている間は、後ろの画面がスクロールしないようにする
   const full = open && snap === "full";
@@ -172,16 +183,30 @@ export function DetailSheet() {
 
   useEffect(() => {
     const el = sheet.current!;
-    let startY = 0, startX = 0, startOff = 0, lastY = 0, lastT = 0, v = 0;
+    let startY = 0, startX = 0, startOff = 0, off = 0, lastY = 0, lastT = 0, v = 0;
     let decided = false, dragging = false, fromHeader = false;
-    const set = (off: number | null) => {
-      dragRef.current = off;
-      setDrag(off);
+    // 指に合わせて動かす（毎フレーム React を描き直すと重いので、見た目だけ直接変える）
+    const follow = (y: number) => {
+      off = y;
+      el.style.transform = `translate3d(0,${y}px,0)`;
+      const b = backdrop.current;
+      if (b) b.style.opacity = String(Math.max(0, 1 - y / (el.offsetHeight * HALF)));
+    };
+    const settle = (to: SheetPos) => {
+      el.style.transition = "";
+      el.style.transform = SHEET_TRANSFORM[to];
+      const b = backdrop.current;
+      if (b) {
+        b.style.transition = "";
+        b.style.opacity = SHEET_DIM[to];
+      }
+      if (to === "closed") closeDetail();
+      else useDetail.setState({ snap: to });
     };
     const onStart = (e: TouchEvent) => {
-      const t = e.touches[0];
-      startY = lastY = t.clientY;
-      startX = t.clientX;
+      const p = e.touches[0];
+      startY = lastY = p.clientY;
+      startX = p.clientX;
       lastT = e.timeStamp;
       v = 0;
       decided = dragging = false;
@@ -189,31 +214,41 @@ export function DetailSheet() {
       startOff = useDetail.getState().snap === "half" ? el.offsetHeight * HALF : 0;
     };
     const onMove = (e: TouchEvent) => {
-      const t = e.touches[0];
-      const dy = t.clientY - startY;
-      const dx = t.clientX - startX;
+      const p = e.touches[0];
+      const dy = p.clientY - startY;
+      const dx = p.clientX - startX;
       if (!decided) {
         if (Math.abs(dy) < 6 && Math.abs(dx) < 6) return;
         decided = true;
         const half = useDetail.getState().snap === "half";
         // 縦の動きで、つまみ部分か、半分の高さのときか、いちばん上まで戻した状態から下へ引いたら、シートを動かす
         dragging = Math.abs(dy) > Math.abs(dx) && (fromHeader || half || (dy > 0 && (content.current?.scrollTop ?? 0) <= 0));
+        if (dragging) {
+          el.style.transition = "none";
+          el.style.willChange = "transform";
+          if (backdrop.current) backdrop.current.style.transition = "none";
+        }
       }
       if (!dragging) return;
       e.preventDefault();
-      if (e.timeStamp > lastT) v = (t.clientY - lastY) / (e.timeStamp - lastT);
-      lastY = t.clientY;
+      // 速さは直近の動きから（なめらかにするため、前の値と混ぜる）
+      const dt = e.timeStamp - lastT;
+      if (dt > 0) v = 0.6 * ((p.clientY - lastY) / dt) + 0.4 * v;
+      lastY = p.clientY;
       lastT = e.timeStamp;
-      set(Math.max(0, startOff + dy));
+      follow(Math.max(0, startOff + dy));
     };
-    const onEnd = () => {
+    const onEnd = (e: TouchEvent) => {
       if (!dragging) return;
       dragging = false;
+      el.style.willChange = "";
       const h = el.offsetHeight;
-      const proj = (dragRef.current ?? 0) + v * 220;
-      set(null);
-      if (proj > h * 0.75) closeDetail();
-      else useDetail.setState({ snap: proj > h * 0.22 ? "half" : "full" });
+      // 指を止めてから離したなら、速さは 0
+      const speed = e.timeStamp - lastT > 90 ? 0 : v;
+      if (speed > 0.3) settle("closed"); // 下へ払った（速さ px/ms）
+      else if (speed < -0.3) settle("full"); // 上へ払った
+      else if (Math.abs(off - h * HALF) < h * 0.12) settle("half"); // 真ん中あたりで離した
+      else settle(off < h * HALF ? "full" : "closed");
     };
     el.addEventListener("touchstart", onStart, { passive: true });
     el.addEventListener("touchmove", onMove, { passive: false });
@@ -227,18 +262,17 @@ export function DetailSheet() {
     };
   }, []);
 
-  const h = sheet.current?.offsetHeight ?? window.innerHeight;
-  const transform = drag !== null ? `translateY(${drag}px)` : !open ? "translateY(105%)" : snap === "half" ? `translateY(${HALF * 100}%)` : "translateY(0)";
-  const dim = drag !== null ? Math.max(0, 1 - drag / (h * HALF)) : full ? 1 : 0;
+  const at: SheetPos = !open ? "closed" : snap;
   return (
     <>
       <button
+        ref={backdrop}
         type="button"
         tabIndex={-1}
         aria-label={t("閉じる", "Close")}
         onClick={() => closeDetail()}
-        className={`fixed inset-0 z-[49] bg-[#3d4757]/35 transition-opacity duration-300 ${dim > 0 && open ? "" : "pointer-events-none"}`}
-        style={{ opacity: open ? dim : 0 }}
+        className={`fixed inset-0 z-[49] bg-[#3d4757]/35 transition-opacity duration-300 ${full ? "" : "pointer-events-none"}`}
+        style={{ opacity: SHEET_DIM[at] }}
       />
       <div
         ref={sheet}
@@ -246,8 +280,8 @@ export function DetailSheet() {
         aria-modal={full}
         aria-hidden={!open}
         aria-label={card ? cardName(card, lang) : t("カード詳細", "Card details")}
-        className={`fixed inset-x-0 bottom-0 z-50 mx-auto flex h-[94dvh] max-w-3xl flex-col rounded-t-3xl bg-canvas shadow-[0_-6px_24px_rgb(61_71_87/0.22)] ${drag === null ? "transition-transform duration-300 ease-[cubic-bezier(.2,.8,.2,1)]" : ""} ${open ? "" : "pointer-events-none"}`}
-        style={{ transform }}
+        className={`fixed inset-x-0 bottom-0 z-50 mx-auto flex h-[94dvh] max-w-3xl flex-col rounded-t-3xl bg-canvas shadow-[0_-6px_24px_rgb(61_71_87/0.22)] transition-transform duration-300 ease-[cubic-bezier(.2,.8,.2,1)] ${open ? "" : "pointer-events-none"}`}
+        style={{ transform: SHEET_TRANSFORM[at] }}
       >
         <div ref={header} className="shrink-0 px-3 pt-1 pb-1.5">
           <button type="button" aria-label={snap === "half" ? t("いっぱいに開く", "Expand") : t("半分に下げる", "Lower halfway")} onClick={() => useDetail.setState({ snap: snap === "half" ? "full" : "half" })} className="mx-auto block pt-0.5 pb-1">
@@ -255,8 +289,8 @@ export function DetailSheet() {
           </button>
           <DetailHeader card={card} />
         </div>
-        <div ref={content} className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-contain border-t border-line pb-[max(2rem,env(safe-area-inset-bottom))]">
-          {id && <CardDetail key={id} id={id} actions={card && <DeckButtons card={card} />} fav={card && <FavToggle card={card} />} />}
+        <div key={scrollKey} ref={content} className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-contain border-t border-line pb-[max(2rem,env(safe-area-inset-bottom))]">
+          {body}
         </div>
       </div>
     </>
@@ -316,7 +350,8 @@ export function DetailPane() {
   const id = open ? stack[pos] : undefined;
   const card = id ? byId.get(id) : undefined;
   const content = useRef<HTMLDivElement>(null);
-  useScrollMemory(content, `${pos}:${id}`);
+  const scrollKey = `${pos}:${id}`;
+  useScrollMemory(content, scrollKey);
   const t = useT();
   const lang = useLang();
   const last = byId.get(stack[pos]);
@@ -327,9 +362,9 @@ export function DetailPane() {
           <DetailHeader card={card} />
         </div>
       ) : null}
-      <div ref={content} className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto">
+      <div key={scrollKey} ref={content} className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto">
         {id ? (
-          <CardDetail key={id} id={id} keepOpen actions={card && <DeckButtons card={card} />} fav={card && <FavToggle card={card} />} />
+          <CardDetail id={id} keepOpen actions={card && <DeckButtons card={card} />} fav={card && <FavToggle card={card} />} />
         ) : (
           <div className="flex h-full flex-col items-center justify-center gap-4 p-8 text-center text-sm font-bold text-muted">
             <p className="whitespace-pre-line">{t("左の一覧のカードをクリックすると\nここに詳細が出ます", "Click a card in the list on the left\nto see its details here")}</p>
