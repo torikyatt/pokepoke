@@ -1,8 +1,9 @@
-# main に push されたとき・毎日1回、テストしてビルドし、gh-pages ブランチに公開する（GitHub Pages）
+# main に push されたとき・毎日1回、テストしてビルドし、公開する
+#   ・Cloudflare Pages（新しいサイト）: リポジトリの Secrets に CLOUDFLARE_API_TOKEN と CLOUDFLARE_ACCOUNT_ID があれば公開する
+#   ・GitHub Pages（古いサイト）: Variables に NEW_SITE_URL（例: https://example.com）があれば、新しいサイトへ送る転送ページだけを置く。
+#     無ければ今までどおりアプリを置く
 # 大会データ（Limitless）は毎回、まだ取っていない大会だけを取り足して集計し直す。
 #   取った大会の結果は Actions のキャッシュに残す。キャッシュが無いときは data/meta/cache-seed.tgz（2026年10月時点）から始める
-# 新しいサイトに引っ越したら、リポジトリの Settings → Secrets and variables → Actions → Variables に
-# NEW_SITE_URL（例: https://example.com）を入れる。以後は、古いURLに来た人を新しいサイトへ送るページだけを公開する
 name: Pages
 
 on:
@@ -23,6 +24,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CF_PROJECT: pokepoke-indecks
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -31,36 +36,38 @@ jobs:
           cache: npm
       - run: npm ci
       - name: 大会データのキャッシュを戻す
-        if: ${{ !vars.NEW_SITE_URL }}
         uses: actions/cache@v4
         with:
           path: data/meta/cache
           key: meta-cache-${{ github.run_id }}
           restore-keys: meta-cache-
       - name: キャッシュが無ければ、同梱の取得済みデータから始める
-        if: ${{ !vars.NEW_SITE_URL }}
         run: |
           if [ ! -f data/meta/cache/tournaments.json ]; then
             tar xzf data/meta/cache-seed.tgz -C data/meta
           fi
           echo "取得済みの大会: $(ls data/meta/cache | wc -l) 件"
       - name: 新しい大会を取り足して集計する
-        if: ${{ !vars.NEW_SITE_URL }}
         run: npm run fetch-meta -- --refresh
-      - if: ${{ !vars.NEW_SITE_URL }}
-        run: npm run validate
-      - if: ${{ !vars.NEW_SITE_URL }}
-        run: npm test
-      - if: ${{ !vars.NEW_SITE_URL }}
-        run: npm run typecheck
-      - if: ${{ !vars.NEW_SITE_URL }}
-        run: npm run build
+      - run: npm run validate
+      - run: npm test
+      - run: npm run typecheck
+      - run: npm run build
+
+      - name: Cloudflare Pages に公開
+        if: ${{ env.CLOUDFLARE_API_TOKEN != '' }}
+        run: |
+          # 単一HTML版（30MB超）は Cloudflare の1ファイル25MBの上限を超えるので置かない（どこからもリンクしていない）
+          rm -f dist/pokepoke.html
+          npx --yes wrangler@4 pages project create "$CF_PROJECT" --production-branch=main || true
+          npx --yes wrangler@4 pages deploy dist --project-name="$CF_PROJECT" --branch=main --commit-dirty=true
+
       - name: 新しいサイトへの転送ページを作る
         if: ${{ vars.NEW_SITE_URL }}
         run: npx tsx scripts/redirect-site.ts
         env:
           NEW_SITE_URL: ${{ vars.NEW_SITE_URL }}
-      - name: gh-pages に公開
+      - name: GitHub Pages（gh-pages）に公開
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
