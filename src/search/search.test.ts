@@ -58,7 +58,8 @@ describe("受け入れテスト", () => {
   });
 
   it("読めなかった言葉を返す（ほかの言葉で当たっていても）", () => {
-    expect(engine.explain("コインでエネ付与").unread).toEqual(["えね付与"]);
+    expect(engine.explain("コインでもふもふ").unread.length).toBe(1); // 辞書に無い言葉
+    expect(engine.explain("コインでエネ付与").unread).toEqual([]); // 辞書に足した
     expect(engine.explain("相手をねむらせて逃げられなくする").unread).toEqual(["ねむらせ"]);
     expect(engine.explain("コインでエネ加速").unread).toEqual([]);
     expect(engine.explain("トラッシュからグッズを拾ってくる").unread).toEqual([]);
