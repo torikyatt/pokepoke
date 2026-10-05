@@ -1,6 +1,6 @@
 // POST /api/feedback … カードの誤りの報告を1件受け取る（src/components/report-error.tsx から）
 //   { card, category, body, lang, images: [JPEG の base64, …] }
-//   card: 対象カード（「マタドガス（A1-177）」・書き換えてもよい）/ category: 種類のキー / body: 120字まで / images: 2枚まで
+//   card: 対象カード（「マタドガス（A1-177）」・書き換えてもよい）/ category: 種類のキー / body: 任意・120字まで / images: 任意・2枚まで
 // 誰が送ったか（IPアドレスなど）は残さない。データベースが結びついていなければ 503
 import { ensure, REPORT_CATEGORIES, type Ctx } from "../../server/search-db.ts";
 
@@ -23,7 +23,7 @@ export async function onRequestPost({ request, env }: Ctx) {
   const card = typeof b.card === "string" ? b.card.replace(/\s+/g, " ").trim().slice(0, 80) : "";
   const category = typeof b.category === "string" && b.category in REPORT_CATEGORIES ? b.category : "";
   const body = typeof b.body === "string" ? b.body.trim() : "";
-  if (!category || [...body].length > 120 || (!body && !Array.isArray(b.images))) return json(400, { error: "invalid" });
+  if (!category || [...body].length > 120) return json(400, { error: "invalid" });
   const lang = b.lang === "en" ? "en" : "ja";
   // 画像: JPEG だけ（先頭が FF D8 FF）・2枚まで・1枚 800KB まで
   const images: Uint8Array[] = [];
@@ -38,7 +38,8 @@ export async function onRequestPost({ request, env }: Ctx) {
     if (bytes.length > MAX_IMAGE || bytes[0] !== 0xff || bytes[1] !== 0xd8 || bytes[2] !== 0xff) return json(400, { error: "bad image" });
     images.push(bytes);
   }
-  if (!body && !images.length) return json(400, { error: "empty" });
+  // 内容・画像は任意。ただし対象カードも内容も画像も無いものは受けない
+  if (!card && !body && !images.length) return json(400, { error: "empty" });
   await ensure(env.DB);
   const { results } = await env.DB.prepare("INSERT INTO reports (at, card, category, body, lang, images) VALUES (?, ?, ?, ?, ?, ?) RETURNING id")
     .bind(new Date().toISOString(), card, category, body, lang, images.length)

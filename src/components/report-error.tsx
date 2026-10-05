@@ -1,6 +1,6 @@
 // カードの誤りの報告（カード詳細の左上のボタンから開く）。送ったものは集計ページ（/api/report）の「誤りの報告」で見る
 //   ・対象カード: 開いていたカードの名前と固有番号（収録パックのID＋カード番号）が入っている。書き換え・消去は自由
-//   ・何の訂正か（プルダウン）・内容（120字まで）・画像（2枚まで。端末で長い辺1280pxのJPEGに縮めてから送る）
+//   ・何の訂正か（プルダウン）・詳しい内容（任意・120字まで）・画像（任意・2枚まで。端末で長い辺1280pxのJPEGに縮めてから送る）
 import { useEffect, useState } from "react";
 import { isSingleFile } from "../data/load.ts";
 import { cardName, useLang, useT } from "../i18n.ts";
@@ -56,7 +56,8 @@ export function ReportErrorSheet({ open, onClose, card }: { open: boolean; onClo
     setImages([]);
   }, [open, card, lang]);
   const chars = [...body].length;
-  const canSend = !sending && chars <= MAX_CHARS && (body.trim() !== "" || images.length > 0);
+  // 内容・画像は任意。対象カードか内容のどちらかがあれば送れる
+  const canSend = !sending && chars <= MAX_CHARS && (target.trim() !== "" || body.trim() !== "" || images.length > 0);
 
   const addImages = async (files: FileList | null) => {
     for (const f of [...(files ?? [])].slice(0, MAX_IMAGES - images.length)) {
@@ -75,10 +76,10 @@ export function ReportErrorSheet({ open, onClose, card }: { open: boolean; onClo
     try {
       const res = await fetch("/api/feedback", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ card: target, category, body, lang, images }) });
       if (!res.ok) throw new Error(String(res.status));
-      show(t("報告を送りました。ありがとうございます！", "Report sent. Thank you!"));
+      show(t("お知らせいただきありがとうございます！", "Thank you for letting us know!"));
       onClose();
     } catch {
-      show(t("送れませんでした。時間をおいてもう一度お試しください", "Couldn't send. Please try again later."), "error");
+      show(t("送れませんでした。お手数ですが、時間をおいてもう一度お試しください", "Couldn't send. Please try again later."), "error");
     } finally {
       setSending(false);
     }
@@ -114,18 +115,18 @@ export function ReportErrorSheet({ open, onClose, card }: { open: boolean; onClo
         </label>
         <label className="block">
           <span className="mb-1 flex items-baseline justify-between text-xs font-extrabold text-muted">
-            <span>{t("内容", "Details")}</span>
+            <span>{t("詳しい内容（任意）", "Details (optional)")}</span>
             <span className={`tabular-nums ${chars > MAX_CHARS ? "text-[#c4302b]" : ""}`}>
               {chars} / {MAX_CHARS}
             </span>
           </span>
-          <textarea value={body} onChange={(e) => setBody(e.target.value)} rows={4} placeholder={t("どこがどう違うかを書いてください（120字まで）", "Tell us what's wrong (up to 120 characters)")} className={`${field} resize-none font-medium`} />
+          <textarea value={body} onChange={(e) => setBody(e.target.value)} rows={4} placeholder={t("どこがどう違うかなど、分かる範囲で（120字まで）", "Anything you noticed, if you like (up to 120 characters)")} className={`${field} resize-none font-medium`} />
         </label>
         <div>
-          <span className="mb-1 block text-xs font-extrabold text-muted">{t(`画像（${MAX_IMAGES}枚まで・任意）`, `Images (up to ${MAX_IMAGES}, optional)`)}</span>
+          <span className="mb-1 block text-xs font-extrabold text-muted">{t(`画像（任意・${MAX_IMAGES}枚まで）`, `Images (optional, up to ${MAX_IMAGES})`)}</span>
           {category === "image" && (
             <p className="mb-2 rounded-xl bg-[#e8f6f3] px-3 py-2 text-xs font-bold text-accent-deep">
-              {t("カード画像が違う場合は、正しいカードの画像（ゲーム内のスクリーンショットなど）を添付してください。", "If the card image is wrong, please attach an image of the correct card (e.g. an in-game screenshot).")}
+              {t("正しいカードの画像（ゲーム内のスクリーンショットなど）を添えていただけると、とても助かります。", "If you can, attaching an image of the correct card (e.g. an in-game screenshot) helps a lot.")}
             </p>
           )}
           <div className="flex flex-wrap gap-2">
@@ -148,8 +149,8 @@ export function ReportErrorSheet({ open, onClose, card }: { open: boolean; onClo
         </div>
         <p className="text-[11px] font-medium text-muted">
           {isSingleFile
-            ? t("ダウンロード版からは送れません。サイト（pokepokeindex.com）から送ってください。", "Reports can't be sent from the downloaded version. Please use the website.")
-            : t("送った内容はサイトの修正に使います。名前や連絡先などの個人情報は書かないでください。", "Reports are used to fix the site. Please don't include personal information.")}
+            ? t("ダウンロード版からは送れません。お手数ですが、サイト（pokepokeindex.com）からお送りください。", "Reports can't be sent from the downloaded version. Please use the website.")
+            : t("お知らせいただいた内容はサイトの修正に使わせていただきます。お名前や連絡先などの個人情報は書かないようお願いします。", "Your report will be used to fix the site. Please avoid including personal information.")}
         </p>
       </div>
     </Sheet>
