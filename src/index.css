@@ -22,6 +22,12 @@
   color-scheme: light;
 }
 
+/* Windows では、丸ゴシックの Web フォントは文字の輪郭がギザギザに見えるので、Windows 向けに調整された日本語フォントにする
+   （index.html で Windows なら <html class="win"> を付ける） */
+html.win {
+  --font-sans: "Yu Gothic UI", "BIZ UDPGothic", Meiryo, system-ui, sans-serif;
+}
+
 html,
 body {
   background: var(--color-canvas);
