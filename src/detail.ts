@@ -27,6 +27,14 @@ const push = (sheet: number, card: string) => history.pushState({ sheet, card } 
 
 /** カードを開く。閉じていれば新しく始め、開いていればその上に積む */
 export function openCard(id: string) {
+  // 閉じる動きの途中に次のカードが押されたら、動きを待たずに閉じ終え、すぐ新しく開く（シートは下がりかけた位置から上がる）
+  if (closing) {
+    const c = closing;
+    closing = undefined;
+    c.stop();
+    closeNow(() => openCard(id));
+    return;
+  }
   const s = useDetail.getState();
   if (s.open) {
     if (s.stack[s.pos] === id) {
@@ -71,21 +79,26 @@ export function backDetail() {
 
 // スマホのシートは、閉じる動きを先に最後まで見せてから、状態とブラウザの履歴を戻す。
 // （iPhone の Safari は履歴を戻すときやページのスクロールを戻すときに重い処理が入り、動きの途中だとカクつくため）
-let animateClose: ((done: () => void) => void) | undefined;
-export function setCloseAnimator(f: typeof animateClose) {
+// 閉じる動き（done で動き終わりを知らせる。戻り値は動きを待つのをやめる関数）
+type Animator = (done: () => void) => () => void;
+let animateClose: Animator | undefined;
+export function setCloseAnimator(f: Animator | undefined) {
   animateClose = f;
 }
+// 閉じる動きの途中（まだ閉じた状態にしていない）。この間に次のカードが押されたら、待たずにすぐ開き直す
+let closing: { stop: () => void; run: Animator; then?: () => void } | undefined;
 
 let after: (() => void) | undefined;
 /** まとめて閉じる（履歴は残す）。閉じ終わってから then を呼ぶ */
 export function closeDetail(then?: () => void) {
+  if (closing) return; // 動いている間に何度も押されても1回だけ
   if (animateClose && useDetail.getState().open) {
     const run = animateClose;
-    animateClose = undefined; // 動いている間に何度も押されても1回だけ
-    run(() => {
-      animateClose = run;
+    const stop = run(() => {
+      closing = undefined;
       closeNow(then);
     });
+    closing = { stop, run, then };
   } else closeNow(then);
 }
 function closeNow(then?: () => void) {

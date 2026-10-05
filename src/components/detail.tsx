@@ -222,16 +222,26 @@ export function DetailSheet() {
         b.style.transition = "";
         b.style.opacity = "0";
       }
+      // 下りている間は、幕もシートも触れないようにする（後ろの一覧のカードをすぐ押せるように）
+      el.style.pointerEvents = "none";
+      if (b) b.style.pointerEvents = "none";
       let finished = false;
-      const finish = () => {
-        if (finished) return;
+      const stop = () => {
         finished = true;
         el.removeEventListener("transitionend", onDone);
+        clearTimeout(timer);
+        el.style.pointerEvents = "";
+        if (b) b.style.pointerEvents = "";
+      };
+      const finish = () => {
+        if (finished) return;
+        stop();
         done();
       };
       const onDone = (e: TransitionEvent) => e.target === el && e.propertyName === "transform" && finish();
       el.addEventListener("transitionend", onDone);
-      setTimeout(finish, 400); // 動きが無かったとき（もう下にあるときなど）
+      const timer = setTimeout(finish, 400); // 動きが無かったとき（もう下にあるときなど）
+      return stop;
     });
     // 後ろの一覧が指を離したあとも滑っている（慣性スクロール中）と、iPhone は次のタッチを「止める」ために使い、
     // シートのボタンを押しても反応しない。シートに触れたら滑りを止め、タップが届かなかったら代わりに押す
