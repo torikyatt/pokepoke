@@ -156,7 +156,7 @@ function DeckRow({ d, highlight, keepOpen }: { d: TournamentDeck; highlight: str
       </div>
       <div className="mt-2 grid grid-cols-8 gap-1">
         {cards.map(({ card, n }) => (
-          <button key={card.id} type="button" onClick={() => openCard(card.id)} aria-label={t(`${card.nameJa} ${n}枚`, `${cardName(card, lang)} ×${n}`)} className={`relative rounded-[3px] ${card.id === highlight ? "ring-2 ring-accent" : ""}`}>
+          <button key={card.id} type="button" onClick={() => openCard(card.id, cards.map((x) => x.card.id))} aria-label={t(`${card.nameJa} ${n}枚`, `${cardName(card, lang)} ×${n}`)} className={`relative rounded-[3px] ${card.id === highlight ? "ring-2 ring-accent" : ""}`}>
             <Thumb card={card} className="rounded-[3px]" />
             {n > 1 && <span className="absolute right-0 bottom-0 rounded-tl-[4px] bg-badge px-1 text-[9px] leading-tight font-extrabold text-white">×{n}</span>}
           </button>

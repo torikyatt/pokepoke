@@ -3,7 +3,8 @@
 //   ・ブラウザの「戻る」と左上の戻るボタン … 1枚前のカードへ
 //   ・右上の ✕ / 下へスワイプ          … まとめて閉じる（履歴は残す）
 //   ・下の「最近見たカード」           … 閉じたときのカードと履歴のまま開き直す
-//   ・開いている間の下のボタン（‹ ✕ ›）  … 開いた一覧（検索結果・デッキなど）の前・次のカードへ（履歴は積まずに置きかえる）
+//   ・開いている間の下のボタン（‹ ✕ ›）  … 開いた一覧（検索結果・デッキ・相性のいいカードなど）の前・次のカードへ（履歴は積まずに置きかえる）
+//     一覧は履歴の1枚ごとに覚えておき、「戻る」で前のカードに戻ると、そのカードを開いた一覧に戻る
 // URLは変えず、ブラウザの履歴に { sheet: 何枚目か, card } を積んで「戻る」に対応する
 import { create } from "zustand";
 
@@ -12,17 +13,23 @@ let anchor: { name: string; top: number } | undefined;
 
 interface DetailState {
   stack: string[];
+  lists: string[][]; // stack の1枚ごとに、そのカードを開いた一覧
   pos: number;
   open: boolean;
   // 開き方: new = 新しく開いた（いちばん上から）、history = 戻る・進む・開き直し（前に見ていた位置へ）
   nav: { seq: number; kind: "new" | "history" };
   snap: "full" | "half"; // スマホのシートの高さ（half は後ろの画面を見ながら使える）
-  list: string[]; // カードを開いた一覧（検索結果・デッキなど）。前・次のカードはこの並びで
-  listPos: number; // 一覧の中で、いま（または最後に一覧から）見ているカードの位置。-1 は一覧の外
+  list: string[]; // いまのカードを開いた一覧（lists[pos]）。前・次のカードはこの並びで
+  listPos: number; // 一覧の中で、いま見ているカードの位置。-1 は一覧の外
 }
 
-export const useDetail = create<DetailState>()(() => ({ stack: [], pos: 0, open: false, snap: "full", nav: { seq: 0, kind: "new" }, list: [], listPos: -1 }));
+export const useDetail = create<DetailState>()(() => ({ stack: [], lists: [], pos: 0, open: false, snap: "full", nav: { seq: 0, kind: "new" }, list: [], listPos: -1 }));
 const nav = (kind: "new" | "history") => ({ nav: { seq: useDetail.getState().nav.seq + 1, kind } });
+/** 履歴の pos 枚目に移ったときの状態（そのカードを開いた一覧に戻す） */
+const at = (stack: string[], lists: string[][], pos: number) => {
+  const list = lists[pos] ?? [];
+  return { stack, lists, pos, list, listPos: list.indexOf(stack[pos]) };
+};
 
 type SheetState = { sheet: number; card: string };
 const isSheet = (st: unknown): st is SheetState => !!st && typeof (st as SheetState).sheet === "number" && typeof (st as SheetState).card === "string";
@@ -30,14 +37,10 @@ const push = (sheet: number, card: string) => history.pushState({ sheet, card } 
 
 /**
  * カードを開く。閉じていれば新しく始め、開いていればその上に積む。
- * list: そのカードを開いた一覧（前・次のカードに使う）。渡さなければ、前の一覧のまま（相性のいいカードなどからたどったとき）
+ * list: そのカードを開いた一覧（前・次のカードに使う。相性のいいカード・進化ラインなど、詳細の中の一覧も渡す）。
+ *       渡さなければ、いまの一覧のまま
  */
 export function openCard(id: string, list?: string[]) {
-  if (list) useDetail.setState({ list, listPos: list.indexOf(id) });
-  else {
-    const i = useDetail.getState().list.indexOf(id);
-    if (i >= 0) useDetail.setState({ listPos: i });
-  }
   // 閉じる動きの途中に次のカードが押されたら、動きを待たずに閉じ終え、すぐ新しく開く（シートは下がりかけた位置から上がる）
   if (closing) {
     const c = closing;
@@ -47,16 +50,20 @@ export function openCard(id: string, list?: string[]) {
     return;
   }
   const s = useDetail.getState();
+  const l = list ?? s.list;
   if (s.open) {
     if (s.stack[s.pos] === id) {
       anchor = undefined;
+      if (list) useDetail.setState(at(s.stack, s.lists.map((x, i) => (i === s.pos ? l : x)), s.pos));
       return;
     }
-    const stack = [...s.stack.slice(0, s.pos + 1), id].slice(-MAX);
-    useDetail.setState({ stack, pos: stack.length - 1, ...nav("new") });
-    push(stack.length - 1, id);
+    const stack = [...s.stack.slice(0, s.pos + 1), id];
+    const lists = [...s.lists.slice(0, s.pos + 1), l];
+    const cut = Math.max(0, stack.length - MAX);
+    useDetail.setState({ ...at(stack.slice(cut), lists.slice(cut), stack.length - 1 - cut), ...nav("new") });
+    push(stack.length - 1 - cut, id);
   } else {
-    useDetail.setState({ stack: [id], pos: 0, open: true, snap: "full", ...nav("new") });
+    useDetail.setState({ ...at([id], [l], 0), open: true, snap: "full", ...nav("new") });
     push(0, id);
   }
 }
@@ -75,7 +82,7 @@ export function stepCard(d: number) {
   if (i === s.listPos) return;
   const id = s.list[i];
   const stack = [...s.stack.slice(0, s.pos), id];
-  useDetail.setState({ stack, listPos: i, ...nav("new") });
+  useDetail.setState({ ...at(stack, s.lists.slice(0, s.pos + 1), s.pos), ...nav("new") });
   history.replaceState({ sheet: s.pos, card: id } satisfies SheetState, "", location.href);
 }
 
@@ -118,7 +125,7 @@ export function backDetail() {
   const s = useDetail.getState();
   if (s.pos <= 0) return;
   if (isSheet(history.state) && history.state.sheet > 0) history.back();
-  else useDetail.setState({ pos: s.pos - 1, ...nav("history") });
+  else useDetail.setState({ ...at(s.stack, s.lists, s.pos - 1), ...nav("history") });
 }
 
 // スマホのシートは、閉じる動きを先に最後まで見せてから、状態とブラウザの履歴を戻す。
@@ -160,8 +167,8 @@ if (typeof window !== "undefined") {
     const st = e.state;
     if (isSheet(st)) {
       const s = useDetail.getState();
-      if (s.stack[st.sheet] === st.card) useDetail.setState({ pos: st.sheet, open: true, ...nav("history") });
-      else useDetail.setState({ stack: [st.card], pos: 0, open: true, ...nav("history") });
+      if (s.stack[st.sheet] === st.card) useDetail.setState({ ...at(s.stack, s.lists, st.sheet), open: true, ...nav("history") });
+      else useDetail.setState({ ...at([st.card], [[]], 0), open: true, ...nav("history") });
     } else {
       if (useDetail.getState().open) useDetail.setState({ open: false });
       const f = after;

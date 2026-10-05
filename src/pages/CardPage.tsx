@@ -4,11 +4,11 @@ import { useAddToDeck, useData } from "../context.tsx";
 import { closeDetail, openCard, setScrollAnchor } from "../detail.ts";
 
 /** 進化ラインから開く: 移った先でも進化ラインが画面の同じ高さに来るようにする */
-function openFromEvo(button: HTMLElement, id: string) {
+function openFromEvo(button: HTMLElement, id: string, list: string[]) {
   const section = button.closest<HTMLElement>("[data-anchor]");
   const scroller = section?.closest<HTMLElement>(".overflow-y-auto");
   if (section && scroller) setScrollAnchor("evo", section.getBoundingClientRect().top - scroller.getBoundingClientRect().top);
-  openCard(id);
+  openCard(id, list);
 }
 import { PrintLine } from "../components/prints.tsx";
 import { PrintGallery } from "../components/print-gallery.tsx";
@@ -126,7 +126,7 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
                     <span className="w-10 shrink-0 pt-1 text-[10px] font-extrabold text-muted">{level.stage ? stageName(level.stage, lang) : level.fossil ? kindName("fossil", lang) : level.label}</span>
                     <div className="flex min-w-0 flex-1 flex-wrap gap-1.5">
                       {level.cards.map((c) => (
-                        <button key={c.id} type="button" onClick={(e) => openFromEvo(e.currentTarget, c.id)} title={cardName(c, lang)} className={`w-12 shrink-0 rounded-md ${c.id === card.id ? "ring-[3px] ring-accent" : ""}`}>
+                        <button key={c.id} type="button" onClick={(e) => openFromEvo(e.currentTarget, c.id, line.flatMap((l) => l.cards.map((x) => x.id)))} title={cardName(c, lang)} className={`w-12 shrink-0 rounded-md ${c.id === card.id ? "ring-[3px] ring-accent" : ""}`}>
                           <Thumb card={c} />
                         </button>
                       ))}
@@ -160,7 +160,7 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
             <div className={keepOpen ? "grid grid-cols-[repeat(auto-fill,minmax(4.5rem,1fr))] gap-x-2 gap-y-3" : "scrollbar-none -mx-3 flex gap-2 overflow-x-auto px-3 pb-2"}>
               {partners.map((p) => (
                 <div key={p.card.id} className={keepOpen ? "min-w-0" : "w-24 shrink-0"}>
-                  <PoolCard card={p.card} onTap={() => openCard(p.card.id)} onLongPress={() => addToDeck(p.card)} />
+                  <PoolCard card={p.card} onTap={() => openCard(p.card.id, partners.map((x) => x.card.id))} onLongPress={() => addToDeck(p.card)} />
                   <div className="mt-1 text-[10px] leading-tight font-bold text-accent-deep">
                     {(lang === "en" ? p.reasonsEn : p.reasons).slice(0, 2).map((r) => (
                       <div key={r}>{r}</div>
@@ -183,7 +183,7 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
                   <li key={g.key} className="neu flex gap-3 rounded-2xl p-3">
                     <div className="flex shrink-0 gap-1">
                       {g.others.map((c) => (
-                        <button key={c.id} type="button" onClick={() => openCard(c.id)} className="w-12 shrink-0" aria-label={cardName(c, lang)}>
+                        <button key={c.id} type="button" onClick={() => openCard(c.id, [...new Set(comboGroups.flatMap((x) => x.others.map((o) => o.id)))])} className="w-12 shrink-0" aria-label={cardName(c, lang)}>
                           <Thumb card={c} className="rounded-[4px]" />
                         </button>
                       ))}
