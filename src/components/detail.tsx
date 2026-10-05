@@ -1,5 +1,5 @@
 // カード詳細の入れ物: スマホは下からせり上がるシート、PCは真ん中の列。
-// どちらも上に「戻る・カード名・✕」と、今のデッキの枚数を増減する −／＋ を置く
+// どちらも上に「戻る・カード名・共有・✕」と、今のデッキの枚数を増減する −／＋ を置く
 import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { useAddToDeck, useData } from "../context.tsx";
 import { DECK_SIZE } from "../deck.ts";
@@ -91,26 +91,61 @@ const BackIcon = () => (
   </svg>
 );
 
-/** 戻る（1枚前へ）・カード名・✕（まとめて閉じる） */
+const ShareIcon = () => (
+  <svg viewBox="0 0 24 24" className="h-4 w-4 fill-none stroke-current stroke-[2.3]" aria-hidden>
+    <path d="M12 15V3m0 0L8 7m4-4 4 4M7 11H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-1" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+/** このカードのURLを共有（スマホは共有メニュー、ないときはコピー） */
+function useShareCard() {
+  const show = useToast((s) => s.show);
+  const t = useT();
+  const lang = useLang();
+  return async (card: AppCard) => {
+    const url = `${location.href.split("#")[0]}#/card/${card.id}`;
+    const title = `${cardName(card, lang)} | POKÉPOKE LAB`;
+    try {
+      if (navigator.share) await navigator.share({ title, url });
+      else {
+        await navigator.clipboard.writeText(url);
+        show(t("カードのURLをコピーしました", "Card URL copied"));
+      }
+    } catch (e) {
+      if ((e as Error)?.name === "AbortError") return; // 共有メニューを閉じただけ
+      prompt(t("このURLをコピーしてください", "Copy this URL"), url);
+    }
+  };
+}
+
+/** 戻る（1枚前へ）・カード名・共有・✕（まとめて閉じる）。名前が真ん中に来るよう、左右を同じ幅にする */
 function DetailHeader({ card }: { card?: AppCard }) {
   const { pos } = useDetail();
   const t = useT();
   const lang = useLang();
+  const share = useShareCard();
   return (
     <div className="flex items-center gap-2">
-      {pos > 0 ? (
-        <IconBtn label={t("1つ前のカードへ", "Previous card")} onClick={backDetail}>
-          <BackIcon />
-        </IconBtn>
-      ) : (
-        <span className="w-7 shrink-0" />
-      )}
+      <div className="flex w-16 shrink-0">
+        {pos > 0 && (
+          <IconBtn label={t("1つ前のカードへ", "Previous card")} onClick={backDetail}>
+            <BackIcon />
+          </IconBtn>
+        )}
+      </div>
       <h2 className="min-w-0 flex-1 truncate text-center text-sm font-extrabold">
         {card && cardName(card, lang)}
       </h2>
-      <IconBtn label={t("閉じる", "Close")} onClick={() => closeDetail()}>
-        <span className="text-sm font-extrabold">✕</span>
-      </IconBtn>
+      <div className="flex w-16 shrink-0 justify-end gap-2">
+        {card && (
+          <IconBtn label={t("このカードを共有", "Share this card")} onClick={() => share(card)}>
+            <ShareIcon />
+          </IconBtn>
+        )}
+        <IconBtn label={t("閉じる", "Close")} onClick={() => closeDetail()}>
+          <span className="text-sm font-extrabold">✕</span>
+        </IconBtn>
+      </div>
     </div>
   );
 }
