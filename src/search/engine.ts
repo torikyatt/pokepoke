@@ -9,7 +9,8 @@ import type { AppCard, AppData, AppEffect, CardGroup, CardKind, EnergyType, LexE
 import { GROUP_EN, GROUP_JA, KIND_EN, KIND_JA, STAGE_EN, STAGE_JA, TYPE_EN, TYPE_JA } from "../types.ts";
 
 type Op = "eq" | "ge" | "le";
-export type Cond = { id: string; label: string; en: string; weight?: number } & (
+// word: 表現辞書で当たった言葉（正規化済み）。その条件を満たさないカードでも、カードの文にこの言葉があれば当てる
+export type Cond = { id: string; label: string; en: string; weight?: number; word?: string } & (
   | { kind: "tag"; tag: string }
   | { kind: "type"; type: EnergyType }
   | { kind: "cardKind"; value: CardKind | "trainer" }
@@ -475,7 +476,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
           }
           if (buf) rest.push(buf);
           buf = "";
-          for (const e of lex.get(hit)!) add(condOf(e.target, e.weight, hit));
+          for (const e of lex.get(hit)!) add({ ...condOf(e.target, e.weight, hit), ...(hit.length >= 2 ? { word: hit } : {}) });
           i += hit.length;
         }
         if (buf) rest.push(buf);
@@ -509,12 +510,24 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
 
     const hits: Hit[] = [];
     for (const card of data.cards) {
+      const h = haystack.get(card.id)!;
+      // 検索の言葉がタイプ・進化・ex・グループやタグになったとき、それに当てはまらなくても、
+      // カードの文にその言葉があれば当てる（「2進化 サポート」→ 2進化ポケモンについて書いてあるサポート）。少し下に並べる
+      const inText = (c: Cond) => !!c.word && h.ja.includes(c.word);
+      let byText = 0;
+      const hard = <C extends Cond>(cs: C[], ok: (c: C) => boolean) => {
+        if (!cs.length || cs.some(ok)) return true;
+        if (!cs.some(inText)) return false;
+        byText++;
+        return true;
+      };
       // ハード条件（同じ種類の条件どうしは OR）
-      if (types.length && !types.some((t) => card.type === t.type || card.typeRefs.includes(t.type))) continue;
+      if (!hard(types, (t) => card.type === t.type || card.typeRefs.includes(t.type))) continue;
+      // カードの種類（サポート・グッズ…）は、ほかのカードの文にもよく出てくるので、文では当てない
       if (kinds.length && !kinds.some((k) => (k.value === "trainer" ? card.kind !== "pokemon" : card.kind === k.value))) continue;
-      if (stages.length && !stages.some((s) => (s.value === "evolved" ? card.stage === "stage1" || card.stage === "stage2" : card.stage === s.value))) continue;
-      if (rules.length && !rules.some((r) => ruleOk(card, r.value))) continue;
-      if (groups.length && !groups.some((g) => card.groups.includes(g.value))) continue;
+      if (!hard(stages, (s) => (s.value === "evolved" ? card.stage === "stage1" || card.stage === "stage2" : card.stage === s.value))) continue;
+      if (!hard(rules, (r) => ruleOk(card, r.value))) continue;
+      if (!hard(groups, (g) => card.groups.includes(g.value))) continue;
       if (weak.length && !weak.some((w) => card.weakness === w.type)) continue;
       if (!nums.every((c) => cmp(c.kind === "hp" ? card.hp : card.retreat, c.op, c.n))) continue;
       if (slot === "ability" && !card.ability) continue;
@@ -534,7 +547,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       const effects = effectsOf(card).filter((e) => !slot || e.slot === slot || (e.slot === "text" && slot === "attack" && card.kind !== "pokemon"));
       const matched = new Set<string>();
       const effectNames = new Map<string, string>(); // 日本語名 → 英語名
-      let score = useScore;
+      let score = useScore - 0.5 * byText;
       const best = new Map<string, number>();
       for (const e of effects) {
         let local = 0;
@@ -555,11 +568,20 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
         score += w;
         matched.add(id);
       }
+      // タグが付いていなくても、カードの文にその言葉があれば当てる（全文検索と同じ重さ）
+      // ワザ・特性を指定したときは、その文だけを見る
+      let slotText: string | undefined;
+      const inEffects = (c: Cond) =>
+        !slot ? inText(c) : !!c.word && (slotText ??= normalize(effects.map((e) => `${e.nameJa ?? ""} ${e.textJa ?? ""}`).join(" ")).replace(/ /g, "")).includes(c.word);
+      for (const c of soft) {
+        if (best.has(c.id) || !inEffects(c)) continue;
+        score += 0.4;
+        matched.add(c.id);
+      }
       // 効果で探したとき、同じくらい当てはまるなら大会でよく使われている（採用率1%以上の）カードを少し上に
       if (best.size && (usage[card.id] ?? 0) >= 0.01) score += Math.min(0.1, usage[card.id]);
-      if (soft.length && !best.size && !nameConds.length && !texts.length) continue;
+      if (soft.length && !matched.size && !nameConds.length && !texts.length) continue;
 
-      const h = haystack.get(card.id)!;
       for (const n of nameConds) {
         if (n.ids ? n.ids.includes(card.id) : h.name.includes(n.name) || h.nameEn.includes(n.name)) {
           // 名前で探したときも、大会でよく使われているものを少し上に（hakase → 博士の研究が先）

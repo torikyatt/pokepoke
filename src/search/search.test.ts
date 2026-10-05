@@ -3,7 +3,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { createEngine } from "./engine.ts";
+import { createEngine, effectsOf } from "./engine.ts";
 import { createSynergy } from "../synergy.ts";
 import { normalize } from "./normalize.ts";
 import type { AppData } from "../types.ts";
@@ -84,6 +84,17 @@ describe("受け入れテスト", () => {
 });
 
 describe("その他の検索", () => {
+  it("タグになる言葉でも、カードの文にその言葉があれば当てる（2進化 サポート）", () => {
+    const hits = engine.search("2進化 サポート");
+    expect(hits.length).toBeGreaterThan(0);
+    for (const h of hits) {
+      expect(h.card.kind).toBe("supporter");
+      expect(effectsOf(h.card).some((e) => (e.textJa ?? "").includes("2進化"))).toBe(true);
+    }
+  });
+  it("カードの種類（サポート）は文では当てない", () => {
+    expect(engine.search("サポート", 200).every((h) => h.card.kind === "supporter")).toBe(true);
+  });
   it("カード名で引ける", () => {
     expect(ids("ピカチュウex", 5)).toContain("a1-096");
   });
