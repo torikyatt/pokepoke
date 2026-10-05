@@ -24,22 +24,23 @@ export async function onRequestPost({ request, env }: Ctx) {
   const ok = (w: string) => !!w && w.length <= 60 && !/@|https?:|www\.|\d{5,}/i.test(w);
   if (!ok(q)) return none(400);
   const lang = body.lang === "en" ? "en" : "ja";
-  const day = new Date().toISOString().slice(0, 10);
+  const now = new Date().toISOString();
+  const day = now.slice(0, 10);
   await ensure(env.DB);
   if (body.open === 1) {
-    await env.DB.prepare("INSERT INTO searches (day, q, lang, n, opened) VALUES (?, ?, ?, 0, 1) ON CONFLICT (day, q, lang) DO UPDATE SET opened = opened + 1")
-      .bind(day, q, lang)
+    await env.DB.prepare("INSERT INTO searches (day, q, lang, n, opened, last) VALUES (?, ?, ?, 0, 1, ?) ON CONFLICT (day, q, lang) DO UPDATE SET opened = opened + 1")
+      .bind(day, q, lang, now)
       .run();
   } else {
     const hits = typeof body.hits === "number" && Number.isFinite(body.hits) ? Math.max(0, Math.min(99999, Math.round(body.hits))) : null;
-    await env.DB.prepare("INSERT INTO searches (day, q, lang, n, hits) VALUES (?, ?, ?, 1, ?) ON CONFLICT (day, q, lang) DO UPDATE SET n = n + 1, hits = excluded.hits")
-      .bind(day, q, lang, hits)
+    await env.DB.prepare("INSERT INTO searches (day, q, lang, n, hits, last) VALUES (?, ?, ?, 1, ?, ?) ON CONFLICT (day, q, lang) DO UPDATE SET n = n + 1, hits = excluded.hits, last = excluded.last")
+      .bind(day, q, lang, hits, now)
       .run();
     // 読めなかった言葉（検索文の一部なので、検索文と同じ決まりで確かめる）
     const miss = Array.isArray(body.miss) ? [...new Set(body.miss.filter((m): m is string => typeof m === "string").map((m) => m.trim()).filter((m) => ok(m) && m.length <= 30))].slice(0, 8) : [];
     if (miss.length) {
-      const stmt = env.DB.prepare("INSERT INTO misses (day, term, lang, n, q) VALUES (?, ?, ?, 1, ?) ON CONFLICT (day, term, lang) DO UPDATE SET n = n + 1, q = excluded.q");
-      await Promise.all(miss.map((m) => stmt.bind(day, m, lang, q).run()));
+      const stmt = env.DB.prepare("INSERT INTO misses (day, term, lang, n, q, last) VALUES (?, ?, ?, 1, ?, ?) ON CONFLICT (day, term, lang) DO UPDATE SET n = n + 1, q = excluded.q, last = excluded.last");
+      await Promise.all(miss.map((m) => stmt.bind(day, m, lang, q, now).run()));
     }
   }
   return none();
