@@ -49,6 +49,14 @@ describe("受け入れテスト", () => {
     for (const h of water) expect(h.card.attacks.some((a) => (a.cost.water ?? 0) > 0)).toBe(true);
   });
 
+  it("相手の〇〇を妨害 → その種類の妨害（サポート・グッズ・どうぐ）", () => {
+    const tagsOf = (q: string) => engine.parse(q).flatMap((c) => (c.kind === "tag" ? [c.tag] : []));
+    expect(tagsOf("相手のサポートを妨害")).toEqual(["disrupt.lock.supporter"]);
+    expect(tagsOf("相手のグッズを妨害")).toEqual(["disrupt.lock.item"]);
+    expect(tagsOf("相手の道具を妨害")).toEqual(["disrupt.tool"]);
+    expect(tagsOf("サポートを邪魔する")).toEqual(["disrupt.lock.supporter"]);
+  });
+
   it("エネ加速できる炎のカード", () => {
     const all = ids("エネ加速できる炎のカード");
     // ブーバー・リザードンex（エネゾーンから自分へ）、ブースター（ベンチへ）、カキ（サポート）
