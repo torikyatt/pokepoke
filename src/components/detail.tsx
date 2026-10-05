@@ -212,7 +212,7 @@ export function DetailSheet() {
   const content = useRef<HTMLDivElement>(null);
   const scrollKey = `${pos}:${id}`;
   useScrollMemory(content, scrollKey);
-  useStepBlur(header, content);
+  useStepNudge(header, content);
   // 中身は開く・閉じる・高さの切り替えでは描き直さない（閉じる動きが引っかからないように）。
   // −／＋ やお気に入りは、それぞれがストアを見て更新される
   const body = useMemo(() => id && <CardDetail id={id} actions={card && <DeckButtons card={card} />} fav={card && <FavToggle card={card} />} />, [id, card]);
@@ -421,14 +421,15 @@ export function DetailSheet() {
 }
 
 /**
- * 前・次のカードへ移ったとき、詳細を一瞬だけ横方向にぼかす（動かさずに「切り替わった」ことだけ伝える）。
- * ぼかしは index.html の SVG フィルター（横だけにかかる）
+ * 前・次のカードへ移ったとき、詳細を少しだけ横にずらした位置に描き、すぐ（0.2秒で）真ん中へ戻す。
+ * 次へは左にずれたところから、前へは右にずれたところから。戻る速さは、はじめ速くだんだん緩やかに
  */
-function useStepBlur(...els: React.RefObject<HTMLElement | null>[]) {
+function useStepNudge(...els: React.RefObject<HTMLElement | null>[]) {
   const step = useDetail((s) => s.step);
   useEffect(() => {
     if (!step) return;
-    for (const el of els) el.current?.animate([{ filter: "url(#hblur-8)" }, { filter: "url(#hblur-4)" }, { filter: "url(#hblur-2)" }, { filter: "none" }], { duration: 180 });
+    const dx = useDetail.getState().stepDir > 0 ? -14 : 14;
+    for (const el of els) el.current?.animate([{ transform: `translateX(${dx}px)` }, { transform: "none" }], { duration: 200, easing: "cubic-bezier(.2,.8,.2,1)" });
   }, [step]);
 }
 
@@ -579,7 +580,7 @@ export function DetailPane() {
   const scrollKey = `${pos}:${id}`;
   useScrollMemory(content, scrollKey);
   const pane = useRef<HTMLDivElement>(null);
-  useStepBlur(pane);
+  useStepNudge(pane);
   const t = useT();
   const lang = useLang();
   const last = byId.get(stack[pos]);

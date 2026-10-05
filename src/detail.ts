@@ -21,10 +21,11 @@ interface DetailState {
   snap: "full" | "half"; // スマホのシートの高さ（half は後ろの画面を見ながら使える）
   list: string[]; // いまのカードを開いた一覧（lists[pos]）。前・次のカードはこの並びで
   listPos: number; // 一覧の中で、いま見ているカードの位置。-1 は一覧の外
-  step: number; // 前・次のカードへ移った回数（移るたびに詳細を一瞬だけ横にぼかす合図）
+  step: number; // 前・次のカードへ移った回数（移るたびに詳細を少しだけ横にずらして戻す合図）
+  stepDir: number; // 最後に移った向き（+1 次へ / -1 前へ）
 }
 
-export const useDetail = create<DetailState>()(() => ({ stack: [], lists: [], pos: 0, open: false, snap: "full", nav: { seq: 0, kind: "new" }, list: [], listPos: -1, step: 0 }));
+export const useDetail = create<DetailState>()(() => ({ stack: [], lists: [], pos: 0, open: false, snap: "full", nav: { seq: 0, kind: "new" }, list: [], listPos: -1, step: 0, stepDir: 0 }));
 const nav = (kind: "new" | "history") => ({ nav: { seq: useDetail.getState().nav.seq + 1, kind } });
 /** 履歴の pos 枚目に移ったときの状態（そのカードを開いた一覧に戻す） */
 const at = (stack: string[], lists: string[][], pos: number) => {
@@ -77,7 +78,7 @@ export function stepCard(d: number) {
   if (i === s.listPos) return;
   const id = s.list[i];
   const stack = [...s.stack.slice(0, s.pos), id];
-  useDetail.setState({ ...at(stack, s.lists.slice(0, s.pos + 1), s.pos), step: s.step + 1, ...nav("new") });
+  useDetail.setState({ ...at(stack, s.lists.slice(0, s.pos + 1), s.pos), step: s.step + 1, stepDir: Math.sign(d), ...nav("new") });
   history.replaceState({ sheet: s.pos, card: id } satisfies SheetState, "", location.href);
 }
 
