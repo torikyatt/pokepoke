@@ -64,7 +64,9 @@
     - id: energy.self_discard
       ja: 自分のエネをトラッシュ
       en: Discard own Energy
-      supplies: [supply.trash.energy, supply.trash.fill]
+      # トラッシュの枚数で強くなるカード（シャンデラ＝サポート、ハカドッグ＝超ポケモン、ロトムex＝グッズ…）はエネを数えないので、
+      # エネを捨てても supply.trash.fill にはしない
+      supplies: [supply.trash.energy]
       match:
         - '[Dd]iscard [^.]*Energy (from|attached to) this Pokémon'
         - 'Energy attached to all of your Pokémon'
@@ -872,7 +874,7 @@
     - id: drawback.discard_deck
       ja: 自分の山札を捨てる
       en: Discard own deck
-      supplies: [supply.trash.fill]
+      # 山札の上をおまけで1〜数枚捨てるだけで、何が落ちるかも運なので、トラッシュの枚数で強くなるカードとは結ばない
       match:
         - '[Dd]iscard the top (card|\d+ cards) of your deck'
         - 'top \d+ cards of each player.s deck'

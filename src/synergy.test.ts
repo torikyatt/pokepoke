@@ -322,3 +322,23 @@ describe("ワザのエネの色", () => {
     expect(top).toContain("ジュナイパーex");
   });
 });
+
+describe("どちらも〇〇と相性がいい", () => {
+  it("理由に名前を出すカードは、相性のいいカードの一覧に出ている", () => {
+    for (const c of data.cards.slice(0, 600)) {
+      const ps = partnersOf(c.id);
+      const names = new Set(ps.map((p) => p.card.nameJa));
+      for (const p of ps)
+        for (const r of p.reasons) {
+          const m = /^どちらも(.+?)(など)?と相性がいい$/.exec(r);
+          if (m && !m[1].endsWith("ポケモン")) for (const n of m[1].split("・")) expect(names.has(n)).toBe(true);
+        }
+    }
+  });
+  it("自分のエネを捨てるカードは、トラッシュの枚数で強くなるカード（サポート・グッズ・ポケモンを数える）とは結ばない", () => {
+    const flygon = data.cards.find((c) => c.nameJa === "フライゴンex")!;
+    const names = partnersOf(flygon.id).map((p) => p.card.nameJa);
+    for (const n of ["シャンデラ", "ハカドッグ", "ロトムex"]) expect(names).not.toContain(n);
+    expect(partnersOf(flygon.id).flatMap((p) => p.reasons).join()).not.toMatch(/シャンデラ|ハカドッグ/);
+  });
+});

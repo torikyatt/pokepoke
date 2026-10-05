@@ -392,17 +392,20 @@ export function createSynergy(data: AppData) {
       const more = new Set(cs.map((c) => c.nameEn)).size > 2;
       return [names.map((c) => c.nameJa).join("・") + (more ? "など" : ""), names.map((c) => c.nameEn).join(", ") + (more ? ", etc." : "")];
     };
+    const shared: { y: AppCard; both: AppCard[]; score: number }[] = [];
     const rx = receiversOf(x);
     if (rx.size >= 3) {
       for (const y of supporters) {
         if (y.id === x.id) continue;
         const ry = receiversOf(y);
         if (ry.size < 3) continue;
-        const both = [...rx].filter((id) => ry.has(id)).map((id) => byId.get(id)!).filter(Boolean);
+        // 重なる相手は、2枚のどちらとも本当に結べる（タイプ・エネの色・名指しの条件が合う）ものだけ数える
+        const ok = (a: AppCard, c: AppCard) => typeFits(a, c) && energyFit(a, c) === 1 && !onlyWith(a, c) && !onlyWith(c, a);
+        const both = [...rx].filter((id) => ry.has(id)).map((id) => byId.get(id)!).filter((c) => c && ok(x, c) && ok(y, c));
         if (both.length >= 3 && both.length / Math.min(rx.size, ry.size) >= 0.3) {
           const quality = both.reduce((n, c) => n + ease(c), 0) / both.length;
-          const [ja, en] = commonGroup(both);
-          pushRule(y, quality * BURDEN[burden(x) + burden(y)], `どちらも${ja}と相性がいい`, `Both pair well with ${en}`);
+          // 理由に名前を出す相手は、相性のいいカードの一覧に実際に出るものにしたいので、最後に足す（下の shared）
+          shared.push({ y, both, score: quality * BURDEN[burden(x) + burden(y)] });
         }
       }
     }
@@ -425,7 +428,47 @@ export function createSynergy(data: AppData) {
     const affinity = new Set([x.type, ...x.typeRefs, ...x.accelTypes].filter(Boolean));
     for (const p of out.values()) if (p.card.type && affinity.has(p.card.type)) p.score += 0.5;
     // 同名でも効果が違えば別のカードなので、まとめずに並べる
-    return [...out.values()].sort((a, b) => b.score - a.score || a.card.order - b.card.order).slice(0, limit);
+    // 「どちらも〇〇と相性がいい」は、〇〇が一覧（上位 limit 件）に出ているときだけ。名前もその中から選ぶ
+    const sorted = () => [...out.values()].sort((a, b) => b.score - a.score || a.card.order - b.card.order);
+    // 足すと順位が動くので、一覧が変わらなくなるまで（数回）付け直す
+    const label = (both: AppCard[], visible: AppCard[]): [string, string] => {
+      const [ja, en] = commonGroup(visible);
+      const more = visible.length < both.length && !ja.endsWith("など") && !ja.endsWith("ポケモン");
+      return [`どちらも${ja}${more ? "など" : ""}と相性がいい`, `Both pair well with ${en}${more ? ", etc." : ""}`];
+    };
+    const given = new Map<string, { ja: string; en: string; score: number }>();
+    const take = (y: AppCard) => {
+      const g = given.get(y.id);
+      const p = out.get(y.id);
+      if (!g || !p) return;
+      p.score -= g.score;
+      const i = p.reasons.indexOf(g.ja);
+      if (i >= 0) {
+        p.reasons.splice(i, 1);
+        p.reasonsEn.splice(i, 1);
+      }
+      if (!p.reasons.length) out.delete(y.id);
+      given.delete(y.id);
+    };
+    for (let round = 0; round < 4; round++) {
+      const shown = new Set(sorted().slice(0, limit).map((p) => p.card.id));
+      let changed = false;
+      for (const { y, both, score } of shared) {
+        const visible = both.filter((c) => shown.has(c.id) && c.id !== y.id);
+        const want = visible.length ? label(both, visible) : undefined;
+        const g = given.get(y.id);
+        if (g && want && g.ja === want[0]) continue;
+        if (!g && !want) continue;
+        take(y);
+        changed = true;
+        if (!want || !typeFits(x, y) || onlyWith(x, y) || onlyWith(y, x)) continue;
+        const sc = score * energyFit(x, y);
+        push(y, sc, want[0], want[1]);
+        given.set(y.id, { ja: want[0], en: want[1], score: sc });
+      }
+      if (!changed) break;
+    }
+    return sorted().slice(0, limit);
   }
 
   /**
