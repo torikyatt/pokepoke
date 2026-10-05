@@ -24,7 +24,9 @@ const namesJa: Record<string, string> = read("names-ja.json");
 const g8Cards: G8Card[] = read("game8/cards.json");
 const g8Moves: G8Move[] = read("game8/moves.json");
 // overrides.json の matchJa: { "プリントID": Game8のg8Id }。照合の誤り・取りこぼしを手で確定する
-const overrides: { matchJa?: Record<string, number> } = existsSync(join(DATA, "overrides.json")) ? read("overrides.json") : {};
+// overrides.json の nameJa: { "Game8 の名前": "正しい名前" }。Game8 のワザ名・特性名の誤記を直す（「もれたガス」→「もれだすガス」）
+const overrides: { matchJa?: Record<string, number>; nameJa?: Record<string, string> } = existsSync(join(DATA, "overrides.json")) ? read("overrides.json") : {};
+for (const m of g8Moves) m.name = overrides.nameJa?.[m.name] ?? m.name;
 
 // ---- 正規化 ----
 
