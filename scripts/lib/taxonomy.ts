@@ -29,7 +29,7 @@ export function loadTaxonomy(dataDir = join(import.meta.dirname, "../../data")):
   const out: FlatTag[] = [];
   const walk = (defs: TagDef[], parent: string | undefined, depth: number) => {
     for (const d of defs) {
-      if (depth > 3) throw new Error(`taxonomy: 4階層目のタグ ${d.id}`);
+      if (depth > 4) throw new Error(`taxonomy: 5階層目のタグ ${d.id}`);
       if (parent && !d.id.startsWith(parent + ".")) throw new Error(`taxonomy: ${d.id} は ${parent} の下に置けない名前`);
       out.push({
         id: d.id, ja: d.ja, en: d.en, parent, depth, on: d.on, supplies: d.supplies, requires: d.requires,

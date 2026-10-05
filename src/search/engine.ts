@@ -639,7 +639,8 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       // ハード条件（同じ種類の条件どうしは OR）
       if (!hard(types, (t) => card.type === t.type || card.typeRefs.includes(t.type))) continue;
       // カードの種類（サポート・グッズ…）は、ほかのカードの文にもよく出てくるので、文では当てない
-      if (kinds.length && !kinds.some((k) => (k.value === "trainer" ? card.kind !== "pokemon" : card.kind === k.value))) continue;
+      // 「グッズ」はポケモンのどうぐも含む（どうぐはグッズの一種）
+      if (kinds.length && !kinds.some((k) => (k.value === "trainer" ? card.kind !== "pokemon" : k.value === "item" ? card.kind === "item" || card.kind === "tool" : card.kind === k.value))) continue;
       if (!hard(stages, (s) => (s.value === "evolved" ? card.stage === "stage1" || card.stage === "stage2" : card.stage === s.value))) continue;
       if (!hard(rules, (r) => ruleOk(card, r.value))) continue;
       if (!hard(groups, (g) => card.groups.includes(g.value))) continue;

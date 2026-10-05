@@ -103,6 +103,10 @@ describe("その他の検索", () => {
     expect(tags("トラッシュからポケモンを回収するサポート")).toEqual(["draw.recover.pokemon", "cardKind"]);
     expect(tags("コインを投げて相手をマヒ")).toContain("status.paralysis");
   });
+  it("グッズはどうぐを含む（「山札から グッズ」「グッズ」にどうぐも出る）", () => {
+    expect(engine.search("山札から グッズ", 99).map((h) => h.card.nameJa)).toContain("旅の行商人"); // どうぐを持ってくる
+    expect(engine.search("グッズ", 999).some((h) => h.card.kind === "tool")).toBe(true);
+  });
   it("「ワザ」の指定は、どうぐ・グッズを指定したときはその効果を見る", () => {
     expect(ids("ワザの火力を上げるどうぐ").length).toBeGreaterThan(0);
   });
