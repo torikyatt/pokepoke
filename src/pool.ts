@@ -4,13 +4,12 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import type { AppCard, CardGroup, CardKind, EnergyType, Rule, Stage } from "./types.ts";
 
-export type SortKey = "auto" | "order" | "score" | "usage" | "hp" | "damage" | "retreat" | "cost" | "name" | "new" | "rarity";
+export type SortKey = "order" | "score" | "usage" | "hp" | "damage" | "retreat" | "cost" | "name" | "new" | "rarity";
 
 export const SORTS: { key: SortKey; label: string; en: string; desc: boolean }[] = [
-  // おすすめ順: 検索しているときは一致度順（「〇〇デッキ」などは関係の深い順）、していないときは図鑑順
-  { key: "auto", label: "おすすめ順", en: "Recommended", desc: false },
-  { key: "order", label: "図鑑順", en: "Pokédex order", desc: false },
+  // 一致度順がはじめの並び。検索文が無い（一致度が付かない）ときは図鑑順で並ぶ
   { key: "score", label: "一致度順", en: "Best match", desc: true },
+  { key: "order", label: "図鑑順", en: "Pokédex order", desc: false },
   { key: "usage", label: "大会での採用率", en: "Tournament usage", desc: true },
   { key: "hp", label: "HP", en: "HP", desc: true },
   { key: "damage", label: "最大ダメージ", en: "Max damage", desc: true },
@@ -153,8 +152,8 @@ function createPoolStore(scope: string) {
     persist(
       (set) => ({
         columns: 5,
-        sort: "auto",
-        desc: false,
+        sort: "score",
+        desc: true,
         filters: EMPTY_FILTERS,
         favOnly: false,
         setFavOnly: (favOnly) => set({ favOnly }),
@@ -164,13 +163,14 @@ function createPoolStore(scope: string) {
       }),
       {
         name: `pokepoke.pool.${scope}`,
-        version: 2,
+        version: 3,
         storage: safeStorage,
         partialize: (s) => ({ columns: s.columns, sort: s.sort, desc: s.desc, filters: s.filters }),
-        // 前の版は「図鑑順」がはじめの並びだったので、そのままの人は「おすすめ順」にする（検索の一致度が並びに効くように）
+        // 前の版のはじめの並び（図鑑順・おすすめ順）のままの人は、一致度順にする（検索の一致度が並びに効くように）
         migrate: (s, version) => {
-          const old = s as Partial<PoolState>;
-          return (version < 2 && old.sort === "order" ? { ...old, sort: "auto", desc: false } : old) as PoolState;
+          const old = s as Omit<Partial<PoolState>, "sort"> & { sort?: string };
+          const wasDefault = old.sort === "auto" || (version < 2 && old.sort === "order");
+          return (wasDefault ? { ...old, sort: "score", desc: true } : old) as PoolState;
         },
       },
     ),
