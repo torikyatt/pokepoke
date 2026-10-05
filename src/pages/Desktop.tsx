@@ -52,7 +52,7 @@ export function Desktop() {
   return (
     <div className="flex h-dvh flex-col overflow-hidden">
       <header className="flex shrink-0 items-center gap-4 px-5 py-2.5">
-        <button type="button" onClick={() => navigate("/")} aria-label="POKÉPOKE DEX">
+        <button type="button" onClick={() => navigate("/")} aria-label="POKÉPOKE INDEX">
           <Logo />
         </button>
         <span className="text-xs font-bold text-muted">{t("ふだんの言葉でカードを探す ・ 「/」で検索欄へ", "Find cards in plain words ・ press “/” to search")}</span>

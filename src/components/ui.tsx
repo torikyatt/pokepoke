@@ -231,7 +231,7 @@ export const IconSort = () => (
 );
 
 /** サイト名。サブで「TCG Pocket の図鑑」と分かるようにする */
-export const BRAND = "POKÉPOKE DEX";
+export const BRAND = "POKÉPOKE INDEX";
 export function Logo({ className = "text-lg" }: { className?: string }) {
   return (
     <span className="inline-flex flex-col items-start leading-none">

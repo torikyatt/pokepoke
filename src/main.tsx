@@ -114,7 +114,7 @@ function Layout() {
   const lang = useLang();
   useEffect(() => {
     document.documentElement.lang = lang;
-    document.title = lang === "en" ? "POKÉPOKE DEX – Pokémon TCG Pocket Card Dex & Deck Builder" : "POKÉPOKE DEX｜ポケポケのカード図鑑";
+    document.title = lang === "en" ? "POKÉPOKE INDEX – Pokémon TCG Pocket Card Search & Deck Builder" : "POKÉPOKE INDEX｜ポケポケのカード図鑑";
   }, [lang]);
   return useIsDesktop() ? <Desktop /> : <Shell />;
 }

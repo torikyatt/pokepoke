@@ -1,4 +1,4 @@
-# POKÉPOKE DEX
+# POKÉPOKE INDEX
 
 ポケポケ（Pokémon TCG Pocket）のカードを**ふだんの言葉で検索**して、**デッキを組める**個人用ツールです。
 

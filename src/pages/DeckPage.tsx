@@ -622,12 +622,12 @@ function DeckImage({ deck, cards, qr, ref }: { deck: Deck; cards: AppCard[]; qr:
             <img src={qr.url} alt="" width={qr.size} height={qr.size} style={{ width: qr.size, height: qr.size, imageRendering: "pixelated", flexShrink: 0 }} />
             <div style={{ minWidth: 0, fontSize: 13, fontWeight: 700, color: "#7a8796", lineHeight: 1.55 }}>
               <div style={{ fontSize: 15, fontWeight: 800, color: "#5b6779" }}>{t("デッキコード", "Deck code")}</div>
-              <div>{t("カメラで読み取るか、この画像をPOKÉPOKE DEXの「読み込み」で選ぶと取り込めます", "Scan it, or choose this image in POKÉPOKE DEX's “Import”, to import the deck")}</div>
+              <div>{t("カメラで読み取るか、この画像をPOKÉPOKE INDEXの「読み込み」で選ぶと取り込めます", "Scan it, or choose this image in POKÉPOKE INDEX's “Import”, to import the deck")}</div>
             </div>
           </div>
         </div>
       </div>
-      <div style={{ marginTop: 12, fontSize: 13, color: "#8794a7", textAlign: "right", fontWeight: 700, whiteSpace: "nowrap" }}>POKÉPOKE DEX</div>
+      <div style={{ marginTop: 12, fontSize: 13, color: "#8794a7", textAlign: "right", fontWeight: 700, whiteSpace: "nowrap" }}>POKÉPOKE INDEX</div>
     </div>
   );
 }
