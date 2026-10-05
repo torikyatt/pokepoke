@@ -40,6 +40,12 @@ const weightOf = (s: string, sels: Selector[], receiver?: AppCard) =>
   // どのタイプのエネでもトラッシュに送れて、どのタイプでも使える組み合わせ
   (s === "supply.trash.energy" && sels.some((x) => !x.etypes?.length) && receiver && !receiver.requires[s]?.etypes?.length ? 0.5 : 0);
 
+/**
+ * エネの基本ルール: 要求が無色なら、どのタイプのエネでも払える。要求が特定のタイプなら、そのタイプのエネでしか払えない
+ * （無色エネや、タイプの分からないエネでは代われない）
+ */
+export const canPay = (supplied: readonly EnergyType[] | undefined, need: EnergyType) => need === "colorless" || !!supplied?.includes(need);
+
 /** 山札からポケモンを持ってくる効果のうち、対象が絞られているもの（モンスターボールのように何でも持ってくるものは結ばない） */
 const specificSearch = (sel: Selector) =>
   sel.hpMax !== undefined || !!sel.rules?.length || !!sel.groups?.length || !!sel.ids?.length || !!sel.stages?.includes("stage2");
@@ -88,11 +94,16 @@ export function createSynergy(data: AppData) {
   const named = (c: AppCard) => namedCache.get(c.id) ?? namedCache.set(c.id, namedTypes(c)).get(c.id)!;
   const ownTypes = (c: AppCard): EnergyType[] | undefined =>
     c.kind !== "pokemon" || !c.type || c.type === "colorless" ? undefined : [c.type, ...costTypes(c)];
+  // 場にエネを出すカードが出すエネのタイプ
+  const suppliedTypes = (c: AppCard) => [...new Set(["supply.energy.many", "supply.energy.bank"].flatMap((k) => (c.supplies[k] ?? []).flatMap((x) => x.etypes ?? [])))];
   const typeFits = (x: AppCard, y: AppCard) => {
     for (const [a, b] of [[x, y], [y, x]] as const) {
       const n = named(a);
       const own = ownTypes(b);
-      if (n.length && own && !own.some((t) => n.includes(t))) return false;
+      if (!n.length || !own || own.some((t) => n.includes(t))) continue;
+      // 名指しが無色なら、どのタイプのエネを出すカードでも払える（逆に、タイプ指定は無色エネでは払えない）
+      if (n.includes("colorless") && suppliedTypes(b).some((t) => t !== "colorless")) continue;
+      return false;
     }
     return true;
   };
@@ -114,19 +125,15 @@ export function createSynergy(data: AppData) {
     if (sel.rules?.length && !sel.rules.includes(receiver.rule)) return false;
     // 山札からポケモンを持ってくる効果は、対象が絞られているもの（HP50以下のたね・メガシンカex・2進化・ロケット団など）だけ結ぶ
     if (s === "supply.search.pokemon" && !specificSearch(sel)) return false;
-    // 受け手がエネのタイプを指定している（メガルカリオex「extra [F] Energy」）なら、そのタイプを名指しで付ける加速だけ。
-    // どのタイプでもよい加速（レジギガス・エネコロロ「[C] Energy」など）では条件を満たせないので結ばない
-    // トラッシュのエネ（フレイムパッチ「[R] Energy」）・場にためたエネも同じ
-    if (receiver.requires[s]?.etypes?.length && !sel.etypes?.length) return false;
-    if (sel.etypes?.length) {
-      const want = receiver.requires[s]?.etypes;
-      if (want?.length && !want.some((t) => sel.etypes!.includes(t))) return false;
-      // エネ加速で付くエネのタイプを、受け手のワザが使えるか（数えるエネのタイプが書いていなければ、ワザのコストのタイプで見る）。
-      // 例: マナフィ（水）・ディアルガex（鋼）は闘のメガルカリオexには結ばない。無色だけのワザなら、どのタイプでも使える
-      if (s === "supply.energy.many" && !want?.length) {
-        const typed = costTypes(receiver);
-        if (typed.length && !typed.some((t) => sel.etypes!.includes(t))) return false;
-      }
+    // エネのタイプの照合は canPay（無色の要求は他のタイプで代われる／タイプ指定の要求は無色では代われない）
+    //   受け手がタイプを指定している（メガルカリオex「extra [F] Energy」、フレイムパッチ「[R] Energy」）→ その要求を払えるか
+    //   指定が無いエネ加速 → 受け手のワザのコストのタイプを払えるか（無色だけのワザなら、どのタイプのエネでもよい）
+    const want = receiver.requires[s]?.etypes;
+    if (want?.length) {
+      if (!want.some((w) => canPay(sel.etypes, w))) return false;
+    } else if (s === "supply.energy.many" && sel.etypes?.length) {
+      const typed = costTypes(receiver);
+      if (typed.length && !typed.some((t) => canPay(sel.etypes, t))) return false;
     }
     return true;
   }

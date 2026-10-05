@@ -227,3 +227,16 @@ describe("タイプの名指しを守る", () => {
     expect(typesBefore("Take a [C] Energy from your Energy Zone", "Energy")).toEqual(["colorless"]);
   });
 });
+
+describe("エネの基本ルール", () => {
+  it("無色の要求はどのタイプのエネでも払える。タイプ指定の要求は無色エネでは払えない", async () => {
+    const { canPay } = await import("./synergy.ts");
+    expect(canPay(["water"], "colorless")).toBe(true);
+    expect(canPay(["colorless"], "colorless")).toBe(true);
+    expect(canPay(undefined, "colorless")).toBe(true);
+    expect(canPay(["colorless"], "fighting")).toBe(false);
+    expect(canPay(undefined, "fighting")).toBe(false);
+    expect(canPay(["fighting"], "fighting")).toBe(true);
+    expect(canPay(["water"], "fighting")).toBe(false);
+  });
+});
