@@ -4,6 +4,7 @@
 //   3. どこにも当たらなかった区間は全文検索語として残す
 // タイプ・種別・数値は「ハード条件」（満たさないカードは除外）、タグは「ソフト条件」（一致の重みで並べる）。
 import { normalize } from "./normalize.ts";
+import { looseRomaji, romajiKey } from "./romaji.ts";
 import type { AppCard, AppData, AppEffect, CardGroup, CardKind, EnergyType, LexEntry, LexTarget, Rule, Stage } from "../types.ts";
 import { GROUP_EN, GROUP_JA, KIND_EN, KIND_JA, STAGE_EN, STAGE_JA, TYPE_EN, TYPE_JA } from "../types.ts";
 
@@ -24,7 +25,7 @@ export type Cond = { id: string; label: string; en: string; weight?: number } & 
   | { kind: "hp"; op: Op; n: number }
   | { kind: "retreat"; op: Op; n: number }
   | { kind: "weakness"; type: EnergyType }
-  | { kind: "name"; name: string }
+  | { kind: "name"; name: string; ids?: string[] } // ids: ローマ字で探したときの、当たったカード
   | { kind: "text"; term: string }
   | { kind: "deck"; archs: string[] } // 大会のデッキタイプに入っているカード
   | { kind: "partner"; cards: string[] } // そのカードと相性のいいカード
@@ -176,6 +177,22 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     if (k) (lexEn.get(k) ?? lexEn.set(k, []).get(k)!).push(e);
   }
   const lexEnList = [...lexEn.keys()].sort((a, b) => b.length - a.length);
+  // ローマ字（hakase・dakurai・monomane）: カード名と表現辞書を、ゆるいローマ字にしたもの。漢字はよみを使う
+  const kanji = /[一-龯々〆]/;
+  const romajiNames = new Map<string, AppCard[]>();
+  for (const c of data.cards) {
+    const src = c.nameKana ?? c.nameJa;
+    if (kanji.test(src)) continue;
+    const k = romajiKey(src);
+    if (k.length >= 3) (romajiNames.get(k) ?? romajiNames.set(k, []).get(k)!).push(c);
+  }
+  const romajiLex = new Map<string, LexEntry[]>();
+  for (const e of data.lexicon) {
+    const src = e.kana ?? e.expr;
+    if (kanji.test(src)) continue;
+    const k = romajiKey(src);
+    if (k.length >= 3) (romajiLex.get(k) ?? romajiLex.set(k, []).get(k)!).push(e);
+  }
   // 「〇〇と相性がいい」の〇〇に使うカード名（2文字以上）
   const partnerNames = [...new Set(data.cards.map((c) => normalize(c.nameJa).replace(/ /g, "")))].filter((n) => n.length >= 2).sort((a, b) => b.length - a.length);
   const cardsByName = new Map<string, AppCard[]>();
@@ -304,6 +321,45 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
         take(new RegExp(`(?<![a-z0-9])${k.split(" ").map((w) => esc(w) + INFLECT).join("\\s+")}${END}`, "g"), () => {
           for (const e of lexEn.get(k)!) add(condOf(e.target, e.weight, k));
         });
+      }
+      // ローマ字の日本語（hakase → 博士の研究、dakurai → ダークライ、monomane musume → モノマネむすめ）。
+      // 続けて書いた単語もつなげて試す。表現辞書にぴったり当たればそれ、なければカード名の一部として探す
+      {
+        const words = [...q.matchAll(/(?<![a-z0-9])[a-z]+(?![a-z0-9])/g)].map((m) => m[0]);
+        for (let i = 0; i < words.length; ) {
+          let used = 0;
+          for (let n = Math.min(3, words.length - i); n >= 1 && !used; n--) {
+            const ws = words.slice(i, i + n);
+            if (n === 1 && (ws[0].length < 3 || STOP_EN.has(ws[0]))) continue;
+            const key = looseRomaji(ws.join(""));
+            if (key.length < 3) continue;
+            const lex = romajiLex.get(key);
+            if (lex) {
+              for (const e of lex) add(condOf(e.target, e.weight, ws.join(" ")));
+              used = n;
+            }
+            // 表現辞書に当たっても、長めの言葉ならカード名も探す（monomane → 「コピー」の効果とモノマネむすめ）
+            if (!lex || key.length >= 6) {
+              const cards = [...romajiNames]
+                .filter(([k]) => k.includes(key))
+                .flatMap(([, cs]) => cs)
+                .sort((x, y) => (usage[y.id] ?? 0) - (usage[x.id] ?? 0));
+              if (cards.length && (!lex || cards.length <= 6)) {
+                const ja = [...new Set(cards.map((c) => c.nameJa))];
+                const en = [...new Set(cards.map((c) => c.nameEn))];
+                const typed = ws.join(" ");
+                add({
+                  id: `name:romaji:${key}`, kind: "name", name: key, ids: cards.map((c) => c.id), weight: 3,
+                  label: `「${typed}」→ ${ja.slice(0, 2).join("・")}${ja.length > 2 ? " など" : ""}`,
+                  en: `"${typed}" → ${en.slice(0, 2).join(", ")}${en.length > 2 ? " …" : ""}`,
+                });
+                used = n;
+              }
+            }
+            if (used) take(new RegExp(`(?<![a-z0-9])${ws.join("\\s+")}(?![a-z0-9])`), () => {});
+          }
+          i += used || 1;
+        }
       }
       // 残りの英単語は全文検索語に
       take(/(?<![a-z0-9])[a-z][a-z0-9]*(?![a-z0-9])/g, (m) => {
@@ -505,8 +561,9 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
 
       const h = haystack.get(card.id)!;
       for (const n of nameConds) {
-        if (h.name.includes(n.name) || h.nameEn.includes(n.name)) {
-          score += n.weight ?? 3;
+        if (n.ids ? n.ids.includes(card.id) : h.name.includes(n.name) || h.nameEn.includes(n.name)) {
+          // 名前で探したときも、大会でよく使われているものを少し上に（hakase → 博士の研究が先）
+          score += (n.weight ?? 3) + Math.min(0.1, usage[card.id] ?? 0);
           matched.add(n.id);
         }
       }

@@ -8,6 +8,7 @@ import { jaImageIndex } from "./lib/game8.ts";
 import { basePrint, orderedPrints } from "./lib/prints.ts";
 import { requireInfoOf, selectorOf } from "./lib/targets.ts";
 import { loadTaxonomy } from "./lib/taxonomy.ts";
+import { createReader, hasKanji } from "./lib/reading.ts";
 import type { Card, Effect } from "./lib/types.ts";
 import type { G8Card } from "./lib/game8.ts";
 import type { AppArchetype, AppAttack, AppCard, AppCombo, AppData, AppHelp, AppMeta, HelpTarget, AppEffect, AppPrint, AppSet, EnergyType, LexEntry, Selector, Slot } from "../src/types.ts";
@@ -341,6 +342,13 @@ if (existsSync(lexEnFile)) {
   for (const e of lexiconEn) if (seen.get(e.expr)! > 1) e.weight = 0.7;
   console.log(`英語の表現辞書: ${lexiconEn.length} 件`);
 }
+
+// 漢字を含むカード名・表現のよみ（ローマ字検索用）
+const readingOf = await createReader();
+let nRead = 0;
+for (const c of out) if (hasKanji(c.nameJa)) (c.nameKana = readingOf(c.nameJa)), nRead++;
+for (const e of lexicon) if (hasKanji(e.expr)) (e.kana = readingOf(e.expr)), nRead++;
+console.log(`よみ: ${nRead} 件`);
 
 const data: AppData = {
   builtAt: new Date().toISOString(),

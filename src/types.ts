@@ -43,6 +43,7 @@ export interface AppCard {
   nameJa: string;
   nameEn: string;
   nameMachine?: true;
+  nameKana?: string; // 漢字を含む名前のよみ（ローマ字検索用）
   kind: CardKind;
   type?: EnergyType;
   // トレーナーズが効果文で名指ししているタイプ（例: カスミ → 水）。タイプ絞り込みに使う
@@ -112,6 +113,7 @@ export type LexTarget =
 
 export interface LexEntry {
   expr: string;
+  kana?: string; // 漢字を含む表現のよみ（ローマ字検索用）
   target: LexTarget;
   weight: number;
 }

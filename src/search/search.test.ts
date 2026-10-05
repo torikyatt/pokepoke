@@ -164,3 +164,25 @@ describe.skipIf(!data.meta)("英語で実際の使われ方を探す", () => {
     expect(hits.every((h) => h.card.kind === "supporter")).toBe(true);
   });
 });
+
+describe("雑なローマ字で日本語を探す", () => {
+  const first = (q: string) => engine.search(q, 5)[0]?.card.nameJa;
+  it("カード名（漢字はよみで）: hakase・dakurai・monomane", () => {
+    expect(first("hakase")).toBe("博士の研究");
+    expect(first("dakurai")).toMatch(/^ダークライ/);
+    expect(first("monomane")).toBe("モノマネむすめ");
+  });
+  it("書き方の揺れ: shi/si・chu/tyu・のばす音・小さいっ・区切り", () => {
+    expect(first("pikatyu")).toMatch(/^ピカチュウ/);
+    expect(first("myuutsuu")).toMatch(/ミュウツー/);
+    expect(first("supi-da")).toBe("スピーダー");
+    expect(first("monomane musume")).toBe("モノマネむすめ");
+  });
+  it("表現辞書もローマ字で: kaifuku → HP回復、ene kasoku → エネ加速", () => {
+    expect(engine.parse("kaifuku").map((c) => c.id)).toContain("tag:heal.hp");
+    expect(engine.parse("ene kasoku").map((c) => c.id)).toContain("tag:energy.accel");
+  });
+  it("英語の検索はそのまま", () => {
+    expect(engine.parse("fire energy acceleration").map((c) => c.id)).toEqual(expect.arrayContaining(["type:fire", "tag:energy.accel"]));
+  });
+});
