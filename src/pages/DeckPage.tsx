@@ -536,14 +536,14 @@ function DeckImage({ deck, cards, ref }: { deck: Deck; cards: AppCard[]; ref: Re
   ];
   // 画像にするときは影を使わない（iPhone の Safari では影が四角い灰色の塊になって写る）。
   // 文字もウェブフォントを使わない（画像にはウェブフォントを埋め込まないので、画面で測った幅とずれて折り返してしまう）
-  const pill = { borderRadius: 999, background: "#fff", border: "1px solid #dbe3ee" };
+  const panel = { borderRadius: 24, background: "#f3f6fa", border: "2px solid #dbe3ee" };
   const nowrap = { whiteSpace: "nowrap", flexShrink: 0 } as const;
   return (
-    <div ref={ref} style={{ width: 1400, padding: "24px 28px 16px", background: "#eef2f7", color: "#3d4757", fontFamily: "'Hiragino Maru Gothic ProN', 'Hiragino Sans', 'Yu Gothic', 'Meiryo', system-ui, sans-serif" }}>
+    <div ref={ref} style={{ width: 1400, padding: 28, background: "#e6ecf3", color: "#3d4757", fontFamily: "'Hiragino Maru Gothic ProN', 'Hiragino Sans', 'Yu Gothic', 'Meiryo', system-ui, sans-serif" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 18 }}>
         <div style={{ fontSize: 32, fontWeight: 800, flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{deck.name}</div>
         {deck.energy.length > 0 && (
-          <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 8px 6px 16px", ...pill, ...nowrap }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 8px 6px 16px", ...panel, borderRadius: 999, ...nowrap }}>
             <span style={{ fontSize: 15, fontWeight: 800, color: "#8794a7", ...nowrap }}>{t("エネルギー", "Energy")}</span>
             {deck.energy.map((e) => (
               <span
@@ -561,12 +561,12 @@ function DeckImage({ deck, cards, ref }: { deck: Deck; cards: AppCard[]; ref: Re
         <div style={{ fontSize: 22, fontWeight: 800, color: "#8794a7", ...nowrap }}>{cards.length}/{DECK_SIZE}</div>
       </div>
       <div style={{ display: "flex", gap: 20, alignItems: "stretch" }}>
-        <div style={{ width: 920, flexShrink: 0, display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 12 }}>
+        <div style={{ width: 900, flexShrink: 0, display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 12, padding: 16, ...panel }}>
           {cards.map((c, i) => (
             <img key={i} data-id={c.id} src={thumbUrl(c, lang)} alt={cardName(c, uiLang)} style={{ width: "100%", aspectRatio: "367/512", borderRadius: 8, objectFit: "cover" }} />
           ))}
         </div>
-        <div style={{ flex: 1, minWidth: 0, paddingLeft: 24, borderLeft: "2px solid #dbe3ee" }}>
+        <div style={{ flex: 1, minWidth: 0, padding: "14px 18px", ...panel }}>
           {groups.map(([title, list]) =>
             list.length ? (
               <div key={title} style={{ marginBottom: 12 }}>
@@ -586,7 +586,7 @@ function DeckImage({ deck, cards, ref }: { deck: Deck; cards: AppCard[]; ref: Re
           )}
         </div>
       </div>
-      <div style={{ marginTop: 10, fontSize: 13, color: "#8794a7", textAlign: "right", fontWeight: 700, whiteSpace: "nowrap" }}>POKÉPOKE LAB</div>
+      <div style={{ marginTop: 12, fontSize: 13, color: "#8794a7", textAlign: "right", fontWeight: 700, whiteSpace: "nowrap" }}>POKÉPOKE LAB</div>
     </div>
   );
 }
