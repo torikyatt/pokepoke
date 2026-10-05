@@ -581,8 +581,11 @@
       ja: 最初の番に効果がある
       en: First-turn effect
       match:
-        - '(during|end of) your first turn'
+        - '([Dd]uring|end of) your first turn'
         - 'evolve during your first turn'
+      exclude:
+        # ふしぎなアメ・そうじゅくエキス・イーブイex: 「最初の自分の番には使えない・進化できない」は最初の番の効果ではない
+        - 'can.t (use this card|evolve) during your first turn'
     - id: field.tool
       ja: どうぐ関連
       en: Pokémon Tool-related
