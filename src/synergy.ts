@@ -178,10 +178,14 @@ export function createSynergy(data: AppData) {
       }
     };
     // 攻略記事で紹介されている組み合わせ（いちばん強く結ぶ）
+    // 同じ組を複数の記事が紹介していても、2つ目からは少しだけ足す（記事の数だけで順位が決まらないように）
+    const comboSeen = new Set<string>();
     for (const cb of combosOf.get(x.id) ?? []) {
       for (const id of cb.cards) {
         const c = byId.get(id);
-        if (c) push(c, 4, `定番コンボ（${cb.deck}）`, `Known combo (${cb.deckEn})`);
+        if (!c) continue;
+        push(c, comboSeen.has(id) ? 1 : 4, `定番コンボ（${cb.deck}）`, `Known combo (${cb.deckEn})`);
+        comboSeen.add(id);
       }
     }
     // 大会で一緒に使われる組。相手が入っている割合が高いほど強く結ぶ
