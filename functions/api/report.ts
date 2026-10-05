@@ -1,9 +1,9 @@
 // GET /api/report?key=合言葉[&days=30][&format=tsv] … 集めた検索ワードの集計（サイトの持ち主が見る用）
 //   合言葉は Cloudflare Pages の設定の REPORT_KEY。設定していなければ、このページは無い（404）
 //   ・辞書で読めなかった言葉    … 検索文の中で読めなかった部分（ほかの言葉で当たっていても）。辞書に足す候補
-//   ・0件だった言葉            … 表現辞書に足すべき言い回しの候補
-//   ・当たったのに開かれなかった … 結果がずれているかもしれない言葉
+//   ・0件だった検索            … 辞書に無い言い回しか、条件に合うカードが無いか
 //   ・よく探される言葉
+//   ・カードが開かれなかった検索 … 参考。試しに探しただけ・合うカードが少なかっただけのことも多く、結果の誤りとは限らない
 import { ensure, type Ctx } from "../../server/search-db.ts";
 
 interface Row {
@@ -52,7 +52,7 @@ export async function onRequestGet({ request, env }: Ctx) {
   const top = rows.slice(0, 200);
   const tsv = (rs: Row[]) => rs.map((r) => [r.q, r.lang, r.n, r.hits ?? "", r.opened].join("\t")).join("\n");
   const missTsv = misses.map((m) => [m.term, m.lang, m.n, m.q ?? ""].join("\t")).join("\n");
-  const all = `# 検索ワード（直近${days}日・${since}〜）\n## 辞書で読めなかった言葉（言葉\t言語\t回数\t例の検索文）\n${missTsv}\n# 以下は 言葉\t言語\t回数\t件数\t開いた回数\n## 0件だった言葉\n${tsv(zero)}\n## 当たったのに開かれなかった言葉\n${tsv(unopened)}\n## よく探される言葉\n${tsv(top)}\n`;
+  const all = `# 検索ワード（直近${days}日・${since}〜）\n## 辞書で読めなかった言葉（言葉\t言語\t回数\t例の検索文）\n${missTsv}\n# 以下は 言葉\t言語\t回数\t件数\t開いた回数\n## 0件だった検索\n${tsv(zero)}\n## よく探される言葉\n${tsv(top)}\n## カードが開かれなかった検索（参考。結果の誤りとは限らない）\n${tsv(unopened)}\n`;
   if (url.searchParams.get("format") === "tsv") return new Response(all, { headers: { ...HEAD, "Content-Type": "text/plain; charset=utf-8" } });
 
   const total = rows.reduce((s, r) => s + r.n, 0);
@@ -83,9 +83,9 @@ nav a,button{font:inherit;font-size:12px;font-weight:700;color:#22998b;backgroun
 ${misses.length ? `<table><thead><tr><th>言葉</th><th>回数</th><th>例の検索文</th></tr></thead><tbody>${misses
     .map((m) => `<tr><td>${esc(m.term)}${m.lang === "en" ? ' <span class="en">EN</span>' : ""}</td><td>${m.n}</td><td class="ex">${esc(m.q ?? "")}</td></tr>`)
     .join("")}</tbody></table>` : '<p class="note">まだありません</p>'}</section>
-${table("0件だった言葉", "表現辞書に足すべき言い回しの候補", zero)}
-${table("当たったのに開かれなかった言葉", "結果がずれているかもしれない言葉", unopened)}
+${table("0件だった検索", "辞書に無い言い回しか、条件に合うカードがそもそも無いか", zero)}
 ${table("よく探される言葉", "上位200語", top)}
+${table("カードが開かれなかった検索", "参考。試しに探しただけ・合うカードが少なかっただけのことも多く、結果の誤りとは限らない。読めなかった言葉と合わせて見る", unopened)}
 <textarea id="tsv" hidden>${esc(all)}</textarea>
 <script>document.getElementById("copy").onclick=async()=>{await navigator.clipboard.writeText(document.getElementById("tsv").value);document.getElementById("done").textContent="コピーしました";};</script>
 </main></body></html>`;
