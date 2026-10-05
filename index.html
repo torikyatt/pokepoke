@@ -28,30 +28,46 @@
     </svg>
     <div id="root"></div>
     <script>
-      // 古いURL（GitHub Pages）から引っ越してきたとき、転送ページが #move=…&to=… で渡すデッキ・お気に入り・設定を受け取る。
-      // すでにこのサイトで保存しているものは消さず、デッキは足し、お気に入りは合わせる。アプリより先に動かす
+      // 古いURL（GitHub Pages）から引っ越してきたとき、転送ページが #move=…&to=… で渡すデッキ・お気に入り・表示言語を受け取る。
+      // すでにこのサイトで保存しているものは消さず、デッキは足し、お気に入りは合わせる。アプリより先に動かす。
+      // だれでも #move=… 付きのリンクを作れるので、受け取るのは決まった形のものだけにし、
+      // 古いサイトの転送ページから来たのでなければ、取り込む前に確かめる
       (function () {
+        var m = /^#move=([^&]*)&to=(.*)$/.exec(location.hash);
+        if (!m) return;
+        var to = "#/";
         try {
-          var m = /^#move=([^&]*)&to=(.*)$/.exec(location.hash);
-          if (!m) return;
+          var t = decodeURIComponent(m[2]);
+          if (/^#\/[^\s]*$/.test(t)) to = t;
           var d = JSON.parse(decodeURIComponent(escape(atob(m[1].replace(/-/g, "+").replace(/_/g, "/")))));
-          for (var k in d) {
-            if (!/^pokepoke\./.test(k)) continue;
-            var cur = localStorage.getItem(k);
-            if (cur == null) { localStorage.setItem(k, d[k]); continue; }
-            var a = JSON.parse(cur), b = JSON.parse(d[k]);
-            if (k === "pokepoke.decks") {
-              var ids = {};
-              a.state.decks.forEach(function (x) { ids[x.id] = 1; });
-              b.state.decks.forEach(function (x) { if (!ids[x.id]) a.state.decks.push(x); });
-              if (!a.state.currentId) a.state.currentId = b.state.currentId;
-            } else if (k === "pokepoke.favorites") {
-              b.state.ids.forEach(function (x) { if (a.state.ids.indexOf(x) < 0) a.state.ids.push(x); });
-            } else continue; // 設定などは、こちらで選んだものを優先する
-            localStorage.setItem(k, JSON.stringify(a));
-          }
-          history.replaceState(null, "", location.pathname + location.search + (decodeURIComponent(m[2]) || "#/"));
+          var ID = /^[a-z0-9-]{1,24}$/, TYPES = /^(grass|fire|water|lightning|psychic|fighting|darkness|metal|dragon|colorless)$/;
+          var str = function (x, n) { return typeof x === "string" && x.length <= n; };
+          var ids = function (a, n) { return Array.isArray(a) ? a.filter(function (x) { return str(x, 24) && ID.test(x); }).slice(0, n) : []; };
+          var state = function (k) { try { var v = JSON.parse(d[k]); return v && typeof v.state === "object" && v.state ? v.state : null; } catch (e) { return null; } };
+          var decks = ((state("pokepoke.decks") || {}).decks || []).filter(function (x) { return x && str(x.id, 40) && str(x.name, 100); }).slice(0, 200).map(function (x) {
+            return { id: x.id, name: x.name, cards: ids(x.cards, 60), energy: Array.isArray(x.energy) ? x.energy.filter(function (e) { return TYPES.test(e); }).slice(0, 3) : [], updatedAt: Number(x.updatedAt) || Date.now() };
+          });
+          var favs = ids((state("pokepoke.favorites") || {}).ids, 5000);
+          var lang = (state("pokepoke.settings") || {}).lang;
+          if (!decks.length && !favs.length) throw 0;
+          var fromOld = /^https:\/\/torikyatt\.github\.io\//.test(document.referrer);
+          if (!fromOld && !confirm("ほかのページから、デッキ " + decks.length + " 個・お気に入り " + favs.length + " 件を、このブラウザに取り込もうとしています。取り込みますか？\n（心当たりがなければ「キャンセル」）")) throw 0;
+          var read = function (k) { try { return JSON.parse(localStorage.getItem(k) || "null"); } catch (e) { return null; } };
+          var cur = read("pokepoke.decks");
+          if (!cur || !cur.state || !Array.isArray(cur.state.decks)) cur = { state: { decks: [] }, version: 1 };
+          var have = {};
+          cur.state.decks.forEach(function (x) { have[x.id] = 1; });
+          decks.forEach(function (x) { if (!have[x.id]) cur.state.decks.push(x); });
+          if (!cur.state.currentId && cur.state.decks[0]) cur.state.currentId = cur.state.decks[0].id;
+          localStorage.setItem("pokepoke.decks", JSON.stringify(cur));
+          var fav = read("pokepoke.favorites");
+          if (!fav || !fav.state || !Array.isArray(fav.state.ids)) fav = { state: { ids: [] }, version: 1 };
+          favs.forEach(function (x) { if (fav.state.ids.indexOf(x) < 0) fav.state.ids.push(x); });
+          localStorage.setItem("pokepoke.favorites", JSON.stringify(fav));
+          // 表示言語は、このサイトでまだ何も選んでいないときだけ
+          if ((lang === "ja" || lang === "en") && localStorage.getItem("pokepoke.settings") == null) localStorage.setItem("pokepoke.settings", JSON.stringify({ state: { lang: lang }, version: 1 }));
         } catch (e) {}
+        history.replaceState(null, "", location.pathname + location.search + to);
       })();
     </script>
     <noscript>このページはJavaScriptが必要です。JavaScriptが動くブラウザで開いてください。</noscript>
