@@ -1,5 +1,5 @@
 // カード一覧まわりの部品: ツールバー、グリッド、並べ替え・絞り込みシート、右下の丸ボタン
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useAddToDeck, useData } from "../context.tsx";
 import { activeCount, EMPTY_FILTERS, matchFilters, RARITIES, SORTS, sortHits, usePool, type Filters, type SortKey } from "../pool.ts";
 import { SCORED_KINDS, type Cond, type Hit } from "../search/engine.ts";
@@ -277,10 +277,18 @@ export function PoolFab({ bottom = "bottom-24", history }: { bottom?: string; hi
   );
 }
 
-/** 見たカードの履歴（新しい順・100件まで）をリストで。タップで詳細（前・次はこの並び）、長押しでデッキに追加 */
+/**
+ * 見たカードの履歴（新しい順・100件まで）をリストで。タップで詳細（前・次はこの並び）、長押しでデッキに追加。
+ * 詳細はこのシートの上に重ねて開き、閉じるとまた履歴の続きを見られる。
+ * 開いている間は並びを止めておく（詳細で見たカードが先頭へ動いて、見ていた場所がずれないように）
+ */
 function ViewedSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { byId } = useData();
-  const { ids, clear } = useViewed();
+  const clear = useViewed((s) => s.clear);
+  const [ids, setIds] = useState<string[]>([]);
+  useLayoutEffect(() => {
+    if (open) setIds(useViewed.getState().ids);
+  }, [open]);
   const addToDeck = useAddToDeck();
   const t = useT();
   const lang = useLang();
@@ -290,11 +298,16 @@ function ViewedSheet({ open, onClose }: { open: boolean; onClose: () => void }) 
       open={open}
       onClose={onClose}
       title={t(`見たカード（${cards.length}）`, `Viewed cards (${cards.length})`)}
+      z="z-[48]"
       footer={
         cards.length > 0 && (
           <div className="flex items-center justify-between gap-3">
             <span className="text-[11px] font-bold text-muted">{t(`新しい順・${VIEWED_MAX}件まで`, `Newest first, up to ${VIEWED_MAX}`)}</span>
-            <button type="button" onClick={() => confirm(t("見たカードの履歴を消しますか？", "Clear viewed cards?")) && clear()} className="neu-sm neu-press rounded-full px-4 py-2 text-xs font-extrabold text-muted">
+            <button type="button" onClick={() => {
+                if (!confirm(t("見たカードの履歴を消しますか？", "Clear viewed cards?"))) return;
+                clear();
+                setIds([]);
+              }} className="neu-sm neu-press rounded-full px-4 py-2 text-xs font-extrabold text-muted">
               {t("履歴を消す", "Clear")}
             </button>
           </div>
@@ -306,10 +319,7 @@ function ViewedSheet({ open, onClose }: { open: boolean; onClose: () => void }) 
           {cards.map((c) => (
             <li key={c.id}>
               <Pressable
-                onTap={() => {
-                  onClose();
-                  openCard(c.id, cards.map((x) => x.id));
-                }}
+                onTap={() => openCard(c.id, cards.map((x) => x.id))}
                 onLongPress={() => addToDeck(c)}
                 label={cardName(c, lang)}
                 className="flex w-full items-center gap-3 py-2 text-left"

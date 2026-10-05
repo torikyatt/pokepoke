@@ -272,8 +272,8 @@ export function Header({ title, back, right }: { title: ReactNode; back?: boolea
 
 /** 画面下からせり上がるシート（PCでは画面の真ん中に出す）。
  *  backdrop-blur などの中に置かれても画面全体に出るよう、body の直下に描く */
-/** 下から出るシート。上の帯（つまみ・タイトル）を下へスワイプしても閉じられる */
-export function Sheet({ open, onClose, title, children, footer }: { open: boolean; onClose: () => void; title: string; children: ReactNode; footer?: ReactNode }) {
+/** 下から出るシート。上の帯（つまみ・タイトル）を下へスワイプしても閉じられる。z: 重なりの順（カード詳細を上に重ねたいときは下げる） */
+export function Sheet({ open, onClose, title, children, footer, z = "z-50" }: { open: boolean; onClose: () => void; title: string; children: ReactNode; footer?: ReactNode; z?: string }) {
   const t = useT();
   const panel = useRef<HTMLDivElement>(null);
   const backdrop = useRef<HTMLButtonElement>(null);
@@ -317,7 +317,7 @@ export function Sheet({ open, onClose, title, children, footer }: { open: boolea
     } else move(0, true);
   };
   return createPortal(
-    <div className="fixed inset-0 z-50 flex flex-col justify-end lg:items-center lg:justify-center lg:p-6" role="dialog" aria-modal="true" aria-label={title}>
+    <div className={`fixed inset-0 ${z} flex flex-col justify-end lg:items-center lg:justify-center lg:p-6`} role="dialog" aria-modal="true" aria-label={title}>
       <button ref={backdrop} type="button" aria-label={t("閉じる", "Close")} className="absolute inset-0 bg-[#3d4757]/35" onClick={onClose} />
       <div ref={panel} className="sheet-up relative mx-auto flex max-h-[88dvh] w-full max-w-3xl flex-col rounded-t-3xl bg-panel shadow-2xl lg:max-w-2xl lg:rounded-3xl">
         <div onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerCancel={onUp} className="cursor-grab touch-none select-none">
