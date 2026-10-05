@@ -13,7 +13,7 @@ import { jaImageFile } from "./lib/ja-images.ts";
 import { enImageFile, enImageRemote } from "../src/en-images.ts";
 import type { Card, Effect } from "./lib/types.ts";
 import type { G8Card } from "./lib/game8.ts";
-import type { AppArchetype, AppAttack, AppCard, AppCombo, AppData, AppHelp, AppMeta, HelpTarget, AppEffect, AppPrint, AppSet, EnergyType, LexEntry, Selector, Slot } from "../src/types.ts";
+import type { AppArchetype, AppAttack, AppCard, AppCombo, AppData, AppHelp, AppMeta, HelpTarget, AppEffect, AppPrint, AppSet, EnergyType, LexEntry, RequireInfo, Selector, Slot } from "../src/types.ts";
 
 const ROOT = join(import.meta.dirname, "..");
 const DATA = join(ROOT, "data");
@@ -141,19 +141,27 @@ const out: AppCard[] = cards.map((c) => {
   }
   // シナジー: 効果ごとに供給・要求を集め、供給には「誰に効くか」を付ける
   const supplies: Record<string, Selector[]> = {};
-  const requires: Record<string, { etypes?: EnergyType[] }> = {};
+  const requires: Record<string, RequireInfo> = {};
   const slotted: [string, Effect | undefined, string[] | undefined][] = [["ability", c.ability, ct.ability], ...c.attacks.map((a, i) => [`attack${i}`, a, ct.attacks[i]] as [string, Effect, string[]]), ["text", c.text, ct.text]];
   for (const [slot, e, ts] of slotted) {
     if (!e?.textEn || !ts) continue;
     for (const s of new Set(ts.flatMap(suppliesOfTag))) {
-      const sel = selectorOf(s, e.textEn, ct.slotRefs?.[slot] ?? []);
+      const sel = selectorOf(s, e.textEn, ct.slotRefs?.[slot] ?? [], c.type);
       if (slot === "ability" || c.kind === "stadium" || c.kind === "tool") sel.repeat = true;
       (supplies[s] ??= []).push(sel);
     }
     for (const r of new Set(ts.flatMap(requiresOfTag))) {
       const info = requireInfoOf(r, e.textEn);
       const cur = requires[r];
-      requires[r] = cur && !(cur.etypes && info.etypes) ? {} : { ...(info.etypes || cur?.etypes ? { etypes: [...new Set([...(cur?.etypes ?? []), ...(info.etypes ?? [])])] } : {}) };
+      const merged: RequireInfo = cur && !(cur.etypes && info.etypes) ? {} : { ...(info.etypes || cur?.etypes ? { etypes: [...new Set([...(cur?.etypes ?? []), ...(info.etypes ?? [])])] } : {}) };
+      // トラッシュで数えるカードの種類は、効果ごとのものを合わせる（どれか1つでも「何でも」なら何でも）
+      if (info.trash || cur?.trash) {
+        const kinds = [...new Set([...(cur?.trash ?? []), ...(info.trash ?? [])])];
+        merged.trash = kinds.includes("any") ? ["any"] : kinds;
+        const tt = [...new Set([...(cur?.trashTypes ?? []), ...(info.trashTypes ?? [])])];
+        if (tt.length && !(cur?.trash?.includes("pokemon") && !cur.trashTypes) && !(info.trash?.includes("pokemon") && !info.trashTypes)) merged.trashTypes = tt;
+      }
+      requires[r] = merged;
     }
   }
   // 場にエネをためる特性（毎ターン自分にエネを付ける。レアコイルのボルトチャージなど）

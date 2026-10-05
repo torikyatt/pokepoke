@@ -75,10 +75,19 @@ export interface AppCard {
   tags: string[]; // 全効果のタグの和集合
   refs: string[]; // 効果文が名前で指しているカードID
   supplies: Record<string, Selector[]>; // 場に作るもの（シナジーの供給）と、その効く相手
-  requires: Record<string, { etypes?: EnergyType[] }>; // 何があると強いか（シナジーの要求）
+  requires: Record<string, RequireInfo>; // 何があると強いか（シナジーの要求）
 }
 
 /** 効果が効く相手（シナジー判定用。scripts/lib/targets.ts が英文から読む） */
+/** トラッシュに送る・トラッシュで数えるカードの種類。any は何でも（手札からランダムに捨てるなど） */
+export type TrashKind = "any" | "pokemon" | "supporter" | "item" | "tool" | "stadium";
+/** 要求する側の条件（トラッシュのエネのタイプ、トラッシュで数えるカードの種類など） */
+export interface RequireInfo {
+  etypes?: EnergyType[];
+  trash?: TrashKind[];
+  trashTypes?: EnergyType[];
+}
+
 export interface Selector {
   self?: true; // 自分自身だけ（進化補助なら自分の進化先）
   ids?: string[]; // 名指しされたカード
@@ -89,6 +98,8 @@ export interface Selector {
   hpMax?: number; // そのポケモン自身のHPがこれ以下（ルチアなど）
   rules?: Rule[]; // メガシンカex だけ など
   etypes?: EnergyType[]; // トラッシュに送る・使うエネのタイプ
+  trash?: TrashKind[]; // 自分のトラッシュに送るカードの種類（supply.trash.fill）
+  trashTypes?: EnergyType[]; // トラッシュに送るポケモンのタイプ（分かるときだけ）
   repeat?: true; // 毎ターン使える（特性・スタジアム・どうぐ）
   kinds?: ("pokemon" | "trainer")[]; // ポケモン（のワザ）だけ・トレーナーズだけ
 }

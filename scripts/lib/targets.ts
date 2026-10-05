@@ -2,7 +2,7 @@
 // 例: そうじゅくエキス「Choose 1 of your [G] Pokémon … evolves」→ 草の進化ポケモンだけ
 //     コイキング「… evolves from this Pokémon onto this Pokémon」→ 自分の進化先だけ
 //     大きなふうせん「The Stage 2 Pokémon this card is attached to …」→ 2進化だけ
-import type { CardGroup, EnergyType, Selector, Stage } from "../../src/types.ts";
+import type { CardGroup, EnergyType, RequireInfo, Selector, Stage, TrashKind } from "../../src/types.ts";
 import { typesBefore } from "../../src/card-text.ts";
 
 const CODE: Record<string, EnergyType> = {
@@ -24,9 +24,46 @@ const OTHERS: Record<string, RegExp> = {
   "supply.damage.self": /your Benched|1 of your Pokémon|all Benched|each of your Benched/,
 };
 
-export function selectorOf(supply: string, raw: string, refs: string[]): Selector {
+/** カードの種類の書き方 → トラッシュの種類 */
+const KIND_WORD: [RegExp, TrashKind][] = [
+  [/Supporter cards?/, "supporter"],
+  [/Pokémon Tool cards?|Pokémon Tools?/, "tool"],
+  [/Item cards?/, "item"],
+  [/Stadium cards?/, "stadium"],
+];
+
+/**
+ * 自分のトラッシュに送るカードの種類（supply.trash.fill）。
+ *   手札から「a card」「2 cards」を捨てる → 何でも／「Pokémon Tool cards」を捨てる → どうぐ
+ *   ベンチの「[W] Pokémon」を捨てる → 水ポケモン／「discard this Pokémon」→ このポケモン（タイプは ownType）
+ *   相手のトラッシュに行くもの（相手のどうぐを捨てる など）は数えない
+ */
+function trashOf(t: string, ownType?: EnergyType): Pick<Selector, "trash" | "trashTypes"> {
+  const kinds = new Set<TrashKind>();
+  const types = new Set<EnergyType>();
+  for (const m of t.matchAll(/[Dd]iscard ([^.]*?) from your hand/g)) {
+    const what = m[1];
+    const k = KIND_WORD.find(([re]) => re.test(what));
+    if (k) kinds.add(k[1]);
+    else if (/\bPokémon\b/.test(what)) kinds.add("pokemon");
+    else kinds.add("any");
+  }
+  for (const m of t.matchAll(/[Dd]iscard (?:any number of |\d+ of |1 of |all of )?your Benched ([^.]*?)Pokémon/g)) {
+    kinds.add("pokemon");
+    for (const x of typesBefore(`${m[1]}Pokémon`, "Pokémon")) types.add(x);
+  }
+  if (/discard this Pokémon/.test(t)) {
+    kinds.add("pokemon");
+    if (ownType) types.add(ownType);
+  }
+  if (!kinds.size) kinds.add("any");
+  return { trash: [...kinds], ...(types.size ? { trashTypes: [...types] } : {}) };
+}
+
+export function selectorOf(supply: string, raw: string, refs: string[], ownType?: EnergyType): Selector {
   const t = clean(raw);
   const sel: Selector = {};
+  if (supply === "supply.trash.fill") return trashOf(t, ownType);
   const selfRe = SELF[supply];
   if (selfRe?.test(t) && !OTHERS[supply]?.test(t)) {
     // 「イーブイから進化するポケモンに進化できる」のように相手が名指しされていれば、そちらを対象にする
@@ -73,8 +110,21 @@ export function selectorOf(supply: string, raw: string, refs: string[]): Selecto
   return sel;
 }
 
-/** 要求する側の条件（トラッシュのエネの種類など） */
-export function requireInfoOf(require: string, raw: string): { etypes?: EnergyType[] } {
+/** 要求する側の条件（トラッシュのエネの種類、トラッシュで数えるカードの種類など） */
+export function requireInfoOf(require: string, raw: string): RequireInfo {
+  if (require === "supply.trash.fill") {
+    // シャンデラ「each Supporter card in your discard pile」→ サポート、ハカドッグ「each [P] Pokémon」→ 超ポケモン、ロトムex「Item card」→ グッズ
+    const t = clean(raw);
+    const m = t.match(/for each ([^.]*?) in your discard pile/);
+    if (!m) return { trash: ["any"] };
+    const k = KIND_WORD.find(([re]) => re.test(m[1]));
+    if (k) return { trash: [k[1]] };
+    if (/\bPokémon\b/.test(m[1])) {
+      const ts = typesBefore(m[1], "Pokémon");
+      return { trash: ["pokemon"], ...(ts.length ? { trashTypes: ts } : {}) };
+    }
+    return { trash: ["any"] };
+  }
   if (require !== "supply.trash.energy" && require !== "supply.energy.bank" && require !== "supply.energy.many") return {};
   // 付いているエネの数で強くなるワザは、数えるエネのタイプ（メガルカリオex「extra [F] Energy」→ 闘だけ）
   const et =

@@ -342,3 +342,17 @@ describe("どちらも〇〇と相性がいい", () => {
     expect(partnersOf(flygon.id).flatMap((p) => p.reasons).join()).not.toMatch(/シャンデラ|ハカドッグ/);
   });
 });
+
+describe("トラッシュに送るカードと数えるカードの種類", () => {
+  const linked = (need: string, give: string) => {
+    const c = data.cards.find((x) => x.nameJa === need)!;
+    return partnersOf(c.id).some((p) => p.card.nameJa === give && p.reasons.some((r) => /トラッシュを増やせる/.test(r)));
+  };
+  it("サポートを数えるシャンデラに、ポケモン（クレッフィ）を送るカードは結ばない", () => expect(linked("シャンデラ", "クレッフィ")).toBe(false));
+  it("グッズを数えるロトムexに、どうぐを捨てるヤドキングは結ばない", () => expect(linked("ロトムex", "ヤドキング")).toBe(false));
+  it("超ポケモンを数えるハカドッグに、水ポケモンを捨てるギャラドスは結ばない（超のクレッフィは結ぶ）", () => {
+    expect(linked("ハカドッグ", "ギャラドス")).toBe(false);
+    expect(linked("ハカドッグ", "クレッフィ")).toBe(true);
+  });
+  it("ポケモンなら何でも数えるヒスイゾロアークexには、ベンチのポケモンを捨てるギャラドスも結ぶ", () => expect(linked("ヒスイゾロアークex", "ギャラドス")).toBe(true));
+});

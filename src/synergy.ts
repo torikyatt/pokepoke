@@ -168,6 +168,17 @@ export function createSynergy(data: AppData) {
     // エネのタイプの照合は canPay（無色の要求は他のタイプで代われる／タイプ指定の要求は無色では代われない）
     //   受け手がタイプを指定している（メガルカリオex「extra [F] Energy」、フレイムパッチ「[R] Energy」）→ その要求を払えるか
     //   指定が無いエネ加速 → 受け手のワザのコストのタイプを払えるか（無色だけのワザなら、どのタイプのエネでもよい）
+    // トラッシュに送るカードと、トラッシュで数えるカードの種類が合うか（サポートを数えるシャンデラに、どうぐやポケモンを送っても強くならない）
+    if (s === "supply.trash.fill") {
+      const need = receiver.requires[s] ?? {};
+      const give = sel.trash ?? ["any"];
+      const wantKinds = need.trash ?? ["any"];
+      const kindOk = give.includes("any") || wantKinds.includes("any") || give.some((k) => wantKinds.includes(k));
+      if (!kindOk) return false;
+      // ポケモンを数える・送る同士なら、タイプも合うか（超ポケモンを数えるハカドッグに、水ポケモンを送っても強くならない）
+      if (!give.includes("any") && give.includes("pokemon") && wantKinds.includes("pokemon") && need.trashTypes?.length && sel.trashTypes?.length && !sel.trashTypes.some((t) => need.trashTypes!.includes(t))) return false;
+      return true;
+    }
     const want = receiver.requires[s]?.etypes;
     if (want?.length) {
       if (!want.some((w) => canPay(sel.etypes, w))) return false;
