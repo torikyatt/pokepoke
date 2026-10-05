@@ -5,8 +5,9 @@ import { activeCount, EMPTY_FILTERS, matchFilters, RARITIES, SORTS, sortHits, us
 import { SCORED_KINDS, type Cond, type Hit } from "../search/engine.ts";
 import type { AppCard, CardGroup, CardKind, EnergyType, Rule, Stage } from "../types.ts";
 import { cardName, groupName, kindName, setName, stageName, tagName, useLang, useT } from "../i18n.ts";
-import { useDecks, useFavorites } from "../store.ts";
-import { Chip, EnergyIcon, IconHeart, IconSearch, IconSort, PoolCard, Sheet } from "./ui.tsx";
+import { openCard } from "../detail.ts";
+import { useDecks, useFavorites, useViewed, VIEWED_MAX } from "../store.ts";
+import { Chip, EnergyIcon, IconHeart, IconHistory, IconSearch, IconSort, PoolCard, Sheet } from "./ui.tsx";
 
 const TYPES: EnergyType[] = ["grass", "fire", "water", "lightning", "psychic", "fighting", "darkness", "metal", "dragon", "colorless"];
 const KINDS: CardKind[] = ["pokemon", "supporter", "item", "tool", "stadium", "fossil"];
@@ -245,24 +246,78 @@ function FilterButton() {
 }
 
 /** 右下の丸ボタン（並べ替え・絞り込み）と、上に戻るボタン */
-export function PoolFab({ bottom = "bottom-24" }: { bottom?: string }) {
+/** 右下の丸ボタン: 並べ替え・絞り込み（history のときは、その上に「見たカード」の履歴） */
+export function PoolFab({ bottom = "bottom-24", history }: { bottom?: string; history?: boolean }) {
   const { filters, sort } = usePool();
   const [open, setOpen] = useState(false);
+  const [viewedOpen, setViewedOpen] = useState(false);
   const n = activeCount(filters);
   const t = useT();
   return (
     <>
-      <div className={`fixed right-4 z-40 ${bottom} pb-[env(safe-area-inset-bottom)]`}>
-        <button type="button" onClick={() => setOpen(true)} aria-label={t("並べ替え・絞り込み", "Sort & filter")} className="neu neu-press relative flex h-16 w-16 items-center justify-center rounded-full text-[#5aa9d6]">
-          <IconSort />
-          {(n > 0 || sort !== "score") && <span className="absolute -top-1 -left-1 flex h-6 min-w-6 items-center justify-center rounded-full bg-accent px-1 text-xs font-extrabold text-white">{n || "↕"}</span>}
-        </button>
-        <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} aria-label={t("いちばん上へ", "Back to top")} className="absolute -top-2 -right-1 flex h-7 w-7 items-center justify-center rounded-full bg-badge text-sm text-white shadow">
-          ↑
-        </button>
+      <div className={`fixed right-4 z-40 flex flex-col items-center gap-3 ${bottom} pb-[env(safe-area-inset-bottom)]`}>
+        {history && (
+          <button type="button" onClick={() => setViewedOpen(true)} aria-label={t("見たカード", "Viewed cards")} title={t("見たカード", "Viewed cards")} className="neu neu-press flex h-16 w-16 items-center justify-center rounded-full text-[#5aa9d6]">
+            <IconHistory />
+          </button>
+        )}
+        <div className="relative">
+          <button type="button" onClick={() => setOpen(true)} aria-label={t("並べ替え・絞り込み", "Sort & filter")} className="neu neu-press relative flex h-16 w-16 items-center justify-center rounded-full text-[#5aa9d6]">
+            <IconSort />
+            {(n > 0 || sort !== "score") && <span className="absolute -top-1 -left-1 flex h-6 min-w-6 items-center justify-center rounded-full bg-accent px-1 text-xs font-extrabold text-white">{n || "↕"}</span>}
+          </button>
+          <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} aria-label={t("いちばん上へ", "Back to top")} className="absolute -top-2 -right-1 flex h-7 w-7 items-center justify-center rounded-full bg-badge text-sm text-white shadow">
+            ↑
+          </button>
+        </div>
       </div>
       <SortFilterSheet open={open} onClose={() => setOpen(false)} />
+      {history && <ViewedSheet open={viewedOpen} onClose={() => setViewedOpen(false)} />}
     </>
+  );
+}
+
+/** 見たカードの履歴（新しい順・100件まで）。タップで詳細（前・次はこの並び）、長押しでデッキに追加 */
+function ViewedSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const { byId } = useData();
+  const { ids, clear } = useViewed();
+  const addToDeck = useAddToDeck();
+  const t = useT();
+  const cards = ids.map((id) => byId.get(id)).filter((c): c is AppCard => !!c);
+  return (
+    <Sheet
+      open={open}
+      onClose={onClose}
+      title={t(`見たカード（${cards.length}）`, `Viewed cards (${cards.length})`)}
+      footer={
+        cards.length > 0 && (
+          <div className="flex items-center justify-between gap-3">
+            <span className="text-[11px] font-bold text-muted">{t(`新しい順・${VIEWED_MAX}件まで`, `Newest first, up to ${VIEWED_MAX}`)}</span>
+            <button type="button" onClick={() => confirm(t("見たカードの履歴を消しますか？", "Clear viewed cards?")) && clear()} className="neu-sm neu-press rounded-full px-4 py-2 text-xs font-extrabold text-muted">
+              {t("履歴を消す", "Clear")}
+            </button>
+          </div>
+        )
+      }
+    >
+      {cards.length ? (
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(4.5rem,1fr))] gap-x-2 gap-y-3 pt-1">
+          {cards.map((c) => (
+            <PoolCard
+              key={c.id}
+              card={c}
+              onTap={() => {
+                onClose();
+                openCard(c.id, cards.map((x) => x.id));
+              }}
+              onLongPress={() => addToDeck(c)}
+            />
+          ))}
+        </div>
+      ) : (
+        <p className="py-10 text-center text-sm font-bold text-muted">{t("まだカードを見ていません。カードをタップすると、ここに並びます。", "No cards viewed yet. Cards you open will show up here.")}</p>
+      )}
+    </Sheet>
   );
 }
 

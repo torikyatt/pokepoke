@@ -144,7 +144,7 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
           {t(`データ ${data.cards.length} 種 ・ ${dateStr(data.builtAt, lang)} 時点`, `${data.cards.length} cards ・ as of ${dateStr(data.builtAt, lang)}`)}
         </p>
       </div>
-      {!wide && <PoolFab />}
+      {!wide && <PoolFab history />}
     </div>
   );
 }

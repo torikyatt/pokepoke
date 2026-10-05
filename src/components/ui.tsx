@@ -230,6 +230,14 @@ export const IconSort = () => (
   </svg>
 );
 
+export const IconHistory = () => (
+  <svg viewBox="0 0 32 32" className="h-8 w-8" aria-hidden>
+    <path d="M6.5 16A10 10 0 1 0 9.4 8.9" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
+    <path d="M9.6 4.2v5h-5" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M16 10.5V16l3.8 2.6" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
 /** サイト名（INDEX＝索引 と DECKS を掛けている）。ロゴでは DECKS に色を付け、サブで「TCG Pocket 用」と分かるようにする */
 export const BRAND = "POKÉPOKE INDECKS";
 export function Logo({ className = "text-lg" }: { className?: string }) {

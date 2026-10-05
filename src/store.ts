@@ -2,6 +2,7 @@
 // localStorage が使えない環境（プライベートブラウズ等）でも落ちないよう、読み書きは try/catch で包む
 import { create } from "zustand";
 import { createJSONStorage, persist, type StateStorage } from "zustand/middleware";
+import { useDetail } from "./detail.ts";
 import type { EnergyType } from "./types.ts";
 
 const safeStorage: StateStorage = {
@@ -130,6 +131,27 @@ export const useFavorites = create<FavState>()(
     { name: "pokepoke.favorites", storage: createJSONStorage(() => safeStorage), version: 1 },
   ),
 );
+
+// 見たカードの履歴（新しい順・100件まで）。カード詳細でカードを表示するたびに先頭へ（同じカードは1つにまとめる）
+export const VIEWED_MAX = 100;
+interface ViewedState {
+  ids: string[];
+  clear: () => void;
+}
+export const useViewed = create<ViewedState>()(
+  persist(
+    (set) => ({
+      ids: [],
+      clear: () => set({ ids: [] }),
+    }),
+    { name: "pokepoke.viewed", storage: createJSONStorage(() => safeStorage), version: 1, partialize: (s) => ({ ids: s.ids }) },
+  ),
+);
+useDetail.subscribe((s, prev) => {
+  const id = s.open ? s.stack[s.pos] : undefined;
+  if (!id || (prev.open && prev.stack[prev.pos] === id)) return;
+  useViewed.setState((v) => ({ ids: [id, ...v.ids.filter((x) => x !== id)].slice(0, VIEWED_MAX) }));
+});
 
 // 一時メッセージ
 interface ToastState {
