@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { PoolFab, PoolGrid, PoolToolbar, QueryBox, usePoolResults } from "../components/pool.tsx";
-import { Chip } from "../components/ui.tsx";
+import { Chip, Logo } from "../components/ui.tsx";
 import { useData } from "../context.tsx";
 import { openCard } from "../detail.ts";
 import { usePool } from "../pool.ts";
@@ -99,7 +99,11 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
       <div className="px-4 pb-6">
         {!q && !tagParam && !favOnly && (
           <div className="mb-3">
-            {!wide && <h1 className="mb-1 text-lg font-extrabold tracking-wider text-ink">POKÉPOKE LAB</h1>}
+            {!wide && (
+              <h1 className="mb-2">
+                <Logo />
+              </h1>
+            )}
             <p className="mb-2 text-xs font-bold text-muted">{t("ふだんの言葉で探せます（タップで詳細・長押しでデッキに追加）", "Search in plain words (tap for details, long-press to add to your deck)")}</p>
             <div className={wide ? "flex flex-wrap gap-2 pb-2" : "scrollbar-none -mx-4 flex gap-2 overflow-x-auto px-4 pb-2"}>
               {(lang === "en" ? EXAMPLES_EN : EXAMPLES).map((ex) => (

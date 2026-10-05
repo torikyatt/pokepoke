@@ -1,6 +1,6 @@
 import { lazy, StrictMode, Suspense, useEffect, useLayoutEffect, useState, useSyncExternalStore } from "react";
 import { createRoot } from "react-dom/client";
-import { BottomNav, Toast } from "./components/ui.tsx";
+import { BottomNav, Logo, Toast } from "./components/ui.tsx";
 import { DataContext, type Ctx } from "./context.tsx";
 import { loadData } from "./data/load.ts";
 import "./index.css";
@@ -114,6 +114,7 @@ function Layout() {
   const lang = useLang();
   useEffect(() => {
     document.documentElement.lang = lang;
+    document.title = lang === "en" ? "POKÉPOKE DEX – Pokémon TCG Pocket Card Dex & Deck Builder" : "POKÉPOKE DEX｜ポケポケのカード図鑑";
   }, [lang]);
   return useIsDesktop() ? <Desktop /> : <Shell />;
 }
@@ -141,7 +142,9 @@ function App() {
     return (
       <div className="flex h-dvh items-center justify-center text-sm text-muted">
         <div className="text-center font-bold">
-          <div className="mb-4 text-2xl font-extrabold tracking-wider text-ink">POKÉPOKE LAB</div>
+          <div className="mb-4 flex justify-center">
+            <Logo className="text-2xl" />
+          </div>
           <div className="mx-auto mb-3 h-8 w-8 animate-spin rounded-full border-4 border-line border-t-accent" />
           {t("カードデータを展開中…", "Unpacking card data…")}
         </div>

@@ -104,7 +104,7 @@ function useShareCard() {
   const lang = useLang();
   return async (card: AppCard) => {
     const url = `${location.href.split("#")[0]}#/card/${card.id}`;
-    const title = `${cardName(card, lang)} | POKÉPOKE LAB`;
+    const title = `${cardName(card, lang)} | POKÉPOKE DEX`;
     try {
       if (navigator.share) await navigator.share({ title, url });
       else {

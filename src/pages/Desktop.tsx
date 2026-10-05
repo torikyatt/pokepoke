@@ -1,7 +1,7 @@
 // PC（横幅1024px以上）の画面: カード一覧・カード詳細・デッキを横に並べ、ページを切り替えずに検索と構築ができる
 import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { DetailPane } from "../components/detail.tsx";
-import { EnergyIcon, Pressable, Thumb, Toast } from "../components/ui.tsx";
+import { EnergyIcon, Logo, Pressable, Thumb, Toast } from "../components/ui.tsx";
 import { useData } from "../context.tsx";
 import { checkDeck, DECK_SIZE, download, toFile } from "../deck.ts";
 import { openCard } from "../detail.ts";
@@ -52,8 +52,8 @@ export function Desktop() {
   return (
     <div className="flex h-dvh flex-col overflow-hidden">
       <header className="flex shrink-0 items-center gap-4 px-5 py-2.5">
-        <button type="button" onClick={() => navigate("/")} className="text-lg font-extrabold tracking-wider">
-          POKÉPOKE LAB
+        <button type="button" onClick={() => navigate("/")} aria-label="POKÉPOKE DEX">
+          <Logo />
         </button>
         <span className="text-xs font-bold text-muted">{t("ふだんの言葉でカードを探す ・ 「/」で検索欄へ", "Find cards in plain words ・ press “/” to search")}</span>
         <div className="flex-1" />
