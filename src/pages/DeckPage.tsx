@@ -558,6 +558,10 @@ function DeckImage({ deck, cards, qr, ref }: { deck: Deck; cards: AppCard[]; qr:
   // 画像にするときは影を使わない（iPhone の Safari では影が四角い灰色の塊になって写る）。
   // 文字もウェブフォントを使わない（画像にはウェブフォントを埋め込まないので、画面で測った幅とずれて折り返してしまう）
   const panel = { borderRadius: 24, background: "#f3f6fa", border: "2px solid #dbe3ee" };
+  // 一覧の行の高さ: 左の20枠と同じ高さ（約 950px）から、QR コードと見出しの分を引いた中に収める
+  const LIST_SPACE = 950 - (qr.size + 24) - 2 * 34;
+  const rowH = Math.min(50, Math.floor(LIST_SPACE / Math.max(1, rows.length)));
+  const rowFont = Math.min(19, Math.round(rowH * 0.45));
   const nowrap = { whiteSpace: "nowrap", flexShrink: 0 } as const;
   return (
     <div ref={ref} style={{ width: 1400, padding: 28, background: "#e6ecf3", color: "#3d4757", fontFamily: "'Hiragino Maru Gothic ProN', 'Hiragino Sans', 'Yu Gothic', 'Meiryo', system-ui, sans-serif" }}>
@@ -582,41 +586,48 @@ function DeckImage({ deck, cards, qr, ref }: { deck: Deck; cards: AppCard[]; qr:
         <div style={{ fontSize: 22, fontWeight: 800, color: "#8794a7", ...nowrap }}>{cards.length}/{DECK_SIZE}</div>
       </div>
       <div style={{ display: "flex", gap: 20, alignItems: "stretch" }}>
+        {/* 左: いつも20枠（足りないところは空き枠）。画像の大きさをデッキの中身で変えないため */}
         <div style={{ width: 900, flexShrink: 0, display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 12, padding: 16, ...panel }}>
-          {cards.map((c, i) => (
-            <img key={i} data-id={c.id} src={thumbUrl(c, lang)} alt={cardName(c, uiLang)} style={{ width: "100%", aspectRatio: "367/512", borderRadius: 8, objectFit: "cover" }} />
-          ))}
-        </div>
-        <div style={{ flex: 1, minWidth: 0, padding: "14px 18px", ...panel }}>
-          {groups.map(([title, list]) =>
-            list.length ? (
-              <div key={title} style={{ marginBottom: 12 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 15, fontWeight: 800, color: "#8794a7", borderBottom: "2px solid #d5dde7", paddingBottom: 4, marginBottom: 6 }}>
-                  <span style={nowrap}>{title}</span>
-                  <span style={nowrap}>{t(`${list.reduce((a, r) => a + r.n, 0)}枚`, `${list.reduce((a, r) => a + r.n, 0)}`)}</span>
-                </div>
-                {list.map(({ card, n }) => (
-                  <div key={card.id} style={{ display: "flex", alignItems: "center", gap: 10, padding: "4px 0" }}>
-                    <img data-id={card.id} src={thumbUrl(card, lang)} alt="" style={{ width: 30, aspectRatio: "367/512", borderRadius: 3, objectFit: "cover" }} />
-                    <span style={{ flex: 1, minWidth: 0, fontSize: 19, fontWeight: 700, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{cardName(card, uiLang)}</span>
-                    <span style={{ fontSize: 19, fontWeight: 800, ...nowrap }}>×{n}</span>
-                  </div>
-                ))}
-              </div>
-            ) : null,
+          {Array.from({ length: DECK_SIZE }, (_, i) => cards[i]).map((c, i) =>
+            c ? (
+              <img key={i} data-id={c.id} src={thumbUrl(c, lang)} alt={cardName(c, uiLang)} style={{ width: "100%", aspectRatio: "367/512", borderRadius: 8, objectFit: "cover" }} />
+            ) : (
+              <div key={i} style={{ width: "100%", aspectRatio: "367/512", borderRadius: 8, border: "2px dashed #cfd8e3" }} />
+            ),
           )}
         </div>
-      </div>
-      {/* 下のバー: デッキの QR コード（読み取るか、この画像を「読み込み」で選ぶと取り込める） */}
-      <div style={{ marginTop: 16, display: "flex", alignItems: "center", gap: 18, padding: "12px 18px", ...panel }}>
-        {/* 縮めずに1マスちょうどで描く（ぼやけると読み取れない） */}
-        <img src={qr.url} alt="" width={qr.size} height={qr.size} style={{ width: qr.size, height: qr.size, imageRendering: "pixelated", flexShrink: 0 }} />
-        <div style={{ flex: 1, minWidth: 0, fontSize: 16, fontWeight: 700, color: "#5b6779", lineHeight: 1.6 }}>
-          <div style={{ fontSize: 18, fontWeight: 800, color: "#3d4757" }}>{t("デッキコード", "Deck code")}</div>
-          <div>{t("このQRコードをカメラで読み取るか、この画像をPOKÉPOKE LABの「読み込み」で選ぶと、デッキを取り込めます。", "Scan this QR code, or choose this image in POKÉPOKE LAB's “Import”, to import the deck.")}</div>
+        {/* 右: カードの一覧と、その下にデッキの QR コード。左と同じ高さに収める（一覧が長ければ行を詰める） */}
+        <div style={{ flex: 1, minWidth: 0, padding: "14px 18px", ...panel, display: "flex", flexDirection: "column" }}>
+          <div style={{ flex: 1, minHeight: 0, overflow: "hidden" }}>
+            {groups.map(([title, list]) =>
+              list.length ? (
+                <div key={title} style={{ marginBottom: 10 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", fontSize: 15, fontWeight: 800, color: "#8794a7", borderBottom: "2px solid #d5dde7", paddingBottom: 4, marginBottom: 4 }}>
+                    <span style={nowrap}>{title}</span>
+                    <span style={nowrap}>{t(`${list.reduce((a, r) => a + r.n, 0)}枚`, `${list.reduce((a, r) => a + r.n, 0)}`)}</span>
+                  </div>
+                  {list.map(({ card, n }) => (
+                    <div key={card.id} style={{ display: "flex", alignItems: "center", gap: 10, height: rowH }}>
+                      <img data-id={card.id} src={thumbUrl(card, lang)} alt="" style={{ height: rowH - 8, aspectRatio: "367/512", borderRadius: 3, objectFit: "cover", flexShrink: 0 }} />
+                      <span style={{ flex: 1, minWidth: 0, fontSize: rowFont, fontWeight: 700, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{cardName(card, uiLang)}</span>
+                      <span style={{ fontSize: rowFont, fontWeight: 800, ...nowrap }}>×{n}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : null,
+            )}
+          </div>
+          {/* デッキの QR コード（カメラで読み取るか、この画像を「読み込み」で選ぶと取り込める）。縮めずに1マスちょうどで描く */}
+          <div style={{ display: "flex", alignItems: "flex-end", gap: 14, paddingTop: 10, borderTop: "2px solid #d5dde7" }}>
+            <img src={qr.url} alt="" width={qr.size} height={qr.size} style={{ width: qr.size, height: qr.size, imageRendering: "pixelated", flexShrink: 0 }} />
+            <div style={{ minWidth: 0, fontSize: 13, fontWeight: 700, color: "#7a8796", lineHeight: 1.55 }}>
+              <div style={{ fontSize: 15, fontWeight: 800, color: "#5b6779" }}>{t("デッキコード", "Deck code")}</div>
+              <div>{t("カメラで読み取るか、この画像をPOKÉPOKE LABの「読み込み」で選ぶと取り込めます", "Scan it, or choose this image in POKÉPOKE LAB's “Import”, to import the deck")}</div>
+            </div>
+          </div>
         </div>
-        <div style={{ alignSelf: "flex-end", fontSize: 13, color: "#8794a7", fontWeight: 700, whiteSpace: "nowrap" }}>POKÉPOKE LAB</div>
       </div>
+      <div style={{ marginTop: 12, fontSize: 13, color: "#8794a7", textAlign: "right", fontWeight: 700, whiteSpace: "nowrap" }}>POKÉPOKE LAB</div>
     </div>
   );
 }

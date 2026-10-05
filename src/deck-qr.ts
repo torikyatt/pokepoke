@@ -7,7 +7,7 @@ import type { Deck } from "./store.ts";
 export const shareUrlOf = (deck: Pick<Deck, "name" | "cards" | "energy">) => `${location.href.split("#")[0]}#/share/${encodeShare(deck)}`;
 
 /** 文字列を QR コードの画像（data URL）にする。1マス cell px、まわりに規格どおり4マスの白い余白。size は画像の幅（px） */
-export function qrImage(text: string, cell = 4): { url: string; size: number } {
+export function qrImage(text: string, cell = 3): { url: string; size: number } {
   const qr = qrcode(0, "M");
   qr.addData(text);
   qr.make();
