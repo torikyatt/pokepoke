@@ -232,10 +232,12 @@ export function createSynergy(data: AppData) {
     (archOf.get(a) ?? []).filter((x) => x.rate >= 0.5).map((x) => x.arch).find((arch) => arch.cards.some((c) => c.id === b && c.rate >= 0.5));
   /** 大会で一緒に入る割合（画面に出す % の数字）がこれ以下の組は、相性の良いカードに出さない */
   const CO_USE_MIN_PCT = 15;
-  // 大会で一緒に使われる組の強さ。一緒に入る割合が低いものと、どのデッキにも入る定番（モノマネむすめ・アカギ・ナツメ・スピーダーなど）は少し下げる
+  // 大会で一緒に使われる組の強さ。一緒に入る割合の2乗にして、割合が下がるほど急に弱くする
+  //   （100% → 3.5、80% → 2.2、60% → 1.3、40% → 0.56、20% → 0.14）。
+  //   どのデッキにも入る定番（モノマネむすめ・アカギ・ナツメ・スピーダーなど）は少し下げる
   const coUseScore = (id: string, rate: number) => {
     const global = data.meta?.usage[id] ?? 0;
-    return (0.5 + 2.5 * rate) * (rate < 0.2 ? 0.7 : 1) * (global >= 0.6 ? 0.55 : global >= 0.25 ? 0.7 : 1);
+    return 3.5 * rate * rate * (global >= 0.6 ? 0.55 : global >= 0.25 ? 0.7 : 1);
   };
   // 状態異常にできるカード
   const statusSuppliers = data.cards.filter((c) => STATUS_KINDS.some((k) => c.supplies[`supply.status.${k}`]));

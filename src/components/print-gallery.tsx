@@ -17,6 +17,9 @@ export function PrintGallery({ card, index, onIndex }: { card: AppCard; index: n
   // 外から（収録の一覧をタップしたとき）指定された絵柄へスクロールする
   const fromScroll = useRef(false);
   const mounted = useRef(false);
+  // こちらからスクロールしている間の行き先。途中の絵柄を「いまの絵柄」として知らせない（収録の一覧の強調がチカチカしないように）
+  const target = useRef<number | null>(null);
+  const shown = useRef(index);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -29,7 +32,10 @@ export function PrintGallery({ card, index, onIndex }: { card: AppCard; index: n
       fromScroll.current = false;
       return;
     }
-    el.scrollTo({ left: index * el.clientWidth, behavior: "smooth" });
+    // 隣の絵柄へはなめらかに、離れた絵柄へは一気に（途中の絵柄が次々に映ってチカチカしないように）
+    target.current = Math.round(el.scrollLeft / Math.max(1, el.clientWidth)) === index ? null : index; // もう着いているなら待たない
+    el.scrollTo({ left: index * el.clientWidth, behavior: Math.abs(index - shown.current) === 1 ? "smooth" : "auto" });
+    shown.current = index;
     // 下の「収録」から選んだときは、画像が見えるところまで戻す
     if (el.getBoundingClientRect().bottom < 0 || el.getBoundingClientRect().top > window.innerHeight) el.scrollIntoView({ block: "center", behavior: "smooth" });
   }, [index]);
@@ -37,6 +43,11 @@ export function PrintGallery({ card, index, onIndex }: { card: AppCard; index: n
   const onScroll = () => {
     const el = ref.current!;
     const i = Math.round(el.scrollLeft / Math.max(1, el.clientWidth));
+    if (target.current !== null) {
+      if (i === target.current) target.current = null; // 行き先に着いた
+      return;
+    }
+    shown.current = i;
     if (i !== index) {
       fromScroll.current = true;
       onIndex(i);
@@ -49,12 +60,12 @@ export function PrintGallery({ card, index, onIndex }: { card: AppCard; index: n
   return (
     <div>
       <div className="group relative rounded-xl shadow-[3px_5px_12px_rgb(150_165_185/0.55)]">
-        <div ref={ref} onScroll={onScroll} className="scrollbar-none flex snap-x snap-mandatory overflow-x-auto rounded-xl" style={{ touchAction: "pan-x pan-y" }}>
+        <div ref={ref} onScroll={onScroll} onPointerDown={() => (target.current = null)} className="scrollbar-none flex snap-x snap-mandatory overflow-x-auto rounded-xl" style={{ touchAction: "pan-x pan-y" }}>
           {card.prints.map((pr, i) => (
             <img
               key={`${pr.id}-${lang}`}
               src={printImageUrl(pr, lang)}
-              loading={i === 0 ? "eager" : "lazy"}
+              loading="eager"
               draggable={false}
               alt={`${cardName(card, uiLang)}（${pr.id.toUpperCase()}）`}
               onClick={() => setZoom(true)}
