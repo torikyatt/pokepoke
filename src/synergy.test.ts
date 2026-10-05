@@ -196,10 +196,10 @@ describe("進化ライン", () => {
     for (const id of ["a2-091", "pa-059", "b3-079", "a2-092", "a2b-043", "b3-080", "b3-081"]) expect(names).toContain(id);
     expect(line.map((l) => l.label)).toEqual(["たね", "1進化"]);
   });
-  it("進化ラインのカードは相性のいいカードに出さない", () => {
+  it("進化前・進化後のカードは相性のいいカードに出さない（同じ段の ex などは、一緒に使うことがあるので出してよい）", () => {
     for (const id of ["b3-081", "a2-092", "b3a-020", "pb-011"]) {
       const c = byId.get(id)!;
-      const lineNames = new Set(syn.evolutionLine(c).flatMap((l) => l.cards.map((x) => x.nameEn)));
+      const lineNames = new Set([c.nameEn, ...syn.evolutionLine(c).filter((l) => !l.cards.includes(c)).flatMap((l) => l.cards.map((x) => x.nameEn))]);
       for (const p of partnersOf(id)) expect(lineNames.has(p.card.nameEn)).toBe(false);
     }
   });
@@ -294,5 +294,22 @@ describe("状態異常の重ねがけ", () => {
   it("やけどにするバクフーンは、どくにするカードと「重ねてかけられる」で結ぶ", () => {
     const typh = data.cards.find((c) => c.nameJa === "バクフーン" && statusOf(c).includes("burn"))!;
     expect(syn.partners(typh, 100).some((p) => p.reasons.includes("どくとやけどは重ねてかけられる"))).toBe(true);
+  });
+});
+
+describe("進化ライン", () => {
+  const lineOf = (nameEn: string) => {
+    const c = data.cards.find((c) => c.nameEn === nameEn)!;
+    return createSynergy(data).evolutionLine(c).map((l) => new Set(l.cards.map((x) => x.nameEn)));
+  };
+  it("ルカリオの段に、メガルカリオex も並ぶ（どちらから見ても）", () => {
+    for (const n of ["Lucario", "Mega Lucario ex", "Riolu"]) expect(lineOf(n).at(-1)!.has("Mega Lucario ex") && lineOf(n).at(-1)!.has("Lucario")).toBe(true);
+  });
+  it("リザードンの段に、リザードンex・メガリザードンX/Yex も並ぶ", () => {
+    const top = lineOf("Charizard").at(-1)!;
+    for (const n of ["Charizard ex", "Mega Charizard X ex", "Mega Charizard Y ex"]) expect(top.has(n)).toBe(true);
+  });
+  it("別のポケモン（シャワーズとサンダース）は同じ段に並べない", () => {
+    expect(lineOf("Vaporeon").at(-1)!.has("Jolteon")).toBe(false);
   });
 });

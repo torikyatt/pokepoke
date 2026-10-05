@@ -389,10 +389,19 @@ export function createSynergy(data: AppData) {
    * 進化ライン: 進化元（たね・1進化）→ このカードと同じ名前のカード → 進化先（1進化・2進化）を、段ごとに全部返す。
    * 進化は名前でつながるので、別のパックのカードも含める（例: リオル3種 → ルカリオ・ルカリオex・メガルカリオex）
    */
+  /** ポケモンの種類（ex・メガシンカ・X/Y・リージョンフォームの違いを除いた名前） */
+  const species = (nameEn: string) =>
+    nameEn
+      .replace(/^Mega /, "")
+      .replace(/^(Alolan|Galarian|Hisuian|Paldean) /, "")
+      .replace(/ ex$/, "")
+      .replace(/ [XY]$/, "");
   function evolutionLine(x: AppCard): { label: string; stage?: AppCard["stage"]; fossil?: true; cards: AppCard[] }[] {
     const sorted = (ids: Iterable<string>) =>
       [...new Set(ids)].map((id) => byId.get(id)!).filter(Boolean).sort((a, b) => a.order - b.order || a.id.localeCompare(b.id, "en", { numeric: true }));
-    const same = data.cards.filter((c) => c.nameEn === x.nameEn && c.kind === x.kind && c.stage === x.stage).map((c) => c.id);
+    // 同じ段には、同じポケモンの ex・メガシンカex・リージョンフォームも並べる（ルカリオ と メガルカリオex、リザードン と リザードンex）
+    const sp = species(x.nameEn);
+    const same = data.cards.filter((c) => c.kind === x.kind && c.stage === x.stage && (c.nameEn === x.nameEn || species(c.nameEn) === sp)).map((c) => c.id);
     const prev1 = sorted(same.flatMap((id) => byId.get(id)!.evolvesFrom));
     const prev2 = sorted(prev1.flatMap((c) => c.evolvesFrom));
     const next1 = sorted(same.flatMap((id) => byId.get(id)!.evolvesTo));
