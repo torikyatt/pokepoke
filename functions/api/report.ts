@@ -1,11 +1,12 @@
 // GET /api/report?key=合言葉[&days=30][&sort=time][&format=tsv]   sort=time で新しい順（ふだんは回数順） … 集めた検索ワードの集計（サイトの持ち主が見る用）
 //   合言葉は Cloudflare Pages の設定の REPORT_KEY。設定していなければ、このページは無い（404）
+//   ・お問い合わせ            … 設定画面のフォームから（新しい順。メールが送れたかも出す）
 //   ・誤りの報告              … カード詳細の左上のボタンから送られたもの（新しい順・画像つき）
 //   ・辞書で読めなかった言葉    … 検索文の中で読めなかった部分（ほかの言葉で当たっていても）。辞書に足す候補
 //   ・0件だった検索            … 辞書に無い言い回しか、条件に合うカードが無いか
 //   ・よく探される言葉
 //   ・カードが開かれなかった検索 … 参考。試しに探しただけ・合うカードが少なかっただけのことも多く、結果の誤りとは限らない
-import { ensure, REPORT_CATEGORIES, type Ctx } from "../../server/search-db.ts";
+import { CONTACT_CATEGORIES, ensure, REPORT_CATEGORIES, type Ctx } from "../../server/search-db.ts";
 
 interface Row {
   q: string;
@@ -14,6 +15,17 @@ interface Row {
   opened: number;
   hits: number | null;
   last: string;
+}
+
+interface Contact {
+  id: number;
+  at: string;
+  name: string;
+  email: string;
+  category: string;
+  body: string;
+  lang: string;
+  mailed: string;
 }
 
 interface Report {
@@ -64,6 +76,9 @@ export async function onRequestGet({ request, env }: Ctx) {
     .bind(since, since)
     .all<Miss>();
 
+  const { results: contacts } = await env.DB.prepare("SELECT id, at, name, email, category, body, lang, mailed FROM contacts WHERE at >= ? ORDER BY id DESC LIMIT 200")
+    .bind(since)
+    .all<Contact>();
   const { results: reports } = await env.DB.prepare("SELECT id, at, card, category, body, lang, images FROM reports WHERE at >= ? ORDER BY id DESC LIMIT 200")
     .bind(since)
     .all<Report>();
@@ -75,7 +90,8 @@ export async function onRequestGet({ request, env }: Ctx) {
   const tsv = (rs: Row[]) => rs.map((r) => [r.q, r.lang, r.n, r.hits ?? "", r.opened, when(r.last)].join("\t")).join("\n");
   const missTsv = misses.map((m) => [m.term, m.lang, m.n, m.q ?? "", when(m.last)].join("\t")).join("\n");
   const reportTsv = reports.map((r) => [when(r.at), r.card, REPORT_CATEGORIES[r.category] ?? r.category, r.body.replace(/\s+/g, " "), r.images ? `画像${r.images}枚` : ""].join("\t")).join("\n");
-  const all = `# 検索ワード（直近${days}日・${since}〜）\n## 誤りの報告（日時\t対象カード\t種類\t内容\t画像）\n${reportTsv}\n## 辞書で読めなかった言葉（言葉\t言語\t回数\t例の検索文\t最後）\n${missTsv}\n# 以下は 言葉\t言語\t回数\t件数\t開いた回数\t最後\n## 0件だった検索\n${tsv(zero)}\n## ${topTitle}\n${tsv(top)}\n## カードが開かれなかった検索（参考。結果の誤りとは限らない）\n${tsv(unopened)}\n`;
+  const contactTsv = contacts.map((c) => [`#${c.id}`, when(c.at), CONTACT_CATEGORIES[c.category] ?? c.category, c.body.replace(/\s+/g, " ")].join("\t")).join("\n");
+  const all = `# 検索ワード（直近${days}日・${since}〜）\n## お問い合わせ（番号\t日時\t種類\t内容。名前・メールアドレスは除く）\n${contactTsv}\n## 誤りの報告（日時\t対象カード\t種類\t内容\t画像）\n${reportTsv}\n## 辞書で読めなかった言葉（言葉\t言語\t回数\t例の検索文\t最後）\n${missTsv}\n# 以下は 言葉\t言語\t回数\t件数\t開いた回数\t最後\n## 0件だった検索\n${tsv(zero)}\n## ${topTitle}\n${tsv(top)}\n## カードが開かれなかった検索（参考。結果の誤りとは限らない）\n${tsv(unopened)}\n`;
   if (url.searchParams.get("format") === "tsv") return new Response(all, { headers: { ...HEAD, "Content-Type": "text/plain; charset=utf-8" } });
 
   const total = rows.reduce((s, r) => s + r.n, 0);
@@ -113,6 +129,11 @@ nav a,button{font:inherit;font-size:12px;font-weight:700;color:#22998b;backgroun
 <nav>${[7, 30, 90].map((d) => link({ days: d }, `${d}日`, d === days)).join("")}
 ${link({ sort: "count" }, "回数順", !byTime)}${link({ sort: "time" }, "新しい順", byTime)}
 <button type="button" id="copy">全部をコピー（Claude に渡す用）</button><span id="done" class="note"></span></nav>
+<section><h2>お問い合わせ <small>${contacts.length}件</small></h2><p class="note">設定画面のフォームから（新しい順）。メールの「通知」は contact@ へ、「受付」は送り主への自動返信が送れたか</p>
+${contacts.length ? contacts
+    .map((c) => `<div class="rep"><div class="rh"><b>#${String(c.id).padStart(4, "0")}</b><span class="cat">${esc(CONTACT_CATEGORIES[c.category] ?? c.category)}</span>${c.lang === "en" ? '<span class="en">EN</span>' : ""}<span>${esc(c.name || "（名前なし）")}</span><a href="mailto:${esc(c.email)}">${esc(c.email)}</a><span class="t">${when(c.at)}</span></div>
+<p class="rb">${esc(c.body)}</p><p class="note">メール: ${c.mailed.includes("notify") ? "通知○" : "通知×"} ・ ${c.mailed.includes("confirm") ? "受付○" : "受付×"}</p></div>`)
+    .join("") : '<p class="note">まだありません</p>'}</section>
 <section><h2>誤りの報告 <small>${reports.length}件</small></h2><p class="note">カード詳細の左上のボタンから送られたもの（新しい順）。画像はタップで大きく</p>
 ${reports.length ? reports
     .map((r) => `<div class="rep"><div class="rh"><b>${esc(r.card || "（カードの指定なし）")}</b><span class="cat">${esc(REPORT_CATEGORIES[r.category] ?? r.category)}</span>${r.lang === "en" ? '<span class="en">EN</span>' : ""}<span class="t">${when(r.at)}</span></div>

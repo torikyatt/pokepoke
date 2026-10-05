@@ -10,6 +10,9 @@ export interface D1Like {
 export interface Env {
   DB?: D1Like;
   REPORT_KEY?: string; // 集計ページを見るための合言葉（Pages の設定の「変数とシークレット」）
+  RESEND_API_KEY?: string; // お問い合わせのメールを送る Resend の API キー（シークレット）。無ければメールは送らず、記録だけ残す
+  MAIL_TO?: string; // お問い合わせの届け先（既定 contact@pokepokeindex.com）
+  MAIL_FROM?: string; // 送り主（既定 noreply@pokepokeindex.com）
 }
 export interface Ctx {
   request: Request;
@@ -20,7 +23,16 @@ export interface Ctx {
 //   n: 回数 / q: その言葉が入っていた検索文（最後のもの・例として）
 
 // last: 最後に探された日時（ISO・UTC）。日時順に並べるのに使う（あとから足した列なので、古い行には無い）
+// contacts: お問い合わせ（設定画面のフォームから）。mailed: 送れたメール（"notify,confirm" など。送れなければ空）
 // reports: カードの誤りの報告（カード詳細の左上のボタンから）。report_images: 添付された画像（JPEG・端末で縮めたもの）
+
+/** お問い合わせの種類（キー → 表示名）。画面（src/components/contact.tsx）と同じ並び */
+export const CONTACT_CATEGORIES: Record<string, string> = {
+  feedback: "ご意見・ご要望",
+  bug: "不具合",
+  data: "カード・データの誤り",
+  other: "その他",
+};
 
 /** 誤りの報告の種類（キー → 表示名）。画面（src/components/report-error.tsx）と同じ並び */
 export const REPORT_CATEGORIES: Record<string, string> = {
@@ -45,7 +57,8 @@ export function ensure(db: D1Like) {
     .then(() =>
       db.exec(
         "CREATE TABLE IF NOT EXISTS reports (id INTEGER PRIMARY KEY AUTOINCREMENT, at TEXT NOT NULL, card TEXT NOT NULL, category TEXT NOT NULL, body TEXT NOT NULL, lang TEXT NOT NULL, images INTEGER NOT NULL DEFAULT 0)\n" +
-          "CREATE TABLE IF NOT EXISTS report_images (report_id INTEGER NOT NULL, idx INTEGER NOT NULL, data BLOB NOT NULL, PRIMARY KEY (report_id, idx))",
+          "CREATE TABLE IF NOT EXISTS report_images (report_id INTEGER NOT NULL, idx INTEGER NOT NULL, data BLOB NOT NULL, PRIMARY KEY (report_id, idx))\n" +
+          "CREATE TABLE IF NOT EXISTS contacts (id INTEGER PRIMARY KEY AUTOINCREMENT, at TEXT NOT NULL, name TEXT NOT NULL, email TEXT NOT NULL, category TEXT NOT NULL, body TEXT NOT NULL, lang TEXT NOT NULL, mailed TEXT NOT NULL DEFAULT '')",
       ),
     )
     .then(async () => {

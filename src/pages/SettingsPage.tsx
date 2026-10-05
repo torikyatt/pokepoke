@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { ContactSheet } from "../components/contact.tsx";
 import { Header } from "../components/ui.tsx";
 import { useData } from "../context.tsx";
 import { isSingleFile } from "../data/load.ts";
@@ -44,6 +46,7 @@ export function SettingsPage({ embedded }: { embedded?: boolean }) {
   const { data } = useData();
   const { lang, setLang, imageLang, setImageLang } = useSettings();
   const t = useT();
+  const [contact, setContact] = useState(false);
   return (
     <div>
       {!embedded && <Header title={t("設定", "Settings")} />}
@@ -114,10 +117,19 @@ export function SettingsPage({ embedded }: { embedded?: boolean }) {
           </p>
           <p>
             {t(
-              "検索をよくするために、検索された言葉・当たった件数・結果のカードを開いたかどうかを集めています。誰が検索したか（IPアドレスなど）は記録しません。",
-              "To improve search, we collect the words searched, how many cards matched, and whether a result was opened. We do not record who searched (e.g. IP addresses).",
+              "検索をよくするために、検索された言葉・当たった件数・結果のカードを開いたかどうかを集めています。誰が検索したか（IPアドレスなど）は記録しません。お問い合わせでいただいたメールアドレスは、お返事のためだけに使います。",
+              "To improve search, we collect the words searched, how many cards matched, and whether a result was opened. We do not record who searched (e.g. IP addresses). Email addresses sent via the contact form are used only to reply.",
             )}
           </p>
+        </section>
+
+        <section className="neu space-y-2 rounded-3xl p-4">
+          <h2 className="font-extrabold">{t("お問い合わせ", "Contact")}</h2>
+          <p className="text-xs text-muted">{t("ご意見・ご要望・不具合などはこちらからお寄せください。", "Feedback, requests and bug reports are welcome.")}</p>
+          <button type="button" onClick={() => setContact(true)} className="neu-sm neu-press rounded-full px-4 py-2 text-xs font-extrabold text-accent-deep">
+            {t("お問い合わせフォームを開く", "Open the contact form")}
+          </button>
+          <ContactSheet open={contact} onClose={() => setContact(false)} />
         </section>
 
         <section className="neu space-y-3 rounded-3xl p-4 text-xs text-muted">
