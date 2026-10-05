@@ -272,7 +272,7 @@ Vitestで、各検索文の上位結果に期待カードが含まれること�
 
 ## 8. 公開について
 
-GitHub Pages（https://torikyatt.github.io/pokepoke/）で公開する。PocketDecks v5 の AGPL-3.0 に従ってリポジトリも公開する。Game8 由来の日本語はサイトに含めている（規約上のリスクは承知のうえ）。問題が出たら `data/game8/` を外し、`translate.ts` の仮訳に切り替える。
+Web で公開する。PocketDecks v5 の AGPL-3.0 に従い、ビルドのたびにソースコード一式（画像を除く）を `source.zip` としてサイトに置き、設定画面からダウンロードできるようにする。Game8 由来の日本語はサイトに含めている（規約上のリスクは承知のうえ）。問題が出たら `data/game8/` を外し、`translate.ts` の仮訳に切り替える。
 
 ### 公開の形
 

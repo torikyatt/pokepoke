@@ -133,11 +133,11 @@ export function SettingsPage({ embedded }: { embedded?: boolean }) {
               "In Japanese mode, text marked “仮訳” is a machine translation from English where no official Japanese text was found. Card images, names and text belong to their respective rights holders.",
             )}
           </p>
-          {/* カードデータが AGPL-3.0 なので、このサイトのソースコードも公開しておく */}
+          {/* カードデータが AGPL-3.0 なので、このサイトのソースコードも受け取れるようにする（ビルド時に作る source.zip） */}
           <p className="leading-relaxed">
-            {t("このサイトのソースコード: ", "Source code of this site: ")}
-            <a className="font-extrabold text-accent-deep underline" href="https://github.com/torikyatt/pokepoke" target="_blank" rel="noreferrer">
-              GitHub
+            {t("このサイトのソースコード（AGPL-3.0）: ", "Source code of this site (AGPL-3.0): ")}
+            <a className="font-extrabold text-accent-deep underline" href="./source.zip" download>
+              {t("ダウンロード（zip）", "Download (zip)")}
             </a>
           </p>
         </section>
