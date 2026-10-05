@@ -38,13 +38,13 @@ const csv = (s: string | null) => (s ? s.split(",").filter(Boolean) : []);
 /** 検索文（URLの ?q= と ?x= ?tag=）を条件にする */
 export function useQueryConds(q: string, excluded: Set<string>, tagParam = "") {
   const { engine } = useData();
-  const parsed = useMemo(() => {
-    const base = engine.parse(q);
+  const { parsed, unread } = useMemo(() => {
+    const { conds: base, unread } = engine.explain(q);
     if (tagParam && !base.some((c) => c.id === `tag:${tagParam}`)) base.unshift({ id: `tag:${tagParam}`, kind: "tag", tag: tagParam, label: engine.tagLabel(tagParam, "ja"), en: engine.tagLabel(tagParam, "en"), weight: 1 });
-    return base;
+    return { parsed: base, unread };
   }, [engine, q, tagParam]);
   const conds = useMemo(() => parsed.filter((c) => !excluded.has(c.id)), [parsed, [...excluded].join()]);
-  return { parsed, conds };
+  return { parsed, conds, unread };
 }
 
 /** カードの検索。wide は PC の左の列（右下の丸ボタンの代わりにツールバーで絞り込む） */
@@ -58,12 +58,12 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
   useEffect(() => setInput(q), [q]);
 
-  const { parsed, conds } = useQueryConds(q, excluded, tagParam);
+  const { parsed, conds, unread } = useQueryConds(q, excluded, tagParam);
   const favOnly = usePool().favOnly;
   const { hits, scored, total } = usePoolResults(conds);
   const lang = useLang();
   const t = useT();
-  useEffect(() => logSearch(q, total, "search", lang), [q, total, lang]);
+  useEffect(() => logSearch(q, total, "search", lang, unread), [q, total, lang, unread]);
   const labelOf = useMemo(() => new Map(parsed.map((c) => [c.id, lang === "en" ? c.en : c.label])), [parsed, lang]);
 
   const go = (patch: { q?: string; x?: string[] }, replace = true) =>

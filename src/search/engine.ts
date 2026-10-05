@@ -5,7 +5,7 @@
 // タイプ・種別・数値は「ハード条件」（満たさないカードは除外）、タグは「ソフト条件」（一致の重みで並べる）。
 import { normalize } from "./normalize.ts";
 import { looseRomaji, romajiKey } from "./romaji.ts";
-import { ACTIONS, buildSignatures, conceptsOf, GENERIC, KINDS, kindWordsOf, matchSignatures, SOURCES, subset, widen } from "./concepts.ts";
+import { ACTIONS, buildSignatures, conceptsOf, GENERIC, KINDS, kindWordsOf, leftover, matchSignatures, SOURCES, subset, widen } from "./concepts.ts";
 import type { AppCard, AppData, AppEffect, CardGroup, CardKind, EnergyType, LexEntry, LexTarget, Rule, Stage } from "../types.ts";
 import { GROUP_EN, GROUP_JA, KIND_EN, KIND_JA, STAGE_EN, STAGE_JA, TYPE_EN, TYPE_JA } from "../types.ts";
 
@@ -263,6 +263,16 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
 
   /** 検索文を条件に分解する */
   function parse(query: string): Cond[] {
+    return explain(query).conds;
+  }
+
+  /**
+   * 検索文を条件に分解し、読めなかった言葉も返す。
+   *   unread: 辞書・タグで読めず、全文検索のまま残った言葉と、意味が分からず捨てた短い言葉（「コインでエネ付与」の「えね付与」）。
+   *           ほかの言葉で当たって件数が出ていても、辞書に足すべき言い回しを見つけるために記録する
+   */
+  function explain(query: string): { conds: Cond[]; unread: string[] } {
+    const dropped: string[] = [];
     const conds: Cond[] = [];
     const add = (c: Cond) => {
       const same = conds.find((x) => x.id === c.id);
@@ -603,7 +613,11 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
           const c = conds[i];
           if (c.kind === "text") {
             const cs = conceptsOf(c.term);
-            if (cs.size ? [...cs].every((x) => used.has(x) || GENERIC.has(x)) : c.term.length <= 4) conds.splice(i, 1);
+            if (cs.size ? [...cs].every((x) => used.has(x) || GENERIC.has(x)) : c.term.length <= 4) {
+              conds.splice(i, 1);
+              // 意味の分からない短い言葉や、読めた言葉の残り（「相手をねむらせて」→「ねむらせ」）は、読めなかった言葉として残す
+              dropped.push(...leftover(c.term));
+            }
           } else if (c.kind === "cardKind" && c.word) {
             // 「ポケモンを入れ替える」「グッズを拾う」: 種類の言葉が「何を」として使われているなら、種類の絞り込みではない
             if ([...conceptsOf(c.word)].some((x) => KINDS.has(x) && asObj(x))) conds.splice(i, 1);
@@ -616,7 +630,9 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     // 広い親のタグ（多くのカードに付いている）は外す。子のタグだけで十分に絞れる。
     // 1つの言葉が親子の両方に当たるとき（「手札を減らす」→ 手札干渉・手札を山札にもどさせる）は、わざとなので残す
     const tags = conds.filter((c): c is Extract<Cond, { kind: "tag" }> => c.kind === "tag");
-    return conds.filter((c) => c.kind !== "tag" || !tags.some((d) => d.tag.startsWith(`${c.tag}.`) && d.word !== c.word));
+    const out = conds.filter((c) => c.kind !== "tag" || !tags.some((d) => d.tag.startsWith(`${c.tag}.`) && d.word !== c.word));
+    const unread = [...new Set([...out.flatMap((c) => (c.kind === "text" ? [c.term] : [])), ...dropped])];
+    return { conds: out, unread };
   }
 
   /** 条件でカードを絞り込み、並べる */
@@ -741,7 +757,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
 
   /** タグの表示名（言語に合わせて） */
   const tagLabel = (id: string, lang: "ja" | "en") => (lang === "en" ? tagEn : tagJa).get(id) ?? id;
-  return { parse, run, search: (q: string, limit?: number) => run(parse(q), limit), tagJa, tagLabel };
+  return { parse, explain, run, search: (q: string, limit?: number) => run(parse(q), limit), tagJa, tagLabel };
 }
 
 export type Engine = ReturnType<typeof createEngine>;

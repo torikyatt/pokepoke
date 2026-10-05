@@ -125,6 +125,23 @@ export const widen = (cs: Iterable<string>) => {
   if (out.has("basic")) out.add("pokemon");
   return out;
 };
+/**
+ * 言葉から、概念として読めた部分と前後の助詞・活用を除いた残り（2字以上のかたまり）。
+ * 「相手をねむらせて」→「ねむらせ」のように、読めなかった中身を記録するのに使う
+ */
+export function leftover(norm: string): string[] {
+  let s = norm;
+  for (const [w] of ENTRIES) s = s.split(w).join(" ");
+  const EDGE_HEAD = /^(から|まで|より|を|に|で|が|は|と|も|の|へ|や)+/;
+  const EDGE_TAIL = /(つてくる|つてくれる|つてく|つてき|てくる|てくれる|くる|くれる|つて|させて|させる|させ|られる|れる|して|する|したい|たい|ほしい|できる|ない|て|で|る|た|す|く|の|を|に|が|は|と)+$/;
+  // 言いたいことの中身にならない言葉（「〜したい」「〜できる」）
+  const NOISE = /^(したい|ほしい|できる|できた|くれる|ある|いる|なる|やつ|もの|こと|かんじ|感じ|系|ような|ように|みたい|とか|など|なに|何)$/;
+  return s
+    .split(" ")
+    .map((x) => x.replace(EDGE_HEAD, "").replace(EDGE_TAIL, ""))
+    .filter((x) => x.length >= 2 && !NOISE.test(x));
+}
+
 /** 種類の概念の言い方（正規化ずみ）。「何を」として使われているかを見分けるのに使う */
 export const kindWordsOf = (concept: string) => ENTRIES.filter(([, c]) => c === concept).map(([w]) => w);
 

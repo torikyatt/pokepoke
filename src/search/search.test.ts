@@ -57,6 +57,14 @@ describe("受け入れテスト", () => {
     expect(tagsOf("サポートを邪魔する")).toEqual(["disrupt.lock.supporter"]);
   });
 
+  it("読めなかった言葉を返す（ほかの言葉で当たっていても）", () => {
+    expect(engine.explain("コインでエネ付与").unread).toEqual(["えね付与"]);
+    expect(engine.explain("相手をねむらせて逃げられなくする").unread).toEqual(["ねむらせ"]);
+    expect(engine.explain("コインでエネ加速").unread).toEqual([]);
+    expect(engine.explain("トラッシュからグッズを拾ってくる").unread).toEqual([]);
+    expect(engine.explain("相手を毒にしたい").unread).toEqual([]);
+  });
+
   it("エネ加速できる炎のカード", () => {
     const all = ids("エネ加速できる炎のカード");
     // ブーバー・リザードンex（エネゾーンから自分へ）、ブースター（ベンチへ）、カキ（サポート）

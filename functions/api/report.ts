@@ -1,5 +1,6 @@
 // GET /api/report?key=合言葉[&days=30][&format=tsv] … 集めた検索ワードの集計（サイトの持ち主が見る用）
 //   合言葉は Cloudflare Pages の設定の REPORT_KEY。設定していなければ、このページは無い（404）
+//   ・辞書で読めなかった言葉    … 検索文の中で読めなかった部分（ほかの言葉で当たっていても）。辞書に足す候補
 //   ・0件だった言葉            … 表現辞書に足すべき言い回しの候補
 //   ・当たったのに開かれなかった … 結果がずれているかもしれない言葉
 //   ・よく探される言葉
@@ -11,6 +12,13 @@ interface Row {
   n: number;
   opened: number;
   hits: number | null;
+}
+
+interface Miss {
+  term: string;
+  lang: string;
+  n: number;
+  q: string | null;
 }
 
 const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -31,11 +39,20 @@ export async function onRequestGet({ request, env }: Ctx) {
     .bind(since, since)
     .all<Row>();
 
+  const { results: misses } = await env.DB.prepare(
+    `SELECT term, lang, SUM(n) AS n,
+       (SELECT q FROM misses t WHERE t.term = m.term AND t.lang = m.lang AND t.day >= ? ORDER BY t.day DESC LIMIT 1) AS q
+     FROM misses m WHERE day >= ? GROUP BY term, lang ORDER BY n DESC, term LIMIT 500`,
+  )
+    .bind(since, since)
+    .all<Miss>();
+
   const zero = rows.filter((r) => r.hits === 0);
   const unopened = rows.filter((r) => (r.hits ?? 0) > 0 && r.opened === 0);
   const top = rows.slice(0, 200);
   const tsv = (rs: Row[]) => rs.map((r) => [r.q, r.lang, r.n, r.hits ?? "", r.opened].join("\t")).join("\n");
-  const all = `# 検索ワード（直近${days}日・${since}〜）\n# 言葉\t言語\t回数\t件数\t開いた回数\n## 0件だった言葉\n${tsv(zero)}\n## 当たったのに開かれなかった言葉\n${tsv(unopened)}\n## よく探される言葉\n${tsv(top)}\n`;
+  const missTsv = misses.map((m) => [m.term, m.lang, m.n, m.q ?? ""].join("\t")).join("\n");
+  const all = `# 検索ワード（直近${days}日・${since}〜）\n## 辞書で読めなかった言葉（言葉\t言語\t回数\t例の検索文）\n${missTsv}\n# 以下は 言葉\t言語\t回数\t件数\t開いた回数\n## 0件だった言葉\n${tsv(zero)}\n## 当たったのに開かれなかった言葉\n${tsv(unopened)}\n## よく探される言葉\n${tsv(top)}\n`;
   if (url.searchParams.get("format") === "tsv") return new Response(all, { headers: { ...HEAD, "Content-Type": "text/plain; charset=utf-8" } });
 
   const total = rows.reduce((s, r) => s + r.n, 0);
@@ -54,6 +71,7 @@ section{background:#eef2f7;border-radius:18px;padding:14px 16px;margin:12px 0;bo
 table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:4px 6px;border-bottom:1px solid #d5dde7;text-align:right}
 th:first-child,td:first-child{text-align:left;word-break:break-all}th{color:#8794a7;font-size:11px}
 .en{font-size:10px;color:#22998b;font-weight:700}
+td.ex{text-align:left;color:#8794a7;font-size:12px;word-break:break-all}
 nav{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 nav a,button{font:inherit;font-size:12px;font-weight:700;color:#22998b;background:#eef2f7;border:0;border-radius:999px;padding:6px 12px;text-decoration:none;cursor:pointer;box-shadow:2px 2px 5px rgb(176 189 206/.6),-2px -2px 5px #fff}
 </style></head><body><main>
@@ -61,6 +79,10 @@ nav a,button{font:inherit;font-size:12px;font-weight:700;color:#22998b;backgroun
 <p class="note">直近${days}日（${since}〜）・${rows.length}語・のべ${total}回。「件数」は最後に探されたときの当たった数。</p>
 <nav>${[7, 30, 90].map((d) => `<a href="?key=${encodeURIComponent(env.REPORT_KEY!)}&days=${d}">${d}日</a>`).join("")}
 <button type="button" id="copy">全部をコピー（Claude に渡す用）</button><span id="done" class="note"></span></nav>
+<section><h2>辞書で読めなかった言葉 <small>${misses.length}語</small></h2><p class="note">検索文の中で読めなかった部分（ほかの言葉で当たって結果が出ていても）。辞書に足す言い回しの候補</p>
+${misses.length ? `<table><thead><tr><th>言葉</th><th>回数</th><th>例の検索文</th></tr></thead><tbody>${misses
+    .map((m) => `<tr><td>${esc(m.term)}${m.lang === "en" ? ' <span class="en">EN</span>' : ""}</td><td>${m.n}</td><td class="ex">${esc(m.q ?? "")}</td></tr>`)
+    .join("")}</tbody></table>` : '<p class="note">まだありません</p>'}</section>
 ${table("0件だった言葉", "表現辞書に足すべき言い回しの候補", zero)}
 ${table("当たったのに開かれなかった言葉", "結果がずれているかもしれない言葉", unopened)}
 ${table("よく探される言葉", "上位200語", top)}

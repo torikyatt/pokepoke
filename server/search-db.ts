@@ -16,12 +16,16 @@ export interface Ctx {
   env: Env;
 }
 
+// misses: 辞書で読めなかった言葉（「コインでエネ付与」の「えね付与」）。1行 = 1日・1つの言葉・言語
+//   n: 回数 / q: その言葉が入っていた検索文（最後のもの・例として）
+
 let ready: Promise<unknown> | undefined;
 /** 表がなければ作る（最初の1回だけ） */
 export function ensure(db: D1Like) {
   ready ??= db
     .exec(
-      "CREATE TABLE IF NOT EXISTS searches (day TEXT NOT NULL, q TEXT NOT NULL, lang TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, hits INTEGER, opened INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (day, q, lang))",
+      "CREATE TABLE IF NOT EXISTS searches (day TEXT NOT NULL, q TEXT NOT NULL, lang TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, hits INTEGER, opened INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (day, q, lang))\n" +
+        "CREATE TABLE IF NOT EXISTS misses (day TEXT NOT NULL, term TEXT NOT NULL, lang TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, q TEXT, PRIMARY KEY (day, term, lang))",
     )
     .catch((e) => {
       ready = undefined;

@@ -136,9 +136,9 @@ export function DeckBuilderPage({ id }: { id: string }) {
   const lang = useLang();
   useEffect(() => select(id), [id]);
 
-  const { parsed, conds } = useQueryConds(q, excluded);
+  const { parsed, conds, unread } = useQueryConds(q, excluded);
   const { hits, total } = usePoolResults(conds);
-  useEffect(() => logSearch(q, total, "deck", lang), [q, total, lang]);
+  useEffect(() => logSearch(q, total, "deck", lang, unread), [q, total, lang, unread]);
   const cards = useMemo(() => (deck ? deckCards(deck, byId) : []), [deck, byId]);
   const counts = useMemo(() => {
     const m = new Map<string, number>();
