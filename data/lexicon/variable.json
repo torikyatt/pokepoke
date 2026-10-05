@@ -1,7 +1,5 @@
 [{"expr":"火力が上がる","target":{"variable":true},"weight":1},
 {"expr":"火力が上がるワザ","target":{"variable":true},"weight":0.85},
-{"expr":"火力アップ","target":{"variable":true},"weight":1},
-{"expr":"火力アップワザ","target":{"variable":true},"weight":0.85},
 {"expr":"ダメージが増える","target":{"variable":true},"weight":1},
 {"expr":"ダメージが増えるワザ","target":{"variable":true},"weight":0.85},
 {"expr":"ダメージ追加","target":{"variable":true},"weight":1},

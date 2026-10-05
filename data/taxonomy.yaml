@@ -149,6 +149,31 @@
         - 'put all Item cards you find there'
         - 'random Pokémon Tool card in their deck'
         - 'Clemont.s Backpack from your deck'
+      children:
+        - id: draw.search_trainer.item
+          ja: 山札からグッズを持ってくる
+          en: Search Items from deck
+          match:
+            - 'random Item card from your deck'
+            - 'Put all Item cards you find there'
+            - 'put all Item cards you find there'
+        - id: draw.search_trainer.supporter
+          ja: 山札からサポートを持ってくる
+          en: Search Supporters from deck
+          match:
+            - 'random Supporter card from your deck'
+        - id: draw.search_trainer.tool
+          ja: 山札からどうぐを持ってくる
+          en: Search Pokémon Tools from deck
+          match:
+            - 'random Pokémon Tool card (from your deck|in their deck)'
+            - 'Put all Pokémon Tool cards you find there'
+            - 'Clemont.s Backpack from your deck'
+        - id: draw.search_trainer.stadium
+          ja: 山札からスタジアムを持ってくる
+          en: Search Stadiums from deck
+          match:
+            - 'random Stadium card from your deck'
     - id: draw.deck_look
       ja: 山札を見る・並べ替え
       en: Look at or reorder deck
@@ -166,6 +191,39 @@
         - 'chosen at random from your discard pile and put into your hand'
         - 'put it into your hand instead of the discard pile'
         - 'into your hand instead of the discard pile'
+      children:
+        - id: draw.recover.pokemon
+          ja: トラッシュからポケモンを回収
+          en: Recover Pokémon from discard
+          match:
+            - 'Pokémon from your discard pile into your hand'
+            - 'Pokémon is chosen at random from your discard pile'
+        - id: draw.recover.item
+          ja: トラッシュからグッズを回収
+          en: Recover Items from discard
+          match:
+            - 'Item card[^.]* from (your|your opponent.s) discard pile into your hand'
+        - id: draw.recover.supporter
+          ja: トラッシュからサポートを回収
+          en: Recover Supporters from discard
+          match:
+            - 'Supporter card from your discard pile into your hand'
+        - id: draw.recover.tool
+          ja: トラッシュからどうぐを回収
+          en: Recover Pokémon Tools from discard
+          match:
+            - 'Pokémon Tool cards? from your discard pile into your hand'
+            - 'If the Pokémon this card is attached to is Knocked Out[^.]* put it into your hand instead of the discard pile'
+        - id: draw.recover.self
+          ja: 使ったカードが手札にもどる
+          en: Returns to hand after use
+          match:
+            - 'put (it|this [^.]*) into your hand instead of the discard pile'
+    - id: draw.revive
+      ja: トラッシュからベンチに出す
+      en: Put from discard onto the Bench
+      match:
+        - 'Basic Pokémon from (your|your opponent.s) discard pile onto (your|their) Bench'
 
 - id: damage
   ja: ダメージ
@@ -244,6 +302,13 @@
       match:
         - 'used twice in a row'
         - 'chosen at random \d+ times'
+    - id: damage.random
+      ja: ランダムな相手にダメージ
+      en: Damage to random targets
+      on: [attack, ability]
+      match:
+        - '1 of your opponent.s (Benched )?Pokémon is chosen at random'
+        - '1 other Pokémon \(either yours or your opponent.s\) is chosen at random'
 
 - id: heal
   ja: 回復
@@ -512,6 +577,12 @@
       en: Stadium-related
       match:
         - 'Stadium'
+    - id: field.first_turn
+      ja: 最初の番に効果がある
+      en: First-turn effect
+      match:
+        - '(during|end of) your first turn'
+        - 'evolve during your first turn'
     - id: field.tool
       ja: どうぐ関連
       en: Pokémon Tool-related

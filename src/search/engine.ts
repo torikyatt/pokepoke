@@ -110,7 +110,11 @@ const typeOf = (w: string) => TYPE_WORD.find(([x]) => x === w)![1];
 const CMP = "(以上|以下|まで|以内|未満|超え|超)?";
 
 // 検索文から外す言葉（全文検索語に残しても意味がない）
-const FILLER = /^(によつて|よつて|について|の|が|を|に|で|と|は|も|や|へ|な|だ|から|まで|して|する|できる|される|いる|ある|いい|よい|系|やつ|もの|こと|かんじ|感じ|よう|ような|ように|ようにする|ほしい|欲しい|さがして|探して|おしえて|教えて|ください|かど|ぽけもん|ひつよう|必要|えねが|えねは|でいい|強い|つよい|一覧|全部)+|(の|が|を|に|で|と|は|も|や|へ|な|だ|する|できる|いい|系|やつ|もの|かど|かんじ|よう|ような|ように|ようにする|でいい)+$/g;
+const FILLER = /^(によつて|よつて|について|の|が|を|に|で|と|は|も|や|へ|な|だ|から|まで|して|する|できる|される|いる|ある|いい|よい|系|やつ|もの|こと|かんじ|感じ|よう|ような|ように|ようにする|ほしい|欲しい|さがして|探して|おしえて|教えて|ください|かど|ぽけもん|ひつよう|必要|えねが|えねは|でいい|強い|つよい|一覧|全部|使える|使う|つかえる|つかう|打てる|撃てる)+|(の|が|を|に|で|と|は|も|や|へ|な|だ|する|できる|いい|系|やつ|もの|かど|かんじ|よう|ような|ように|ようにする|でいい|使える|使う|つかえる|つかう|打てる|撃てる)+$/g;
+
+// 助詞（と・で・に・だ…）と同じ字で始まる言葉。全文検索語にするとき、頭を助詞として削らない
+const PROTECT = /^(とらつしゆ|とれなず|とくしゆ|どうぐ|でつき|にげる|だめじ|なかま|のこり|はんぶん|もどす|もどる|へんか)/;
+const FILLER_TAIL = /(の|が|を|に|で|と|は|も|や|へ|な|だ|する|できる|いい|系|やつ|もの|かど|かんじ|よう|ような|ように|ようにする|でいい|使える|使う|つかえる|つかう|打てる|撃てる)+$/g;
 
 export interface EngineOptions {
   /** 相性のいいカード（「〇〇と相性がいい」の検索に使う） */
@@ -229,6 +233,8 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       nameEn: enKey(c.nameEn),
     });
   }
+
+  const dfCache = new Map<string, number>(); // 全文検索語ごとの、その言葉を含むカードの数
 
   function condOf(t: LexTarget, weight: number, span: string): Cond {
     if ("tag" in t) return { id: `tag:${t.tag}`, kind: "tag", tag: t.tag, label: tagJa.get(t.tag) ?? t.tag, en: tagEn.get(t.tag) ?? t.tag, weight };
@@ -448,6 +454,18 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       add(costTotalCond(op, n));
     });
 
+    // 「ノーダメージ」は正規化すると「のだめじ」になり「〜のダメージ」と区別できないので、言葉の頭にあるときだけ読み替える
+    q = q.replace(/(^|\s)のだめじ/g, "$1だめじを受けない");
+
+    // 1.5 「トラッシュから ポケモン」「山札の グッズ」「サポート トラッシュから」のように、どこから・何を が
+    //     空白で分かれていても、つなげて1つの言葉として辞書に当てる（「トラッシュからポケモン」→ トラッシュからポケモンを回収）
+    {
+      const SRC = "(とらつしゆ|ぼち|墓地|捨て札|すてふだ|山札|やまふだ|でつき)";
+      const WHAT = "(たねぽけもん|ぽけもんのどうぐ|ぽけもん|たね|ぐつず|あいてむ|さぽと|どうぐ|すたじあむ|とれなず|えね)";
+      q = q.replace(new RegExp(`${SRC}(?:から|の)?\\s+${WHAT}`, "g"), (_, src: string, what: string) => `${src}から${what}`);
+      q = q.replace(new RegExp(`${WHAT}(?:を)?\\s+${SRC}(?:から|の)?`, "g"), (_, what: string, src: string) => `${src}から${what}`);
+    }
+
     // 2. カード名 → 表現辞書（最長一致）
     const segments = q.split(" ").filter(Boolean);
     const rest: string[] = [];
@@ -483,10 +501,22 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       }
     }
 
-    // 3. 残りは全文検索語に
+    // 3. 残りは全文検索語に。ただし「相手」「使える」「から」のように多くのカード（15%超）に出てくる言葉は、
+    //    ほかに条件があるなら使わない（それだけで数百枚に広がったり、関係ない絞り込みになったりする）
+    const common = (term: string) => {
+      let n = dfCache.get(term);
+      if (n === undefined) {
+        n = 0;
+        for (const h of haystack.values()) if (h.ja.includes(term)) n++;
+        dfCache.set(term, n);
+      }
+      return n > data.cards.length * 0.15;
+    };
+    const hasOther = conds.length > 0 || rest.length > 1;
     for (const r of rest) {
-      const term = r.replace(FILLER, "");
-      if (term.length >= 2) add(textCond(term));
+      // 「とらっしゅ」「でっき」「にげる」のように、助詞と同じ字で始まる言葉は、頭を削らない
+      const term = PROTECT.test(r) ? r.replace(FILLER_TAIL, "") : r.replace(FILLER, "");
+      if (term.length >= 2 && !(hasOther && common(term))) add(textCond(term));
     }
     // 「トラッシュの枚数で変わる」→「トラッシュの枚数」と「（条件で）変わる」のように、別々の言葉から親子のタグが出たら、
     // 広い親のタグ（多くのカードに付いている）は外す。子のタグだけで十分に絞れる。

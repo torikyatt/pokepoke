@@ -84,6 +84,25 @@ describe("受け入れテスト", () => {
 });
 
 describe("その他の検索", () => {
+  it("「トラッシュから ポケモン／グッズ」は空白・語順・「の」があっても、何をトラッシュから持ってくるかで探せる", () => {
+    const tagOf = (q: string) => engine.parse(q).map((c) => ("tag" in c ? c.tag : c.kind));
+    for (const q of ["トラッシュから ポケモン", "トラッシュからポケモン", "ポケモン トラッシュから"]) expect(tagOf(q)).toEqual(["draw.recover.pokemon"]);
+    for (const q of ["トラッシュから グッズ", "トラッシュの グッズ", "グッズ トラッシュから"]) expect(tagOf(q)).toEqual(["draw.recover.item"]);
+    expect(tagOf("山札から サポート")).toEqual(["draw.search_trainer.supporter"]);
+    expect(ids("トラッシュから ポケモン")).toContain("a2a-073"); // カンナギタウンの長老
+    expect(ids("トラッシュから グッズ")).toContain("b4a-025"); // ロケット団のヤドン
+  });
+  it("「トラッシュ」の頭の「と」を助詞として削らない", () => {
+    expect(engine.parse("トラッシュから").map((c) => ("term" in c ? c.term : ""))).toEqual(["とらつしゆから"]);
+  });
+  it("多くのカードに出てくる言葉（相手・使える）は、ほかに条件があれば絞り込みに使わない", () => {
+    expect(engine.parse("1エネで使える").map((c) => c.kind)).toEqual(["costTotal"]);
+    expect(engine.parse("相手の山札を削る").map((c) => c.kind)).toEqual(["tag"]);
+  });
+  it("「ノーダメージ」と「ワザのダメージを上げる」を取り違えない", () => {
+    expect(engine.parse("ノーダメージ").map((c) => ("tag" in c ? c.tag : c.kind))).toEqual(["defense.no_damage"]);
+    expect(engine.parse("ワザのダメージを上げる").map((c) => ("tag" in c ? c.tag : c.kind))).toContain("damage.boost");
+  });
   it("例の「トラッシュの枚数で変わる」は、トラッシュの枚数で変わるカードだけ（「変わる」で広いタグに広がらない）", () => {
     expect(ids("トラッシュの枚数で変わる").sort()).toEqual(["b2-069", "b2a-053", "b3b-060", "b4-055"]);
   });
