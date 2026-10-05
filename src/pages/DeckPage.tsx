@@ -256,8 +256,10 @@ export function useDeckExport(deck: Deck | undefined) {
               };
               img.onload = () => res();
               img.onerror = fallback;
-              // 日本語の大きい画像（Game8）は別オリジンで画像化できないので、日本語はサムネイルで書き出す
-              if (navigator.onLine && lang === "en") {
+              // 日本語の大きい画像は自前で置いたもの（同じサイト）なら使える。外部の画像しか無ければサムネイルで書き出す
+              const jaLocal = lang === "ja" && card.imageJa && !/^https?:/.test(card.imageJa) ? card.imageJa : undefined;
+              if (jaLocal) img.src = jaLocal;
+              else if (navigator.onLine && lang === "en") {
                 img.crossOrigin = "anonymous";
                 img.src = card.image;
               } else fallback();

@@ -9,6 +9,7 @@ import { basePrint, orderedPrints } from "./lib/prints.ts";
 import { requireInfoOf, selectorOf } from "./lib/targets.ts";
 import { loadTaxonomy } from "./lib/taxonomy.ts";
 import { createReader, hasKanji } from "./lib/reading.ts";
+import { jaImageFile } from "./lib/ja-images.ts";
 import type { Card, Effect } from "./lib/types.ts";
 import type { G8Card } from "./lib/game8.ts";
 import type { AppArchetype, AppAttack, AppCard, AppCombo, AppData, AppHelp, AppMeta, HelpTarget, AppEffect, AppPrint, AppSet, EnergyType, LexEntry, Selector, Slot } from "../src/types.ts";
@@ -69,11 +70,20 @@ function isBaby(c: Card): boolean {
   return c.stage === "basic" && c.retreat === 0 && c.attacks.length > 0 && c.attacks.every((a) => a.costTotal === 0);
 }
 
+// 日本語のカード画像: 自前で置いた画像（public/cards-ja/。scripts/images-ja.ts が Game8 から取ってくる）があればそれを使う。
+// まだ取っていないものは元の URL のまま（取得の途中でも表示は壊れない）
+const jaImageUrls = new Set<string>();
+function jaLocal(url: string): string {
+  jaImageUrls.add(url);
+  const f = jaImageFile(url);
+  return existsSync(join(ROOT, "public", f)) ? f : url;
+}
+
 function printOf(c: Card, p: Card["prints"][number]): AppPrint {
   const out: AppPrint = { id: p.id, set: p.set, setName: p.setName, rarity: p.rarity };
   const g = (g8Match[c.id]?.g8 ?? []).map((id) => g8ById.get(id)).find((x) => x && x.set === g8SetOf(p.set) && x.number === Number(p.id.split("-").pop()));
   if (!g) return out;
-  if (g.image) out.imageJa = g.image;
+  if (g.image) out.imageJa = jaLocal(g.image);
   const setJa = setJaOf(p.set);
   if (g.pack && g.pack !== "-") {
     const sub = g.pack.startsWith(setJa) ? g.pack.slice(setJa.length) : g.pack === setJa ? "" : g.pack;
@@ -169,7 +179,7 @@ const out: AppCard[] = cards.map((c) => {
     // 絵柄は「いちばん基本のもの」を先頭に（一覧・詳細・サムネイルはこれ）
     prints: orderedPrints(c.prints).map((p) => printOf(c, p)),
     image: basePrint(c.prints).image,
-    ...(jaImageOf(c) ? { imageJa: jaImageOf(c) } : {}),
+    ...(jaImageOf(c) ? { imageJa: jaLocal(jaImageOf(c)!) } : {}),
     ...(existsSync(join(ROOT, "public/thumbs-ja", `${c.id}.webp`)) ? { jaThumb: true as const } : {}),
     order: Math.min(...c.prints.map((p) => p.builderNr ?? 99999)),
     released: c.prints.map((p) => p.released ?? "9999").sort()[0],
@@ -367,5 +377,8 @@ const data: AppData = {
   ...(helps.length ? { helps } : {}),
 };
 mkdirSync(join(ROOT, "src/data"), { recursive: true });
+writeFileSync(join(ROOT, "src/data/ja-image-urls.json"), JSON.stringify([...jaImageUrls].sort()));
+const nLocal = [...jaImageUrls].filter((u) => existsSync(join(ROOT, "public", jaImageFile(u)))).length;
+console.log(`日本語のカード画像: ${jaImageUrls.size} 枚（自前 ${nLocal} 枚）`);
 writeFileSync(join(ROOT, "src/data/app-data.json"), JSON.stringify(data));
 console.log(`カード ${out.length} / タグ ${data.tags.length} / 表現辞書 ${lexicon.length} → src/data/app-data.json (${(JSON.stringify(data).length / 1e6).toFixed(1)} MB)`);
