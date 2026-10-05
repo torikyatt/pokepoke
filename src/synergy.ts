@@ -114,6 +114,10 @@ export function createSynergy(data: AppData) {
     if (sel.rules?.length && !sel.rules.includes(receiver.rule)) return false;
     // 山札からポケモンを持ってくる効果は、対象が絞られているもの（HP50以下のたね・メガシンカex・2進化・ロケット団など）だけ結ぶ
     if (s === "supply.search.pokemon" && !specificSearch(sel)) return false;
+    // 受け手がエネのタイプを指定している（メガルカリオex「extra [F] Energy」）なら、そのタイプを名指しで付ける加速だけ。
+    // どのタイプでもよい加速（レジギガス・エネコロロ「[C] Energy」など）では条件を満たせないので結ばない
+    // トラッシュのエネ（フレイムパッチ「[R] Energy」）・場にためたエネも同じ
+    if (receiver.requires[s]?.etypes?.length && !sel.etypes?.length) return false;
     if (sel.etypes?.length) {
       const want = receiver.requires[s]?.etypes;
       if (want?.length && !want.some((t) => sel.etypes!.includes(t))) return false;

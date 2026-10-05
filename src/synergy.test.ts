@@ -210,6 +210,9 @@ describe("タイプの名指しを守る", () => {
     const ids = partnersOf("b3-081").map((p) => p.card.id);
     expect(ids).not.toContain("pa-048");
     expect(ids).not.toContain("a2-119");
+    // どのタイプでもよい加速（レジギガス・エネコロロ）でも、闘エネ指定の条件は満たせない
+    expect(ids).not.toContain("b3-134");
+    expect(ids).not.toContain("a3-130");
   });
   it("マナフィの効果から結ぶ相手は水のポケモンだけ", () => {
     for (const p of partnersOf("pa-048")) {
