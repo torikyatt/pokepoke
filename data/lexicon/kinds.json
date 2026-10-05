@@ -187,7 +187,7 @@
 {"expr":"アクセサリ系","target":{"kind":"tool"},"weight":0.85},
 {"expr":"アクセサリ札","target":{"kind":"tool"},"weight":0.85},
 {"expr":"アクセサリだけ","target":{"kind":"tool"},"weight":0.85},
-{"expr":"装備カード","target":{"kind":"tool"},"weight":0.7},
+{"expr":"装備カード","target":{"kind":"tool"},"weight":1},
 {"expr":"装備カードカード","target":{"kind":"tool"},"weight":0.85},
 {"expr":"装備カード系","target":{"kind":"tool"},"weight":0.85},
 {"expr":"装備カード札","target":{"kind":"tool"},"weight":0.85},

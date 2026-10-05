@@ -5,6 +5,7 @@
 // タイプ・種別・数値は「ハード条件」（満たさないカードは除外）、タグは「ソフト条件」（一致の重みで並べる）。
 import { normalize } from "./normalize.ts";
 import { looseRomaji, romajiKey } from "./romaji.ts";
+import { ACTIONS, buildSignatures, conceptsOf, GENERIC, KINDS, matchSignatures, SOURCES, subset, widen } from "./concepts.ts";
 import type { AppCard, AppData, AppEffect, CardGroup, CardKind, EnergyType, LexEntry, LexTarget, Rule, Stage } from "../types.ts";
 import { GROUP_EN, GROUP_JA, KIND_EN, KIND_JA, STAGE_EN, STAGE_JA, TYPE_EN, TYPE_JA } from "../types.ts";
 
@@ -114,6 +115,7 @@ const FILLER = /^(によつて|よつて|について|の|が|を|に|で|と|�
 
 // 助詞（と・で・に・だ…）と同じ字で始まる言葉。全文検索語にするとき、頭を助詞として削らない
 const PROTECT = /^(とらつしゆ|とれなず|とくしゆ|どうぐ|でつき|にげる|だめじ|なかま|のこり|はんぶん|もどす|もどる|へんか)/;
+const FILLER_LEAD_ONE = new RegExp(`^(?:${FILLER.source.slice(2, FILLER.source.indexOf(")+|"))})`);
 const FILLER_TAIL = /(の|が|を|に|で|と|は|も|や|へ|な|だ|する|できる|いい|系|やつ|もの|かど|かんじ|よう|ような|ように|ようにする|でいい|使える|使う|つかえる|つかう|打てる|撃てる)+$/g;
 
 export interface EngineOptions {
@@ -235,6 +237,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
   }
 
   const dfCache = new Map<string, number>(); // 全文検索語ごとの、その言葉を含むカードの数
+  const signatures = buildSignatures(data.lexicon); // タグの言い回しを概念の組にしたもの（ゆるい読み取り用）
 
   function condOf(t: LexTarget, weight: number, span: string): Cond {
     if ("tag" in t) return { id: `tag:${t.tag}`, kind: "tag", tag: t.tag, label: tagJa.get(t.tag) ?? t.tag, en: tagEn.get(t.tag) ?? t.tag, weight };
@@ -467,6 +470,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     }
 
     // 2. カード名 → 表現辞書（最長一致）
+    const qAll = q.replace(/ /g, ""); // 4. のゆるい読み取りに使う（空白は関係なく、文全体で見る）
     const segments = q.split(" ").filter(Boolean);
     const rest: string[] = [];
     for (let seg of segments) {
@@ -515,9 +519,80 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     const hasOther = conds.length > 0 || rest.length > 1;
     for (const r of rest) {
       // 「とらっしゅ」「でっき」「にげる」のように、助詞と同じ字で始まる言葉は、頭を削らない
-      const term = PROTECT.test(r) ? r.replace(FILLER_TAIL, "") : r.replace(FILLER, "");
+      let term = r;
+      for (let m: RegExpMatchArray | null; !PROTECT.test(term) && (m = term.match(FILLER_LEAD_ONE)); ) term = term.slice(m[0].length);
+      term = term.replace(FILLER_TAIL, "");
       if (term.length >= 2 && !(hasOther && common(term))) add(textCond(term));
     }
+
+    // 4. ゆるい読み取り: 検索文と辞書の言い回しを概念の組にして比べ、語順・助詞・活用・挟まった言葉が違っても当てる
+    //    （「グッズをトラッシュから拾ってくる」→ トラッシュからグッズを回収）。取りすぎないよう、次のどれかのときだけ足す:
+    //      ・辞書で当たったタグの言い回しを全部ふくむ、もっと大きな言い回し（そのタグは置きかえる。
+    //        「逃げるためのエネを減らす」→「逃げる」「エネを減らす」より「にげるエネが減る」）
+    //      ・辞書で当たらず全文検索語が残った ・タグが1つも当たらなかった
+    //      ・種類の言葉（グッズ・サポート…）が「何を」として使われている（「どこから」か「何をする」が一緒にある）
+    {
+      const tagConds = () => conds.filter((c): c is Extract<Cond, { kind: "tag" }> => c.kind === "tag");
+      const hadText = conds.some((c) => c.kind === "text");
+      const kindWords = conds.filter((c) => c.kind === "cardKind" && c.word).map((c) => ({ c, cs: conceptsOf(c.word!) }));
+      const added: Set<string>[] = [];
+      for (const sig of matchSignatures(signatures, conceptsOf(qAll))) {
+        const have = tagConds();
+        if (have.some((t) => t.tag === sig.tag || t.tag.startsWith(`${sig.tag}.`))) continue; // 同じか、もっと詳しいタグがもう当たっている
+        // 辞書で当たったタグのうち、この言い回しの一部でしかないもの（言葉の概念がこの組より小さく、すっぽり入る）
+        const subsumed = have.filter((t) => {
+          const cs = t.word ? conceptsOf(t.word) : new Set<string>();
+          // 増えた概念が「相手」「手札」のような添え物だけなら、詳しくなったとは言えない
+          return cs.size > 0 && subset(cs, sig.concepts) && [...sig.concepts].some((x) => !cs.has(x) && !GENERIC.has(x));
+        });
+        const doing = [...sig.concepts].some((x) => ACTIONS.has(x) || SOURCES.has(x));
+        const asObject = doing && kindWords.some((k) => [...k.cs].some((x) => sig.concepts.has(x)));
+        // 同じ系統（energy.accel など）のタグが辞書でもう当たっているなら、言い回しをはっきり広げるときだけ
+        // すでに当たった親タグを、検索文にある別の言葉（「グッズ」など）で詳しくできるなら、親を子に置きかえる
+        const parent = have.find((t) => sig.tag.startsWith(`${t.tag}.`));
+        if (parent && !subsumed.includes(parent)) {
+          const ps = parent.word ? conceptsOf(parent.word) : new Set<string>();
+          if ([...sig.concepts].some((x) => !ps.has(x) && (!GENERIC.has(x) || KINDS.has(x)))) subsumed.push(parent);
+        }
+        const family = sig.tag.split(".").slice(0, 2).join(".");
+        const sibling = have.some((t) => !subsumed.includes(t) && t.tag.split(".").slice(0, 2).join(".") === family);
+        if (!subsumed.length && (sibling || (!asObject && !hadText && have.length))) continue;
+        for (const t of subsumed) conds.splice(conds.indexOf(t), 1);
+        add({ id: `tag:${sig.tag}`, kind: "tag", tag: sig.tag, label: tagJa.get(sig.tag) ?? sig.tag, en: tagEn.get(sig.tag) ?? sig.tag, weight: sig.weight * 0.9 });
+        added.push(sig.concepts);
+      }
+      // 辞書で当たったタグどうしでも、ほかのタグの言葉にすっぽり入る小さい言葉のタグは外す
+      // （「相手のバトルポケモンを入れ替えさせる」→「入れ替え」（自分の入れ替え）は「相手を入れ替えさせる」の一部）
+      for (const t of tagConds()) {
+        const cs = t.word ? conceptsOf(t.word) : new Set<string>();
+        if (!cs.size) continue;
+        const bigger = tagConds().some((o) => {
+          if (o === t || !o.word || o.word === t.word) return false;
+          const os = conceptsOf(o.word);
+          return subset(cs, os) && [...os].some((x) => !cs.has(x) && !GENERIC.has(x));
+        });
+        if (bigger) conds.splice(conds.indexOf(t), 1);
+      }
+      // タグが当たったら、それで説明がつく全文検索語・「何を」として使われた種類の言葉・意味のない言葉（したい・くれる）は外す
+      const tags = tagConds();
+      if (tags.length) {
+        const used = widen([...added.flatMap((cs) => [...cs]), ...tags.flatMap((t) => (t.word ? [...conceptsOf(t.word)] : []))]);
+        for (let i = conds.length - 1; i >= 0; i--) {
+          const c = conds[i];
+          if (c.kind === "text") {
+            const cs = conceptsOf(c.term);
+            if (cs.size ? [...cs].every((x) => used.has(x) || GENERIC.has(x)) : c.term.length <= 4) conds.splice(i, 1);
+          } else if (c.kind === "cardKind" && c.word) {
+            const cs = widen(conceptsOf(c.word));
+            const viaTag = [...cs].some((x) => used.has(x) && KINDS.has(x)) && [...used].some((x) => ACTIONS.has(x) || SOURCES.has(x));
+            // 「ポケモンを入れ替える」「グッズを拾う」: 種類の言葉のすぐ後が「を」なら、それは「何を」であって種類の絞り込みではない
+            const object = new RegExp(`${c.word}を`).test(qAll);
+            if (viaTag || object) conds.splice(i, 1);
+          }
+        }
+      }
+    }
+
     // 「トラッシュの枚数で変わる」→「トラッシュの枚数」と「（条件で）変わる」のように、別々の言葉から親子のタグが出たら、
     // 広い親のタグ（多くのカードに付いている）は外す。子のタグだけで十分に絞れる。
     // 1つの言葉が親子の両方に当たるとき（「手札を減らす」→ 手札干渉・手札を山札にもどさせる）は、わざとなので残す
@@ -565,7 +640,9 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       if (weak.length && !weak.some((w) => card.weakness === w.type)) continue;
       if (!nums.every((c) => cmp(c.kind === "hp" ? card.hp : card.retreat, c.op, c.n))) continue;
       if (slot === "ability" && !card.ability) continue;
-      if (slot === "attack" && !card.attacks.length) continue;
+      // 「ワザ」はポケモンのワザ。ただし「〜どうぐ」「〜グッズ」のようにトレーナーズを指定したときは、その効果を見る
+      const trainerAsked = kinds.length > 0 && kinds.every((k) => k.value !== "pokemon");
+      if (slot === "attack" && !card.attacks.length && !trainerAsked) continue;
       const okAttacks = atkConds.length ? card.attacks.filter((a) => atkConds.every((c) => attackOk(a, c))) : card.attacks;
       if (atkConds.length && !okAttacks.length) continue;
       // 実際の使われ方（デッキタイプ・相性・採用率）もハード条件。満たしたら点を足す

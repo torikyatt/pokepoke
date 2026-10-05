@@ -84,6 +84,28 @@ describe("受け入れテスト", () => {
 });
 
 describe("その他の検索", () => {
+  it("ゆるい言い回し: 語順・助詞・活用・挟まった言葉が違っても、いちばん詳しいタグ1つに読み取る", () => {
+    const tags = (q: string) => engine.parse(q).map((c) => ("tag" in c ? c.tag : c.kind));
+    expect(tags("グッズをトラッシュから拾ってくる")).toEqual(["draw.recover.item"]);
+    expect(tags("ポケモンをトラッシュから手札に戻せるカード")).toEqual(["draw.recover.pokemon"]);
+    expect(tags("トラッシュのサポートを再利用したい")).toEqual(["draw.recover.supporter"]);
+    expect(tags("デッキのグッズを持ってこれる")).toEqual(["draw.search_trainer.item"]);
+    expect(tags("山札からサポートを探してくれる")).toEqual(["draw.search_trainer.supporter"]);
+    expect(tags("逃げるためのエネを減らす")).toEqual(["energy.cost_down.retreat"]);
+    expect(tags("ダメージを受けなくなる")).toEqual(["defense.no_damage"]);
+    expect(tags("気絶させたらポイントが増える")).toEqual(["point.on_ko"]);
+    expect(tags("相手のバトルポケモンを入れ替えさせる")).toEqual(["disrupt.switch_opp"]);
+    expect(tags("ベンチのポケモンにエネルギーをつける")).toEqual(["energy.accel.other"]);
+  });
+  it("ゆるい読み取りでも、すでに当たったタグを勝手に狭めたり、種類の絞り込みを消したりしない", () => {
+    const tags = (q: string) => engine.parse(q).map((c) => ("tag" in c ? c.tag : c.kind));
+    expect(tags("エネ加速できる炎のカード")).toEqual(["energy.accel", "type"]);
+    expect(tags("トラッシュからポケモンを回収するサポート")).toEqual(["draw.recover.pokemon", "cardKind"]);
+    expect(tags("コインを投げて相手をマヒ")).toContain("status.paralysis");
+  });
+  it("「ワザ」の指定は、どうぐ・グッズを指定したときはその効果を見る", () => {
+    expect(ids("ワザの火力を上げるどうぐ").length).toBeGreaterThan(0);
+  });
   it("「トラッシュから ポケモン／グッズ」は空白・語順・「の」があっても、何をトラッシュから持ってくるかで探せる", () => {
     const tagOf = (q: string) => engine.parse(q).map((c) => ("tag" in c ? c.tag : c.kind));
     for (const q of ["トラッシュから ポケモン", "トラッシュからポケモン", "ポケモン トラッシュから"]) expect(tagOf(q)).toEqual(["draw.recover.pokemon"]);

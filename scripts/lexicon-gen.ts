@@ -64,7 +64,10 @@ const byCat = new Map<string, LexEntry[]>();
 for (const it of items) {
   const list = byCat.get(it.cat) ?? byCat.set(it.cat, []).get(it.cat)!;
   for (const [n, e] of it.entries) {
-    const shared = owners.get(n)!.length > 1;
+    // 語尾を足して作った表現が、ほかの項目で人が書いた表現（weight 1）とぶつかるなら、作った方は捨てる
+    // （「入れ替え」＋「させる」が、「相手を入れ替えさせる」の「入れ替えさせる」を横取りしないように）
+    if (e.weight < 1 && owners.get(n)!.some((o) => o !== it && o.entries.get(n)?.weight === 1)) continue;
+    const shared = owners.get(n)!.filter((o) => !(o.entries.get(n)!.weight < 1 && owners.get(n)!.some((x) => x !== o && x.entries.get(n)?.weight === 1))).length > 1;
     list.push({ expr: e.expr, target: targetOf(it.cat, it.key), weight: Math.round(e.weight * (shared ? 0.7 : 1) * 100) / 100 });
   }
 }
