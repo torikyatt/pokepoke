@@ -21,7 +21,8 @@
     "build-index": "tsx scripts/build-index.ts",
     "data": "npm run normalize && npm run names-ja && npm run match-ja && npm run translate && npm run tag && npm run lexicon-gen && npm run validate && npm run build-index",
     "fetch-meta": "tsx scripts/fetch-meta.ts",
-    "images-ja": "tsx scripts/images-ja.ts"
+    "images-ja": "tsx scripts/images-ja.ts",
+    "images-en": "tsx scripts/images-en.ts"
   },
   "keywords": [],
   "author": "",

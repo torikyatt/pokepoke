@@ -2,6 +2,7 @@
 import packed from "virtual:app-data";
 import thumbs from "virtual:thumbs";
 import type { AppCard, AppData, AppPrint } from "../types.ts";
+import { enImageFile, enImageRemote } from "../en-images.ts";
 
 export type ImageLang = "ja" | "en";
 
@@ -10,6 +11,9 @@ export async function loadData(): Promise<AppData> {
   const stream = new Blob([bin]).stream().pipeThrough(new DecompressionStream("gzip"));
   return JSON.parse(await new Response(stream).text());
 }
+
+/** 自前の英語画像（cards-en/）は、単一HTML版ではサイトに無いので元の URL を使う */
+const enWeb = (url: string) => (__SINGLE__ && url.startsWith("cards-en/") ? enImageRemote(url.slice(9, -5)) : url);
 
 /**
  * 一覧用のサムネイルの候補（上から順に試す）。
@@ -21,7 +25,7 @@ export function thumbUrls(card: AppCard, lang: ImageLang): string[] {
   if (thumbs) {
     const b = thumbs[card.id];
     const embedded = b ? `data:image/webp;base64,${b}` : undefined;
-    return (lang === "en" ? [card.image, embedded] : [embedded, card.image]).filter((u): u is string => !!u);
+    return (lang === "en" ? [enWeb(card.image), embedded] : [embedded, enWeb(card.image)]).filter((u): u is string => !!u);
   }
   const ja = card.jaThumb ? `thumbs-ja/${card.id}.webp` : undefined;
   const en = `thumbs/${card.id}.webp`;
@@ -29,16 +33,14 @@ export function thumbUrls(card: AppCard, lang: ImageLang): string[] {
 }
 export const thumbUrl = (card: AppCard, lang: ImageLang) => thumbUrls(card, lang)[0];
 
-/** 詳細画面の大きい画像（日本語は Game8、英語は PocketDecks） */
+/** 詳細画面の大きい画像（日本語は Game8、英語は PocketDecks の画像。どちらも自前で置いたもの） */
 export function largeUrl(card: AppCard, lang: ImageLang): string {
-  return lang === "ja" && card.imageJa ? card.imageJa : card.image;
+  return lang === "ja" && card.imageJa ? card.imageJa : enWeb(card.image);
 }
 
-/** 絵柄（収録）ごとの大きい画像。英語は収録番号から作る。日本語が無い絵柄は英語 */
+/** 絵柄（収録）ごとの大きい画像。英語は収録IDから決まる。日本語が無い絵柄は英語 */
 export function printImageUrl(p: AppPrint, lang: ImageLang): string {
-  const at = p.id.lastIndexOf("-");
-  const en = `https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/${p.id.slice(0, at)}/${p.id.slice(at + 1)}.webp`;
-  return lang === "ja" && p.imageJa ? p.imageJa : en;
+  return lang === "ja" && p.imageJa ? p.imageJa : enWeb(p.imageEn ?? enImageFile(p.id));
 }
 
 export const isSingleFile = __SINGLE__;

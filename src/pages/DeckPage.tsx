@@ -4,7 +4,7 @@ import { createPortal } from "react-dom";
 import { PoolFab, PoolGrid, PoolToolbar, QueryBox, usePoolResults } from "../components/pool.tsx";
 import { EnergyIcon, ENERGY_COLOR, energyLetter, Header, IconDeck, Pressable, Thumb } from "../components/ui.tsx";
 import { useData } from "../context.tsx";
-import { thumbUrl } from "../data/load.ts";
+import { largeUrl, thumbUrl } from "../data/load.ts";
 import { useSettings } from "../store.ts";
 import { canAdd, checkDeck, DECK_SIZE, decodeShare, download, encodeShare, fromFile, guessEnergy, MAX_ENERGY, MAX_SAME_NAME, toFile } from "../deck.ts";
 import { navigate } from "../router.ts";
@@ -273,12 +273,12 @@ export function useDeckExport(deck: Deck | undefined) {
               };
               img.onload = () => res();
               img.onerror = fallback;
-              // 日本語の大きい画像は自前で置いたもの（同じサイト）なら使える。外部の画像しか無ければサムネイルで書き出す
-              const jaLocal = lang === "ja" && card.imageJa && !/^https?:/.test(card.imageJa) ? card.imageJa : undefined;
-              if (jaLocal) img.src = jaLocal;
-              else if (navigator.onLine && lang === "en") {
+              // 大きい画像は自前で置いたもの（同じサイト）なら使える。外部の画像しか無ければサムネイルで書き出す
+              const big = largeUrl(card, lang);
+              if (!/^https?:/.test(big)) img.src = big;
+              else if (navigator.onLine) {
                 img.crossOrigin = "anonymous";
-                img.src = card.image;
+                img.src = big;
               } else fallback();
             }),
         ),

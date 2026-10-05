@@ -35,7 +35,8 @@ export interface AppPrint {
   rarity: string;
   pack?: string; // その弾の中のパック（例: ミュウツー）。空なら弾のどのパックからも出る
   how?: string; // パック以外の入手方法（プロモなど）
-  imageJa?: string; // この絵柄の日本語画像（Game8）。英語画像は収録番号から作れるので持たない
+  imageJa?: string; // この絵柄の日本語画像（Game8）
+  imageEn?: string; // 英語画像をまだ自前で置いていないときだけ、元の URL。置いてあれば cards-en/<id>.webp
 }
 
 export interface AppCard {
