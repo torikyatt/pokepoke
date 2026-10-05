@@ -212,6 +212,7 @@ export function DetailSheet() {
   const content = useRef<HTMLDivElement>(null);
   const scrollKey = `${pos}:${id}`;
   useScrollMemory(content, scrollKey);
+  useStepBlur(header, content);
   // 中身は開く・閉じる・高さの切り替えでは描き直さない（閉じる動きが引っかからないように）。
   // −／＋ やお気に入りは、それぞれがストアを見て更新される
   const body = useMemo(() => id && <CardDetail id={id} actions={card && <DeckButtons card={card} />} fav={card && <FavToggle card={card} />} />, [id, card]);
@@ -419,6 +420,18 @@ export function DetailSheet() {
 }
 
 /**
+ * 前・次のカードへ移ったとき、詳細を一瞬だけ横方向にぼかす（動かさずに「切り替わった」ことだけ伝える）。
+ * ぼかしは index.html の SVG フィルター（横だけにかかる）
+ */
+function useStepBlur(...els: React.RefObject<HTMLElement | null>[]) {
+  const step = useDetail((s) => s.step);
+  useEffect(() => {
+    if (!step) return;
+    for (const el of els) el.current?.animate([{ filter: "url(#hblur-8)" }, { filter: "url(#hblur-4)" }, { filter: "url(#hblur-2)" }, { filter: "none" }], { duration: 180 });
+  }, [step]);
+}
+
+/**
  * 閉じた詳細のしまい場所。タップか上へスワイプで、最後に見ていたカードを履歴ごと開き直す。
  * 表示はカード名だけ。後ろに重ねるのは、開き直したときの前・次の一覧で次に来るカード
  */
@@ -564,11 +577,13 @@ export function DetailPane() {
   const content = useRef<HTMLDivElement>(null);
   const scrollKey = `${pos}:${id}`;
   useScrollMemory(content, scrollKey);
+  const pane = useRef<HTMLDivElement>(null);
+  useStepBlur(pane);
   const t = useT();
   const lang = useLang();
   const last = byId.get(stack[pos]);
   return (
-    <div className="flex h-full min-h-0 flex-col">
+    <div ref={pane} className="flex h-full min-h-0 flex-col">
       {card ? (
         <div className="shrink-0 border-b border-line px-3 py-1.5">
           <DetailHeader card={card} />

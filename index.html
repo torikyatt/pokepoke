@@ -20,6 +20,12 @@
     <link rel="manifest" href="./manifest.webmanifest" />
   </head>
   <body>
+    <!-- 前・次のカードへ移ったときの、横方向だけのぼかし（src/components/detail.tsx の useStepBlur） -->
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true" focusable="false">
+      <filter id="hblur-8" x="-5%" width="110%"><feGaussianBlur stdDeviation="8 0" /></filter>
+      <filter id="hblur-4" x="-5%" width="110%"><feGaussianBlur stdDeviation="4 0" /></filter>
+      <filter id="hblur-2" x="-5%" width="110%"><feGaussianBlur stdDeviation="2 0" /></filter>
+    </svg>
     <div id="root"></div>
     <script>
       // 古いURL（GitHub Pages）から引っ越してきたとき、転送ページが #move=…&to=… で渡すデッキ・お気に入り・設定を受け取る。
