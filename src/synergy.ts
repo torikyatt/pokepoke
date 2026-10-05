@@ -172,7 +172,9 @@ export function createSynergy(data: AppData) {
       if (card.id === x.id || line.has(card.nameEn)) return;
       const p = out.get(card.id) ?? out.set(card.id, { card, score: 0, reasons: [], reasonsEn: [] }).get(card.id)!;
       p.score += score;
-      if (!p.reasons.includes(reason)) {
+      // 「定番コンボ（…）」は記事ごとに出さず、1つだけ
+      const dupCombo = reason.startsWith("定番コンボ") && p.reasons.some((r) => r.startsWith("定番コンボ"));
+      if (!dupCombo && !p.reasons.includes(reason)) {
         p.reasons.push(reason);
         p.reasonsEn.push(reasonEn);
       }

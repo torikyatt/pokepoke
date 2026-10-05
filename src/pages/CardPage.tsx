@@ -32,6 +32,24 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
   const lang = useLang();
   if (!card) return <p className="p-6 text-center text-sm font-bold text-muted">{t("カードが見つかりません", "Card not found")}</p>;
 
+  // 定番の組み合わせ: このカードと組む相手が同じものは、記事が違っても1つにまとめる（出典は全部並べる）。
+  // 説明は表示言語と同じ言語の記事のものを優先する
+  const comboGroups = (() => {
+    const m = new Map<string, { key: string; others: AppCard[]; items: typeof combos }>();
+    for (const cb of combos) {
+      const ids = [...new Set(cb.cards.filter((id) => id !== card.id && byId.has(id)))].sort();
+      if (!ids.length) continue;
+      const key = ids.join(",");
+      const g = m.get(key) ?? m.set(key, { key, others: ids.map((id) => byId.get(id)!), items: [] }).get(key)!;
+      if (!g.items.some((x) => x.source === cb.source && x.reason === cb.reason)) g.items.push(cb);
+    }
+    const native = (src: string) => /game8\.jp/.test(src) === (lang === "ja");
+    for (const g of m.values()) g.items.sort((x, y) => Number(native(y.source)) - Number(native(x.source)));
+    // 2枚以上の組で、どのカードもすでに1枚ずつの組として出ているものは出さない（同じ話の繰り返しになるため）
+    const single = new Set([...m.values()].filter((g) => g.others.length === 1).map((g) => g.others[0].id));
+    return [...m.values()].filter((g) => g.others.length === 1 || !g.others.every((c) => single.has(c.id)));
+  })();
+
   // 効果のタグを押すと、そのタグで検索する（スマホは詳細を閉じてから）
   const searchQ = (q: string) => (keepOpen ? navigate(searchPath({ q })) : closeDetail(() => navigate(searchPath({ q }))));
   const searchTag = (t: string) => (keepOpen ? navigate(searchPath({ tag: t })) : closeDetail(() => navigate(searchPath({ tag: t }))));
@@ -154,42 +172,41 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
           </ul>
         </section>
 
-        {combos.length > 0 && (
+        {comboGroups.length > 0 && (
           <section>
             <h2 className="mb-2 text-sm font-extrabold text-muted">{t("定番の組み合わせ（攻略記事より）", "Known combos (from strategy guides)")}</h2>
             <ul className="space-y-2">
-              {combos.map((cb, i) => (
-                <li key={i} className="neu flex gap-3 rounded-2xl p-3">
-                  <div className="flex shrink-0 gap-1">
-                    {cb.cards
-                      .filter((id) => id !== card.id)
-                      .map((id) => byId.get(id))
-                      .filter((c): c is AppCard => !!c)
-                      .map((c) => (
+              {comboGroups.map((g) => {
+                const main = g.items[0];
+                const decks = [...new Set(g.items.map((cb) => (lang === "en" ? cb.deckEn : cb.deck)))];
+                return (
+                  <li key={g.key} className="neu flex gap-3 rounded-2xl p-3">
+                    <div className="flex shrink-0 gap-1">
+                      {g.others.map((c) => (
                         <button key={c.id} type="button" onClick={() => openCard(c.id)} className="w-12 shrink-0" aria-label={cardName(c, lang)}>
                           <Thumb card={c} className="rounded-[4px]" />
                         </button>
                       ))}
-                  </div>
-                  <div className="min-w-0 flex-1 text-xs leading-relaxed">
-                    <div className="font-extrabold">
-                      {cb.cards
-                        .filter((id) => id !== card.id)
-                        .map((id) => byId.get(id))
-                        .filter((c): c is AppCard => !!c)
-                        .map((c) => cardName(c, lang))
-                        .join(lang === "en" ? " / " : "・")}
                     </div>
-                    <p className="mt-0.5 font-medium">{lang === "en" ? cb.reasonEn : cb.reason}</p>
-                    <div className="mt-1 flex flex-wrap items-center gap-x-2 text-[10px] font-bold text-muted">
-                      <span>{lang === "en" ? cb.deckEn : cb.deck}</span>
-                      <a href={cb.source} target="_blank" rel="noreferrer" className="underline">
-                        {/game8\.jp/.test(cb.source) ? t("出典", "Source (Japanese)") : t("出典（英語）", "Source")}
-                      </a>
+                    <div className="min-w-0 flex-1 text-xs leading-relaxed">
+                      <div className="font-extrabold">{g.others.map((c) => cardName(c, lang)).join(lang === "en" ? " / " : "・")}</div>
+                      <p className="mt-0.5 font-medium">{lang === "en" ? main.reasonEn : main.reason}</p>
+                      <div className="mt-1 flex flex-wrap items-center gap-x-2 text-[10px] font-bold text-muted">
+                        <span>
+                          {decks.slice(0, 2).join(" / ")}
+                          {decks.length > 2 && t(` ほか${decks.length - 2}`, ` +${decks.length - 2}`)}
+                        </span>
+                        {g.items.map((cb, i) => (
+                          <a key={cb.source + i} href={cb.source} target="_blank" rel="noreferrer" className="underline">
+                            {/game8\.jp/.test(cb.source) ? t("出典", "Source (Japanese)") : t("出典（英語）", "Source")}
+                            {g.items.length > 1 ? i + 1 : ""}
+                          </a>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                </li>
-              ))}
+                  </li>
+                );
+              })}
             </ul>
           </section>
         )}
