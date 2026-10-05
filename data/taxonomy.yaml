@@ -74,6 +74,7 @@
     - id: energy.discard_opp
       ja: 相手のエネを破壊
       en: Discard opponent's Energy
+      requires: [supply.opp.stuck]
       match:
         - '[Dd]iscard [^.]*Energy from (your opponent|both Active)'
         - 'Energy attached to all (Pokémon|of your opponent)'
@@ -336,22 +337,6 @@
     - { id: status.paralysis, ja: マヒ, en: Paralyzed, supplies: [supply.status.paralysis], match: ['Paralyzed'] }
     - { id: status.sleep, ja: ねむり, en: Asleep, supplies: [supply.status.sleep], match: ['Asleep'] }
     - { id: status.confusion, ja: こんらん, en: Confused, supplies: [supply.status.confusion], match: ['Confused'] }
-    - id: status.no_attack
-      ja: ワザ封じ
-      en: Attack lock
-      match:
-        - 'Defending Pokémon can.t attack'
-        - 'it can.t attack during your opponent'
-        - 'can.t use the chosen attack'
-        - 'that attack doesn.t happen'
-    - id: status.no_retreat
-      ja: にげる封じ
-      en: Retreat lock
-      match:
-        - 'can.t retreat'
-        - 'Retreat Cost is \d+ (\[C\] )?more'
-      exclude:
-        - 'This card can.t retreat'
 
 - id: disrupt
   ja: 妨害
@@ -392,6 +377,7 @@
     - id: disrupt.switch_opp
       ja: 相手を入れ替えさせる
       en: Switch opponent's Active
+      requires: [supply.opp.stuck]
       match:
         - '[Ss]witch (in|out) [^.]*opponent.s'
         - 'switch in 1 of your opponent.s'
@@ -399,6 +385,25 @@
       ja: 封じ
       en: Lock
       children:
+        # ワザ封じ・にげる封じは状態異常ではない（状態異常の相手に強いカードとは結ばない）
+        - id: disrupt.lock.attack
+          ja: ワザ封じ
+          en: Attack lock
+          match:
+            - 'Defending Pokémon can.t attack'
+            - 'it can.t attack during your opponent'
+            - 'can.t use the chosen attack'
+            - 'that attack doesn.t happen'
+        - id: disrupt.lock.retreat
+          ja: にげる封じ
+          en: Retreat lock
+          # 相手をバトル場に足止めできる → エネ破壊（攻撃すらできなくなる）や、相手を引っ張り出す・入れ替えるカードと噛み合う
+          supplies: [supply.opp.stuck]
+          match:
+            - 'can.t retreat'
+            - 'Retreat Cost is \d+ (\[C\] )?more'
+          exclude:
+            - 'This card can.t retreat'
         - id: disrupt.lock.supporter
           ja: サポート封じ
           en: Supporter lock

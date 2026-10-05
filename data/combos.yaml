@@ -6,6 +6,7 @@
 #   名前@セット      … そのセットのもの（例: ルカリオ@a2）
 #   カードID        … そのカード（例: a2-092）
 # 1つの組み合わせに3枚以上書くと、その中の全部の組を結ぶ。
+# hub: を書くと、そのカードと残りのカードをそれぞれ結ぶだけにする（残りどうしは結ばない。例: ルチアとリーシャン、ルチアとコイル）。
 
 - deck: メガルカリオexデッキ
   deckEn: Mega Lucario ex
@@ -774,6 +775,7 @@
       reason: ホウオウexが炎・水・雷のエネをベンチに配り、それを全部使うルギアexの大技をそろえる
       reasonEn: "Ho-Oh ex hands out Fire, Water and Lightning Energy—exactly the mix Lugia ex's big attack needs"
     - cards: [ブビィ, ピチュー, ルギアex]
+      hub: ルギアex
       reason: ベビィのワザで炎や雷のエネをベンチのルギアexに少しずつ付けていく
       reasonEn: Magby and Pichu each toss Fire or Lightning Energy onto the Benched Lugia ex
     - cards: [ヒカリ, ルギアex]
@@ -802,6 +804,7 @@
   source: https://game8.jp/pokemon-tcg-pocket/700622
   combos:
     - cards: [ピチュー, タマンタ, ミニリュウ]
+      hub: ミニリュウ
       reason: ベビィのワザでベンチのミニリュウに雷と水のエネを付け、カイリューexの準備を進める
       reasonEn: Pichu and Mantyke toss Lightning and Water Energy onto the Benched Dratini to prepare Dragonite ex
     - cards: [コトネ, カイリューex]
@@ -895,6 +898,7 @@
       reason: ジヘッドを飛ばしてモノズから直接サザンドラへ進化し、特性のエネ加速を早く始める
       reasonEn: Rare Candy evolves Deino straight into Hydreigon to start its Energy Ability early
     - cards: [ピィ, ハルカ, サザンドラ@b1]
+      hub: サザンドラ@b1
       reason: 山札からポケモンを手札に加えて、2進化ラインのそろわない事故を減らす
       reasonEn: "Cleffa and May pull Pokémon from the deck, reducing bricks with the Stage 2 line"
     - cards: [サザンドラ@b1, リーリエ]
@@ -1398,6 +1402,7 @@
       reason: ウォーターボードでにげる3のシャワーズexを軽くし、特性を使った後に下げやすくする
       reasonEn: "Inflatable Boat lightens Vaporeon ex's Retreat Cost of 3, making it easier to rotate after using its Ability"
     - cards: [a2a-072, a4a-020, b3-037]
+      hub: a2a-072
       reason: カイで水エネのついたスイクンexとシャワーズexをまとめて40ずつ回復できる
       reasonEn: "Irida heals 40 from every Pokémon with Water Energy, covering both Suicune ex and Vaporeon ex at once"
     - cards: [pa-019, a2-150]
@@ -1485,6 +1490,7 @@
   source: https://game8.co/games/Pokemon-TCG-Pocket/archives/602768
   combos:
     - cards: [a4-066, a4a-023, b3a-055]
+      hub: b3a-055
       reason: ピチューとタマンタが0エネでベンチのたねに雷と水エネを送り、5エネのタケルライコを準備できる
       reasonEn: "Pichu and Mantyke send Lightning and Water Energy to a Benched Basic, building toward Raging Bolt's 5-Energy attack"
     - cards: [b3a-072, b3a-055]
@@ -1595,6 +1601,7 @@
       reason: バトル場のイーブイはすぐ進化でき、エーフィのワザでねむりにしてダークライの特性を早く起動
       reasonEn: "Active Eevee can evolve immediately into Espeon, whose Hypnoblast causes Sleep and triggers Darkrai's Ability"
     - cards: [b2-153, b3a-020, b1-102]
+      hub: b2-153
       reason: トレーニングエリアで1進化のエーフィとメガチルタリスexのワザがどちらも10上がる
       reasonEn: "Training Area boosts both Stage 1 attackers, Espeon and Mega Altaria ex, by 10 damage"
     - cards: [b1-196, b2b-040]
@@ -1609,6 +1616,7 @@
       reason: ミクリでHP30のヒンバスを山札のミロカロスexへ進化させ、手札になくても準備できる
       reasonEn: "Wallace evolves 30-HP Feebas into Milotic ex straight from the deck, no card in hand needed"
     - cards: [b1-226, a4a-021, a4a-059]
+      hub: b1-226
       reason: ルチアでHP50以下のヒンバスやププリンを手札に集め、序盤の形を素早く作れる
       reasonEn: "Lisia fetches low-HP Basics like Feebas and Igglybuff, quickly assembling the opening setup"
     - cards: [b3b-015, b2b-040]
@@ -2102,6 +2110,7 @@
   source: https://game8.co/games/Pokemon-TCG-Pocket/archives/571722
   combos:
     - cards: [b1-226, b1-109, b1a-024]
+      hub: b1-226
       reason: HP50以下のリーシャンやコイルはルチアで山札から引け、序盤のたね展開を一気に進められる
       reasonEn: "Chingling and Magnemite have 50 HP or less, so Lisia pulls them from the deck to set up quickly"
     - cards: [b1a-068, a1-098]
@@ -2250,6 +2259,7 @@
       reason: ルチアでチルットやリーシャン、ジラーチを引いてベンチを埋め、メガハーモニーの火力を上げる
       reasonEn: "Lisia grabs low-HP Basics like Swablu, Chingling and Jirachi, filling the Bench to power up Mega Harmony"
     - cards: [b2-153, b1-102, b2-072]
+      hub: b2-153
       reason: 1進化のメガチルタリスexとパンプジンは、トレーニングエリアでどちらもワザが+10される
       reasonEn: "Mega Altaria ex and Gourgeist are both Stage 1, so Training Area adds 10 to each of their attacks"
 

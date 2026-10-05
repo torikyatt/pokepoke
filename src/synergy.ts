@@ -29,10 +29,11 @@ const SUPPLY: Record<string, { give: string; need: string; giveEn: string; needE
   "supply.energy.fix": { give: "エネ事故を減らせる", need: "複数タイプのエネが要る", giveEn: "Reduces Energy misses", needEn: "Needs multiple Energy types" },
   "supply.energy.bank": { give: "場にエネをためられる", need: "場のエネを集められる", giveEn: "Stores Energy on the field", needEn: "Gathers Energy from the field" },
   "supply.coin.control": { give: "コインをやり直せる", need: "コインを投げる", giveEn: "Can redo coin flips", needEn: "Flips coins" },
+  "supply.opp.stuck": { give: "相手をバトル場から逃げられなくする", need: "逃げられない相手に効く", giveEn: "Stops the opponent from retreating", needEn: "Works on an opponent that can't retreat" },
   "supply.search.pokemon": { give: "山札から手札に持ってこられる", need: "山札から持ってこられる", giveEn: "Fetches it from the deck", needEn: "Can be fetched from the deck" },
 };
 // 結びつきの強さ（既定は1）。場にためたエネと集めるカードは、組み合わせ前提の強いシナジー
-const WEIGHT: Record<string, number> = { "supply.energy.bank": 2, "supply.energy.fix": 1.5, "supply.trash.energy": 1.5, "supply.search.pokemon": 1.5 };
+const WEIGHT: Record<string, number> = { "supply.opp.stuck": 1.5, "supply.energy.bank": 2, "supply.energy.fix": 1.5, "supply.trash.energy": 1.5, "supply.search.pokemon": 1.5 };
 // 毎ターン使える供給（特性・スタジアム・どうぐ）は、1回きりのワザより少し重く見る
 const weightOf = (s: string, sels: Selector[], receiver?: AppCard) =>
   (WEIGHT[s] ?? 1) +
@@ -45,6 +46,9 @@ const weightOf = (s: string, sels: Selector[], receiver?: AppCard) =>
  * （無色エネや、タイプの分からないエネでは代われない）
  */
 export const canPay = (supplied: readonly EnergyType[] | undefined, need: EnergyType) => need === "colorless" || !!supplied?.includes(need);
+
+/** 足止め（にげる封じ）とエネ破壊・入れ替えの組は、どのデッキにも入るトレーナーズ（ナツメ・アカギなど）を先に、ポケモンは控えめに */
+const stuckFactor = (s: string, partner: AppCard) => (s === "supply.opp.stuck" && partner.kind === "pokemon" ? 0.55 : 1);
 
 /** 山札からポケモンを持ってくる効果のうち、対象が絞られているもの（モンスターボールのように何でも持ってくるものは結ばない） */
 const specificSearch = (sel: Selector) =>
@@ -94,6 +98,9 @@ export function createSynergy(data: AppData) {
   const named = (c: AppCard) => namedCache.get(c.id) ?? namedCache.set(c.id, namedTypes(c)).get(c.id)!;
   const ownTypes = (c: AppCard): EnergyType[] | undefined =>
     c.kind !== "pokemon" || !c.type || c.type === "colorless" ? undefined : [c.type, ...costTypes(c)];
+  // 「場に〇〇がいるときにしか使えない」カード（スイレン・ネズなど）は、名指しの相手以外とは効果から結ばない
+  const onlyWith = (a: AppCard, b: AppCard) =>
+    a.tags.includes("cond.bench.specific") && a.tags.includes("drawback.condition") && a.refs.length > 0 && !a.refs.some((id) => id === b.id || byId.get(id)?.nameEn === b.nameEn);
   // 場にエネを出すカードが出すエネのタイプ
   const suppliedTypes = (c: AppCard) => [...new Set(["supply.energy.many", "supply.energy.bank"].flatMap((k) => (c.supplies[k] ?? []).flatMap((x) => x.etypes ?? [])))];
   const typeFits = (x: AppCard, y: AppCard) => {
@@ -225,7 +232,7 @@ export function createSynergy(data: AppData) {
     };
     // 効果から読んだ結びつき（供給と要求・場にためたエネ・エネ加速など）は、タイプが食い違えば結ばない
     const pushRule = (card: AppCard, score: number, reason: string, reasonEn: string) => {
-      if (typeFits(x, card)) push(card, score, reason, reasonEn);
+      if (typeFits(x, card) && !onlyWith(x, card) && !onlyWith(card, x)) push(card, score, reason, reasonEn);
     };
     // 攻略記事で紹介されている組み合わせ（いちばん強く結ぶ）
     // 同じ組を複数の記事が紹介していても、2つ目からは少しだけ足す（記事の数だけで順位が決まらないように）
@@ -268,14 +275,14 @@ export function createSynergy(data: AppData) {
     for (const [s, sels] of Object.entries(x.supplies)) {
       for (const y of requirers.get(s) ?? []) {
         const ok = sels.filter((sel) => reaches(sel, x, y, s));
-        if (ok.length) pushRule(y, weightOf(s, ok, y), SUPPLY[s]?.need ?? s, SUPPLY[s]?.needEn ?? s);
+        if (ok.length) pushRule(y, weightOf(s, ok, y) * stuckFactor(s, y), SUPPLY[s]?.need ?? s, SUPPLY[s]?.needEn ?? s);
       }
     }
     // 要求 ← 供給（相手が x を助ける）
     for (const r of Object.keys(x.requires)) {
       for (const y of suppliers.get(r) ?? []) {
         const ok = y.supplies[r].filter((sel) => reaches(sel, y, x, r));
-        if (ok.length) pushRule(y, weightOf(r, ok, x), SUPPLY[r]?.give ?? r, SUPPLY[r]?.giveEn ?? r);
+        if (ok.length) pushRule(y, weightOf(r, ok, x) * stuckFactor(r, y), SUPPLY[r]?.give ?? r, SUPPLY[r]?.giveEn ?? r);
       }
     }
 

@@ -265,11 +265,16 @@ if (existsSync(combosFile)) {
     // 同じ名前が複数あれば、大会でいちばん使われているもの
     return cs.sort((a, b) => (usage[b.id] ?? 0) - (usage[a.id] ?? 0) || a.order - b.order)[0].id;
   };
-  const doc = loadYaml(readFileSync(combosFile, "utf8")) as { deck: string; deckEn: string; source: string; combos: { cards: string[]; reason: string; reasonEn: string }[] }[];
+  const doc = loadYaml(readFileSync(combosFile, "utf8")) as { deck: string; deckEn: string; source: string; combos: { cards: string[]; hub?: string; reason: string; reasonEn: string }[] }[];
   for (const d of doc)
     for (const c of d.combos) {
       if (!c.reasonEn || !d.deckEn) throw new Error(`combos.yaml: 英語の説明が無い: ${d.deck} ${c.cards}`);
-      combos.push({ cards: c.cards.map(resolve), reason: c.reason, reasonEn: c.reasonEn, deck: d.deck, deckEn: d.deckEn, source: d.source });
+      const base = { reason: c.reason, reasonEn: c.reasonEn, deck: d.deck, deckEn: d.deckEn, source: d.source };
+      // hub: 中心のカードが、残りのカードとそれぞれ組む（残りどうしは関係ない。例: ルチアがリーシャンもコイルも持ってこられる）
+      if (c.hub) {
+        if (!c.cards.includes(c.hub)) throw new Error(`combos.yaml: hub が cards に無い: ${c.hub}`);
+        for (const other of c.cards.filter((x) => x !== c.hub)) combos.push({ cards: [resolve(c.hub), resolve(other)], ...base });
+      } else combos.push({ cards: c.cards.map(resolve), ...base });
     }
   console.log(`攻略記事の組み合わせ: ${combos.length} 件`);
 }

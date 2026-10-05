@@ -3,10 +3,12 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { createSynergy } from "./synergy.ts";
+import { createEngine } from "./search/engine.ts";
 import type { AppData } from "./types.ts";
 
 const data: AppData = JSON.parse(readFileSync(join(import.meta.dirname, "data/app-data.json"), "utf8"));
 const syn = createSynergy(data);
+const engine = createEngine(data, { partners: syn.partners });
 const byId = new Map(data.cards.map((c) => [c.id, c]));
 const partnersOf = (id: string) => syn.partners(byId.get(id)!, 2000);
 const reasonOf = (id: string, re: RegExp) => partnersOf(id).filter((p) => p.reasons.some((r) => re.test(r)));
@@ -238,5 +240,33 @@ describe("エネの基本ルール", () => {
     expect(canPay(undefined, "fighting")).toBe(false);
     expect(canPay(["fighting"], "fighting")).toBe(true);
     expect(canPay(["water"], "fighting")).toBe(false);
+  });
+});
+
+describe("にげる封じは状態異常ではない", () => {
+  const byName = (n: string) => data.cards.filter((c) => c.nameJa === n);
+  const kingdra = byName("キングドラex")[0];
+  it("キングドラexに、状態異常の相手に強いアブソル・ロケット団のブーバーを出さない", () => {
+    const names = syn.partners(kingdra, 200).map((p) => p.card.nameJa);
+    expect(names).not.toContain("アブソル");
+    expect(names).not.toContain("ロケット団のブーバー");
+  });
+  it("足止めできるので、相手を引っ張り出す・入れ替えるナツメ・アカギと結ぶ", () => {
+    const top = syn.partners(kingdra, 12).map((p) => p.card.nameJa);
+    expect(top).toContain("ナツメ");
+    expect(top).toContain("アカギ");
+  });
+  it("「状態異常」で探しても、にげる封じのカードは出ない", () => {
+    expect(engine.search("状態異常", 200).map((h) => h.card.nameJa)).not.toContain("キングドラex");
+  });
+});
+
+describe("定番の組み合わせの中心（hub）", () => {
+  it("ルチア＋リーシャン＋コイルは、ルチアとそれぞれを結ぶだけ（リーシャンとコイルは結ばない）", () => {
+    const by = new Map(data.cards.map((c) => [c.id, c.nameJa]));
+    const chingling = data.cards.find((c) => c.nameJa === "リーシャン")!;
+    const others = syn.combos(chingling).flatMap((cb) => cb.cards.filter((id) => id !== chingling.id).map((id) => by.get(id)));
+    expect(others).toContain("ルチア");
+    expect(others).not.toContain("コイル");
   });
 });
