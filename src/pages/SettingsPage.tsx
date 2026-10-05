@@ -112,6 +112,12 @@ export function SettingsPage({ embedded }: { embedded?: boolean }) {
               "An unofficial personal tool. Pokémon and Pokémon TCG Pocket are trademarks of Nintendo, Creatures, GAME FREAK and The Pokémon Company.",
             )}
           </p>
+          <p>
+            {t(
+              "検索をよくするために、検索された言葉・当たった件数・結果のカードを開いたかどうかを集めています。誰が検索したか（IPアドレスなど）は記録しません。",
+              "To improve search, we collect the words searched, how many cards matched, and whether a result was opened. We do not record who searched (e.g. IP addresses).",
+            )}
+          </p>
         </section>
 
         <section className="neu space-y-3 rounded-3xl p-4 text-xs text-muted">

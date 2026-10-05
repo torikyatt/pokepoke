@@ -9,6 +9,7 @@ import { useSettings } from "../store.ts";
 import { canAdd, checkDeck, DECK_SIZE, decodeShare, download, encodeShare, fromFile, guessEnergy, MAX_ENERGY, MAX_SAME_NAME, toFile } from "../deck.ts";
 import { navigate } from "../router.ts";
 import { openCard } from "../detail.ts";
+import { logOpen, logSearch } from "../search-log.ts";
 import { useNav } from "../nav.ts";
 import { useDecks, useToast, type Deck } from "../store.ts";
 import type { AppCard, EnergyType } from "../types.ts";
@@ -136,7 +137,8 @@ export function DeckBuilderPage({ id }: { id: string }) {
   useEffect(() => select(id), [id]);
 
   const { parsed, conds } = useQueryConds(q, excluded);
-  const { hits } = usePoolResults(conds);
+  const { hits, total } = usePoolResults(conds);
+  useEffect(() => logSearch(q, total, "deck", lang), [q, total, lang]);
   const cards = useMemo(() => (deck ? deckCards(deck, byId) : []), [deck, byId]);
   const counts = useMemo(() => {
     const m = new Map<string, number>();
@@ -227,7 +229,10 @@ export function DeckBuilderPage({ id }: { id: string }) {
           hits={hits}
           counts={counts}
           maxed={(c) => full || (nameCounts.get(c.nameEn) ?? 0) >= MAX_SAME_NAME}
-          onTap={(c) => openCard(c.id, hits.map((h) => h.card.id))}
+          onTap={(c) => {
+            logOpen(q, lang);
+            openCard(c.id, hits.map((h) => h.card.id));
+          }}
         />
       </div>
 

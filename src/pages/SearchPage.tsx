@@ -3,6 +3,7 @@ import { PoolFab, PoolGrid, PoolToolbar, QueryBox, usePoolResults } from "../com
 import { Chip, Logo } from "../components/ui.tsx";
 import { useData } from "../context.tsx";
 import { openCard } from "../detail.ts";
+import { logOpen, logSearch } from "../search-log.ts";
 import { usePool } from "../pool.ts";
 import { navigate, searchPath, useRoute } from "../router.ts";
 import { dateStr, useLang, useT } from "../i18n.ts";
@@ -62,6 +63,7 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
   const { hits, scored, total } = usePoolResults(conds);
   const lang = useLang();
   const t = useT();
+  useEffect(() => logSearch(q, total, "search", lang), [q, total, lang]);
   const labelOf = useMemo(() => new Map(parsed.map((c) => [c.id, lang === "en" ? c.en : c.label])), [parsed, lang]);
 
   const go = (patch: { q?: string; x?: string[] }, replace = true) =>
@@ -119,7 +121,10 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
           hits={hits}
           wide={wide}
           counts={counts}
-          onTap={(c) => openCard(c.id, hits.map((h) => h.card.id))}
+          onTap={(c) => {
+            logOpen(q, lang);
+            openCard(c.id, hits.map((h) => h.card.id));
+          }}
           footer={(h) =>
             scored && (
               <div className="mt-1 space-y-0.5 text-[10px] leading-tight font-bold text-muted">

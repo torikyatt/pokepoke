@@ -7,3 +7,4 @@ data/meta/cache/
 src/data/decks.json
 src/data/ja-image-urls.json
 dist-redirect/
+.wrangler/
