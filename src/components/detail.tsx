@@ -156,7 +156,7 @@ function DetailHeader({ card }: { card?: AppCard }) {
 /**
  * 詳細のスクロール位置:
  *   新しく開いたカード … いちばん上から（進化ラインから移ったときだけ、進化ラインを同じ高さに）
- *   戻る・進む・「最近見たカード」で開き直したとき … そのカードで見ていた位置へ
+ *   戻る・進む・「最後に見たカード」で開き直したとき … そのカードで見ていた位置へ
  * スクロールする枠はカードごとに作り直す（key）。前のカードのスクロール位置が残ったり、
  * iPhone で位置を変えた直後に描かれず真っ白になったりするのを避ける
  */
@@ -418,19 +418,18 @@ export function DetailSheet() {
   );
 }
 
-/** 閉じた詳細のしまい場所。タップか上へスワイプで、最後に見ていたカードを履歴ごと開き直す */
+/**
+ * 閉じた詳細のしまい場所。タップか上へスワイプで、最後に見ていたカードを履歴ごと開き直す。
+ * 表示は開き直したときの前・次の一覧に合わせる（後ろに重ねるのは一覧の次のカード、数字は一覧の何枚目か）
+ */
 export function DetailDock({ bottom }: { bottom: string }) {
   const { byId } = useData();
-  const { stack, pos, open } = useDetail();
+  const { stack, pos, open, list, listPos } = useDetail();
   const startY = useRef(0);
   const t = useT();
   const lang = useLang();
-  const cards = stack
-    .slice(0, pos + 1)
-    .reverse()
-    .slice(0, 3)
-    .map((id) => byId.get(id))
-    .filter((c): c is AppCard => !!c);
+  const inList = list.length > 1 && listPos >= 0;
+  const cards = (inList ? list.slice(listPos, listPos + 3) : stack.slice(pos, pos + 1)).map((id) => byId.get(id)).filter((c): c is AppCard => !!c);
   if (open || !cards.length) return null;
   return (
     <button
@@ -438,7 +437,7 @@ export function DetailDock({ bottom }: { bottom: string }) {
       onClick={reopenDetail}
       onTouchStart={(e) => (startY.current = e.touches[0].clientY)}
       onTouchEnd={(e) => e.changedTouches[0].clientY - startY.current < -24 && reopenDetail()}
-      aria-label={t(`最近見たカード「${cards[0].nameJa}」を開く`, `Open recently viewed: ${cards[0].nameEn}`)}
+      aria-label={t(`最後に見たカード「${cards[0].nameJa}」を開く`, `Open last viewed: ${cards[0].nameEn}`)}
       className="neu neu-press pop-in fixed left-1/2 z-[47] flex max-w-[56vw] -translate-x-1/2 items-center gap-2 rounded-2xl border border-white/70 bg-panel/45 py-1.5 pr-2.5 pl-2 backdrop-blur-md"
       style={{ bottom }}
     >
@@ -456,7 +455,8 @@ export function DetailDock({ bottom }: { bottom: string }) {
           })}
       </span>
       <span className="min-w-0 text-left leading-tight">
-        <span className="block text-[9px] font-bold text-muted">{t("最近見たカード", "Recently viewed")}{pos > 0 ? t(`（${pos + 1}枚）`, ` (${pos + 1})`) : ""}</span>
+        <span className="block text-[9px] font-bold text-muted">{t("最後に見たカード", "Last viewed")}
+          {inList && <span className="ml-1 tabular-nums">{listPos + 1}/{list.length}</span>}</span>
         <span className="block truncate text-xs font-extrabold">{cardName(cards[0], lang)}</span>
       </span>
       <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-canvas text-[10px] text-muted">▲</span>
@@ -465,7 +465,7 @@ export function DetailDock({ bottom }: { bottom: string }) {
 }
 
 /**
- * 詳細を開いている間の下のボタン（「最近見たカード」と同じ場所・大きさ）。開いた一覧（検索結果・デッキ）の前・次のカードへ移る。
+ * 詳細を開いている間の下のボタン（「最後に見たカード」と同じ場所・大きさ）。開いた一覧（検索結果・デッキ）の前・次のカードへ移る。
  * 一覧がない（共有リンクから開いた・一覧が1枚だけ）ときは出さない。
  *   左をタップ → 前のカード、右をタップ → 次のカード、真ん中 → 閉じる
  *   ボタンの上を左右にスワイプ → 詳細の中身が指についてきて、離すと1枚だけ移る（左へスワイプすると次へ）

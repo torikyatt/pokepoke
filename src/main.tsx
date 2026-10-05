@@ -81,7 +81,7 @@ function Shell() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
   const building = active === "deck" && parseHash(base.deck).parts[2] === "edit";
-  // ページの下の余白: 下に浮かぶもの（タブ・「最近見たカード」・半分開いた詳細）に最後の行が隠れず、スクロールで出せるように
+  // ページの下の余白: 下に浮かぶもの（タブ・「最後に見たカード」・半分開いた詳細）に最後の行が隠れず、スクロールで出せるように
   const docked = useDetail((s) => s.stack.length > 0 && !s.open);
   const half = useDetail((s) => s.open && s.snap === "half");
   const bottomPad = half
@@ -89,7 +89,7 @@ function Shell() {
     : building
       ? undefined // デッキ編集は自分で余白を持つ
       : docked
-        ? "calc(9.5rem + env(safe-area-inset-bottom))" // 下のタブ＋「最近見たカード」
+        ? "calc(9.5rem + env(safe-area-inset-bottom))" // 下のタブ＋「最後に見たカード」
         : "6rem";
   return (
     <>
