@@ -270,3 +270,21 @@ describe("定番の組み合わせの中心（hub）", () => {
     expect(others).not.toContain("コイル");
   });
 });
+
+describe("状態異常の重ねがけ", () => {
+  const statusOf = (c: AppData["cards"][number]) => ["poison", "burn", "sleep", "paralysis", "confusion"].filter((k) => c.supplies[`supply.status.${k}`]);
+  it("状態異常は5種類だけ（にげる封じ・ワザ封じは含まない）", () => {
+    const kids = data.tags.filter((t) => t.parent === "status").map((t) => t.id).sort();
+    expect(kids).toEqual(["status.burn", "status.confusion", "status.paralysis", "status.poison", "status.sleep"]);
+  });
+  it("ねむり・マヒ・こんらんだけにするカードどうしは「重ねて」で結ばない（上書きされる）", () => {
+    const ow = data.cards.filter((c) => statusOf(c).length && statusOf(c).every((k) => ["sleep", "paralysis", "confusion"].includes(k)));
+    for (const c of ow)
+      for (const p of syn.partners(c, 300))
+        if (p.reasons.some((r) => r.includes("重ねて"))) expect(statusOf(p.card).some((k) => k === "poison" || k === "burn")).toBe(true);
+  });
+  it("やけどにするバクフーンは、どくにするカードと「重ねてかけられる」で結ぶ", () => {
+    const typh = data.cards.find((c) => c.nameJa === "バクフーン" && statusOf(c).includes("burn"))!;
+    expect(syn.partners(typh, 100).some((p) => p.reasons.includes("どくとやけどは重ねてかけられる"))).toBe(true);
+  });
+});

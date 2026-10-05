@@ -35,8 +35,10 @@ const SUPPLY: Record<string, { give: string; need: string; giveEn: string; needE
 // 結びつきの強さ（既定は1）。場にためたエネと集めるカードは、組み合わせ前提の強いシナジー
 const WEIGHT: Record<string, number> = { "supply.opp.stuck": 1.5, "supply.energy.bank": 2, "supply.energy.fix": 1.5, "supply.trash.energy": 1.5, "supply.search.pokemon": 1.5 };
 // 毎ターン使える供給（特性・スタジアム・どうぐ）は、1回きりのワザより少し重く見る
-const weightOf = (s: string, sels: Selector[], receiver?: AppCard) =>
+const weightOf = (s: string, sels: Selector[], receiver?: AppCard, supplier?: AppCard) =>
   (WEIGHT[s] ?? 1) +
+  // 状態異常の数で強くなるカードには、重ねられる どく・やけど にできるカードを先に
+  (s === "supply.status" && receiver?.tags.includes("cond.status.count") && supplier && (supplier.supplies["supply.status.poison"] || supplier.supplies["supply.status.burn"]) ? 0.8 : 0) +
   (sels.some((x) => x.repeat) ? 0.5 : 0) +
   // どのタイプのエネでもトラッシュに送れて、どのタイプでも使える組み合わせ
   (s === "supply.trash.energy" && sels.some((x) => !x.etypes?.length) && receiver && !receiver.requires[s]?.etypes?.length ? 0.5 : 0);
@@ -46,6 +48,26 @@ const weightOf = (s: string, sels: Selector[], receiver?: AppCard) =>
  * （無色エネや、タイプの分からないエネでは代われない）
  */
 export const canPay = (supplied: readonly EnergyType[] | undefined, need: EnergyType) => need === "colorless" || !!supplied?.includes(need);
+
+// 状態異常（5種類だけ）。どく・やけどは重なる、ねむり・マヒ・こんらんは互いに上書きする
+const STATUS_KINDS = ["poison", "burn", "sleep", "paralysis", "confusion"] as const;
+type StatusKind = (typeof STATUS_KINDS)[number];
+const STACKING = new Set<StatusKind>(["poison", "burn"]);
+const STATUS_JA: Record<StatusKind, string> = { poison: "どく", burn: "やけど", sleep: "ねむり", paralysis: "マヒ", confusion: "こんらん" };
+const STATUS_EN: Record<StatusKind, string> = { poison: "Poison", burn: "Burn", sleep: "Sleep", paralysis: "Paralysis", confusion: "Confusion" };
+const statusKinds = (c: AppCard): StatusKind[] => STATUS_KINDS.filter((k) => c.supplies[`supply.status.${k}`]);
+/** 重ねてかけられる組（別の種類で、片方が どく・やけど）。無ければ undefined */
+function stackPair(a: StatusKind[], b: StatusKind[]): [StatusKind, StatusKind] | undefined {
+  let best: [StatusKind, StatusKind] | undefined;
+  for (const p of a)
+    for (const q of b) {
+      if (p === q || (!STACKING.has(p) && !STACKING.has(q))) continue;
+      const pair = STATUS_KINDS.indexOf(p) < STATUS_KINDS.indexOf(q) ? ([p, q] as [StatusKind, StatusKind]) : ([q, p] as [StatusKind, StatusKind]);
+      if (pair[0] === "poison" && pair[1] === "burn") return pair; // いちばん強い組
+      best ??= pair;
+    }
+  return best;
+}
 
 /** 足止め（にげる封じ）とエネ破壊・入れ替えの組は、どのデッキにも入るトレーナーズ（ナツメ・アカギなど）を先に、ポケモンは控えめに */
 const stuckFactor = (s: string, partner: AppCard) => (s === "supply.opp.stuck" && partner.kind === "pokemon" ? 0.55 : 1);
@@ -213,6 +235,8 @@ export function createSynergy(data: AppData) {
     const global = data.meta?.usage[id] ?? 0;
     return (0.5 + 2.5 * rate) * (rate < 0.2 ? 0.7 : 1) * (global >= 0.6 ? 0.55 : global >= 0.25 ? 0.7 : 1);
   };
+  // 状態異常にできるカード
+  const statusSuppliers = data.cards.filter((c) => STATUS_KINDS.some((k) => c.supplies[`supply.status.${k}`]));
   const accelSels = (c: AppCard) => (c.supplies["supply.energy.many"] ?? []).filter((s) => !s.self);
 
   function partners(x: AppCard, limit = 30): Partner[] {
@@ -275,14 +299,14 @@ export function createSynergy(data: AppData) {
     for (const [s, sels] of Object.entries(x.supplies)) {
       for (const y of requirers.get(s) ?? []) {
         const ok = sels.filter((sel) => reaches(sel, x, y, s));
-        if (ok.length) pushRule(y, weightOf(s, ok, y) * stuckFactor(s, y), SUPPLY[s]?.need ?? s, SUPPLY[s]?.needEn ?? s);
+        if (ok.length) pushRule(y, weightOf(s, ok, y, x) * stuckFactor(s, y), SUPPLY[s]?.need ?? s, SUPPLY[s]?.needEn ?? s);
       }
     }
     // 要求 ← 供給（相手が x を助ける）
     for (const r of Object.keys(x.requires)) {
       for (const y of suppliers.get(r) ?? []) {
         const ok = y.supplies[r].filter((sel) => reaches(sel, y, x, r));
-        if (ok.length) pushRule(y, weightOf(r, ok, x) * stuckFactor(r, y), SUPPLY[r]?.give ?? r, SUPPLY[r]?.giveEn ?? r);
+        if (ok.length) pushRule(y, weightOf(r, ok, x, y) * stuckFactor(r, y), SUPPLY[r]?.give ?? r, SUPPLY[r]?.giveEn ?? r);
       }
     }
 
@@ -301,6 +325,26 @@ export function createSynergy(data: AppData) {
       const ts = bankOf(b);
       if (x.type && ts.includes(x.type) && usesType(x, x.type)) pushRule(b, 0.6, `${TYPE_JA[x.type]}エネを場にためられる`, `Stores ${TYPE_EN[x.type]} Energy on the field`);
       else if (colorlessHeavy(x)) pushRule(b, 0.4, "無色コストに回せるエネをためられる", "Stores Energy usable for Colorless costs");
+    }
+
+    // 状態異常の重ねがけ: どく・やけどは重なり、ねむり・マヒ・こんらんは上書きされる（同時に最大3つ）。
+    // 重なる組（どく＋やけど、どく・やけど＋ねむり・マヒ・こんらんのどれか）を結ぶ。上書きされる組は結ばない
+    const sx = statusKinds(x);
+    if (sx.length) {
+      for (const y of statusSuppliers) {
+        if (y.id === x.id) continue;
+        const pair = stackPair(sx, statusKinds(y));
+        if (!pair) continue;
+        // ポケモンどうしは同じタイプのときだけ（同じデッキに入りやすい組）
+        if (x.kind === "pokemon" && y.kind === "pokemon" && x.type !== y.type && x.type !== "colorless" && y.type !== "colorless") continue;
+        const strong = pair.includes("poison") && pair.includes("burn");
+        pushRule(
+          y,
+          strong ? 0.8 : 0.5,
+          `${STATUS_JA[pair[0]]}と${STATUS_JA[pair[1]]}は重ねてかけられる`,
+          `${STATUS_EN[pair[0]]} and ${STATUS_EN[pair[1]]} stack`,
+        );
+      }
     }
 
     // 同じポケモンたちを支える2枚（例: にじいろの洞窟はドラゴンのエネ事故を減らし、ハクリューはドラゴンにエネを送る）

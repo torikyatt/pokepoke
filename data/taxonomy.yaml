@@ -330,6 +330,9 @@
   ja: 状態異常
   en: Special Conditions
   # 状態異常にする側。scripts/tag.ts が「相手を状態異常にする文」だけに付ける（条件文・自分が受ける文は除く）
+  # 状態異常は、どく・やけど・マヒ・ねむり・こんらんの5つだけ（にげる封じ・ワザ封じなどは状態異常ではない）。
+  # どく・やけどは重なる。ねむり・マヒ・こんらんは後からかけたものに上書きされる
+  # （同時に成り立つのは最大で、どく＋やけど＋ねむり・マヒ・こんらんのどれか1つ、の3つ）
   supplies: [supply.status]
   children:
     - { id: status.poison, ja: どく, en: Poisoned, supplies: [supply.status.poison], match: ['Poisoned'] }
@@ -699,9 +702,10 @@
       requires: [supply.status]
       match:
         - 'If your opponent.s Active Pokémon is affected by a Special Condition'
-        - 'for each Special Condition affecting'
       # どの状態異常かが決まっているものは、その状態異常にできるカードとだけ結ぶ
       children:
+        # 状態異常の数で変わる（ロケット団のブーバー）。重ねられる どく・やけど にできるカードと特に相性がいい
+        - { id: cond.status.count, ja: 相手の状態異常の数で変わる, en: Scales with opponent's Special Conditions, requires: [supply.status], match: ['for each Special Condition affecting'] }
         - { id: cond.status.poison, ja: 相手がどくだと変わる, en: If opponent is Poisoned, requires: [supply.status.poison], match: ['If your opponent.s Active Pokémon is Poisoned'] }
         - { id: cond.status.burn, ja: 相手がやけどだと変わる, en: If opponent is Burned, requires: [supply.status.burn], match: ['If your opponent.s Active Pokémon is Burned'] }
         - { id: cond.status.paralysis, ja: 相手がマヒだと変わる, en: If opponent is Paralyzed, requires: [supply.status.paralysis], match: ['If your opponent.s Active Pokémon is Paralyzed'] }

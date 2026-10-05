@@ -105,6 +105,7 @@ tags:
   cond.point: [depends on points, points matter, behind on points, losing on points, comeback mechanic, point count]
   cond.turn: [last turn, this turn, evolved this turn, if ko d last turn, turn condition, first attack, revenge, avenge]
   cond.status: [opponent has status, if opponent has special condition, status matters, vs status, statused opponent]
+  cond.status.count: [special condition count, stack special conditions, for each special condition, more conditions more damage]
   cond.status.poison: [if poisoned, opponent poisoned, poison matters, vs poisoned, poison bonus]
   cond.status.burn: [if burned, opponent burned, burn matters, vs burned, burn bonus]
   cond.status.paralysis: [if paralyzed, opponent paralyzed, paralysis matters, vs paralyzed, paralysis bonus]
