@@ -366,9 +366,15 @@ export function createSynergy(data: AppData) {
     }
 
     // 相性のいい相手が多く重なる2枚（例: にじいろの洞窟もハクリューも、ドラゴンポケモンと相性がいい）。
-    // 理由には、重なる相手が何か（多くが同じタイプ・同じ進化段階ならそれ、そうでなければ名前を2つまで。ポケモンを先に）を書く
-    const commonGroup = (ids: string[]): [string, string] => {
-      const cs = ids.map((id) => byId.get(id)!).filter(Boolean);
+    //   強さ = 重なる相手の入れやすさ × 2枚そろえる手間
+    //     重なる相手: サポート・グッズなどのトレーナーズ 1 ／ たね 0.7 ／ 1進化 0.45 ／ 2進化 0.3（の平均）
+    //     2枚の手間（たね0・1進化1・2進化2・トレーナーズ0 の合計）: 0 → 1、1 → 0.85、2 → 0.65、3 → 0.45、4 → 0.3
+    //       （たね同士は入れやすい、たねと2進化はまあまあ、2進化同士はかなり入れにくい）
+    // 理由には、重なる相手が何か（多くが同じタイプ・同じ進化段階ならそれ、そうでなければ入れやすいものから名前を2つまで）を書く
+    const ease = (c: AppCard) => (c.kind !== "pokemon" ? 1 : c.stage === "stage2" ? 0.3 : c.stage === "stage1" ? 0.45 : 0.7);
+    const burden = (c: AppCard) => (c.kind !== "pokemon" ? 0 : c.stage === "stage2" ? 2 : c.stage === "stage1" ? 1 : 0);
+    const BURDEN = [1, 0.85, 0.65, 0.45, 0.3];
+    const commonGroup = (cs: AppCard[]): [string, string] => {
       const most = <K extends string>(key: (c: AppCard) => K | undefined) => {
         const n = new Map<K, number>();
         for (const c of cs) {
@@ -382,7 +388,7 @@ export function createSynergy(data: AppData) {
       if (t) return [`${TYPE_JA[t]}ポケモン`, `${TYPE_EN[t]} Pokémon`];
       const st = most((c) => (c.stage && c.stage !== "basic" ? c.stage : undefined));
       if (st) return [`${STAGE_JA[st]}ポケモン`, `${st === "stage1" ? "Stage 1" : "Stage 2"} Pokémon`];
-      const names = [...new Map([...cs].sort((a, b) => (a.kind === "pokemon" ? 0 : 1) - (b.kind === "pokemon" ? 0 : 1)).map((c) => [c.nameEn, c])).values()].slice(0, 2);
+      const names = [...new Map([...cs].sort((a, b) => ease(b) - ease(a)).map((c) => [c.nameEn, c])).values()].slice(0, 2);
       const more = new Set(cs.map((c) => c.nameEn)).size > 2;
       return [names.map((c) => c.nameJa).join("・") + (more ? "など" : ""), names.map((c) => c.nameEn).join(", ") + (more ? ", etc." : "")];
     };
@@ -392,10 +398,11 @@ export function createSynergy(data: AppData) {
         if (y.id === x.id) continue;
         const ry = receiversOf(y);
         if (ry.size < 3) continue;
-        const both = [...rx].filter((id) => ry.has(id));
+        const both = [...rx].filter((id) => ry.has(id)).map((id) => byId.get(id)!).filter(Boolean);
         if (both.length >= 3 && both.length / Math.min(rx.size, ry.size) >= 0.3) {
+          const quality = both.reduce((n, c) => n + ease(c), 0) / both.length;
           const [ja, en] = commonGroup(both);
-          pushRule(y, 0.5, `どちらも${ja}と相性がいい`, `Both pair well with ${en}`);
+          pushRule(y, quality * BURDEN[burden(x) + burden(y)], `どちらも${ja}と相性がいい`, `Both pair well with ${en}`);
         }
       }
     }
