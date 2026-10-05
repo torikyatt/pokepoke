@@ -267,7 +267,11 @@ export function useDeckExport(deck: Deck | undefined) {
         ),
       );
       // Webフォントは別オリジンなので取り込まない（端末のフォントで描く）
-      const url = await toPng(imageRef.current, { pixelRatio: 2, backgroundColor: "#e6ecf3", skipFonts: true });
+      const opts = { pixelRatio: 2, backgroundColor: "#e6ecf3", skipFonts: true };
+      // iPhone・Mac の Safari（iPhone ではどのブラウザも同じ仕組み）は、1回目の画像化で画像の取り込みが間に合わず、
+      // 一部のカードが空白になることがある。一度空振りで描いてから本番を描く
+      if (navigator.vendor === "Apple Computer, Inc.") await toPng(imageRef.current, opts);
+      const url = await toPng(imageRef.current, opts);
       setPreview(url);
     } catch {
       show(t("画像を作れませんでした", "Couldn't create the image"), "error");
