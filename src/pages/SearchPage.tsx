@@ -119,7 +119,7 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
           hits={hits}
           wide={wide}
           counts={counts}
-          onTap={(c) => openCard(c.id)}
+          onTap={(c) => openCard(c.id, hits.map((h) => h.card.id))}
           footer={(h) =>
             scored && (
               <div className="mt-1 space-y-0.5 text-[10px] leading-tight font-bold text-muted">

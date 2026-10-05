@@ -203,7 +203,7 @@ function DeckColumn({ deck }: { deck?: Deck }) {
             <div className="neu-in grid grid-cols-5 gap-1.5 rounded-2xl p-2.5">
               {Array.from({ length: DECK_SIZE }, (_, i) => cards[i]).map((c, i) =>
                 c ? (
-                  <Pressable key={`${c.id}-${i}`} onTap={() => openCard(c.id)} onLongPress={() => { useDecks.getState().removeCard(deck.id, c.id); show(t(`「${c.nameJa}」を1枚外しました`, `Removed one ${c.nameEn}`)); }} label={t(`${c.nameJa}（長押しで外す）`, `${cardName(c, lang)} (long-press to remove)`)} className="pop-in rounded-[4px] shadow-[1px_2px_3px_rgb(150_165_185/0.5)]">
+                  <Pressable key={`${c.id}-${i}`} onTap={() => openCard(c.id, [...new Set(cards.map((x) => x.id))])} onLongPress={() => { useDecks.getState().removeCard(deck.id, c.id); show(t(`「${c.nameJa}」を1枚外しました`, `Removed one ${c.nameEn}`)); }} label={t(`${c.nameJa}（長押しで外す）`, `${cardName(c, lang)} (long-press to remove)`)} className="pop-in rounded-[4px] shadow-[1px_2px_3px_rgb(150_165_185/0.5)]">
                     <Thumb card={c} className="rounded-[4px]" />
                   </Pressable>
                 ) : (

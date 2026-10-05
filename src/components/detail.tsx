@@ -1,9 +1,9 @@
 // カード詳細の入れ物: スマホは下からせり上がるシート、PCは真ん中の列。
 // どちらも上に「戻る・カード名・共有・✕」と、今のデッキの枚数を増減する −／＋ を置く
-import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useAddToDeck, useData } from "../context.tsx";
 import { DECK_SIZE } from "../deck.ts";
-import { backDetail, closeDetail, reopenDetail, setCloseAnimator, takeScrollAnchor, useDetail } from "../detail.ts";
+import { backDetail, closeDetail, reopenDetail, setCloseAnimator, stepCard, takeScrollAnchor, useDetail } from "../detail.ts";
 import { CardDetail } from "../pages/CardPage.tsx";
 import { useDecks, useFavorites, useToast } from "../store.ts";
 import type { AppCard } from "../types.ts";
@@ -406,7 +406,7 @@ export function DetailSheet() {
           </button>
           <DetailHeader card={card} />
         </div>
-        <div key={scrollKey} ref={content} className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-contain border-t border-line pb-[max(2rem,env(safe-area-inset-bottom))]">
+        <div key={scrollKey} ref={content} className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-contain border-t border-line pb-[calc(8rem+env(safe-area-inset-bottom))]">
           {body}
         </div>
       </div>
@@ -457,6 +457,84 @@ export function DetailDock({ bottom }: { bottom: string }) {
       </span>
       <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-canvas text-[10px] text-muted">▲</span>
     </button>
+  );
+}
+
+/**
+ * 詳細を開いている間の下のボタン（「最近見たカード」と同じ場所・大きさ）。開いた一覧（検索結果・デッキ）の前・次のカードへ移る。
+ *   左をタップ → 前のカード、右をタップ → 次のカード、真ん中 → 閉じる
+ *   ボタンの上を左右にスワイプ → 指の動きに合わせて次々に移る（左へ動かすと次へ）
+ */
+export function DetailNav({ bottom }: { bottom: string }) {
+  const { byId } = useData();
+  const { open, list, listPos } = useDetail();
+  const t = useT();
+  const lang = useLang();
+  const drag = useRef<{ x: number; steps: number; moved: boolean } | null>(null);
+  const [shift, setShift] = useState(0); // スワイプ中のサムネイルのずれ（指についてくる感じ）
+  if (!open) return null;
+  const prev = listPos > 0 ? byId.get(list[listPos - 1]) : undefined;
+  const next = listPos >= 0 && listPos < list.length - 1 ? byId.get(list[listPos + 1]) : undefined;
+  const STEP = 30; // 1枚分のスワイプの長さ（px）
+  const onDown = (e: React.PointerEvent) => {
+    drag.current = { x: e.clientX, steps: 0, moved: false };
+  };
+  const onMove = (e: React.PointerEvent) => {
+    const d = drag.current;
+    if (!d || listPos < 0) return;
+    const dx = e.clientX - d.x;
+    if (!d.moved && Math.abs(dx) < 8) return;
+    if (!d.moved) {
+      d.moved = true;
+      (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    }
+    const steps = Math.trunc(dx / STEP);
+    if (steps !== d.steps) {
+      stepCard(-(steps - d.steps)); // 左へ動かすと次のカードへ
+      d.steps = steps;
+    }
+    setShift(Math.max(-STEP, Math.min(STEP, dx - steps * STEP)) * 0.5);
+  };
+  const onUp = () => {
+    setShift(0);
+    // スワイプしたあとのクリックは、タップとして扱わない
+    if (drag.current?.moved) setTimeout(() => (drag.current = null), 0);
+    else drag.current = null;
+  };
+  const tap = (f: () => void) => () => {
+    if (drag.current?.moved) return;
+    f();
+  };
+  const side = "flex h-full min-w-0 flex-1 items-center gap-1 px-1.5 text-muted disabled:opacity-30";
+  const thumb = (c?: AppCard) => <span className="block w-6 shrink-0 overflow-hidden rounded-[3px] shadow">{c ? <Thumb card={c} className="rounded-[3px]" /> : <span className="block aspect-[367/512] bg-line" />}</span>;
+  return (
+    <div
+      role="group"
+      aria-label={t("前・次のカード", "Previous / next card")}
+      onPointerDown={onDown}
+      onPointerMove={onMove}
+      onPointerUp={onUp}
+      onPointerCancel={onUp}
+      className="neu pop-in fixed left-1/2 z-[52] flex h-12 w-[56vw] max-w-64 -translate-x-1/2 touch-none items-stretch overflow-hidden rounded-2xl border border-white/70 select-none"
+      style={{ bottom }}
+    >
+      <button type="button" disabled={!prev} onClick={tap(() => stepCard(-1))} aria-label={prev ? t(`前のカード「${prev.nameJa}」`, `Previous: ${prev.nameEn}`) : t("前のカードはありません", "No previous card")} className={`${side} justify-start`}>
+        <span className="text-base font-extrabold">‹</span>
+        <span className="block shrink-0" style={{ transform: `translateX(${shift}px)` }}>{thumb(prev)}</span>
+      </button>
+      <button type="button" onClick={tap(() => closeDetail())} aria-label={t("閉じる", "Close")} className="flex w-14 shrink-0 flex-col items-center justify-center border-x border-line/70 text-muted active:bg-line/40">
+        <span className="text-sm leading-none font-extrabold">✕</span>
+        {listPos >= 0 && list.length > 1 && (
+          <span className="mt-0.5 text-[9px] leading-none font-bold tabular-nums">
+            {listPos + 1}/{list.length}
+          </span>
+        )}
+      </button>
+      <button type="button" disabled={!next} onClick={tap(() => stepCard(1))} aria-label={next ? t(`次のカード「${next.nameJa}」`, `Next: ${next.nameEn}`) : t("次のカードはありません", "No next card")} className={`${side} justify-end`}>
+        <span className="block shrink-0" style={{ transform: `translateX(${shift}px)` }}>{thumb(next)}</span>
+        <span className="text-base font-extrabold">›</span>
+      </button>
+          </div>
   );
 }
 

@@ -17,6 +17,9 @@ import { mainPrint, packLabel, PrintLine, SetBadge, useMultiPackSets } from "../
 import { cardName, useLang, useT } from "../i18n.ts";
 import { deckFromImage, qrImage, shareUrlOf } from "../deck-qr.ts";
 
+/** デッキのカード（同じカードは1回）。詳細の前・次のカードに使う */
+const uniqIds = (cards: AppCard[]) => [...new Set(cards.map((c) => c.id))];
+
 export const ZONE_TYPES: EnergyType[] = ["grass", "fire", "water", "lightning", "psychic", "fighting", "darkness", "metal"];
 
 /** デッキ内の並び（図鑑順＝アプリと同じ） */
@@ -157,7 +160,7 @@ export function DeckBuilderPage({ id }: { id: string }) {
           <div className="grid grid-cols-10 gap-1.5" style={{ width: `${(1000 / SLOT_VISIBLE[slotSize]).toFixed(2)}%` }}>
             {Array.from({ length: DECK_SIZE }, (_, i) => cards[i]).map((c, i) =>
               c ? (
-                <Pressable key={`${c.id}-${i}`} onTap={() => openCard(c.id)} onLongPress={() => { removeCard(deck.id, c.id); show(t(`「${c.nameJa}」を1枚外しました`, `Removed one ${c.nameEn}`)); }} label={t(`${c.nameJa}（長押しで外す）`, `${cardName(c, lang)} (long-press to remove)`)} className="pop-in snap-start rounded-[4px] shadow-[1px_2px_3px_rgb(150_165_185/0.5)]">
+                <Pressable key={`${c.id}-${i}`} onTap={() => openCard(c.id, uniqIds(cards))} onLongPress={() => { removeCard(deck.id, c.id); show(t(`「${c.nameJa}」を1枚外しました`, `Removed one ${c.nameEn}`)); }} label={t(`${c.nameJa}（長押しで外す）`, `${cardName(c, lang)} (long-press to remove)`)} className="pop-in snap-start rounded-[4px] shadow-[1px_2px_3px_rgb(150_165_185/0.5)]">
                   <Thumb card={c} className="rounded-[4px]" />
                 </Pressable>
               ) : (
@@ -224,7 +227,7 @@ export function DeckBuilderPage({ id }: { id: string }) {
           hits={hits}
           counts={counts}
           maxed={(c) => full || (nameCounts.get(c.nameEn) ?? 0) >= MAX_SAME_NAME}
-          onTap={(c) => openCard(c.id)}
+          onTap={(c) => openCard(c.id, hits.map((h) => h.card.id))}
         />
       </div>
 
@@ -375,7 +378,7 @@ export function DeckViewPage({ id }: { id: string }) {
             <div className="grid grid-cols-5 gap-2">
               {Array.from({ length: DECK_SIZE }, (_, i) => cards[i]).map((c, i) =>
                 c ? (
-                  <Pressable key={i} onTap={() => openCard(c.id)} label={cardName(c, lang)} className="rounded-md shadow-[1px_2px_4px_rgb(150_165_185/0.5)]">
+                  <Pressable key={i} onTap={() => openCard(c.id, uniqIds(cards))} label={cardName(c, lang)} className="rounded-md shadow-[1px_2px_4px_rgb(150_165_185/0.5)]">
                     <Thumb card={c} />
                   </Pressable>
                 ) : (
@@ -522,7 +525,7 @@ export function DeckList({ cards }: { cards: AppCard[] }) {
           const others = [...new Set(card.prints.filter((p) => p !== main).map((p) => packLabel(p, data.sets, multi, lang)))].filter((l) => l !== packLabel(main, data.sets, multi, lang));
           return (
             <li key={card.id}>
-              <Pressable onTap={() => openCard(card.id)} label={cardName(card, lang)} className="flex items-center gap-3 py-2 text-left">
+              <Pressable onTap={() => openCard(card.id, rows.map((r) => r.card.id))} label={cardName(card, lang)} className="flex items-center gap-3 py-2 text-left">
                 <div className="w-10 shrink-0">
                   <Thumb card={card} className="rounded-[4px]" />
                 </div>
@@ -687,7 +690,7 @@ export function SharePage({ code, embedded }: { code: string; embedded?: boolean
         {!check.ok && <div className="text-xs font-bold text-[#8a5c0c]">{check.problems.join(" / ")}</div>}
         <div className="neu grid grid-cols-5 gap-2 rounded-3xl p-3">
           {cards.map((c, i) => (
-            <Pressable key={i} onTap={() => openCard(c.id)} label={cardName(c, lang)}>
+            <Pressable key={i} onTap={() => openCard(c.id, uniqIds(cards))} label={cardName(c, lang)}>
               <Thumb card={c} />
             </Pressable>
           ))}

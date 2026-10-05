@@ -5,7 +5,7 @@ import { DataContext, useData, type Ctx } from "./context.tsx";
 import { loadData } from "./data/load.ts";
 import "./index.css";
 import { parseHash, scrollPos, useNav, type Tab } from "./nav.ts";
-import { DetailDock, DetailSheet } from "./components/detail.tsx";
+import { DetailDock, DetailNav, DetailSheet } from "./components/detail.tsx";
 import { useDetail } from "./detail.ts";
 import { Desktop } from "./pages/Desktop.tsx";
 import { DeckBuilderPage, DeckListPage, DeckViewPage, SharePage } from "./pages/DeckPage.tsx";
@@ -102,6 +102,7 @@ function Shell() {
       ))}
       {/* 下のタブやデッキ編集の ✓ ボタンから少し離して浮かせる */}
       <DetailDock bottom={building ? "max(1.5rem, calc(env(safe-area-inset-bottom) + 0.5rem))" : "calc(4.4rem + env(safe-area-inset-bottom))"} />
+      <DetailNav bottom={building ? "max(1.5rem, calc(env(safe-area-inset-bottom) + 0.5rem))" : "calc(4.4rem + env(safe-area-inset-bottom))"} />
       <DetailSheet />
       <Toast />
       {!building && <BottomNav />}
