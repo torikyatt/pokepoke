@@ -233,8 +233,29 @@ export function DetailSheet() {
       el.addEventListener("transitionend", onDone);
       setTimeout(finish, 400); // 動きが無かったとき（もう下にあるときなど）
     });
+    // 後ろの一覧が指を離したあとも滑っている（慣性スクロール中）と、iPhone は次のタッチを「止める」ために使い、
+    // シートのボタンを押しても反応しない。シートに触れたら滑りを止め、タップが届かなかったら代わりに押す
+    let pageMovedAt = 0;
+    const onPageScroll = () => (pageMovedAt = performance.now());
+    window.addEventListener("scroll", onPageScroll, { passive: true });
+    let rescue = false, tapX = 0, tapY = 0, moved = false, synthAt = 0, nativeAt = 0;
+    const onClickCapture = (e: MouseEvent) => {
+      if (!e.isTrusted) return;
+      nativeAt = performance.now();
+      // 代わりに押したあとに、本物のタップも届いたら二重にならないよう捨てる
+      if (nativeAt - synthAt < 600) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    };
+    el.addEventListener("click", onClickCapture, true);
     const onStart = (e: TouchEvent) => {
       const p = e.touches[0];
+      rescue = performance.now() - pageMovedAt < 150;
+      if (rescue) window.scrollTo(window.scrollX, window.scrollY); // 滑りを止める
+      tapX = p.clientX;
+      tapY = p.clientY;
+      moved = false;
       startY = lastY = p.clientY;
       startX = p.clientX;
       lastT = e.timeStamp;
@@ -245,6 +266,7 @@ export function DetailSheet() {
     };
     const onMove = (e: TouchEvent) => {
       const p = e.touches[0];
+      if (Math.abs(p.clientX - tapX) > 10 || Math.abs(p.clientY - tapY) > 10) moved = true;
       const dy = p.clientY - startY;
       const dx = p.clientX - startX;
       if (!decided) {
@@ -268,6 +290,20 @@ export function DetailSheet() {
       follow(Math.max(0, startOff + dy));
     };
     const onEnd = (e: TouchEvent) => {
+      if (rescue && !moved && !dragging) {
+        rescue = false;
+        const startedAt = performance.now();
+        // 本物のタップが届かなかったときだけ、触れた場所のボタンを押す
+        setTimeout(() => {
+          if (nativeAt >= startedAt) return;
+          const hit = document.elementFromPoint(tapX, tapY);
+          const target = (hit?.closest("button, a, summary, label, input, [role=button], [role=tab]") ?? hit) as HTMLElement | null;
+          if (target && el.contains(target)) {
+            synthAt = performance.now();
+            target.click();
+          }
+        }, 60);
+      }
       if (!dragging) return;
       dragging = false;
       const h = el.offsetHeight;
@@ -284,6 +320,8 @@ export function DetailSheet() {
     el.addEventListener("touchcancel", onEnd);
     return () => {
       setCloseAnimator(undefined);
+      window.removeEventListener("scroll", onPageScroll);
+      el.removeEventListener("click", onClickCapture, true);
       el.removeEventListener("touchstart", onStart);
       el.removeEventListener("touchmove", onMove);
       el.removeEventListener("touchend", onEnd);
@@ -312,11 +350,11 @@ export function DetailSheet() {
         className={`group fixed inset-x-0 bottom-0 z-50 mx-auto flex h-[94dvh] max-w-3xl flex-col rounded-t-3xl bg-canvas shadow-[0_-6px_24px_rgb(61_71_87/0.22)] [backface-visibility:hidden] will-change-transform transition-transform duration-300 ease-[cubic-bezier(.2,.8,.2,1)] ${open ? "" : "pointer-events-none"}`}
         style={{ transform: SHEET_TRANSFORM[at] }}
       >
-        {/* 半分で止まる位置の合図: ふちが電球色にふわっと光る */}
-        <div aria-hidden className="pointer-events-none absolute inset-0 z-10 rounded-t-3xl opacity-0 shadow-[0_-6px_34px_12px_rgb(255_222_160/0.85),inset_0_0_0_2px_rgb(255_232_190),inset_0_14px_22px_-12px_rgb(255_240_210/0.8)] transition-opacity duration-200 group-data-[hint=1]:opacity-100" />
+        {/* 半分で止まる位置の合図: ふちが水色にふわっと光る */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 z-10 rounded-t-3xl opacity-0 shadow-[0_-6px_34px_12px_rgb(120_200_255/0.75),inset_0_0_0_2px_rgb(150_215_255),inset_0_14px_22px_-12px_rgb(175_225_255/0.8)] transition-opacity duration-200 group-data-[hint=1]:opacity-100" />
         <div ref={header} className="shrink-0 px-3 pt-1 pb-1.5">
           <button type="button" aria-label={snap === "half" ? t("いっぱいに開く", "Expand") : t("半分に下げる", "Lower halfway")} onClick={() => useDetail.setState({ snap: snap === "half" ? "full" : "half" })} className="mx-auto block pt-0.5 pb-1">
-            <span className="block h-1 w-10 rounded-full bg-[#c5cfdb] transition-all duration-150 group-data-[hint=1]:w-16 group-data-[hint=1]:bg-[#ffe2a8]" />
+            <span className="block h-1 w-10 rounded-full bg-[#c5cfdb] transition-all duration-150 group-data-[hint=1]:w-16 group-data-[hint=1]:bg-[#8fd3ff]" />
           </button>
           <DetailHeader card={card} />
         </div>
