@@ -6,3 +6,4 @@ src/data/app-data.json
 data/meta/cache/
 src/data/decks.json
 src/data/ja-image-urls.json
+dist-redirect/

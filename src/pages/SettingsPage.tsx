@@ -133,6 +133,13 @@ export function SettingsPage({ embedded }: { embedded?: boolean }) {
               "In Japanese mode, text marked “仮訳” is a machine translation from English where no official Japanese text was found. Card images, names and text belong to their respective rights holders.",
             )}
           </p>
+          {/* カードデータが AGPL-3.0 なので、このサイトのソースコードも公開しておく */}
+          <p className="leading-relaxed">
+            {t("このサイトのソースコード: ", "Source code of this site: ")}
+            <a className="font-extrabold text-accent-deep underline" href="https://github.com/torikyatt/pokepoke" target="_blank" rel="noreferrer">
+              GitHub
+            </a>
+          </p>
         </section>
       </div>
     </div>
