@@ -69,9 +69,26 @@ export function backDetail() {
   else useDetail.setState({ pos: s.pos - 1, ...nav("history") });
 }
 
+// スマホのシートは、閉じる動きを先に最後まで見せてから、状態とブラウザの履歴を戻す。
+// （iPhone の Safari は履歴を戻すときやページのスクロールを戻すときに重い処理が入り、動きの途中だとカクつくため）
+let animateClose: ((done: () => void) => void) | undefined;
+export function setCloseAnimator(f: typeof animateClose) {
+  animateClose = f;
+}
+
 let after: (() => void) | undefined;
 /** まとめて閉じる（履歴は残す）。閉じ終わってから then を呼ぶ */
 export function closeDetail(then?: () => void) {
+  if (animateClose && useDetail.getState().open) {
+    const run = animateClose;
+    animateClose = undefined; // 動いている間に何度も押されても1回だけ
+    run(() => {
+      animateClose = run;
+      closeNow(then);
+    });
+  } else closeNow(then);
+}
+function closeNow(then?: () => void) {
   const st = history.state;
   const wasOpen = useDetail.getState().open;
   useDetail.setState({ open: false });

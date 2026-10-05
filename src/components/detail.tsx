@@ -3,7 +3,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { useAddToDeck, useData } from "../context.tsx";
 import { DECK_SIZE } from "../deck.ts";
-import { backDetail, closeDetail, reopenDetail, takeScrollAnchor, useDetail } from "../detail.ts";
+import { backDetail, closeDetail, reopenDetail, setCloseAnimator, takeScrollAnchor, useDetail } from "../detail.ts";
 import { CardDetail } from "../pages/CardPage.tsx";
 import { useDecks, useFavorites, useToast } from "../store.ts";
 import type { AppCard } from "../types.ts";
@@ -203,6 +203,26 @@ export function DetailSheet() {
       if (to === "closed") closeDetail();
       else useDetail.setState({ snap: to });
     };
+    // 閉じる動き: 見た目だけ先に下ろし、動き終わってから閉じた状態にする（done）
+    setCloseAnimator((done) => {
+      el.style.transition = "";
+      el.style.transform = SHEET_TRANSFORM.closed;
+      const b = backdrop.current;
+      if (b) {
+        b.style.transition = "";
+        b.style.opacity = "0";
+      }
+      let finished = false;
+      const finish = () => {
+        if (finished) return;
+        finished = true;
+        el.removeEventListener("transitionend", onDone);
+        done();
+      };
+      const onDone = (e: TransitionEvent) => e.target === el && e.propertyName === "transform" && finish();
+      el.addEventListener("transitionend", onDone);
+      setTimeout(finish, 400); // 動きが無かったとき（もう下にあるときなど）
+    });
     const onStart = (e: TouchEvent) => {
       const p = e.touches[0];
       startY = lastY = p.clientY;
@@ -225,7 +245,6 @@ export function DetailSheet() {
         dragging = Math.abs(dy) > Math.abs(dx) && (fromHeader || half || (dy > 0 && (content.current?.scrollTop ?? 0) <= 0));
         if (dragging) {
           el.style.transition = "none";
-          el.style.willChange = "transform";
           if (backdrop.current) backdrop.current.style.transition = "none";
         }
       }
@@ -241,7 +260,6 @@ export function DetailSheet() {
     const onEnd = (e: TouchEvent) => {
       if (!dragging) return;
       dragging = false;
-      el.style.willChange = "";
       const h = el.offsetHeight;
       // 指を止めてから離したなら、速さは 0
       const speed = e.timeStamp - lastT > 90 ? 0 : v;
@@ -255,6 +273,7 @@ export function DetailSheet() {
     el.addEventListener("touchend", onEnd);
     el.addEventListener("touchcancel", onEnd);
     return () => {
+      setCloseAnimator(undefined);
       el.removeEventListener("touchstart", onStart);
       el.removeEventListener("touchmove", onMove);
       el.removeEventListener("touchend", onEnd);
@@ -271,7 +290,7 @@ export function DetailSheet() {
         tabIndex={-1}
         aria-label={t("閉じる", "Close")}
         onClick={() => closeDetail()}
-        className={`fixed inset-0 z-[49] bg-[#3d4757]/35 transition-opacity duration-300 ${full ? "" : "pointer-events-none"}`}
+        className={`fixed inset-0 z-[49] bg-[#3d4757]/35 will-change-[opacity] transition-opacity duration-300 ${full ? "" : "pointer-events-none"}`}
         style={{ opacity: SHEET_DIM[at] }}
       />
       <div
@@ -280,7 +299,7 @@ export function DetailSheet() {
         aria-modal={full}
         aria-hidden={!open}
         aria-label={card ? cardName(card, lang) : t("カード詳細", "Card details")}
-        className={`fixed inset-x-0 bottom-0 z-50 mx-auto flex h-[94dvh] max-w-3xl flex-col rounded-t-3xl bg-canvas shadow-[0_-6px_24px_rgb(61_71_87/0.22)] transition-transform duration-300 ease-[cubic-bezier(.2,.8,.2,1)] ${open ? "" : "pointer-events-none"}`}
+        className={`fixed inset-x-0 bottom-0 z-50 mx-auto flex h-[94dvh] max-w-3xl flex-col rounded-t-3xl bg-canvas shadow-[0_-6px_24px_rgb(61_71_87/0.22)] [backface-visibility:hidden] will-change-transform transition-transform duration-300 ease-[cubic-bezier(.2,.8,.2,1)] ${open ? "" : "pointer-events-none"}`}
         style={{ transform: SHEET_TRANSFORM[at] }}
       >
         <div ref={header} className="shrink-0 px-3 pt-1 pb-1.5">
