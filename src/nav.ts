@@ -49,7 +49,7 @@ export const useNav = create<NavState>()(
           const id = parseHash(hash).parts[1];
           history.replaceState(null, "", s.base[s.active]);
           window.dispatchEvent(new HashChangeEvent("hashchange"));
-          if (id) openCard(id);
+          if (id) openCard(id, []); // 共有リンクなどから開いたときは前・次の一覧がない
           return;
         }
         // 同じタブの中で画面や条件が変わったら先頭から（別タブから戻ってきたときは位置を戻す）

@@ -43,7 +43,7 @@ export function openCard(id: string, list?: string[]) {
     const c = closing;
     closing = undefined;
     c.stop();
-    closeNow(() => openCard(id));
+    closeNow(() => openCard(id, list));
     return;
   }
   const s = useDetail.getState();
@@ -61,6 +61,12 @@ export function openCard(id: string, list?: string[]) {
   }
 }
 
+/**
+ * 前・次のカードへのスワイプの動き。dx: 詳細の中身の横のずれ（px）、anim: そのずれへ動きでつなぐか
+ * （下のボタンの上でスワイプすると、詳細の中身が指についてきて、離すと横へ抜けて次のカードが反対側から入る）
+ */
+export const useSwipe = create<{ dx: number; anim: boolean }>()(() => ({ dx: 0, anim: false }));
+
 /** 一覧の前（-1）・次（+1）のカードへ。いまのカードを置きかえる（ブラウザの「戻る」は前に見ていた関連カードへ戻るまま） */
 export function stepCard(d: number) {
   const s = useDetail.getState();
@@ -71,6 +77,21 @@ export function stepCard(d: number) {
   const stack = [...s.stack.slice(0, s.pos), id];
   useDetail.setState({ stack, listPos: i, ...nav("new") });
   history.replaceState({ sheet: s.pos, card: id } satisfies SheetState, "", location.href);
+}
+
+/** スワイプを離したとき: 進む向き d（0 なら元に戻す）へ、中身を横に抜いてから次のカードを反対側から入れる */
+export function finishSwipe(d: number) {
+  const W = Math.min(window.innerWidth, 480);
+  if (!d) {
+    useSwipe.setState({ dx: 0, anim: true });
+    return;
+  }
+  useSwipe.setState({ dx: -d * W, anim: true });
+  setTimeout(() => {
+    stepCard(d);
+    useSwipe.setState({ dx: d * W * 0.6, anim: false });
+    requestAnimationFrame(() => requestAnimationFrame(() => useSwipe.setState({ dx: 0, anim: true })));
+  }, 140);
 }
 
 // 進化ラインなどから別のカードへ移ったとき、同じ欄が画面の同じ高さに来るようにする（見比べやすいように）
