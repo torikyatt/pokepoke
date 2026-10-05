@@ -123,11 +123,8 @@ function App() {
   const [error, setError] = useState<string>();
   const t = useT();
   useEffect(() => {
-    // 起動時のタイトル画面は、読み込みが速くても最低1秒は見せる
-    const minSplash = new Promise((r) => setTimeout(r, 1000));
     loadData()
-      .then(async (data) => {
-        await minSplash;
+      .then((data) => {
         const synergy = createSynergy(data);
         setCtx({ data, engine: createEngine(data, { partners: synergy.partners }), synergy, byId: new Map(data.cards.map((c) => [c.id, c])) });
       })
