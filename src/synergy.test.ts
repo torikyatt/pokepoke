@@ -313,3 +313,12 @@ describe("進化ライン", () => {
     expect(lineOf("Vaporeon").at(-1)!.has("Jolteon")).toBe(false);
   });
 });
+
+describe("ワザのエネの色", () => {
+  it("フライゴンex（草・闘）の相性の上位に、色が合わない雷・悪のアタッカーを出さない（草のジュナイパーexは出す）", () => {
+    const flygon = data.cards.find((c) => c.nameJa === "フライゴンex")!;
+    const top = partnersOf(flygon.id).slice(0, 12).map((p) => p.card.nameJa);
+    for (const n of ["ストリンダーex（ローなすがた）", "バルジーナ", "ロケット団のサンダーex"]) expect(top).not.toContain(n);
+    expect(top).toContain("ジュナイパーex");
+  });
+});

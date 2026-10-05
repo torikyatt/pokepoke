@@ -125,6 +125,17 @@ export function createSynergy(data: AppData) {
     a.tags.includes("cond.bench.specific") && a.tags.includes("drawback.condition") && a.refs.length > 0 && !a.refs.some((id) => id === b.id || byId.get(id)?.nameEn === b.nameEn);
   // 場にエネを出すカードが出すエネのタイプ
   const suppliedTypes = (c: AppCard) => [...new Set(["supply.energy.many", "supply.energy.bank"].flatMap((k) => (c.supplies[k] ?? []).flatMap((x) => x.etypes ?? [])))];
+  /**
+   * ポケモンどうしのワザのエネの色の合い方（効果から読んだ相性に掛ける）。
+   *   要るタイプが1つでも同じ・どちらかが無色だけで使える → 1
+   *   重ならず、合わせて2色 → 0.5、合わせて3色以上（フライゴンex 草闘 ＋ 雷のストリンダーex など）→ 0.3
+   */
+  const energyFit = (a: AppCard, b: AppCard) => {
+    if (a.kind !== "pokemon" || b.kind !== "pokemon") return 1;
+    const ta = costTypes(a), tb = costTypes(b);
+    if (!ta.length || !tb.length || ta.some((t) => tb.includes(t))) return 1;
+    return new Set([...ta, ...tb]).size >= 3 ? 0.3 : 0.5;
+  };
   const typeFits = (x: AppCard, y: AppCard) => {
     for (const [a, b] of [[x, y], [y, x]] as const) {
       const n = named(a);
@@ -258,9 +269,10 @@ export function createSynergy(data: AppData) {
         p.reasonsEn.push(reasonEn);
       }
     };
-    // 効果から読んだ結びつき（供給と要求・場にためたエネ・エネ加速など）は、タイプが食い違えば結ばない
+    // 効果から読んだ結びつき（供給と要求・場にためたエネ・エネ加速など）は、タイプが食い違えば結ばない。
+    // ポケモンどうしは、ワザに要るエネの色も見る（同じデッキに入れるとエネが混ざる）
     const pushRule = (card: AppCard, score: number, reason: string, reasonEn: string) => {
-      if (typeFits(x, card) && !onlyWith(x, card) && !onlyWith(card, x)) push(card, score, reason, reasonEn);
+      if (typeFits(x, card) && !onlyWith(x, card) && !onlyWith(card, x)) push(card, score * energyFit(x, card), reason, reasonEn);
     };
     // 攻略記事で紹介されている組み合わせ（いちばん強く結ぶ）
     // 同じ組を複数の記事が紹介していても、2つ目からは少しだけ足す（記事の数だけで順位が決まらないように）
