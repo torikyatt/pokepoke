@@ -488,7 +488,11 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       const term = r.replace(FILLER, "");
       if (term.length >= 2) add(textCond(term));
     }
-    return conds;
+    // 「トラッシュの枚数で変わる」→「トラッシュの枚数」と「（条件で）変わる」のように、別々の言葉から親子のタグが出たら、
+    // 広い親のタグ（多くのカードに付いている）は外す。子のタグだけで十分に絞れる。
+    // 1つの言葉が親子の両方に当たるとき（「手札を減らす」→ 手札干渉・手札を山札にもどさせる）は、わざとなので残す
+    const tags = conds.filter((c): c is Extract<Cond, { kind: "tag" }> => c.kind === "tag");
+    return conds.filter((c) => c.kind !== "tag" || !tags.some((d) => d.tag.startsWith(`${c.tag}.`) && d.word !== c.word));
   }
 
   /** 条件でカードを絞り込み、並べる */
