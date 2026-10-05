@@ -313,10 +313,10 @@ export function DetailSheet() {
         style={{ transform: SHEET_TRANSFORM[at] }}
       >
         {/* 半分で止まる位置の合図: ふちが電球色にふわっと光る */}
-        <div aria-hidden className="pointer-events-none absolute inset-0 z-10 rounded-t-3xl opacity-0 shadow-[0_-6px_30px_8px_rgb(255_190_105/0.6),inset_0_0_0_2px_rgb(255_205_130/0.9),inset_0_14px_22px_-12px_rgb(255_214_150/0.75)] transition-opacity duration-200 group-data-[hint=1]:opacity-100" />
+        <div aria-hidden className="pointer-events-none absolute inset-0 z-10 rounded-t-3xl opacity-0 shadow-[0_-6px_34px_12px_rgb(255_222_160/0.85),inset_0_0_0_2px_rgb(255_232_190),inset_0_14px_22px_-12px_rgb(255_240_210/0.8)] transition-opacity duration-200 group-data-[hint=1]:opacity-100" />
         <div ref={header} className="shrink-0 px-3 pt-1 pb-1.5">
           <button type="button" aria-label={snap === "half" ? t("いっぱいに開く", "Expand") : t("半分に下げる", "Lower halfway")} onClick={() => useDetail.setState({ snap: snap === "half" ? "full" : "half" })} className="mx-auto block pt-0.5 pb-1">
-            <span className="block h-1 w-10 rounded-full bg-[#c5cfdb] transition-all duration-150 group-data-[hint=1]:w-16 group-data-[hint=1]:bg-[#ffc46b]" />
+            <span className="block h-1 w-10 rounded-full bg-[#c5cfdb] transition-all duration-150 group-data-[hint=1]:w-16 group-data-[hint=1]:bg-[#ffe2a8]" />
           </button>
           <DetailHeader card={card} />
         </div>
