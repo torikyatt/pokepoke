@@ -153,6 +153,9 @@ type SheetPos = "full" | "half" | "closed";
 // 位置ごとの見た目。指で動かしている間は DOM を直接書き換え、離したらこの値に揃える（React と同じ文字列にする）
 const SHEET_TRANSFORM: Record<SheetPos, string> = { full: "translate3d(0,0,0)", half: `translate3d(0,${HALF * 100}%,0)`, closed: "translate3d(0,105%,0)" };
 const SHEET_DIM: Record<SheetPos, string> = { full: "1", half: "0", closed: "0" };
+const SLOW = 0.3; // これより遅ければ「ゆっくり」（px/ms）
+/** 真ん中あたりをゆっくり動かしている（ここで離すと半分の高さで止まる） */
+const inHalfZone = (off: number, h: number, speed: number) => Math.abs(speed) <= SLOW && Math.abs(off - h * HALF) < h * 0.12;
 
 /**
  * スマホ: 下からせり上がる詳細。下へスワイプで閉じる。
@@ -191,8 +194,15 @@ export function DetailSheet() {
       el.style.transform = `translate3d(0,${y}px,0)`;
       const b = backdrop.current;
       if (b) b.style.opacity = String(Math.max(0, 1 - y / (el.offsetHeight * HALF)));
+      // 真ん中あたりをゆっくり動かしている間は、シートのふちを光らせて「ここで離すと止まる」と知らせる
+      const hint = inHalfZone(y, el.offsetHeight, v);
+      if (hint !== (el.dataset.hint === "1")) {
+        el.dataset.hint = hint ? "1" : "";
+        if (hint) navigator.vibrate?.(8); // 振動できる端末では軽く
+      }
     };
     const settle = (to: SheetPos) => {
+      el.dataset.hint = "";
       el.style.transition = "";
       el.style.transform = SHEET_TRANSFORM[to];
       const b = backdrop.current;
@@ -263,9 +273,9 @@ export function DetailSheet() {
       const h = el.offsetHeight;
       // 指を止めてから離したなら、速さは 0
       const speed = e.timeStamp - lastT > 90 ? 0 : v;
-      if (speed > 0.3) settle("closed"); // 下へ払った（速さ px/ms）
-      else if (speed < -0.3) settle("full"); // 上へ払った
-      else if (Math.abs(off - h * HALF) < h * 0.12) settle("half"); // 真ん中あたりで離した
+      if (speed > SLOW) settle("closed"); // 下へ払った（速さ px/ms）
+      else if (speed < -SLOW) settle("full"); // 上へ払った
+      else if (inHalfZone(off, h, speed)) settle("half"); // 真ん中あたりで離した
       else settle(off < h * HALF ? "full" : "closed");
     };
     el.addEventListener("touchstart", onStart, { passive: true });
@@ -299,12 +309,17 @@ export function DetailSheet() {
         aria-modal={full}
         aria-hidden={!open}
         aria-label={card ? cardName(card, lang) : t("カード詳細", "Card details")}
-        className={`fixed inset-x-0 bottom-0 z-50 mx-auto flex h-[94dvh] max-w-3xl flex-col rounded-t-3xl bg-canvas shadow-[0_-6px_24px_rgb(61_71_87/0.22)] [backface-visibility:hidden] will-change-transform transition-transform duration-300 ease-[cubic-bezier(.2,.8,.2,1)] ${open ? "" : "pointer-events-none"}`}
+        className={`group fixed inset-x-0 bottom-0 z-50 mx-auto flex h-[94dvh] max-w-3xl flex-col rounded-t-3xl bg-canvas shadow-[0_-6px_24px_rgb(61_71_87/0.22)] [backface-visibility:hidden] will-change-transform transition-transform duration-300 ease-[cubic-bezier(.2,.8,.2,1)] ${open ? "" : "pointer-events-none"}`}
         style={{ transform: SHEET_TRANSFORM[at] }}
       >
+        {/* 半分で止まる位置の合図: ふちが光り、上に「ここで離すと…」が出る */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 z-10 rounded-t-3xl opacity-0 shadow-[0_-4px_22px_4px_rgb(47_181_165/0.6),inset_0_0_0_2px_rgb(47_181_165/0.85)] transition-opacity duration-150 group-data-[hint=1]:opacity-100" />
+        <div aria-hidden className="pointer-events-none absolute -top-10 left-1/2 z-10 -translate-x-1/2 translate-y-1 rounded-full bg-accent px-3 py-1 text-xs font-extrabold whitespace-nowrap text-white opacity-0 shadow-lg transition duration-150 group-data-[hint=1]:translate-y-0 group-data-[hint=1]:opacity-100">
+          {t("ここで離すと半分の高さで止まります", "Release here to keep it half open")}
+        </div>
         <div ref={header} className="shrink-0 px-3 pt-1 pb-1.5">
           <button type="button" aria-label={snap === "half" ? t("いっぱいに開く", "Expand") : t("半分に下げる", "Lower halfway")} onClick={() => useDetail.setState({ snap: snap === "half" ? "full" : "half" })} className="mx-auto block pt-0.5 pb-1">
-            <span className="block h-1 w-10 rounded-full bg-[#c5cfdb]" />
+            <span className="block h-1 w-10 rounded-full bg-[#c5cfdb] transition-all duration-150 group-data-[hint=1]:w-16 group-data-[hint=1]:bg-accent" />
           </button>
           <DetailHeader card={card} />
         </div>
