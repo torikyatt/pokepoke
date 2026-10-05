@@ -35,6 +35,20 @@ describe("受け入れテスト", () => {
     expect(hits.map((h) => h.card.id)).toContain("a1-054"); // カメール「スプラッシュ」水＋無色
   });
 
+  it("ワザのエネのタイプとポケモンのタイプを別々に指定できる（3エネ以下無色技　水ポケモン）", () => {
+    const conds = engine.parse("3エネ以下無色技　水ポケモン").map((c) => c.kind);
+    expect(conds).toEqual(expect.arrayContaining(["costTyped", "costTotal", "type"]));
+    const hits = engine.run(engine.parse("3エネ以下無色技　水ポケモン"), 500);
+    expect(hits.length).toBeGreaterThan(10);
+    for (const h of hits) {
+      expect(h.card.type).toBe("water");
+      expect(h.card.attacks.some((a) => a.costTyped === 0 && a.costTotal <= 3)).toBe(true);
+    }
+    // 「水技」はワザに水エネが要ること（ポケモンのタイプは「草ポケモン」のほうで絞る）
+    const water = engine.run(engine.parse("水技 草ポケモン"), 500);
+    for (const h of water) expect(h.card.attacks.some((a) => (a.cost.water ?? 0) > 0)).toBe(true);
+  });
+
   it("エネ加速できる炎のカード", () => {
     const all = ids("エネ加速できる炎のカード");
     // ブーバー・リザードンex（エネゾーンから自分へ）、ブースター（ベンチへ）、カキ（サポート）

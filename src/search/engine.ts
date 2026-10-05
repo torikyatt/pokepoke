@@ -22,6 +22,7 @@ export type Cond = { id: string; label: string; en: string; weight?: number; wor
   | { kind: "variable" }
   | { kind: "cost"; type: EnergyType; n: number }
   | { kind: "costTyped"; n: number }
+  | { kind: "costHas"; type: EnergyType } // そのタイプのエネを使うワザ（「水技」）
   | { kind: "costTotal"; op: Op; n: number }
   | { kind: "damage"; op: Op; n: number }
   | { kind: "hp"; op: Op; n: number }
@@ -98,6 +99,9 @@ const META: Cond = { id: "meta", kind: "meta", label: "大会でよく使われ�
 const OHKO: Cond = { id: "damage:ge150", kind: "damage", op: "ge", n: 150, label: "150ダメージ以上（ワンパン級）", en: "150+ damage (one-hit KO)" };
 const FAST: Cond = { id: "costTotal:le1", kind: "costTotal", op: "le", n: 1, label: "1エネ以下で使える（速攻）", en: "Usable with 1 Energy or less (fast)" };
 const COLORLESS_ONLY: Cond = { id: "costTyped", kind: "costTyped", n: 0, label: "無色エネだけで使える", en: "Colorless Energy only" };
+/** 「無色技」「水エネのワザ」: ワザに要るエネのタイプ（ポケモン自身のタイプとは別）。無色は無色エネだけで使えるワザ */
+const attackTypeCond = (t: EnergyType): Cond =>
+  t === "colorless" ? COLORLESS_ONLY : { id: `costHas:${t}`, kind: "costHas", type: t, label: `${TYPE_JA[t]}エネを使うワザ`, en: `Attack using ${TYPE_EN[t]} Energy` };
 
 // 数値パターンで使うタイプ名（正規化後）
 const TYPE_WORD: [string, EnergyType][] = [
@@ -318,6 +322,9 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       take(new RegExp(`(?<![a-z])weak(?:ness)?\\s+(?:to\\s+|is\\s+|against\\s+)?(${TYPE_RE_EN})${END}`, "g"), (m) => add(weakCond(typeOfEn(m[1]))));
       take(new RegExp(`(?<![a-z])(?:ohko|one\\s+hit\\s+(?:ko|knock\\s*out)|one\\s+shot|one\\s+hit)${END}`, "g"), () => add(OHKO));
       take(new RegExp(`(?:(?<![a-z])(?:any|colorless)\\s+energy\\s+only|(?<![a-z])only\\s+colorless(?:\\s+energy)?|(?<![a-z])any\\s+(?:type\\s+of\\s+)?energy)${END}`, "g"), () => add(COLORLESS_ONLY));
+      take(new RegExp(`(?<![a-z])(${TYPE_RE_EN})(?:\\s+energy)?\\s+attacks?${END}|(?<![a-z])attacks?\\s+(?:using|with|costing|that\\s+costs?|that\\s+uses?)\\s+(?:only\\s+)?(${TYPE_RE_EN})(?:\\s+energy)?${END}`, "g"), (m) =>
+        add(attackTypeCond(typeOfEn(m[1] ?? m[2]))),
+      );
       take(new RegExp(`${N_EN}\\s+(${TYPE_RE_EN})(?:\\s+energy|\\s+energies)?${END}|(?<![a-z])(${TYPE_RE_EN})\\s+energy\\s*x?\\s*${N_EN}${END}`, "g"), (m) =>
         add(costCond(typeOfEn(m[2] ?? m[3]), numEn(m[1] ?? m[4]))),
       );
@@ -443,6 +450,11 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
         typedSeen = true;
       }
       add(costCond(t, +m[2]));
+    });
+    // 「無色技」「水エネのワザ」「無色エネで使えるワザ」→ ワザに要るエネのタイプ。
+    // ポケモン自身のタイプ（「水ポケモン」）とは別の条件にするので、一緒に書けば両方で絞り込める
+    take(new RegExp(`(${TYPE_RE})(?:えね)?(?:の|で(?:使える|つかえる|打てる|撃てる)(?:の)?)?(?:わざ|技)`, "g"), (m) => {
+      add(attackTypeCond(typeOf(m[1])));
     });
     take(/(?:あとは|あと|残りは|残り|のこりは|ほかは|他は)無色/g, () => {
       add({ id: "costTyped", kind: "costTyped", n: typedSum, label: typedSeen ? "残りは無色" : "無色だけ", en: typedSeen ? "Rest Colorless" : "Colorless only" });
@@ -611,8 +623,8 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     const of = <K extends Cond["kind"]>(k: K) => conds.filter((c): c is Extract<Cond, { kind: K }> => c.kind === k);
     const types = of("type"), kinds = of("cardKind"), stages = of("stage"), rules = of("rule"), groups = of("group");
     const slot = of("slot")[0]?.value;
-    const atk = { cost: of("cost"), costTyped: of("costTyped"), costTotal: of("costTotal"), damage: of("damage") };
-    const atkConds = [...atk.cost, ...atk.costTyped, ...atk.costTotal, ...atk.damage];
+    const atk = { cost: of("cost"), costTyped: of("costTyped"), costHas: of("costHas"), costTotal: of("costTotal"), damage: of("damage") };
+    const atkConds = [...atk.cost, ...atk.costTyped, ...atk.costHas, ...atk.costTotal, ...atk.damage];
     const nums = [...of("hp"), ...of("retreat")];
     const weak = of("weakness");
     const soft = conds.filter((c) => c.kind === "tag" || c.kind === "variable");
@@ -746,6 +758,7 @@ function attackOk(a: AppCard["attacks"][number], c: Cond): boolean {
   switch (c.kind) {
     case "cost": return (a.cost[c.type] ?? 0) === c.n;
     case "costTyped": return a.costTyped === c.n;
+    case "costHas": return (a.cost[c.type] ?? 0) > 0;
     case "costTotal": return cmp(a.costTotal, c.op, c.n);
     case "damage": return cmp(a.damage, c.op, c.n);
     default: return true;
