@@ -265,13 +265,15 @@ function EffectBlock({ e, label, tagChip, lang }: { e: AppEffect; label: string;
   const otherName = lang === "en" ? e.nameJa : e.nameEn;
   const otherText = lang === "en" ? e.textJa : e.textEn;
   const atk = e.slot === "attack" ? (e as AppAttack) : undefined;
+  const ability = e.slot === "ability";
   const dmg = atk?.damage !== undefined ? `${atk.damage}${atk.damageVariable ? (/for each/i.test(atk.textEn ?? "") ? "×" : "+") : ""}` : atk?.damageVariable ? "?" : "";
   return (
     <div className="neu rounded-2xl p-3.5">
       <div className="flex items-center gap-2">
-        <span className="rounded-full bg-badge px-2 py-0.5 text-[10px] font-bold text-white">{label}</span>
+        {/* 特性は実際のカードと同じく、ラベルも名前も濃いめの赤 */}
+        <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold text-white ${ability ? "bg-[#c4302b]" : "bg-badge"}`}>{label}</span>
         {atk && <Cost cost={atk.cost} />}
-        <span className="min-w-0 flex-1 truncate font-extrabold">
+        <span className={`min-w-0 flex-1 truncate font-extrabold ${ability ? "text-[#c4302b]" : ""}`}>
           {name}
           {lang === "ja" && e.machine && <MachineBadge />}
         </span>
