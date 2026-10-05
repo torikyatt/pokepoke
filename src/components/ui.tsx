@@ -230,12 +230,14 @@ export const IconSort = () => (
   </svg>
 );
 
-/** サイト名。サブで「TCG Pocket の図鑑」と分かるようにする */
-export const BRAND = "POKÉPOKE INDEX";
+/** サイト名（INDEX＝索引 と DECKS を掛けている）。ロゴでは DECKS に色を付け、サブで「TCG Pocket 用」と分かるようにする */
+export const BRAND = "POKÉPOKE INDECKS";
 export function Logo({ className = "text-lg" }: { className?: string }) {
   return (
     <span className="inline-flex flex-col items-start leading-none">
-      <span className={`font-extrabold tracking-wider text-ink ${className}`}>{BRAND}</span>
+      <span className={`font-extrabold tracking-wider text-ink ${className}`} aria-label={BRAND}>
+        POKÉPOKE IN<span className="text-accent-deep">DECKS</span>
+      </span>
       <span className="mt-1 text-[9px] font-extrabold tracking-[0.18em] text-muted">for Pokémon TCG Pocket</span>
     </span>
   );

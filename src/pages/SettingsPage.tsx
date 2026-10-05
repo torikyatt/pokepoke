@@ -105,7 +105,7 @@ export function SettingsPage({ embedded }: { embedded?: boolean }) {
         </section>
 
         <section className="neu space-y-1 rounded-3xl p-4 text-xs text-muted">
-          <h2 className="text-sm font-extrabold text-ink">{t("POKÉPOKE INDEX について", "About POKÉPOKE INDEX")}</h2>
+          <h2 className="text-sm font-extrabold text-ink">{t("POKÉPOKE INDECKS について", "About POKÉPOKE INDECKS")}</h2>
           <p>
             {t(
               "個人用の非公式ツールです。ポケモン・ポケモンカードゲーム Pocket は任天堂・クリーチャーズ・ゲームフリーク・株式会社ポケモンの商標です。",

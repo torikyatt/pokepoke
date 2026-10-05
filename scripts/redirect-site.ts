@@ -18,7 +18,7 @@ const html = `<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <link rel="canonical" href="${url}">
-<title>POKÉPOKE INDEX に引っ越しました</title>
+<title>POKÉPOKE INDECKS に引っ越しました</title>
 <script>location.replace(${js} + location.hash);</script>
 <noscript><meta http-equiv="refresh" content="0; url=${url}"></noscript>
 <style>
@@ -29,8 +29,8 @@ const html = `<!doctype html>
 </head>
 <body>
 <main>
-  <p><b>POKÉPOKE LAB は「POKÉPOKE INDEX」になり、新しいアドレスに引っ越しました。</b><br>自動で移動しない場合は、こちらを開いてください。</p>
-  <p>POKÉPOKE LAB is now POKÉPOKE INDEX and has moved. If you are not redirected, open the new site:</p>
+  <p><b>POKÉPOKE LAB は「POKÉPOKE INDECKS」になり、新しいアドレスに引っ越しました。</b><br>自動で移動しない場合は、こちらを開いてください。</p>
+  <p>POKÉPOKE LAB is now POKÉPOKE INDECKS and has moved. If you are not redirected, open the new site:</p>
   <p><a id="go" href="${url}">${url}</a></p>
 </main>
 <script>document.getElementById("go").href = ${js} + location.hash;</script>
