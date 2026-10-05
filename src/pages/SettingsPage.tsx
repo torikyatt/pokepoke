@@ -6,6 +6,40 @@ import { useSettings } from "../store.ts";
 import { Chip } from "../components/ui.tsx";
 import { dateStr, useT } from "../i18n.ts";
 
+// データの出典（設定画面の「データの出典」に並べる）
+const SOURCES: { name: string; url: string; ja: string; en: string }[] = [
+  {
+    name: "PocketDecks / pokemon-tcg-pocket-cards",
+    url: "https://github.com/PocketDecks/pokemon-tcg-pocket-cards",
+    ja: "カードの基本データ（英語のカード名・効果文・HP・ワザのコスト・収録パックなど）と、英語のカード画像。ライセンスは AGPL-3.0 です。",
+    en: "Core card data (English names, card text, HP, attack costs, expansions, etc.) and English card images. Licensed under AGPL-3.0.",
+  },
+  {
+    name: "Game8（ポケポケ攻略）",
+    url: "https://game8.jp/pokemon-tcg-pocket",
+    ja: "日本語のカード名・効果文・カード画像・収録パック名。定番の組み合わせは、デッキ解説記事を参考に、内容を自分の言葉でまとめ直したものです（各組み合わせに記事へのリンクがあります）。",
+    en: "Japanese card names, card text, card images and pack names. Known combos are summarized in our own words from their Japanese deck guides (each combo links to its article).",
+  },
+  {
+    name: "Game8 (Pokémon TCG Pocket Wiki)",
+    url: "https://game8.co/games/Pokemon-TCG-Pocket",
+    ja: "英語版のデッキ解説記事。定番の組み合わせの一部は、これを参考に自分の言葉でまとめ直したものです（各組み合わせに記事へのリンクがあります）。",
+    en: "English deck guides. Some known combos are summarized in our own words from these guides (each combo links to its article).",
+  },
+  {
+    name: "Limitless TCG",
+    url: "https://play.limitlesstcg.com/",
+    ja: "大会の結果とデッキリスト。カードの採用率・一緒に使われるカード・「このカードを使ったデッキ」は、ここの大会結果を集計したものです。",
+    en: "Tournament results and decklists. Card usage rates, cards played together and “tournament decks with this card” are aggregated from these results.",
+  },
+  {
+    name: "PokéAPI",
+    url: "https://pokeapi.co/",
+    ja: "ポケモンの日本語名（日本語のカード名が見つからないときの補い）。",
+    en: "Japanese Pokémon names (used where no Japanese card name was found).",
+  },
+];
+
 export function SettingsPage({ embedded }: { embedded?: boolean }) {
   const { data } = useData();
   const { lang, setLang, imageLang, setImageLang } = useSettings();
@@ -78,29 +112,26 @@ export function SettingsPage({ embedded }: { embedded?: boolean }) {
               "An unofficial personal tool. Pokémon and Pokémon TCG Pocket are trademarks of Nintendo, Creatures, GAME FREAK and The Pokémon Company.",
             )}
           </p>
-          <p>
-            {t("カードデータ: ", "Card data: ")}
-            <a className="underline" href="https://github.com/PocketDecks/pokemon-tcg-pocket-cards">
-              PocketDecks/pokemon-tcg-pocket-cards
-            </a>
+        </section>
+
+        <section className="neu space-y-3 rounded-3xl p-4 text-xs text-muted">
+          <h2 className="text-sm font-extrabold text-ink">{t("データの出典", "Data sources")}</h2>
+          <p>{t("このサイトは、次のサイト・データを参照・引用して作っています。各サイトに感謝します。", "This site is built on data from the following sources. Many thanks to each of them.")}</p>
+          <ul className="space-y-2.5">
+            {SOURCES.map((src) => (
+              <li key={src.url}>
+                <a className="font-extrabold text-accent-deep underline" href={src.url} target="_blank" rel="noreferrer">
+                  {src.name}
+                </a>
+                <div className="mt-0.5 leading-relaxed">{t(src.ja, src.en)}</div>
+              </li>
+            ))}
+          </ul>
+          <p className="leading-relaxed">
             {t(
-              "（AGPL-3.0）。日本語のカード文と日本語のカード画像は Game8 掲載のもの、ポケモン名は PokéAPI を参照。「仮訳」の付いた文は機械翻訳です。大会での使われ方は ",
-              " (AGPL-3.0). Japanese card text and images are from Game8; Pokémon names from PokéAPI. Text marked “MT” in Japanese mode is machine-translated. Tournament usage is aggregated from ",
+              "日本語表示で「仮訳」の付いた文は、日本語の公式テキストが見つからなかったため英語から機械翻訳したものです。カードの画像・名称・テキストの権利は、それぞれの権利者に帰属します。",
+              "In Japanese mode, text marked “仮訳” is a machine translation from English where no official Japanese text was found. Card images, names and text belong to their respective rights holders.",
             )}
-            <a className="underline" href="https://play.limitlesstcg.com/">
-              Limitless TCG
-            </a>
-            {t(
-              " の大会結果を集計したもの、定番の組み合わせは Game8 のデッキ解説記事をもとにまとめたものです。",
-              " results; known combos are summarized from Game8's (Japanese) deck guides.",
-            )}
-          </p>
-          <p>
-            {t("ソースコード: ", "Source code: ")}
-            <a className="underline" href="https://github.com/torikyatt/pokepoke">
-              github.com/torikyatt/pokepoke
-            </a>
-            （AGPL-3.0）
           </p>
         </section>
       </div>
