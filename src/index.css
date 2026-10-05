@@ -101,6 +101,26 @@ body {
   scrollbar-width: none;
 }
 
+/* 前・次のカードのボタン: 入れ替わったサムネイルが、動いた向きから流れ込む */
+.nav-from-right {
+  animation: nav-in 140ms ease-out;
+  --nav-from: 12px;
+}
+.nav-from-left {
+  animation: nav-in 140ms ease-out;
+  --nav-from: -12px;
+}
+@keyframes nav-in {
+  from {
+    transform: translateX(var(--nav-from));
+    opacity: 0.2;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
 @keyframes pop-in {
   from {
     transform: scale(0.6);

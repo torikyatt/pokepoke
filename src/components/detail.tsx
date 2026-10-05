@@ -473,11 +473,18 @@ export function DetailNav({ bottom }: { bottom: string }) {
   const { open, list, listPos } = useDetail();
   const t = useT();
   const drag = useRef<{ x: number; steps: number; moved: boolean } | null>(null);
+  const [shift, setShift] = useState(0); // スワイプ中のサムネイルのずれ（指についてくる感じ）
+  const [dragging, setDragging] = useState(false);
+  const [dir, setDir] = useState(0); // 最後に動いた向き（+1 次へ / -1 前へ）。入れ替わったサムネイルがその向きから流れ込む
   if (!open || list.length < 2 || listPos < 0) return null;
   const prev = listPos > 0 ? byId.get(list[listPos - 1]) : undefined;
   const next = listPos < list.length - 1 ? byId.get(list[listPos + 1]) : undefined;
   // スワイプしている間、指が STEP 動くごとに1枚ずつ切り替わる（左へ動かすと次のカード）
   const STEP = 30;
+  const step = (d: number) => {
+    setDir(Math.sign(d));
+    stepCard(d);
+  };
   const onDown = (e: React.PointerEvent) => {
     drag.current = { x: e.clientX, steps: 0, moved: false };
   };
@@ -488,15 +495,21 @@ export function DetailNav({ bottom }: { bottom: string }) {
     if (!d.moved && Math.abs(dx) < 8) return;
     if (!d.moved) {
       d.moved = true;
+      setDragging(true);
       (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
     }
     const steps = Math.trunc(dx / STEP);
     if (steps !== d.steps) {
-      stepCard(-(steps - d.steps));
+      step(-(steps - d.steps));
       d.steps = steps;
     }
+    // 前・次が無い向きには、少しだけしか動かない
+    const atEnd = (dx < 0 && !next) || (dx > 0 && !prev);
+    setShift(atEnd ? Math.max(-4, Math.min(4, dx * 0.1)) : (dx - steps * STEP) * 0.4);
   };
   const onUp = () => {
+    setShift(0);
+    setDragging(false);
     // スワイプしたあとのクリックは、タップとして扱わない
     if (drag.current?.moved) setTimeout(() => (drag.current = null), 0);
     else drag.current = null;
@@ -507,8 +520,10 @@ export function DetailNav({ bottom }: { bottom: string }) {
   };
   const side = "flex h-full min-w-0 flex-1 items-center gap-1 text-muted disabled:opacity-30";
   const thumb = (c?: AppCard) => (
-    <span className="block w-6 shrink-0 overflow-hidden rounded-[3px] shadow">
-      {c ? <Thumb card={c} className="rounded-[3px]" /> : <span className="block aspect-[367/512] bg-line" />}
+    <span className="block w-6 shrink-0" style={{ transform: shift ? `translateX(${shift}px)` : undefined, transition: dragging ? undefined : "transform 150ms ease-out" }}>
+      <span key={c?.id ?? "none"} className={`block overflow-hidden rounded-[3px] shadow ${dir > 0 ? "nav-from-right" : dir < 0 ? "nav-from-left" : ""}`}>
+        {c ? <Thumb card={c} className="rounded-[3px]" /> : <span className="block aspect-[367/512] bg-line" />}
+      </span>
     </span>
   );
   return (
@@ -522,7 +537,7 @@ export function DetailNav({ bottom }: { bottom: string }) {
       className="neu pop-in fixed left-1/2 z-[52] flex h-[50px] w-[172px] -translate-x-1/2 touch-none items-stretch overflow-hidden rounded-2xl border border-white/70 bg-panel/45 px-1 backdrop-blur-md select-none"
       style={{ bottom }}
     >
-      <button type="button" disabled={!prev} onClick={tap(() => stepCard(-1))} aria-label={prev ? t(`前のカード「${prev.nameJa}」`, `Previous: ${prev.nameEn}`) : t("前のカードはありません", "No previous card")} className={`${side} justify-start pl-1`}>
+      <button type="button" disabled={!prev} onClick={tap(() => step(-1))} aria-label={prev ? t(`前のカード「${prev.nameJa}」`, `Previous: ${prev.nameEn}`) : t("前のカードはありません", "No previous card")} className={`${side} justify-start pl-1`}>
         <span className="text-sm font-extrabold">‹</span>
         {thumb(prev)}
       </button>
@@ -532,7 +547,7 @@ export function DetailNav({ bottom }: { bottom: string }) {
           {listPos + 1}/{list.length}
         </span>
       </button>
-      <button type="button" disabled={!next} onClick={tap(() => stepCard(1))} aria-label={next ? t(`次のカード「${next.nameJa}」`, `Next: ${next.nameEn}`) : t("次のカードはありません", "No next card")} className={`${side} justify-end pr-1`}>
+      <button type="button" disabled={!next} onClick={tap(() => step(1))} aria-label={next ? t(`次のカード「${next.nameJa}」`, `Next: ${next.nameEn}`) : t("次のカードはありません", "No next card")} className={`${side} justify-end pr-1`}>
         {thumb(next)}
         <span className="text-sm font-extrabold">›</span>
       </button>
