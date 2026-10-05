@@ -169,7 +169,7 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
                     <div className="mt-1 flex flex-wrap items-center gap-x-2 text-[10px] font-bold text-muted">
                       <span>{lang === "en" ? cb.deckEn : cb.deck}</span>
                       <a href={cb.source} target="_blank" rel="noreferrer" className="underline">
-                        {t("出典", "Source (Japanese)")}
+                        {/game8\.jp/.test(cb.source) ? t("出典", "Source (Japanese)") : t("出典（英語）", "Source")}
                       </a>
                     </div>
                   </div>
