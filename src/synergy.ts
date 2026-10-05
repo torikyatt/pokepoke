@@ -365,16 +365,38 @@ export function createSynergy(data: AppData) {
       }
     }
 
-    // 同じポケモンたちを支える2枚（例: にじいろの洞窟はドラゴンのエネ事故を減らし、ハクリューはドラゴンにエネを送る）
+    // 相性のいい相手が多く重なる2枚（例: にじいろの洞窟もハクリューも、ドラゴンポケモンと相性がいい）。
+    // 理由には、重なる相手が何か（多くが同じタイプ・同じ進化段階ならそれ、そうでなければ名前を2つまで。ポケモンを先に）を書く
+    const commonGroup = (ids: string[]): [string, string] => {
+      const cs = ids.map((id) => byId.get(id)!).filter(Boolean);
+      const most = <K extends string>(key: (c: AppCard) => K | undefined) => {
+        const n = new Map<K, number>();
+        for (const c of cs) {
+          const k = key(c);
+          if (k) n.set(k, (n.get(k) ?? 0) + 1);
+        }
+        const top = [...n].sort((a, b) => b[1] - a[1])[0];
+        return top && top[1] >= cs.length * 0.7 ? top[0] : undefined;
+      };
+      const t = most((c) => (c.type && c.type !== "colorless" ? c.type : undefined));
+      if (t) return [`${TYPE_JA[t]}ポケモン`, `${TYPE_EN[t]} Pokémon`];
+      const st = most((c) => (c.stage && c.stage !== "basic" ? c.stage : undefined));
+      if (st) return [`${STAGE_JA[st]}ポケモン`, `${st === "stage1" ? "Stage 1" : "Stage 2"} Pokémon`];
+      const names = [...new Map([...cs].sort((a, b) => (a.kind === "pokemon" ? 0 : 1) - (b.kind === "pokemon" ? 0 : 1)).map((c) => [c.nameEn, c])).values()].slice(0, 2);
+      const more = new Set(cs.map((c) => c.nameEn)).size > 2;
+      return [names.map((c) => c.nameJa).join("・") + (more ? "など" : ""), names.map((c) => c.nameEn).join(", ") + (more ? ", etc." : "")];
+    };
     const rx = receiversOf(x);
     if (rx.size >= 3) {
       for (const y of supporters) {
         if (y.id === x.id) continue;
         const ry = receiversOf(y);
         if (ry.size < 3) continue;
-        let n = 0;
-        for (const id of rx) if (ry.has(id)) n++;
-        if (n >= 3 && n / Math.min(rx.size, ry.size) >= 0.3) pushRule(y, 0.5, "同じポケモンを支える", "Supports the same Pokémon");
+        const both = [...rx].filter((id) => ry.has(id));
+        if (both.length >= 3 && both.length / Math.min(rx.size, ry.size) >= 0.3) {
+          const [ja, en] = commonGroup(both);
+          pushRule(y, 0.5, `どちらも${ja}と相性がいい`, `Both pair well with ${en}`);
+        }
       }
     }
 
