@@ -133,6 +133,14 @@ describe.skipIf(!data.meta)("実際の使われ方（攻略記事・大会デー
     const research = data.cards.find((c) => c.nameJa === "博士の研究")!;
     expect(reasonOf("b3-081", /大会で一緒に採用/).map((p) => p.card.id)).not.toContain(research.id);
   });
+  it("大会で一緒に入る割合が 15% 以下の組は、相性の良いカードに出さない", () => {
+    const low = data.cards
+      .slice(0, 400)
+      .flatMap((c) => reasonOf(c.id, /大会で一緒に採用（\d+%）/))
+      .flatMap((p) => p.reasons.map((r) => /大会で一緒に採用（(\d+)%）/.exec(r)?.[1]).filter(Boolean).map(Number));
+    expect(low.length).toBeGreaterThan(0);
+    expect(low.every((n) => n > 15)).toBe(true);
+  });
 });
 
 describe("対象が決まっている「山札からポケモンを持ってくる」", () => {

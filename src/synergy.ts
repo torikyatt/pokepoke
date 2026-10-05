@@ -230,6 +230,8 @@ export function createSynergy(data: AppData) {
   /** 2枚とも半分以上のデッキに入っているデッキタイプ（いちばん使われているもの） */
   const sharedArch = (a: string, b: string) =>
     (archOf.get(a) ?? []).filter((x) => x.rate >= 0.5).map((x) => x.arch).find((arch) => arch.cards.some((c) => c.id === b && c.rate >= 0.5));
+  /** 大会で一緒に入る割合（画面に出す % の数字）がこれ以下の組は、相性の良いカードに出さない */
+  const CO_USE_MIN_PCT = 15;
   // 大会で一緒に使われる組の強さ。一緒に入る割合が低いものと、どのデッキにも入る定番（モノマネむすめ・アカギ・ナツメ・スピーダーなど）は少し下げる
   const coUseScore = (id: string, rate: number) => {
     const global = data.meta?.usage[id] ?? 0;
@@ -269,11 +271,13 @@ export function createSynergy(data: AppData) {
         comboSeen.add(id);
       }
     }
-    // 大会で一緒に使われる組。相手が入っている割合が高いほど強く結ぶ
+    // 大会で一緒に使われる組。相手が入っている割合が高いほど強く結ぶ。
+    // 一緒に入る割合が 15% 以下なら相性とはみなさない（同じデッキタイプの中心どうしは除く）
     for (const u of coUsed.get(x.id) ?? []) {
       const c = byId.get(u.other);
       if (!c) continue;
       const arch = sharedArch(x.id, c.id);
+      if (!arch && Math.round(u.rate * 100) <= CO_USE_MIN_PCT) continue;
       push(
         c,
         coUseScore(c.id, u.rate),
