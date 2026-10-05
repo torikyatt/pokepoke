@@ -439,7 +439,7 @@ export function DetailDock({ bottom }: { bottom: string }) {
       onTouchStart={(e) => (startY.current = e.touches[0].clientY)}
       onTouchEnd={(e) => e.changedTouches[0].clientY - startY.current < -24 && reopenDetail()}
       aria-label={t(`最近見たカード「${cards[0].nameJa}」を開く`, `Open recently viewed: ${cards[0].nameEn}`)}
-      className="neu neu-press pop-in fixed left-1/2 z-[47] flex max-w-[56vw] -translate-x-1/2 items-center gap-2 rounded-2xl border border-white/70 py-1.5 pr-2.5 pl-2"
+      className="neu neu-press pop-in fixed left-1/2 z-[47] flex max-w-[56vw] -translate-x-1/2 items-center gap-2 rounded-2xl border border-white/70 bg-panel/45 py-1.5 pr-2.5 pl-2 backdrop-blur-md"
       style={{ bottom }}
     >
       <span className="relative h-9 w-7 shrink-0">
@@ -521,7 +521,7 @@ export function DetailNav({ bottom }: { bottom: string }) {
       onPointerMove={onMove}
       onPointerUp={onUp}
       onPointerCancel={onUp}
-      className="neu pop-in fixed left-1/2 z-[52] flex h-[50px] w-[172px] -translate-x-1/2 touch-none items-stretch overflow-hidden rounded-2xl border border-white/70 bg-panel/60 px-1 backdrop-blur-md select-none"
+      className="neu pop-in fixed left-1/2 z-[52] flex h-[50px] w-[172px] -translate-x-1/2 touch-none items-stretch overflow-hidden rounded-2xl border border-white/70 bg-panel/45 px-1 backdrop-blur-md select-none"
       style={{ bottom }}
     >
       <button type="button" disabled={!prev} onClick={tap(() => stepCard(-1))} aria-label={prev ? t(`前のカード「${prev.nameJa}」`, `Previous: ${prev.nameEn}`) : t("前のカードはありません", "No previous card")} className={`${side} justify-start pl-1`}>
