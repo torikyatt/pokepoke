@@ -66,6 +66,12 @@ describe("受け入れテスト", () => {
     expect(engine.explain("相手を毒にしたい").unread).toEqual([]);
   });
 
+  it("相手のポケモンを手札に戻す → 手札・山札にもどす（ポケモンを持ってくる・回収 には読まない）", () => {
+    const tagsOf = (q: string) => engine.parse(q).flatMap((c) => (c.kind === "tag" ? [c.tag] : []));
+    expect(tagsOf("相手のポケモンを手札に戻す")).toEqual(["field.bounce"]);
+    expect(tagsOf("ポケモンを手札に加える")).toEqual(["draw.search_pokemon"]);
+  });
+
   it("エネ加速できる炎のカード", () => {
     const all = ids("エネ加速できる炎のカード");
     // ブーバー・リザードンex（エネゾーンから自分へ）、ブースター（ベンチへ）、カキ（サポート）
