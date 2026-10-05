@@ -41,6 +41,7 @@ export const SCORED_KINDS: Cond["kind"][] = ["tag", "variable", "name", "text", 
 export interface Hit {
   card: AppCard;
   score: number;
+  loose?: boolean; // 条件にゆるく当たった（言葉が文にあるだけ・「グッズ」で探したどうぐ）。図鑑順でも後ろに並べる
   matched: string[]; // 一致した条件のID
   effects: string[]; // 一致したワザ・特性の名前
   effectsEn: string[];
@@ -651,8 +652,9 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       // ハード条件（同じ種類の条件どうしは OR）
       if (!hard(types, (t) => card.type === t.type || card.typeRefs.includes(t.type))) continue;
       // カードの種類（サポート・グッズ…）は、ほかのカードの文にもよく出てくるので、文では当てない
-      // 「グッズ」はポケモンのどうぐも含む（どうぐはグッズの一種）
-      if (kinds.length && !kinds.some((k) => (k.value === "trainer" ? card.kind !== "pokemon" : k.value === "item" ? card.kind === "item" || card.kind === "tool" : card.kind === k.value))) continue;
+      // 「グッズ」で探したときは、ポケモンのどうぐ（グッズとは別の種類）も、グッズの後ろに並べて出す（探しているものに近いので）
+      const toolAsItem = card.kind === "tool" && kinds.some((k) => k.value === "item") && !kinds.some((k) => k.value === "tool");
+      if (kinds.length && !toolAsItem && !kinds.some((k) => (k.value === "trainer" ? card.kind !== "pokemon" : card.kind === k.value))) continue;
       if (!hard(stages, (s) => (s.value === "evolved" ? card.stage === "stage1" || card.stage === "stage2" : card.stage === s.value))) continue;
       if (!hard(rules, (r) => ruleOk(card, r.value))) continue;
       if (!hard(groups, (g) => card.groups.includes(g.value))) continue;
@@ -677,7 +679,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       const effects = effectsOf(card).filter((e) => !slot || e.slot === slot || (e.slot === "text" && slot === "attack" && card.kind !== "pokemon"));
       const matched = new Set<string>();
       const effectNames = new Map<string, string>(); // 日本語名 → 英語名
-      let score = useScore - 0.5 * byText;
+      let score = useScore - 0.5 * byText - (toolAsItem ? 0.5 : 0);
       const best = new Map<string, number>();
       for (const e of effects) {
         let local = 0;
@@ -731,7 +733,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       if (atkConds.length) for (const a of okAttacks) effectNames.set(a.nameJa ?? a.nameEn ?? "", a.nameEn ?? a.nameJa ?? "");
       const note = decks.length ? `採用率 ${Math.round(deckRate.get(card.id)! * 100)}%` : metaCond ? `大会で ${((usage[card.id] ?? 0) * 100).toFixed(1)}%` : undefined;
       const noteEn = decks.length ? `In ${Math.round(deckRate.get(card.id)! * 100)}% of lists` : metaCond ? `${((usage[card.id] ?? 0) * 100).toFixed(1)}% in tournaments` : undefined;
-      hits.push({ card, score, matched: [...matched], effects: [...effectNames.keys()].filter(Boolean), effectsEn: [...effectNames.values()].filter(Boolean), ...(note ? { note, noteEn } : {}) });
+      hits.push({ card, score, ...(byText || toolAsItem ? { loose: true } : {}), matched: [...matched], effects: [...effectNames.keys()].filter(Boolean), effectsEn: [...effectNames.values()].filter(Boolean), ...(note ? { note, noteEn } : {}) });
     }
     hits.sort((a, b) => b.score - a.score || order(a.card) - order(b.card));
     return hits.slice(0, limit);

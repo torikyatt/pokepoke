@@ -32,7 +32,9 @@ export function usePoolResults(conds: Cond[]) {
     const raw: Hit[] = engine.run(conds, Infinity).filter((h) => (!fav || fav.has(h.card.id)) && matchFilters(h.card, filters));
     // 一致度順でも、検索文で一致度が付かないときは図鑑順。他の並びでは一致したもの全部を並べ替える
     const key: SortKey = sort === "score" && !scored ? "order" : sort;
-    const sorted = sortHits(raw, key, key === sort ? desc : key === "score", data.meta?.usage, lang);
+    const sorted0 = sortHits(raw, key, key === sort ? desc : key === "score", data.meta?.usage, lang);
+    // 一致度順の代わりに図鑑順にしたときも、ゆるく当たったもの（「グッズ」で探したどうぐなど）は後ろに
+    const sorted = key !== sort ? [...sorted0.filter((h) => !h.loose), ...sorted0.filter((h) => h.loose)] : sorted0;
     // 一致度順で切るのは、弱い一致（いちばん良い一致の半分未満）だけ。強く一致したものは50件を超えても全部出す
     const strong = key === "score" && !usageFirst ? sorted.filter((h) => h.score >= (sorted[0]?.score ?? 0) * 0.5) : sorted;
     return { hits: key === "score" && !usageFirst ? (strong.length > 50 ? strong : sorted.slice(0, 50)) : sorted, scored, total: raw.length };

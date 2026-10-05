@@ -173,9 +173,8 @@ export function createSynergy(data: AppData) {
       const need = receiver.requires[s] ?? {};
       const give = sel.trash ?? ["any"];
       const wantKinds = need.trash ?? ["any"];
-      // どうぐはグッズの一種（グッズを数えるロトムexには、どうぐを捨てても強くなる）
-      const covers = (w: string, g: string) => w === g || (w === "item" && g === "tool");
-      const kindOk = give.includes("any") || wantKinds.includes("any") || give.some((g) => wantKinds.some((w) => covers(w, g)));
+      // ポケモンのどうぐはグッズとは別の種類（グッズを数えるロトムexに、どうぐを捨てても強くならない）
+      const kindOk = give.includes("any") || wantKinds.includes("any") || give.some((g) => wantKinds.includes(g));
       if (!kindOk) return false;
       // ポケモンを数える・送る同士なら、タイプも合うか（超ポケモンを数えるハカドッグに、水ポケモンを送っても強くならない）
       if (!give.includes("any") && give.includes("pokemon") && wantKinds.includes("pokemon") && need.trashTypes?.length && sel.trashTypes?.length && !sel.trashTypes.some((t) => need.trashTypes!.includes(t))) return false;
