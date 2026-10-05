@@ -4,9 +4,11 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import type { AppCard, CardGroup, CardKind, EnergyType, Rule, Stage } from "./types.ts";
 
-export type SortKey = "order" | "score" | "usage" | "hp" | "damage" | "retreat" | "cost" | "name" | "new" | "rarity";
+export type SortKey = "auto" | "order" | "score" | "usage" | "hp" | "damage" | "retreat" | "cost" | "name" | "new" | "rarity";
 
 export const SORTS: { key: SortKey; label: string; en: string; desc: boolean }[] = [
+  // おすすめ順: 検索しているときは一致度順（「〇〇デッキ」などは関係の深い順）、していないときは図鑑順
+  { key: "auto", label: "おすすめ順", en: "Recommended", desc: false },
   { key: "order", label: "図鑑順", en: "Pokédex order", desc: false },
   { key: "score", label: "一致度順", en: "Best match", desc: true },
   { key: "usage", label: "大会での採用率", en: "Tournament usage", desc: true },
@@ -151,7 +153,7 @@ function createPoolStore(scope: string) {
     persist(
       (set) => ({
         columns: 5,
-        sort: "order",
+        sort: "auto",
         desc: false,
         filters: EMPTY_FILTERS,
         favOnly: false,
@@ -160,7 +162,17 @@ function createPoolStore(scope: string) {
         setSort: (sort, desc) => set({ sort, desc }),
         setFilters: (filters) => set({ filters }),
       }),
-      { name: `pokepoke.pool.${scope}`, version: 1, storage: safeStorage, partialize: (s) => ({ columns: s.columns, sort: s.sort, desc: s.desc, filters: s.filters }) },
+      {
+        name: `pokepoke.pool.${scope}`,
+        version: 2,
+        storage: safeStorage,
+        partialize: (s) => ({ columns: s.columns, sort: s.sort, desc: s.desc, filters: s.filters }),
+        // 前の版は「図鑑順」がはじめの並びだったので、そのままの人は「おすすめ順」にする（検索の一致度が並びに効くように）
+        migrate: (s, version) => {
+          const old = s as Partial<PoolState>;
+          return (version < 2 && old.sort === "order" ? { ...old, sort: "auto", desc: false } : old) as PoolState;
+        },
+      },
     ),
   );
 }

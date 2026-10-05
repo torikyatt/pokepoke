@@ -30,10 +30,13 @@ export function usePoolResults(conds: Cond[]) {
     // お気に入りを開いているときは、お気に入りの中から探す
     const fav = favOnly ? new Set(favs) : undefined;
     const raw: Hit[] = engine.run(conds, Infinity).filter((h) => (!fav || fav.has(h.card.id)) && matchFilters(h.card, filters));
-    // 検索文があるときは「一致度順」なら上位50件（SPEC 4.3）。他の並びでは一致したもの全部を並べ替える
-    const key: SortKey = sort === "order" && usageFirst ? "score" : sort === "score" && !scored ? "order" : sort;
+    // おすすめ順: 検索文で一致度が付くときは一致度順、付かないときは図鑑順。一致度順なら上位50件（SPEC 4.3）。
+    // 他の並びでは一致したもの全部を並べ替える
+    const key: SortKey = sort === "auto" ? (scored || usageFirst ? "score" : "order") : sort === "score" && !scored ? "order" : sort;
     const sorted = sortHits(raw, key, key === sort ? desc : key === "score", data.meta?.usage, lang);
-    return { hits: key === "score" && !usageFirst ? sorted.slice(0, 50) : sorted, scored, total: raw.length };
+    // 一致度順で切るのは、弱い一致（いちばん良い一致の半分未満）だけ。強く一致したものは50件を超えても全部出す
+    const strong = key === "score" && !usageFirst ? sorted.filter((h) => h.score >= (sorted[0]?.score ?? 0) * 0.5) : sorted;
+    return { hits: key === "score" && !usageFirst ? (strong.length > 50 ? strong : sorted.slice(0, 50)) : sorted, scored, total: raw.length };
   }, [engine, conds, filters, sort, desc, scored, usageFirst, favOnly, favs, data, lang]);
 }
 
@@ -251,7 +254,7 @@ export function PoolFab({ bottom = "bottom-24" }: { bottom?: string }) {
       <div className={`fixed right-4 z-40 ${bottom} pb-[env(safe-area-inset-bottom)]`}>
         <button type="button" onClick={() => setOpen(true)} aria-label={t("並べ替え・絞り込み", "Sort & filter")} className="neu neu-press relative flex h-16 w-16 items-center justify-center rounded-full text-[#5aa9d6]">
           <IconSort />
-          {(n > 0 || sort !== "order") && <span className="absolute -top-1 -left-1 flex h-6 min-w-6 items-center justify-center rounded-full bg-accent px-1 text-xs font-extrabold text-white">{n || "↕"}</span>}
+          {(n > 0 || sort !== "auto") && <span className="absolute -top-1 -left-1 flex h-6 min-w-6 items-center justify-center rounded-full bg-accent px-1 text-xs font-extrabold text-white">{n || "↕"}</span>}
         </button>
         <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} aria-label={t("いちばん上へ", "Back to top")} className="absolute -top-2 -right-1 flex h-7 w-7 items-center justify-center rounded-full bg-badge text-sm text-white shadow">
           ↑
@@ -321,7 +324,7 @@ export function SortFilterSheet({ open, onClose }: { open: boolean; onClose: () 
       title={t("並べ替え・絞り込み", "Sort & filter")}
       footer={
         <div className="flex gap-3">
-          <button type="button" onClick={() => { setF(EMPTY_FILTERS); setSort("order"); setDesc(false); }} className="neu neu-press flex-1 rounded-full py-3 font-extrabold text-muted">
+          <button type="button" onClick={() => { setF(EMPTY_FILTERS); setSort("auto"); setDesc(false); }} className="neu neu-press flex-1 rounded-full py-3 font-extrabold text-muted">
             {t("リセット", "Reset")}
           </button>
           <button
