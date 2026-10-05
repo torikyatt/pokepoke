@@ -2,7 +2,7 @@ import { toPng } from "html-to-image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { PoolFab, PoolGrid, PoolToolbar, QueryBox, usePoolResults } from "../components/pool.tsx";
-import { EnergyIcon, Header, IconDeck, Pressable, Thumb } from "../components/ui.tsx";
+import { EnergyIcon, ENERGY_COLOR, energyLetter, Header, IconDeck, Pressable, Thumb } from "../components/ui.tsx";
 import { useData } from "../context.tsx";
 import { thumbUrl } from "../data/load.ts";
 import { useSettings } from "../store.ts";
@@ -534,20 +534,31 @@ function DeckImage({ deck, cards, ref }: { deck: Deck; cards: AppCard[]; ref: Re
     [t("ポケモン", "Pokémon"), rows.filter((r) => r.card.kind === "pokemon")],
     [t("トレーナーズ", "Trainers"), rows.filter((r) => r.card.kind !== "pokemon")],
   ];
-  const panel = { borderRadius: 24, background: "#eef2f7", boxShadow: "6px 6px 14px rgba(176,189,206,.55), -6px -6px 14px #fff" };
+  // 画像にするときは影を使わない（iPhone の Safari では影が四角い灰色の塊になって写る）。
+  // 文字もウェブフォントを使わない（画像にはウェブフォントを埋め込まないので、画面で測った幅とずれて折り返してしまう）
+  const panel = { borderRadius: 24, background: "#f3f6fa", border: "2px solid #dbe3ee" };
+  const nowrap = { whiteSpace: "nowrap", flexShrink: 0 } as const;
   return (
-    <div ref={ref} style={{ width: 1400, padding: 28, background: "#e6ecf3", color: "#3d4757", fontFamily: "'M PLUS Rounded 1c', 'Hiragino Maru Gothic ProN', 'Hiragino Sans', sans-serif" }}>
+    <div ref={ref} style={{ width: 1400, padding: 28, background: "#e6ecf3", color: "#3d4757", fontFamily: "'Hiragino Maru Gothic ProN', 'Hiragino Sans', 'Yu Gothic', 'Meiryo', system-ui, sans-serif" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 18 }}>
         <div style={{ fontSize: 32, fontWeight: 800, flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{deck.name}</div>
         {deck.energy.length > 0 && (
-          <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 14px", ...panel, borderRadius: 999 }}>
-            <span style={{ fontSize: 15, fontWeight: 800, color: "#8794a7" }}>{t("エネルギー", "Energy")}</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 8px 6px 16px", ...panel, borderRadius: 999, ...nowrap }}>
+            <span style={{ fontSize: 15, fontWeight: 800, color: "#8794a7", ...nowrap }}>{t("エネルギー", "Energy")}</span>
             {deck.energy.map((e) => (
-              <EnergyIcon key={e} type={e} size="lg" />
+              <span
+                key={e}
+                style={{
+                  width: 30, height: 30, borderRadius: 999, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15, fontWeight: 800, lineHeight: 1,
+                  background: ENERGY_COLOR[e].bg, color: ENERGY_COLOR[e].fg, border: e === "colorless" ? "1px solid #d5dde7" : "none", ...nowrap,
+                }}
+              >
+                {energyLetter(e, uiLang)}
+              </span>
             ))}
           </div>
         )}
-        <div style={{ fontSize: 18, fontWeight: 800, color: "#8794a7" }}>{cards.length}/{DECK_SIZE}</div>
+        <div style={{ fontSize: 22, fontWeight: 800, color: "#8794a7", ...nowrap }}>{cards.length}/{DECK_SIZE}</div>
       </div>
       <div style={{ display: "flex", gap: 20, alignItems: "stretch" }}>
         <div style={{ width: 900, flexShrink: 0, display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 12, padding: 16, ...panel }}>
@@ -560,14 +571,14 @@ function DeckImage({ deck, cards, ref }: { deck: Deck; cards: AppCard[]; ref: Re
             list.length ? (
               <div key={title} style={{ marginBottom: 12 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: 15, fontWeight: 800, color: "#8794a7", borderBottom: "2px solid #d5dde7", paddingBottom: 4, marginBottom: 6 }}>
-                  <span>{title}</span>
-                  <span>{t(`${list.reduce((a, r) => a + r.n, 0)}枚`, `${list.reduce((a, r) => a + r.n, 0)}`)}</span>
+                  <span style={nowrap}>{title}</span>
+                  <span style={nowrap}>{t(`${list.reduce((a, r) => a + r.n, 0)}枚`, `${list.reduce((a, r) => a + r.n, 0)}`)}</span>
                 </div>
                 {list.map(({ card, n }) => (
                   <div key={card.id} style={{ display: "flex", alignItems: "center", gap: 10, padding: "4px 0" }}>
                     <img data-id={card.id} src={thumbUrl(card, lang)} alt="" style={{ width: 30, aspectRatio: "367/512", borderRadius: 3, objectFit: "cover" }} />
                     <span style={{ flex: 1, minWidth: 0, fontSize: 19, fontWeight: 700, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{cardName(card, uiLang)}</span>
-                    <span style={{ fontSize: 19, fontWeight: 800 }}>×{n}</span>
+                    <span style={{ fontSize: 19, fontWeight: 800, ...nowrap }}>×{n}</span>
                   </div>
                 ))}
               </div>
@@ -575,7 +586,7 @@ function DeckImage({ deck, cards, ref }: { deck: Deck; cards: AppCard[]; ref: Re
           )}
         </div>
       </div>
-      <div style={{ marginTop: 12, fontSize: 13, color: "#8794a7", textAlign: "right", fontWeight: 700 }}>POKÉPOKE LAB</div>
+      <div style={{ marginTop: 12, fontSize: 13, color: "#8794a7", textAlign: "right", fontWeight: 700, whiteSpace: "nowrap" }}>POKÉPOKE LAB</div>
     </div>
   );
 }

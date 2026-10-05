@@ -20,6 +20,14 @@ const TYPE_STYLE: Record<EnergyType, string> = {
   colorless: "bg-white text-[#7a8796] ring-1 ring-[#d5dde7]",
 };
 
+/** 画像に書き出す用（Tailwind の影などを使わない、インラインの色） */
+export const ENERGY_COLOR: Record<EnergyType, { bg: string; fg: string }> = {
+  grass: { bg: "#5cb85c", fg: "#fff" }, fire: { bg: "#e8574a", fg: "#fff" }, water: { bg: "#3d9be9", fg: "#fff" },
+  lightning: { bg: "#f2c831", fg: "#5a4300" }, psychic: { bg: "#a65fd1", fg: "#fff" }, fighting: { bg: "#c4703a", fg: "#fff" },
+  darkness: { bg: "#2f5a64", fg: "#fff" }, metal: { bg: "#8d99a6", fg: "#fff" }, dragon: { bg: "#c9a43a", fg: "#fff" }, colorless: { bg: "#fff", fg: "#7a8796" },
+};
+export const energyLetter = (type: EnergyType, lang: "ja" | "en") => (lang === "en" ? EN_LETTER[type] : type === "colorless" ? "無" : type === "dragon" ? "竜" : TYPE_JA[type]);
+
 const EN_LETTER: Record<EnergyType, string> = { grass: "G", fire: "R", water: "W", lightning: "L", psychic: "P", fighting: "F", darkness: "D", metal: "M", dragon: "N", colorless: "C" };
 
 export function EnergyIcon({ type, size = "md" }: { type: EnergyType; size?: "sm" | "md" | "lg" | "xl" | "fill" }) {
@@ -27,7 +35,7 @@ export function EnergyIcon({ type, size = "md" }: { type: EnergyType; size?: "sm
   const s = { sm: "h-4 w-4 text-[9px]", md: "h-5 w-5 text-[11px]", lg: "h-7 w-7 text-sm", xl: "h-9 w-9 text-base", fill: "aspect-square w-full text-[45cqw]" }[size];
   const lang = useLang();
   // 英語はカードゲームの慣例の1文字（草=G 炎=R 水=W 雷=L 超=P 闘=F 悪=D 鋼=M ドラゴン=N 無色=C）
-  const label = lang === "en" ? EN_LETTER[type] : type === "colorless" ? "無" : type === "dragon" ? "竜" : TYPE_JA[type];
+  const label = energyLetter(type, lang);
   return (
     <span title={typeName(type, lang)} className={`inline-flex shrink-0 items-center justify-center rounded-full font-extrabold leading-none shadow-sm ${s} ${TYPE_STYLE[type]}`}>
       {label}
