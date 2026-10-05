@@ -7,7 +7,7 @@
 //   npm run fetch-meta -- --offline    ネットに出ず、キャッシュにある結果だけで集計する
 //
 // API: https://docs.limitlesstcg.com/developer.html （キー不要。5分に50回までなので、7秒に1回にする）
-// キャッシュ: data/meta/cache/（コミットしない）
+// キャッシュ: data/meta/cache/（コミットしない。GitHub Actions では Actions のキャッシュに残し、無ければ data/meta/cache-seed.tgz から始める）
 // 出力:       data/meta/meta.json（集計結果。コミットする）
 //             data/meta/decks.json（勝ち越し・五分のデッキリスト。同じ構成はまとめる。カード詳細の「このカードを使ったデッキ」に使う）
 import { existsSync, mkdirSync, readdirSync, readFileSync, renameSync, statSync, writeFileSync } from "node:fs";
@@ -18,7 +18,7 @@ const CACHE = join(DIR, "cache");
 mkdirSync(CACHE, { recursive: true });
 
 const API = "https://play.limitlesstcg.com/api";
-const UA = "pokepoke-personal/0.1 (personal, non-commercial deck builder)";
+const UA = "pokepoke-indecks/0.1 (Pokémon TCG Pocket card search; max 1 req / 7s)";
 const INTERVAL_MS = 7000;
 // 直近の大会（デッキタイプ・採用率に使う）と、それより前の大きな大会（「一緒に使われる組」だけに使う。昔の定番コンボも拾うため）
 const DAYS = 60;

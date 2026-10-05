@@ -1,4 +1,6 @@
-# main に push されたら、テストしてビルドし、gh-pages ブランチに公開する（GitHub Pages）
+# main に push されたとき・毎日1回、テストしてビルドし、gh-pages ブランチに公開する（GitHub Pages）
+# 大会データ（Limitless）は毎回、まだ取っていない大会だけを取り足して集計し直す。
+#   取った大会の結果は Actions のキャッシュに残す。キャッシュが無いときは data/meta/cache-seed.tgz（2026年10月時点）から始める
 # 新しいサイトに引っ越したら、リポジトリの Settings → Secrets and variables → Actions → Variables に
 # NEW_SITE_URL（例: https://example.com）を入れる。以後は、古いURLに来た人を新しいサイトへ送るページだけを公開する
 name: Pages
@@ -6,6 +8,8 @@ name: Pages
 on:
   push:
     branches: [main]
+  schedule:
+    - cron: "17 18 * * *" # 毎日 3:17（日本時間）
   workflow_dispatch:
 
 permissions:
@@ -18,6 +22,7 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -25,6 +30,23 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: 大会データのキャッシュを戻す
+        if: ${{ !vars.NEW_SITE_URL }}
+        uses: actions/cache@v4
+        with:
+          path: data/meta/cache
+          key: meta-cache-${{ github.run_id }}
+          restore-keys: meta-cache-
+      - name: キャッシュが無ければ、同梱の取得済みデータから始める
+        if: ${{ !vars.NEW_SITE_URL }}
+        run: |
+          if [ ! -f data/meta/cache/tournaments.json ]; then
+            tar xzf data/meta/cache-seed.tgz -C data/meta
+          fi
+          echo "取得済みの大会: $(ls data/meta/cache | wc -l) 件"
+      - name: 新しい大会を取り足して集計する
+        if: ${{ !vars.NEW_SITE_URL }}
+        run: npm run fetch-meta -- --refresh
       - if: ${{ !vars.NEW_SITE_URL }}
         run: npm run validate
       - if: ${{ !vars.NEW_SITE_URL }}
