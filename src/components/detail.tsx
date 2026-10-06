@@ -112,9 +112,8 @@ function useShareCard() {
   const t = useT();
   const lang = useLang();
   return async (card: AppCard) => {
-    // 公開しているサイトでは、カード名と画像がリンクのプレビューに出る共有用ページ（/c/<ID>）を渡す（scripts/share-pages.ts）
-    const base = location.href.split("#")[0].replace(/[^/]*$/, "");
-    const url = import.meta.env.DEV || isSingleFile ? `${location.href.split("#")[0]}#/card/${card.id}` : `${base}c/${card.id}`;
+    // カードのページ（/card/<ID>・英語は /en/card/<ID>）。検索エンジンにも載り、リンクのプレビューにカード名と画像が出る
+    const url = import.meta.env.DEV || isSingleFile ? `${location.href.split("#")[0]}#/card/${card.id}` : `${location.origin}${lang === "en" ? "/en" : ""}/card/${card.id}`;
     const title = `${cardName(card, lang)} | POKÉPOKE INDECKS`;
     try {
       if (navigator.share) await navigator.share({ title, url });

@@ -13,6 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet" />
     <meta name="description" content="POKÉPOKE INDECKS — ふだんの言葉で引ける、ポケポケ（Pokémon TCG Pocket）のカード図鑑。相性の良いカードや大会での使われ方も分かり、そのままデッキも組めます。" />
     <title>POKÉPOKE INDECKS｜ポケポケのカード図鑑</title>
+    <link rel="canonical" href="https://pokepokeindex.com/" />
     <link rel="icon" type="image/svg+xml" href="./icons/icon.svg" />
     <!-- ホーム画面に追加したときのアイコンと名前 -->
     <link rel="apple-touch-icon" href="./icons/icon-180.png" />
@@ -26,6 +27,16 @@
       // すでにこのサイトで保存しているものは消さず、デッキは足し、お気に入りは合わせる。アプリより先に動かす。
       // だれでも #move=… 付きのリンクを作れるので、受け取るのは決まった形のものだけにし、
       // 古いサイトの転送ページから来たのでなければ、取り込む前に確かめる
+      // 検索エンジン用のカードページ（/card/<ID>・/en/card/<ID>、scripts/seo-pages.ts）から開いたら、
+      // アプリのカード詳細（/#/card/<ID>）にする。英語のページで、まだ言語を選んでいなければ英語にする
+      (function () {
+        var c = /^\/(en\/)?card\/([a-z0-9-]+)\/?$/.exec(location.pathname);
+        if (!c) return;
+        try {
+          if (c[1] && localStorage.getItem("pokepoke.settings") == null) localStorage.setItem("pokepoke.settings", JSON.stringify({ state: { lang: "en", imageLang: "en" }, version: 1 }));
+        } catch (e) {}
+        history.replaceState(null, "", "/" + (location.hash.length > 2 ? location.hash : "#/card/" + c[2]));
+      })();
       (function () {
         var m = /^#move=([^&]*)&to=(.*)$/.exec(location.hash);
         if (!m) return;

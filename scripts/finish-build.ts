@@ -10,7 +10,7 @@ console.log(`dist/pokepoke.html ${(statSync(join(ROOT, "dist/pokepoke.html")).si
 
 // セキュリティのためのヘッダー（Cloudflare Pages の _headers）。
 //   ・ほかのサイトの枠（iframe）に入れさせない／カメラなどは使わない／https だけで開く
-//   ・アプリのページ（/）には CSP: 読み込めるのは自分のサイトと、フォント（Google Fonts）・英語画像の予備（GitHub）だけ。
+//   ・アプリのページ（/ と、検索エンジン用のカードページ /card/*・/en/card/*。中身は同じ index.html）には CSP: 読み込めるのは自分のサイトと、フォント（Google Fonts）・英語画像の予備（GitHub）だけ。
 //     index.html の中に直接書いたスクリプトは、中身のハッシュで許す（書き換えたら、ここで計算し直される）
 //   デッキ画像の保存（html-to-image）はフォントの CSS とファイルを fetch で読むので、connect-src にも入れる。
 //   Cloudflare のアクセス解析（Web Analytics）は Cloudflare がページに足すので、その読み込みと送り先も許す
@@ -42,6 +42,12 @@ console.log(`dist/pokepoke.html ${(statSync(join(ROOT, "dist/pokepoke.html")).si
   Content-Security-Policy: ${csp}
 
 /index.html
+  Content-Security-Policy: ${csp}
+
+/card/*
+  Content-Security-Policy: ${csp}
+
+/en/card/*
   Content-Security-Policy: ${csp}
 `;
   writeFileSync(join(ROOT, "dist/_headers"), headers);
