@@ -6,7 +6,7 @@ import { EnergyIcon, ENERGY_COLOR, energyLetter, Header, IconDeck, Pressable, Th
 import { useData } from "../context.tsx";
 import { largeUrl, thumbUrl } from "../data/load.ts";
 import { useSettings } from "../store.ts";
-import { canAdd, checkDeck, DECK_SIZE, decodeShare, download, encodeShare, fromFile, guessEnergy, MAX_ENERGY, MAX_SAME_NAME, toFile } from "../deck.ts";
+import { canAdd, checkDeck, DECK_SIZE, decodeShare, download, fromFile, guessEnergy, MAX_ENERGY, MAX_SAME_NAME, toFile } from "../deck.ts";
 import { navigate } from "../router.ts";
 import { openCard } from "../detail.ts";
 import { logOpen, logSearch } from "../search-log.ts";
@@ -307,7 +307,7 @@ export function useDeckExport(deck: Deck | undefined) {
 
   const share = async () => {
     if (!deck) return;
-    const url = `${location.href.split("#")[0]}#/share/${encodeShare(deck)}`;
+    const url = shareUrlOf(deck);
     try {
       if (navigator.share) await navigator.share({ title: deck.name, url });
       else {

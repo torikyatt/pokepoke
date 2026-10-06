@@ -4,6 +4,7 @@
 //   dist/sitemap.xml         全ページの一覧（日本語・英語の対応つき）
 //   dist/robots.txt          /api/ は載せない・サイトマップの場所
 //   dist/_redirects          以前の共有リンク（/c/<ID>）を /card/<ID> へ
+//   dist/deck-cards.json     デッキの共有リンクのページ（server/deck-page.ts）で使う、カードの名前・画像
 // アプリは URL の # 以降で画面を切り替えるので、検索エンジンからはトップページしか見えない。そこで、
 // アプリと同じ index.html に、そのカードの中身（効果・進化ライン・相性のいいカード・収録）を最初から書いたページを置く。
 // 人が開くと、index.html の起動スクリプトが /#/card/<ID> に切り替え、アプリのカード詳細が開く（中身はアプリが描き直す）
@@ -155,6 +156,11 @@ writeFileSync(
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls.join("\n")}\n</urlset>\n`,
 );
 writeFileSync(join(DIST, "robots.txt"), `User-agent: *\nDisallow: /api/\n\nSitemap: ${SITE}/sitemap.xml\n`);
+// デッキの共有リンク（/d/<共有コード>、server/deck-page.ts）のタイトル・サムネに使う、カードの名前・画像・主役らしさ
+//   主役らしさ: メガシンカex 4・ex 3・2進化 2・ほかのポケモン 1・トレーナーズ 0
+const rank = (c: AppCard) => (c.kind !== "pokemon" ? 0 : c.rule === "mega_ex" ? 4 : c.rule === "ex" ? 3 : c.stage === "stage2" ? 2 : 1);
+const rel = (c: AppCard, l: L) => image(c, l).slice(SITE.length + 1);
+writeFileSync(join(DIST, "deck-cards.json"), JSON.stringify(Object.fromEntries(data.cards.map((c) => [c.id, [rank(c), name(c, "ja"), name(c, "en"), rel(c, "ja"), rel(c, "en")]]))));
 // 以前の共有リンク（/c/<ID>）は新しいカードページへ
 writeFileSync(join(DIST, "_redirects"), `/c/:id /card/:id 301\n`);
 console.log(`カードページ ${n} 枚（日本語・英語）・sitemap.xml（${urls.length} URL）・robots.txt・_redirects → dist/`);

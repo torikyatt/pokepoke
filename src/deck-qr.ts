@@ -1,10 +1,18 @@
 // デッキの QR コード: 画像に書き出すときに共有URLを QR にして入れ、画像（スクショ・保存した画像）から読み取って取り込む。
 // スマホのカメラで読めば共有URLがそのまま開き、「マイデッキに保存」で取り込める
 import qrcode from "qrcode-generator";
+import { isSingleFile } from "./data/load.ts";
 import { decodeShare, encodeShare } from "./deck.ts";
+import { getLang } from "./i18n.ts";
 import type { Deck } from "./store.ts";
 
-export const shareUrlOf = (deck: Pick<Deck, "name" | "cards" | "energy">) => `${location.href.split("#")[0]}#/share/${encodeShare(deck)}`;
+/** デッキの共有URL。サイトでは /d/<共有コード>（英語なら /en/d/…）にして、リンクのプレビューにデッキ名とカードの画像を出す
+ *  （server/deck-page.ts）。1ファイル版（file://）では、そのファイルの #/share/<共有コード> */
+export function shareUrlOf(deck: Pick<Deck, "name" | "cards" | "energy">): string {
+  const code = encodeShare(deck);
+  if (isSingleFile || !/^https?:$/.test(location.protocol)) return `${location.href.split("#")[0]}#/share/${code}`;
+  return `${location.origin}${getLang() === "en" ? "/en" : ""}/d/${code}`;
+}
 
 /** 文字列を QR コードの画像（data URL）にする。1マス cell px、まわりに規格どおり4マスの白い余白。size は画像の幅（px） */
 export function qrImage(text: string, cell = 3): { url: string; size: number } {
@@ -28,7 +36,7 @@ export async function deckFromImage(file: Blob): Promise<ReturnType<typeof decod
   ctx.drawImage(bmp, 0, 0, w, h);
   const found = jsQR(ctx.getImageData(0, 0, w, h).data, w, h, { inversionAttempts: "dontInvert" });
   if (!found) return undefined;
-  const code = found.data.match(/#\/share\/([^/?#\s]+)/)?.[1] ?? found.data.trim();
+  const code = found.data.match(/(?:#\/share|^https?:\/\/[^/]+(?:\/en)?\/d)\/([^/?#\s]+)/)?.[1] ?? found.data.trim();
   try {
     return decodeShare(code);
   } catch {

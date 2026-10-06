@@ -29,6 +29,15 @@
       // 古いサイトの転送ページから来たのでなければ、取り込む前に確かめる
       // 検索エンジン用のカードページ（/card/<ID>・/en/card/<ID>、scripts/seo-pages.ts）から開いたら、
       // アプリのカード詳細（/#/card/<ID>）にする。英語のページで、まだ言語を選んでいなければ英語にする
+      // デッキの共有リンク（/d/<共有コード>・/en/d/<共有コード>、server/deck-page.ts）も同じように、共有デッキの画面（/#/share/<共有コード>）にする
+      (function () {
+        var d = /^\/(en\/)?d\/([^/?#]+)\/?$/.exec(location.pathname);
+        if (!d) return;
+        try {
+          if (d[1] && localStorage.getItem("pokepoke.settings") == null) localStorage.setItem("pokepoke.settings", JSON.stringify({ state: { lang: "en", imageLang: "en" }, version: 1 }));
+        } catch (e) {}
+        history.replaceState(null, "", "/" + (location.hash.length > 2 ? location.hash : "#/share/" + d[2]));
+      })();
       (function () {
         var c = /^\/(en\/)?card\/([a-z0-9-]+)\/?$/.exec(location.pathname);
         if (!c) return;

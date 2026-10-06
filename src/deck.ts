@@ -78,7 +78,7 @@ export function fromFile(json: unknown, byId: Map<string, AppCard>): DeckFile["d
   }));
 }
 
-// ---- 共有URL（#/share/<code>）----
+// ---- 共有URL（#/share/<code>。サイトでは /d/<code>、src/deck-qr.ts の shareUrlOf）----
 const b64url = (s: string) => btoa(unescape(encodeURIComponent(s))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 const unb64url = (s: string) => decodeURIComponent(escape(atob(s.replace(/-/g, "+").replace(/_/g, "/"))));
 // 共有コード（v2）: 「2~エネ~カード~名前」。QR コードに入れても目が細かくなりすぎないよう短く書く
