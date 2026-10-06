@@ -2,7 +2,7 @@
 import { useData } from "../context.tsx";
 import type { AppCard, AppPrint, AppSet } from "../types.ts";
 import { useLang, type Lang } from "../i18n.ts";
-import { rarityIconUrl } from "../icons.ts";
+import { rarityIcons } from "../icons.ts";
 
 // 弾の色（発売順に色相を回す）。プロモは灰色
 const HUES = [205, 350, 140, 30, 270, 180, 55, 315, 95, 240, 10, 160];
@@ -28,9 +28,15 @@ export const RARITY_JA: Record<string, string> = {
 export const rarityLabel = (r: string, lang: Lang) => (lang === "en" && r === "Promo" ? "Promo" : RARITY_JA[r] ?? r);
 /** レアリティのアイコン（アイコンが無いものは文字） */
 export function Rarity({ r, lang }: { r: string; lang: Lang }) {
-  const url = rarityIconUrl(r);
-  if (!url) return <span className="shrink-0 text-[10px] font-bold text-muted">{rarityLabel(r, lang)}</span>;
-  return <img src={url} alt={rarityLabel(r, lang)} title={rarityLabel(r, lang)} draggable={false} className={`inline-block shrink-0 select-none ${r === "Promo" ? "h-3.5" : "h-[18px]"} w-auto`} />;
+  const icons = rarityIcons(r);
+  if (!icons) return <span className="shrink-0 text-[10px] font-bold text-muted">{rarityLabel(r, lang)}</span>;
+  return (
+    <span role="img" aria-label={rarityLabel(r, lang)} title={rarityLabel(r, lang)} className="inline-flex shrink-0 items-center">
+      {icons.map((src, i) => (
+        <img key={i} src={src} alt="" draggable={false} className={`inline-block shrink-0 select-none ${r === "Promo" ? "h-3.5 w-auto" : r === "Crown Rare" ? "h-3 w-auto" : "h-3.5 w-3.5"}`} />
+      ))}
+    </span>
+  );
 }
 const RANK = ["◊", "◊◊", "◊◊◊", "◊◊◊◊", "☆", "☆☆", "☆☆☆", "Crown Rare"];
 
