@@ -104,8 +104,9 @@ export function PrintGallery({ card, index, onIndex }: { card: AppCard; index: n
           </>
         )}
       </div>
-      {n > 1 && (
-        <div className="mt-1.5 space-y-1">
+      {/* 収録パックとレアリティはいつも出す。絵柄が複数あるときだけ、切り替えの点と「何枚目」も */}
+      <div className="mt-1.5 space-y-1">
+        {n > 1 && (
           <div className="flex justify-center gap-1" role="tablist" aria-label={t("絵柄", "Artwork")}>
             {card.prints.map((pr, i) => (
               <button
@@ -119,15 +120,17 @@ export function PrintGallery({ card, index, onIndex }: { card: AppCard; index: n
               />
             ))}
           </div>
-          <div className="flex items-center justify-center gap-1 text-[10px] font-bold text-muted">
-            <SetBadge set={p.set} />
-            <Rarity r={p.rarity} lang={uiLang} />
+        )}
+        <div className="flex items-center justify-center gap-1 text-[10px] font-bold text-muted">
+          <SetBadge set={p.set} />
+          <Rarity r={p.rarity} lang={uiLang} />
+          {n > 1 && (
             <span className="tabular-nums">
               {index + 1}/{n}
             </span>
-          </div>
+          )}
         </div>
-      )}
+      </div>
       {zoom && <ZoomView card={card} index={index} onIndex={onIndex} onClose={() => setZoom(false)} />}
     </div>
   );
