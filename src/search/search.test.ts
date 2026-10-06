@@ -350,6 +350,14 @@ describe("雑なローマ字で日本語を探す", () => {
     }
     expect(ids("サイコキネシス")).toContain("b4-150"); // サイキッカー
   });
+  it("カード名で探すと、そのカードを効果文で名指ししているカードも後ろに出る（イワーク → タケシ）", () => {
+    const top = engine.search("イワーク").map((h) => h.card);
+    expect(top.at(-1)!.nameJa).toBe("タケシ");
+    expect(top.slice(0, -1).every((c) => c.nameJa === "イワーク")).toBe(true);
+    expect(engine.search("onix").map((h) => h.card.nameJa)).toContain("タケシ");
+    expect(engine.search("アルセウスex").map((h) => h.card.nameJa)).toContain("マスキッパ");
+    expect(engine.search("ガブリアス").map((h) => h.card.nameJa)).toContain("シロナ");
+  });
   it("psychic だけなら、サイキッカーを先頭に超タイプのカードを出す", () => {
     const hits = engine.search("psychic", Infinity);
     expect(hits[0].card.id).toBe("b4-150");

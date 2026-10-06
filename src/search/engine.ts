@@ -248,6 +248,19 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     });
   }
 
+  // 効果文で名指ししているカードの名前（タケシ「イワーク」「ゴローニャ」・シロナ「ガブリアス」）。
+  // カード名で探したとき、そのカードを持ち上げるトレーナーズなども、持っているカードの後ろに出す
+  const quoted = new Map<string, { ja: string[]; en: string[] }>();
+  {
+    const byNameJa = new Map<string, AppCard>();
+    for (const c of data.cards) if (!byNameJa.has(c.nameJa)) byNameJa.set(c.nameJa, c);
+    for (const c of data.cards) {
+      const texts = effectsOf(c).map((e) => e.textJa ?? "").join(" ");
+      const ts = [...new Set([...texts.matchAll(/「([^」]+)」/g)].map((m) => byNameJa.get(m[1])).filter((t): t is AppCard => !!t && t.nameJa !== c.nameJa))];
+      if (ts.length) quoted.set(c.id, { ja: ts.map((t) => normalize(t.nameJa).replace(/ /g, "")), en: ts.map((t) => enKey(t.nameEn)) });
+    }
+  }
+
   // カード名・ワザ名・特性名など（正規化）。読めなかった言葉がこれとぴったり同じなら、名前で探しただけなので記録しない
   const exactNames = new Set<string>();
   for (const c of data.cards) {
@@ -830,6 +843,11 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
           // ワザ名・特性名で探したときは、そのワザ・特性の名前を結果に出す
           if (n.id.startsWith("effect:"))
             for (const e of effectsOf(card)) if (e.nameJa && normalize(e.nameJa).replace(/ /g, "") === n.name || (e.nameEn && enKey(e.nameEn) === n.name)) effectNames.set(e.nameJa ?? e.nameEn ?? "", e.nameEn ?? e.nameJa ?? "");
+        }
+        // 効果文でそのカードを名指ししている（タケシ「イワーク」）。持っているカードより下に
+        else if (!n.ids && quoted.get(card.id)?.[/^[a-z0-9 ]+$/.test(n.name) ? "en" : "ja"].some((x) => x.includes(n.name))) {
+          score += 1.5;
+          matched.add(n.id);
         }
       }
       for (const t of texts) {
