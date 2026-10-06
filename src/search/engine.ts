@@ -28,7 +28,7 @@ export type Cond = { id: string; label: string; en: string; weight?: number; wor
   | { kind: "hp"; op: Op; n: number }
   | { kind: "retreat"; op: Op; n: number }
   | { kind: "weakness"; type: EnergyType }
-  | { kind: "name"; name: string; ids?: string[] } // ids: ローマ字で探したときの、当たったカード
+  | { kind: "name"; name: string; ids?: string[]; pin?: boolean } // ids: ローマ字で探したときの、当たったカード。pin: タイプと一緒に出し、先頭に置く名前
   | { kind: "text"; term: string }
   | { kind: "deck"; archs: string[] } // 大会のデッキタイプに入っているカード
   | { kind: "partner"; cards: string[] } // そのカードと相性のいいカード
@@ -697,6 +697,15 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     // 1つの言葉が親子の両方に当たるとき（「手札を減らす」→ 手札干渉・手札を山札にもどさせる）は、わざとなので残す
     const tags = conds.filter((c): c is Extract<Cond, { kind: "tag" }> => c.kind === "tag");
     const out = conds.filter((c) => c.kind !== "tag" || !tags.some((d) => d.tag.startsWith(`${c.tag}.`) && d.word !== c.word));
+    // 「psychic」だけ: サポート「サイキッカー」（Psychic）を先頭に、続けて超タイプのカードを出す
+    for (const c of out) {
+      if (c.kind !== "name" || c.ids) continue;
+      const t = TYPE_WORD_EN.find(([w]) => w === c.name)?.[1];
+      if (!t || out.some((d) => d.kind === "type")) continue;
+      c.pin = true;
+      out.push(condOf({ type: t }, 1, c.name));
+      break;
+    }
     const unread = [...new Set([...out.flatMap((c) => (c.kind === "text" ? [c.term] : [])), ...dropped])].filter((w) => !exactNames.has(w));
     return { conds: out, unread };
   }
@@ -712,6 +721,10 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     const weak = of("weakness");
     const soft = conds.filter((c) => c.kind === "tag" || c.kind === "variable");
     const texts = of("text"), nameConds = of("name");
+    // タイプと一緒に出す名前（pin）は、当たらなくても除外しない。タイプの条件を外したときは、ふつうの名前と同じ
+    const needNames = nameConds.filter((n) => !n.pin || !types.length);
+    const nameHit = (card: AppCard, h: { name: string; nameEn: string }, n: Extract<Cond, { kind: "name" }>) =>
+      n.ids ? n.ids.includes(card.id) : h.name.includes(n.name) || h.nameEn.includes(n.name);
     const decks = of("deck"), partnerConds = of("partner"), metaCond = of("meta")[0];
     // デッキタイプ: カードごとの、そのデッキへの採用率（いちばん高いもの）
     const deckRate = new Map<string, number>();
@@ -732,7 +745,8 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
         return true;
       };
       // ハード条件（同じ種類の条件どうしは OR）
-      if (!hard(types, (t) => card.type === t.type || card.typeRefs.includes(t.type))) continue;
+      const pinned = nameConds.some((n) => n.pin && nameHit(card, h, n));
+      if (!pinned && !hard(types, (t) => card.type === t.type || card.typeRefs.includes(t.type))) continue;
       // カードの種類（サポート・グッズ…）は、ほかのカードの文にもよく出てくるので、文では当てない
       // 「グッズ」で探したときは、ポケモンのどうぐ（グッズとは別の種類）も、グッズの後ろに並べて出す（探しているものに近いので）
       const toolAsItem = card.kind === "tool" && kinds.some((k) => k.value === "item") && !kinds.some((k) => k.value === "tool");
@@ -794,10 +808,10 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       }
       // 効果で探したとき、同じくらい当てはまるなら大会でよく使われている（採用率1%以上の）カードを少し上に
       if (best.size && (usage[card.id] ?? 0) >= 0.01) score += Math.min(0.1, usage[card.id]);
-      if (soft.length && !matched.size && !nameConds.length && !texts.length) continue;
+      if (soft.length && !matched.size && !needNames.length && !texts.length) continue;
 
       for (const n of nameConds) {
-        if (n.ids ? n.ids.includes(card.id) : h.name.includes(n.name) || h.nameEn.includes(n.name)) {
+        if (nameHit(card, h, n)) {
           // 名前で探したときも、大会でよく使われているものを少し上に（hakase → 博士の研究が先）
           score += (n.weight ?? 3) + Math.min(0.1, usage[card.id] ?? 0);
           matched.add(n.id);
@@ -813,7 +827,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
         matched.add(t.id);
       }
       // ソフト条件・名前・全文のどれかを指定したのに、何も当たらなければ除外
-      if ((soft.length || nameConds.length || texts.length) && !matched.size) continue;
+      if ((soft.length || needNames.length || texts.length) && !matched.size) continue;
       for (const c of conds) if (!["tag", "variable", "name", "text"].includes(c.kind)) matched.add(c.id);
       if (atkConds.length) for (const a of okAttacks) effectNames.set(a.nameJa ?? a.nameEn ?? "", a.nameEn ?? a.nameJa ?? "");
       const note = decks.length ? `採用率 ${Math.round(deckRate.get(card.id)! * 100)}%` : metaCond ? `大会で ${((usage[card.id] ?? 0) * 100).toFixed(1)}%` : undefined;

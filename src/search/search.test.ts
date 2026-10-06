@@ -343,6 +343,12 @@ describe("雑なローマ字で日本語を探す", () => {
     expect(ids_("超エネ")).toEqual(["type:psychic"]);
     expect(engine.explain("超エネ").unread).toEqual([]);
   });
+  it("psychic だけなら、サイキッカーを先頭に超タイプのカードを出す", () => {
+    const hits = engine.search("psychic", Infinity);
+    expect(hits[0].card.id).toBe("b4-150");
+    expect(hits.length).toBeGreaterThan(100);
+    expect(hits.slice(1).every((h) => h.card.type === "psychic" || h.card.typeRefs.includes("psychic"))).toBe(true);
+  });
   it("英語の検索はそのまま", () => {
     expect(engine.parse("fire energy acceleration").map((c) => c.id)).toEqual(expect.arrayContaining(["type:fire", "tag:energy.accel"]));
   });
