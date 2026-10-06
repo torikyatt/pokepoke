@@ -253,6 +253,23 @@ export function createSynergy(data: AppData) {
   /** 2枚とも半分以上のデッキに入っているデッキタイプ（いちばん使われているもの） */
   const sharedArch = (a: string, b: string) =>
     (archOf.get(a) ?? []).filter((x) => x.rate >= 0.5).map((x) => x.arch).find((arch) => arch.cards.some((c) => c.id === b && c.rate >= 0.5));
+  /**
+   * a を使うデッキのうち、b も入っている割合。大会の組のデータがあればそれ、無ければ（使われる数が少ないカード）
+   * a の入るデッキタイプでの b の採用率を、デッキタイプの多さと a の採用率で重みづけして見積もる。分からなければ undefined
+   */
+  const withRate = (a: string, b: string): number | undefined => {
+    const pair = coUsed.get(a)?.find((u) => u.other === b);
+    if (pair) return pair.rate;
+    let sum = 0, hit = 0;
+    for (const { arch, rate } of archOf.get(a) ?? []) {
+      const w = arch.share * rate;
+      sum += w;
+      hit += w * (arch.cards.find((c) => c.id === b)?.rate ?? 0);
+    }
+    return sum > 0 ? hit / sum : undefined;
+  };
+  /** この割合以上なら、特定のデッキだけの組ではなく、ほとんどのデッキで一緒に使う組（理由にデッキ名を出さない） */
+  const ALWAYS_TOGETHER = 0.8;
   /** 大会で一緒に入る割合（画面に出す % の数字）がこれ以下の組は、相性の良いカードに出さない */
   const CO_USE_MIN_PCT = 15;
   // 大会で一緒に使われる組の強さ。一緒に入る割合の2乗にして、割合が下がるほど急に弱くする
@@ -309,15 +326,16 @@ export function createSynergy(data: AppData) {
     };
     // 攻略記事で紹介されている組み合わせ（いちばん強く結ぶ）
     // 同じ組を複数の記事が紹介していても、2つ目からは少しだけ足す（記事の数だけで順位が決まらないように）
-    // どのデッキにも入る定番（大会での採用率80%以上: 博士の研究・モノマネむすめ・モンスターボール・アカギ）との組は、
-    // そのデッキだけの組み合わせではないので、紹介した記事のデッキ名は出さない
+    // 次の組は、記事で紹介したデッキだけの組み合わせではないので、デッキ名は出さない:
+    //   ・どのデッキにも入る定番（大会での採用率80%以上: 博士の研究・モノマネむすめ・モンスターボール・アカギ）との組
+    //   ・このカードを使うデッキのほとんど（80%以上）に相手も入っている組（リザードンex とフレイムパッチ）
     const comboSeen = new Set<string>();
-    const staple = (id: string) => (data.meta?.usage[id] ?? 0) >= 0.8;
+    const staple = (id: string) => (data.meta?.usage[id] ?? 0) >= ALWAYS_TOGETHER;
     for (const cb of combosOf.get(x.id) ?? []) {
       for (const id of cb.cards) {
         const c = byId.get(id);
         if (!c) continue;
-        const general = staple(x.id) || staple(id);
+        const general = staple(x.id) || staple(id) || (withRate(x.id, id) ?? 0) >= ALWAYS_TOGETHER;
         push(c, comboSeen.has(id) ? 1 : 4, general ? "定番コンボ" : `定番コンボ（${cb.deck}）`, general ? "Known combo" : `Known combo (${cb.deckEn})`);
         comboSeen.add(id);
       }
@@ -327,7 +345,8 @@ export function createSynergy(data: AppData) {
     for (const u of coUsed.get(x.id) ?? []) {
       const c = byId.get(u.other);
       if (!c) continue;
-      const arch = sharedArch(x.id, c.id);
+      // ほとんど（80%以上）のデッキで一緒なら、デッキタイプ名ではなく割合を出す（そのデッキタイプだけの組ではない）
+      const arch = u.rate >= ALWAYS_TOGETHER ? undefined : sharedArch(x.id, c.id);
       if (!arch && Math.round(u.rate * 100) <= CO_USE_MIN_PCT) continue;
       push(
         c,
