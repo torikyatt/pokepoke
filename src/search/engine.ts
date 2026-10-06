@@ -268,6 +268,18 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       }
     }
   }
+  // ワザ・特性の名前を効果文で名指ししているカード（シャガ「りゅうせいぐん」・サイキッカー「サイコキネシス」）も、その名前で当てる。
+  // 持っているカードの後ろに足す（並びは図鑑順なので、トレーナーズは後ろになる）
+  for (const c of data.cards) {
+    const texts = [c.text, c.ability, ...c.attacks].map((e) => e?.textJa ?? "").join(" ");
+    for (const m of texts.matchAll(/「([^」]+)」/g)) {
+      const v = effectNames.get(normalize(m[1]).replace(/ /g, ""));
+      if (!v || v.ids.includes(c.id)) continue;
+      v.ids.push(c.id);
+      const en = effectNamesEn.get(enKey(v.en));
+      if (en && !en.ids.includes(c.id)) en.ids.push(c.id);
+    }
+  }
   const effectCond = (k: string, v: { ja: string; en: string; ids: string[] }): Cond => ({
     id: `effect:${k}`, kind: "name", name: k, ids: v.ids, weight: 3, label: `ワザ・特性「${v.ja}」`, en: `Attack/Ability "${v.en}"`,
   });

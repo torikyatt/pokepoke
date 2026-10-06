@@ -343,6 +343,13 @@ describe("雑なローマ字で日本語を探す", () => {
     expect(ids_("超エネ")).toEqual(["type:psychic"]);
     expect(engine.explain("超エネ").unread).toEqual([]);
   });
+  it("ワザの名前で探すと、そのワザを名指ししているトレーナーズも出る（りゅうせいぐん → シャガ）", () => {
+    for (const q of ["りゅうせいぐん", "draco meteor"]) {
+      const hit = ids(q);
+      expect(hit).toEqual(expect.arrayContaining(["a1-185", "pa-064", "pb-083", "b4-151"]));
+    }
+    expect(ids("サイコキネシス")).toContain("b4-150"); // サイキッカー
+  });
   it("psychic だけなら、サイキッカーを先頭に超タイプのカードを出す", () => {
     const hits = engine.search("psychic", Infinity);
     expect(hits[0].card.id).toBe("b4-150");
