@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Chip, Cost, EnergyIcon, PoolCard, Thumb } from "../components/ui.tsx";
 import { useAddToDeck, useData } from "../context.tsx";
 import { closeDetail, openCard, setScrollAnchor } from "../detail.ts";
@@ -28,6 +28,14 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
   const { data } = useData();
   const line = useMemo(() => (card && (card.kind === "pokemon" || card.kind === "fossil") ? synergy.evolutionLine(card) : []), [card, synergy]);
   const [printIndex, setPrintIndex] = useState(0); // 表示中の絵柄
+  // 進化ラインの段が横にはみ出すときは、いま見ているカードが見えるところまで横に送る
+  const evoRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    for (const row of evoRef.current?.querySelectorAll<HTMLElement>("[data-evo-row]") ?? []) {
+      const cur = row.querySelector<HTMLElement>("[data-current]");
+      if (cur && row.scrollWidth > row.clientWidth) row.scrollLeft = cur.offsetLeft - (row.clientWidth - cur.offsetWidth) / 2;
+    }
+  }, [id]);
   const t = useT();
   const lang = useLang();
   if (!card) return <p className="p-6 text-center text-sm font-bold text-muted">{t("カードが見つかりません", "Card not found")}</p>;
@@ -115,7 +123,7 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
         </section>
 
         {line.reduce((n, l) => n + l.cards.length, 0) > 1 && (
-          <section data-anchor="evo">
+          <section data-anchor="evo" ref={evoRef}>
             <h2 className="mb-2 text-sm font-extrabold text-muted">{t("進化ライン", "Evolution line")}</h2>
             {/* 段ごとに、進化できるカードを全部（別のパックのものも）並べる */}
             <div className="neu space-y-1 rounded-2xl p-3">
@@ -124,10 +132,24 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
                   {i > 0 && <div className="pl-3 text-xs leading-none font-extrabold text-muted">↓</div>}
                   <div className="flex items-start gap-2">
                     <span className="w-10 shrink-0 pt-1 text-[10px] font-extrabold text-muted">{level.stage ? stageName(level.stage, lang) : level.fossil ? kindName("fossil", lang) : level.label}</span>
-                    <div className="flex min-w-0 flex-1 flex-wrap gap-1.5">
+                    {/* 同じ段は1行に並べ、はみ出したら横にスクロール（印や枠が切れないよう少し余白をとる） */}
+                    <div data-evo-row className="scrollbar-none relative -my-1 flex min-w-0 flex-1 gap-1.5 overflow-x-auto px-1.5 py-1.5">
                       {level.cards.map((c) => (
-                        <button key={c.id} type="button" onClick={(e) => openFromEvo(e.currentTarget, c.id, line.flatMap((l) => l.cards.map((x) => x.id)))} title={cardName(c, lang)} className={`w-12 shrink-0 rounded-md ${c.id === card.id ? "ring-[3px] ring-accent" : ""}`}>
+                        <button
+                          key={c.id}
+                          type="button"
+                          data-current={c.id === card.id ? "" : undefined}
+                          onClick={(e) => openFromEvo(e.currentTarget, c.id, line.flatMap((l) => l.cards.map((x) => x.id)))}
+                          title={cardName(c, lang)}
+                          className={`relative w-12 shrink-0 rounded-md ${c.id === card.id ? "ring-[3px] ring-accent" : ""}`}
+                        >
                           <Thumb card={c} />
+                          {/* ex・メガシンカex はひと目で分かるように印を付ける */}
+                          {c.rule !== "normal" && (
+                            <span className={`pointer-events-none absolute -top-1.5 -right-1.5 rounded-full px-1 text-[8px] leading-[14px] font-extrabold whitespace-nowrap text-white shadow ${c.rule === "mega_ex" ? "bg-gradient-to-r from-[#8b5cf6] to-[#ec4899]" : "bg-[#2b3445]"}`}>
+                              {c.rule === "mega_ex" ? t("メガex", "Mega") : "ex"}
+                            </span>
+                          )}
                         </button>
                       ))}
                     </div>
