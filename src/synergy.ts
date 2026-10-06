@@ -309,12 +309,16 @@ export function createSynergy(data: AppData) {
     };
     // 攻略記事で紹介されている組み合わせ（いちばん強く結ぶ）
     // 同じ組を複数の記事が紹介していても、2つ目からは少しだけ足す（記事の数だけで順位が決まらないように）
+    // どのデッキにも入る定番（大会での採用率80%以上: 博士の研究・モノマネむすめ・モンスターボール・アカギ）との組は、
+    // そのデッキだけの組み合わせではないので、紹介した記事のデッキ名は出さない
     const comboSeen = new Set<string>();
+    const staple = (id: string) => (data.meta?.usage[id] ?? 0) >= 0.8;
     for (const cb of combosOf.get(x.id) ?? []) {
       for (const id of cb.cards) {
         const c = byId.get(id);
         if (!c) continue;
-        push(c, comboSeen.has(id) ? 1 : 4, `定番コンボ（${cb.deck}）`, `Known combo (${cb.deckEn})`);
+        const general = staple(x.id) || staple(id);
+        push(c, comboSeen.has(id) ? 1 : 4, general ? "定番コンボ" : `定番コンボ（${cb.deck}）`, general ? "Known combo" : `Known combo (${cb.deckEn})`);
         comboSeen.add(id);
       }
     }
