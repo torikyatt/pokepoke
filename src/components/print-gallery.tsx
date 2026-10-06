@@ -20,6 +20,8 @@ export function PrintGallery({ card, index, onIndex }: { card: AppCard; index: n
   // こちらからスクロールしている間の行き先。途中の絵柄を「いまの絵柄」として知らせない（収録の一覧の強調がチカチカしないように）
   const target = useRef<number | null>(null);
   const shown = useRef(index);
+  const settleTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  useEffect(() => () => clearTimeout(settleTimer.current), []);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -33,9 +35,19 @@ export function PrintGallery({ card, index, onIndex }: { card: AppCard; index: n
       return;
     }
     // 隣の絵柄へはなめらかに、離れた絵柄へは一気に（途中の絵柄が次々に映ってチカチカしないように）
+    const left = index * el.clientWidth;
     target.current = Math.round(el.scrollLeft / Math.max(1, el.clientWidth)) === index ? null : index; // もう着いているなら待たない
-    el.scrollTo({ left: index * el.clientWidth, behavior: Math.abs(index - shown.current) === 1 ? "smooth" : "auto" });
+    // iPhone の Safari は、ぴったり止まる（スナップ）枠をプログラムでなめらかに動かすと、途中で止めて元の絵柄に戻してしまう。
+    // 動かす間だけスナップを外し、動き終わっても着いていなければ直接その位置にしてから、スナップを戻す
+    el.style.scrollSnapType = "none";
+    el.scrollTo({ left, behavior: Math.abs(index - shown.current) === 1 ? "smooth" : "auto" });
     shown.current = index;
+    clearTimeout(settleTimer.current);
+    settleTimer.current = setTimeout(() => {
+      if (Math.abs(el.scrollLeft - left) > 2) el.scrollLeft = left;
+      el.style.scrollSnapType = "";
+      target.current = null;
+    }, 450);
     // 下の「収録」から選んだときは、画像が見えるところまで戻す
     if (el.getBoundingClientRect().bottom < 0 || el.getBoundingClientRect().top > window.innerHeight) el.scrollIntoView({ block: "center", behavior: "smooth" });
   }, [index]);
