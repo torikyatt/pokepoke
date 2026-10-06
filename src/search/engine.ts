@@ -100,9 +100,10 @@ const META: Cond = { id: "meta", kind: "meta", label: "大会でよく使われ�
 const OHKO: Cond = { id: "damage:ge150", kind: "damage", op: "ge", n: 150, label: "150ダメージ以上（ワンパン級）", en: "150+ damage (one-hit KO)" };
 const FAST: Cond = { id: "costTotal:le1", kind: "costTotal", op: "le", n: 1, label: "1エネ以下で使える（速攻）", en: "Usable with 1 Energy or less (fast)" };
 const COLORLESS_ONLY: Cond = { id: "costTyped", kind: "costTyped", n: 0, label: "無色エネだけで使える", en: "Colorless Energy only" };
+/** 「〇エネを含む技」: そのタイプのエネを1つ以上使うワザ（無色も） */
+const costHasCond = (t: EnergyType): Cond => ({ id: `costHas:${t}`, kind: "costHas", type: t, label: `${TYPE_JA[t]}エネを使うワザ`, en: `Attack using ${TYPE_EN[t]} Energy` });
 /** 「無色技」「水エネのワザ」: ワザに要るエネのタイプ（ポケモン自身のタイプとは別）。無色は無色エネだけで使えるワザ */
-const attackTypeCond = (t: EnergyType): Cond =>
-  t === "colorless" ? COLORLESS_ONLY : { id: `costHas:${t}`, kind: "costHas", type: t, label: `${TYPE_JA[t]}エネを使うワザ`, en: `Attack using ${TYPE_EN[t]} Energy` };
+const attackTypeCond = (t: EnergyType): Cond => (t === "colorless" ? COLORLESS_ONLY : costHasCond(t));
 
 // 数値パターンで使うタイプ名（正規化後）
 const TYPE_WORD: [string, EnergyType][] = [
@@ -478,7 +479,8 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     take(/(?:わんぱん|わんぱんち)(?:できる|で(?:きる)?|する|級)?/g, () => {
       add(OHKO);
     });
-    take(/速攻(?:で(?:きる)?|する|型)?/g, () => {
+    // 「アグロ」（序盤から殴る速攻デッキの呼び方）も速攻として読む
+    take(/(?:速攻|あぐろ)(?:で(?:きる)?|する|型)?/g, () => {
       add(FAST);
     });
     let typedSum = 0;
@@ -491,13 +493,18 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       }
       add(costCond(t, +m[2]));
     });
+    // 「残りは無色」「あとは無色エネのワザ」（後ろの「エネ」「わざ」まで含めて読む。「無色わざ」より先に）
+    take(/(?:あとは|あと|残りは|残り|のこりは|ほかは|他は)無色(?:えね)?(?:の)?(?:わざ|技)?/g, () => {
+      add({ id: "costTyped", kind: "costTyped", n: typedSum, label: typedSeen ? "残りは無色" : "無色だけ", en: typedSeen ? "Rest Colorless" : "Colorless only" });
+    });
+    // 「無色エネを含む技」「水エネを使う技」（空白をはさんでも）→ そのタイプのエネを1つ以上使うワザ（無色も「無色だけ」ではなく、含むもの）
+    take(new RegExp(`(${TYPE_RE})(?:えね)?(?:を|が)?\\s*(?:含む|ふくむ|含んだ|ふくんだ|使う|つかう|入った|はいつた|入る|はいる)(?:の)?\\s*(?:わざ|技)`, "g"), (m) => {
+      add(costHasCond(typeOf(m[1])));
+    });
     // 「無色技」「水エネのワザ」「無色エネで使えるワザ」→ ワザに要るエネのタイプ。
     // ポケモン自身のタイプ（「水ポケモン」）とは別の条件にするので、一緒に書けば両方で絞り込める
     take(new RegExp(`(${TYPE_RE})(?:えね)?(?:の|で(?:使える|つかえる|打てる|撃てる)(?:の)?)?(?:わざ|技)`, "g"), (m) => {
       add(attackTypeCond(typeOf(m[1])));
-    });
-    take(/(?:あとは|あと|残りは|残り|のこりは|ほかは|他は)無色/g, () => {
-      add({ id: "costTyped", kind: "costTyped", n: typedSum, label: typedSeen ? "残りは無色" : "無色だけ", en: typedSeen ? "Rest Colorless" : "Colorless only" });
     });
     take(/(?:どのえねでも|どんなえねでも|なんのえねでも|無色だけ|無色のみ|無色えねだけ)/g, () => {
       add(COLORLESS_ONLY);

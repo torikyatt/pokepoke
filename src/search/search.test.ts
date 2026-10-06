@@ -85,6 +85,20 @@ describe("受け入れテスト", () => {
     expect(engine.parse("ほのお").map((c) => c.kind)).toEqual(["type"]);
   });
 
+  it("検索ワードの集計から: 残り無色エネ・〇エネを含む技・アグロ", () => {
+    const u = (q: string) => engine.explain(q).unread;
+    expect(u("雷１ 残り無色エネ 2進化")).toEqual([]);
+    const rest = engine.run(engine.parse("雷エネ１ 残り無色わざ 2進化"), 99);
+    expect(rest.length).toBeGreaterThan(0);
+    for (const h of rest) expect(h.card.attacks.some((a) => a.cost.lightning === 1 && a.costTyped === 1)).toBe(true);
+    // 「無色エネを含む技」は無色エネを1つ以上使うワザ（無色だけ、ではない）
+    const inc = engine.run(engine.parse("無色エネを含む技 水ポケモン 2進化"), 99);
+    expect(inc.length).toBeGreaterThan(0);
+    for (const h of inc) expect(h.card.type === "water" && h.card.attacks.some((a) => (a.cost.colorless ?? 0) > 0)).toBe(true);
+    expect(engine.parse("無色エネ 含む技").map((c) => c.id)).toEqual(["costHas:colorless"]);
+    expect(engine.parse("アグロ").map((c) => c.kind)).toEqual(["costTotal"]);
+  });
+
   it("エネ加速できる炎のカード", () => {
     const all = ids("エネ加速できる炎のカード");
     // ブーバー・リザードンex（エネゾーンから自分へ）、ブースター（ベンチへ）、カキ（サポート）
