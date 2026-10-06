@@ -1,5 +1,6 @@
 // GET /api/report?key=合言葉[&days=30][&sort=time][&format=tsv]   sort=time で新しい順（ふだんは回数順） … 集めた検索ワードの集計（サイトの持ち主が見る用）
 //   合言葉は Cloudflare Pages の設定の REPORT_KEY。設定していなければ、このページは無い（404）
+//   検索データ（ふだん）と、お問い合わせ・誤りの報告（&view=inbox）は別のページに分ける。コピー用の文もそれぞれ（お問い合わせは入れない）
 //   ・お問い合わせ            … 設定画面のフォームから（新しい順。メールが送れたかも出す）
 //   ・誤りの報告              … カード詳細の左上のボタンから送られたもの（新しい順・画像つき）
 //   ・辞書で読めなかった言葉    … 検索文の中で読めなかった部分（ほかの言葉で当たっていても）。辞書に足す候補
@@ -90,21 +91,22 @@ export async function onRequestGet({ request, env }: Ctx) {
   const tsv = (rs: Row[]) => rs.map((r) => [r.q, r.lang, r.n, r.hits ?? "", r.opened, when(r.last)].join("\t")).join("\n");
   const missTsv = misses.map((m) => [m.term, m.lang, m.n, m.q ?? "", when(m.last)].join("\t")).join("\n");
   const reportTsv = reports.map((r) => [when(r.at), r.card, REPORT_CATEGORIES[r.category] ?? r.category, r.body.replace(/\s+/g, " "), r.images ? `画像${r.images}枚` : ""].join("\t")).join("\n");
-  const contactTsv = contacts.map((c) => [`#${c.id}`, when(c.at), CONTACT_CATEGORIES[c.category] ?? c.category, c.body.replace(/\s+/g, " ")].join("\t")).join("\n");
-  const all = `# 検索ワード（直近${days}日・${since}〜）\n## お問い合わせ（番号\t日時\t種類\t内容。名前・メールアドレスは除く）\n${contactTsv}\n## 誤りの報告（日時\t対象カード\t種類\t内容\t画像）\n${reportTsv}\n## 辞書で読めなかった言葉（言葉\t言語\t回数\t例の検索文\t最後）\n${missTsv}\n# 以下は 言葉\t言語\t回数\t件数\t開いた回数\t最後\n## 0件だった検索\n${tsv(zero)}\n## ${topTitle}\n${tsv(top)}\n## カードが開かれなかった検索（参考。結果の誤りとは限らない）\n${tsv(unopened)}\n`;
-  if (url.searchParams.get("format") === "tsv") return new Response(all, { headers: { ...HEAD, "Content-Type": "text/plain; charset=utf-8" } });
+  const inbox = url.searchParams.get("view") === "inbox"; // お問い合わせ・誤りの報告のページ
+  const reportsText = `# 誤りの報告（直近${days}日・${since}〜。日時\t対象カード\t種類\t内容\t画像）\n${reportTsv}\n`;
+  const all = `# 検索ワード（直近${days}日・${since}〜）\n## 辞書で読めなかった言葉（言葉\t言語\t回数\t例の検索文\t最後）\n${missTsv}\n# 以下は 言葉\t言語\t回数\t件数\t開いた回数\t最後\n## 0件だった検索\n${tsv(zero)}\n## ${topTitle}\n${tsv(top)}\n## カードが開かれなかった検索（参考。結果の誤りとは限らない）\n${tsv(unopened)}\n`;
+  if (url.searchParams.get("format") === "tsv") return new Response(inbox ? reportsText : all, { headers: { ...HEAD, "Content-Type": "text/plain; charset=utf-8" } });
 
   const total = rows.reduce((s, r) => s + r.n, 0);
   // 期間・並べ方の切り替え（もう一方の指定はそのまま）
-  const link = (p: { days?: number; sort?: string }, text: string, on: boolean) =>
-    `<a class="${on ? "on" : ""}" href="?key=${encodeURIComponent(env.REPORT_KEY!)}&days=${p.days ?? days}&sort=${p.sort ?? (byTime ? "time" : "count")}">${text}</a>`;
+  const link = (p: { days?: number; sort?: string; view?: string }, text: string, on: boolean) =>
+    `<a class="${on ? "on" : ""}" href="?key=${encodeURIComponent(env.REPORT_KEY!)}&days=${p.days ?? days}&sort=${p.sort ?? (byTime ? "time" : "count")}&view=${p.view ?? (inbox ? "inbox" : "search")}">${text}</a>`;
   const table = (title: string, note: string, rs: Row[]) => `
 <section><h2>${title} <small>${rs.length}語</small></h2><p class="note">${note}</p>
 ${rs.length ? `<table><thead><tr><th>言葉</th><th>回数</th><th>件数</th><th>開いた</th><th>最後</th></tr></thead><tbody>${rs
     .map((r) => `<tr><td>${esc(r.q)}${r.lang === "en" ? ' <span class="en">EN</span>' : ""}</td><td>${r.n}</td><td>${r.hits ?? "-"}</td><td>${r.opened}</td><td class="t">${when(r.last)}</td></tr>`)
     .join("")}</tbody></table>` : '<p class="note">まだありません</p>'}</section>`;
   const html = `<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
-<title>検索ワードの集計｜POKÉPOKE INDECKS</title>
+<title>${inbox ? "お問い合わせ・誤りの報告" : "検索ワードの集計"}｜POKÉPOKE INDECKS</title>
 <style>
 body{margin:0;background:#e6ecf3;color:#3d4757;font:14px/1.6 system-ui,-apple-system,"Hiragino Sans","Yu Gothic UI",sans-serif}
 main{max-width:760px;margin:0 auto;padding:16px}
@@ -121,15 +123,17 @@ td.t{color:#8794a7;font-size:11px;white-space:nowrap}
 .rb{margin:4px 0 0;white-space:pre-wrap;word-break:break-all}
 .imgs{display:flex;gap:6px;margin-top:6px}.imgs img{width:88px;height:88px;object-fit:cover;border-radius:8px;background:#d5dde7}
 nav a.on{background:#22998b;color:#fff}
+nav.tabs{margin-bottom:8px}nav.tabs a{font-size:13px}
 nav{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 nav a,button{font:inherit;font-size:12px;font-weight:700;color:#22998b;background:#eef2f7;border:0;border-radius:999px;padding:6px 12px;text-decoration:none;cursor:pointer;box-shadow:2px 2px 5px rgb(176 189 206/.6),-2px -2px 5px #fff}
 </style></head><body><main>
-<h1>検索ワードの集計</h1>
-<p class="note">直近${days}日（${since}〜）・${rows.length}語・のべ${total}回・${byTime ? "新しい順" : "回数順"}。「件数」は最後に探されたときの当たった数、「最後」は最後に探された日時（日本時間）。</p>
+<nav class="tabs">${link({ view: "search" }, "検索データ", !inbox)}${link({ view: "inbox" }, `お問い合わせ・誤りの報告（${contacts.length + reports.length}）`, inbox)}</nav>
+<h1>${inbox ? "お問い合わせ・誤りの報告" : "検索ワードの集計"}</h1>
+<p class="note">直近${days}日（${since}〜）${inbox ? `・お問い合わせ${contacts.length}件・誤りの報告${reports.length}件（新しい順）` : `・${rows.length}語・のべ${total}回・${byTime ? "新しい順" : "回数順"}。「件数」は最後に探されたときの当たった数、「最後」は最後に探された日時（日本時間）`}。</p>
 <nav>${[7, 30, 90].map((d) => link({ days: d }, `${d}日`, d === days)).join("")}
-${link({ sort: "count" }, "回数順", !byTime)}${link({ sort: "time" }, "新しい順", byTime)}
-<button type="button" id="copy">全部をコピー（Claude に渡す用）</button><span id="done" class="note"></span></nav>
-<section><h2>お問い合わせ <small>${contacts.length}件</small></h2><p class="note">設定画面のフォームから（新しい順）。メールの「通知」は contact@ へ、「受付」は送り主への自動返信が送れたか</p>
+${inbox ? "" : link({ sort: "count" }, "回数順", !byTime) + link({ sort: "time" }, "新しい順", byTime)}
+<button type="button" id="copy">${inbox ? "誤りの報告をコピー（Claude に渡す用）" : "検索データをコピー（Claude に渡す用）"}</button><span id="done" class="note"></span></nav>
+${inbox ? `<section><h2>お問い合わせ <small>${contacts.length}件</small></h2><p class="note">設定画面のフォームから（新しい順）。メールの「通知」は contact@ へ、「受付」は送り主への自動返信が送れたか</p>
 ${contacts.length ? contacts
     .map((c) => `<div class="rep"><div class="rh"><b>#${String(c.id).padStart(4, "0")}</b><span class="cat">${esc(CONTACT_CATEGORIES[c.category] ?? c.category)}</span>${c.lang === "en" ? '<span class="en">EN</span>' : ""}<span>${esc(c.name || "（名前なし）")}</span><a href="mailto:${esc(c.email)}">${esc(c.email)}</a><span class="t">${when(c.at)}</span></div>
 <p class="rb">${esc(c.body)}</p><p class="note">メール: ${c.mailed.includes("notify") ? "通知○" : "通知×"} ・ ${c.mailed.includes("confirm") ? "受付○" : "受付×"}</p></div>`)
@@ -138,15 +142,15 @@ ${contacts.length ? contacts
 ${reports.length ? reports
     .map((r) => `<div class="rep"><div class="rh"><b>${esc(r.card || "（カードの指定なし）")}</b><span class="cat">${esc(REPORT_CATEGORIES[r.category] ?? r.category)}</span>${r.lang === "en" ? '<span class="en">EN</span>' : ""}<span class="t">${when(r.at)}</span></div>
 ${r.body ? `<p class="rb">${esc(r.body)}</p>` : ""}${r.images ? `<div class="imgs">${Array.from({ length: r.images }, (_, i) => { const src = `/api/report-image?key=${encodeURIComponent(env.REPORT_KEY!)}&id=${r.id}&i=${i}`; return `<a href="${src}" target="_blank" rel="noreferrer"><img src="${src}" loading="lazy" alt="添付画像${i + 1}"></a>`; }).join("")}</div>` : ""}</div>`)
-    .join("") : '<p class="note">まだありません</p>'}</section>
-<section><h2>辞書で読めなかった言葉 <small>${misses.length}語</small></h2><p class="note">検索文の中で読めなかった部分（ほかの言葉で当たって結果が出ていても）。辞書に足す言い回しの候補</p>
+    .join("") : '<p class="note">まだありません</p>'}</section>` : ""}
+${inbox ? "" : `<section><h2>辞書で読めなかった言葉 <small>${misses.length}語</small></h2><p class="note">検索文の中で読めなかった部分（ほかの言葉で当たって結果が出ていても）。辞書に足す言い回しの候補</p>
 ${misses.length ? `<table><thead><tr><th>言葉</th><th>回数</th><th>例の検索文</th><th>最後</th></tr></thead><tbody>${misses
     .map((m) => `<tr><td>${esc(m.term)}${m.lang === "en" ? ' <span class="en">EN</span>' : ""}</td><td>${m.n}</td><td class="ex">${esc(m.q ?? "")}</td><td class="t">${when(m.last)}</td></tr>`)
     .join("")}</tbody></table>` : '<p class="note">まだありません</p>'}</section>
 ${table("0件だった検索", "辞書に無い言い回しか、条件に合うカードがそもそも無いか", zero)}
 ${table(topTitle, byTime ? "新しい順・200語" : "回数の多い順・200語", top)}
-${table("カードが開かれなかった検索", "参考。試しに探しただけ・合うカードが少なかっただけのことも多く、結果の誤りとは限らない。読めなかった言葉と合わせて見る", unopened)}
-<textarea id="tsv" hidden>${esc(all)}</textarea>
+${table("カードが開かれなかった検索", "参考。試しに探しただけ・合うカードが少なかっただけのことも多く、結果の誤りとは限らない。読めなかった言葉と合わせて見る", unopened)}`}
+<textarea id="tsv" hidden>${esc(inbox ? reportsText : all)}</textarea>
 <script>document.getElementById("copy").onclick=async()=>{await navigator.clipboard.writeText(document.getElementById("tsv").value);document.getElementById("done").textContent="コピーしました";};</script>
 </main></body></html>`;
   return new Response(html, { headers: { ...HEAD, "Content-Type": "text/html; charset=utf-8" } });

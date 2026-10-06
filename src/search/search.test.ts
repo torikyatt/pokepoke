@@ -96,7 +96,13 @@ describe("受け入れテスト", () => {
     expect(inc.length).toBeGreaterThan(0);
     for (const h of inc) expect(h.card.type === "water" && h.card.attacks.some((a) => (a.cost.colorless ?? 0) > 0)).toBe(true);
     expect(engine.parse("無色エネ 含む技").map((c) => c.id)).toEqual(["costHas:colorless"]);
-    expect(engine.parse("アグロ").map((c) => c.kind)).toEqual(["costTotal"]);
+    // 「アグロ」: 2エネ以下で70ダメージ以上のワザを持つ、たね・1進化の ex
+    const aggro = engine.search("アグロ", 999);
+    expect(aggro.map((h) => h.card.nameJa)).toContain("エーフィex");
+    for (const h of aggro) {
+      expect(h.card.rule !== "normal" && (h.card.stage === "basic" || h.card.stage === "stage1")).toBe(true);
+      expect(h.card.attacks.some((a) => a.costTotal <= 2 && (a.damage ?? 0) >= 70)).toBe(true);
+    }
   });
 
   it("エネ加速できる炎のカード", () => {

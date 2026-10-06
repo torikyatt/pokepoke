@@ -479,8 +479,15 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     take(/(?:わんぱん|わんぱんち)(?:できる|で(?:きる)?|する|級)?/g, () => {
       add(OHKO);
     });
-    // 「アグロ」（序盤から殴る速攻デッキの呼び方）も速攻として読む
-    take(/(?:速攻|あぐろ)(?:で(?:きる)?|する|型)?/g, () => {
+    // 「アグロ」: 序盤から少ないエネで大きく殴るデッキ（攻略記事の呼び方）→ 2エネ以下で70ダメージ以上のワザを持つ、たね・1進化の ex
+    take(/あぐろ(?:でつき|型|系|向き|むき)?/g, () => {
+      add(costTotalCond("le", 2));
+      add(damageCond("ge", 70));
+      add({ id: "rule:any_ex", kind: "rule", value: "any_ex", label: "ex", en: "ex" });
+      add({ id: "stage:basic", kind: "stage", value: "basic", label: STAGE_JA.basic, en: STAGE_EN.basic });
+      add({ id: "stage:stage1", kind: "stage", value: "stage1", label: STAGE_JA.stage1, en: STAGE_EN.stage1 });
+    });
+    take(/速攻(?:で(?:きる)?|する|型)?/g, () => {
       add(FAST);
     });
     let typedSum = 0;
