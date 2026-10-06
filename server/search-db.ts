@@ -13,6 +13,7 @@ export interface Env {
   RESEND_API_KEY?: string; // お問い合わせのメールを送る Resend の API キー（シークレット）。無ければメールは送らず、記録だけ残す
   MAIL_TO?: string; // お問い合わせの届け先（既定 contact@pokepokeindex.com）
   MAIL_FROM?: string; // 送り主（既定 noreply@pokepokeindex.com）
+  TURNSTILE_SECRET?: string; // お問い合わせのロボットよけ（Cloudflare Turnstile）のシークレットキー。あれば確認を通ったものだけ受ける
 }
 export interface Ctx {
   request: Request;

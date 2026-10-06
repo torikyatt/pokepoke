@@ -1,5 +1,7 @@
 // POST /api/contact … お問い合わせを1件受け取る（src/components/contact.tsx から）
-//   { name, email, category, body, lang, website }   website は人には見えない入力欄（ロボットよけ。入っていたら受けたふりをして捨てる）
+//   { name, email, category, body, lang, website, turnstile }
+//   website は人には見えない入力欄（ロボットよけ。入っていたら受けたふりをして捨てる）
+//   turnstile は Cloudflare Turnstile の確認の印。TURNSTILE_SECRET があるときは、Cloudflare に確かめて通ったものだけ受ける
 // 1. D1 の contacts 表に残す（集計ページで見る）
 // 2. Resend（RESEND_API_KEY があるとき）で noreply@ から2通送る
 //    ・contact@ へ: 問い合わせの中身。返信先（Reply-To）は送り主なので、メーラーで返信すれば contact@ から相手に返せる
@@ -33,13 +35,24 @@ export async function onRequestPost({ request, env }: Ctx) {
   if (origin && new URL(origin).host !== new URL(request.url).host) return json(403, { error: "forbidden" });
   const text = await request.text();
   if (text.length > 20_000) return json(413, { error: "too large" });
-  let b: { name?: unknown; email?: unknown; category?: unknown; body?: unknown; lang?: unknown; website?: unknown };
+  let b: { name?: unknown; email?: unknown; category?: unknown; body?: unknown; lang?: unknown; website?: unknown; turnstile?: unknown };
   try {
     b = JSON.parse(text);
   } catch {
     return json(400, { error: "bad json" });
   }
   if (typeof b.website === "string" && b.website) return json(200, { ok: true }); // ロボット
+  if (env.TURNSTILE_SECRET) {
+    const token = typeof b.turnstile === "string" ? b.turnstile : "";
+    if (!token || token.length > 4096) return json(403, { error: "verification required" });
+    const form = new FormData();
+    form.append("secret", env.TURNSTILE_SECRET);
+    form.append("response", token);
+    const v = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", { method: "POST", body: form })
+      .then((r) => r.json() as Promise<{ success?: boolean }>)
+      .catch(() => ({ success: false }));
+    if (!v.success) return json(403, { error: "verification failed" });
+  }
   const name = typeof b.name === "string" ? b.name.replace(/[\r\n]+/g, " ").trim().slice(0, 40) : "";
   const email = typeof b.email === "string" ? b.email.trim() : "";
   const category = typeof b.category === "string" && b.category in CONTACT_CATEGORIES ? b.category : "";

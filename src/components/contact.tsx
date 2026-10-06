@@ -1,6 +1,6 @@
 // お問い合わせフォーム（設定画面から開く）。送ると contact@pokepokeindex.com に届き、
 // 入力されたアドレスには noreply@ から受け付けた知らせが自動で届く（functions/api/contact.ts）
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { isSingleFile } from "../data/load.ts";
 import { useLang, useT } from "../i18n.ts";
 import { useToast } from "../store.ts";
@@ -14,6 +14,32 @@ const CATEGORIES: [string, string, string][] = [
   ["other", "その他", "Other"],
 ];
 const MAX_CHARS = 1000;
+/** Cloudflare Turnstile（ロボットよけ）のサイトキー（公開してよいもの）。空なら使わない */
+const TURNSTILE_SITEKEY = "0x4AAAAAAFO0qpdf7Gu5zp-I";
+
+type Turnstile = {
+  render: (el: HTMLElement, opts: Record<string, unknown>) => string;
+  reset: (id: string) => void;
+  remove: (id: string) => void;
+};
+let turnstileLoading: Promise<Turnstile> | undefined;
+/** Turnstile のスクリプトを1回だけ読む（フォームを開いたときだけ） */
+function loadTurnstile(): Promise<Turnstile> {
+  const w = window as unknown as { turnstile?: Turnstile };
+  if (w.turnstile) return Promise.resolve(w.turnstile);
+  turnstileLoading ??= new Promise((ok, ng) => {
+    const s = document.createElement("script");
+    s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+    s.async = true;
+    s.onload = () => (w.turnstile ? ok(w.turnstile) : ng(new Error("turnstile")));
+    s.onerror = () => {
+      turnstileLoading = undefined;
+      ng(new Error("turnstile"));
+    };
+    document.head.appendChild(s);
+  });
+  return turnstileLoading;
+}
 const EMAIL = /^[^\s@<>()",;:]{1,64}@[A-Za-z0-9.-]{1,253}\.[A-Za-z]{2,}$/;
 
 export function ContactSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
@@ -26,24 +52,57 @@ export function ContactSheet({ open, onClose }: { open: boolean; onClose: () => 
   const [body, setBody] = useState("");
   const [website, setWebsite] = useState(""); // ロボットよけ（人には見えない）
   const [sending, setSending] = useState(false);
+  const [token, setToken] = useState("");
+  const box = useRef<HTMLDivElement>(null);
+  const widget = useRef<{ t: Turnstile; id: string }>(undefined);
+  const useTurnstile = !!TURNSTILE_SITEKEY && !isSingleFile;
   useEffect(() => {
     if (open) setWebsite("");
   }, [open]);
+  // ロボットよけの確認欄（開いている間だけ置く）
+  useEffect(() => {
+    if (!open || !useTurnstile) return;
+    let gone = false;
+    setToken("");
+    loadTurnstile()
+      .then((ts) => {
+        if (gone || !box.current) return;
+        const id = ts.render(box.current, {
+          sitekey: TURNSTILE_SITEKEY,
+          language: lang,
+          theme: "light",
+          size: "flexible",
+          callback: (v: string) => setToken(v),
+          "expired-callback": () => setToken(""),
+          "error-callback": () => setToken(""),
+        });
+        widget.current = { t: ts, id };
+      })
+      .catch(() => show(t("確認の読み込みに失敗しました。通信状況をご確認ください", "Couldn't load the verification. Please check your connection."), "error"));
+    return () => {
+      gone = true;
+      if (widget.current) widget.current.t.remove(widget.current.id);
+      widget.current = undefined;
+    };
+  }, [open, useTurnstile, lang]);
   const chars = [...body].length;
   const emailOk = EMAIL.test(email.trim());
-  const canSend = !sending && !isSingleFile && emailOk && body.trim() !== "" && chars <= MAX_CHARS;
+  const canSend = !sending && !isSingleFile && emailOk && body.trim() !== "" && chars <= MAX_CHARS && (!useTurnstile || token !== "");
 
   const send = async () => {
     if (!canSend) return;
     setSending(true);
     try {
-      const res = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name, email: email.trim(), category, body, lang, website }) });
+      const res = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name, email: email.trim(), category, body, lang, website, turnstile: token }) });
       if (!res.ok) throw new Error(String(res.status));
       show(t("お問い合わせを送りました。ありがとうございます！", "Message sent. Thank you!"));
       setBody("");
       onClose();
     } catch {
       show(t("送れませんでした。お手数ですが、時間をおいてもう一度お試しください", "Couldn't send. Please try again later."), "error");
+      // 確認の印は1回しか使えないので、やり直せるように確認欄を新しくする
+      if (widget.current) widget.current.t.reset(widget.current.id);
+      setToken("");
     } finally {
       setSending(false);
     }
@@ -98,6 +157,7 @@ export function ContactSheet({ open, onClose }: { open: boolean; onClose: () => 
           </span>
           <textarea value={body} onChange={(e) => setBody(e.target.value)} rows={6} className={`${field} resize-none font-medium`} />
         </label>
+        {useTurnstile && <div ref={box} className="min-h-[65px]" />}
         {/* ロボットよけ: 人には見えない欄。ここに何か入っていたら送らない */}
         <input type="text" name="website" value={website} onChange={(e) => setWebsite(e.target.value)} tabIndex={-1} autoComplete="off" aria-hidden className="absolute -left-[9999px] h-0 w-0 opacity-0" />
         <p className="text-[11px] font-medium text-muted">

@@ -13,19 +13,21 @@ console.log(`dist/pokepoke.html ${(statSync(join(ROOT, "dist/pokepoke.html")).si
 //   ・アプリのページ（/ と、検索エンジン用のカードページ /card/*・/en/card/*。中身は同じ index.html）には CSP: 読み込めるのは自分のサイトと、フォント（Google Fonts）・英語画像の予備（GitHub）だけ。
 //     index.html の中に直接書いたスクリプトは、中身のハッシュで許す（書き換えたら、ここで計算し直される）
 //   デッキ画像の保存（html-to-image）はフォントの CSS とファイルを fetch で読むので、connect-src にも入れる。
-//   Cloudflare のアクセス解析（Web Analytics）は Cloudflare がページに足すので、その読み込みと送り先も許す
+//   Cloudflare のアクセス解析（Web Analytics）は Cloudflare がページに足すので、その読み込みと送り先も許す。
+//   お問い合わせのロボットよけ（Turnstile）は challenges.cloudflare.com のスクリプトと枠を使う
 {
   const html = readFileSync(join(ROOT, "dist/index.html"), "utf8");
   const hashes = [...html.matchAll(/<script(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/g)].map((m) => `'sha256-${createHash("sha256").update(m[1]).digest("base64")}'`);
   const csp = [
     "default-src 'self'",
-    `script-src 'self' ${hashes.join(" ")} https://static.cloudflareinsights.com`,
+    `script-src 'self' ${hashes.join(" ")} https://static.cloudflareinsights.com https://challenges.cloudflare.com`,
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' data: https://fonts.gstatic.com",
     "img-src 'self' data: blob: https://raw.githubusercontent.com",
     "connect-src 'self' data: blob: https://fonts.googleapis.com https://fonts.gstatic.com https://raw.githubusercontent.com https://cloudflareinsights.com",
     "manifest-src 'self'",
     "worker-src 'self' blob:",
+    "frame-src https://challenges.cloudflare.com",
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",
