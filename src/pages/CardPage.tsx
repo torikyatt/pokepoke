@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Chip, Cost, EnergyIcon, ExLogo, PoolCard, Pressable, Thumb } from "../components/ui.tsx";
+import { Chip, Cost, EnergyIcon, PoolCard, Pressable, Thumb } from "../components/ui.tsx";
 import { useAddToDeck, useData } from "../context.tsx";
 import { closeDetail, openCard, setScrollAnchor } from "../detail.ts";
 
@@ -15,7 +15,7 @@ import { PrintGallery } from "../components/print-gallery.tsx";
 import { CardDecks } from "../components/tournament-decks.tsx";
 import { navigate, searchPath } from "../router.ts";
 import type { AppAttack, AppCard, AppEffect } from "../types.ts";
-import { cardName, effectName, groupName, kindName, stageName, typeName, useLang, useT, type Lang } from "../i18n.ts";
+import { cardName, effectName, groupName, kindName, ruleName, stageName, typeName, useLang, useT, type Lang } from "../i18n.ts";
 
 /** カード詳細の中身（スマホは下からのシート、PCは真ん中の列に入れる） */
 export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpen?: boolean; actions?: React.ReactNode; fav?: React.ReactNode }) {
@@ -89,7 +89,7 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
             <div className="flex flex-wrap items-center gap-1">
               {card.type && <EnergyIcon type={card.type} />}
               <Chip active>{card.kind === "pokemon" ? (card.stage ? stageName(card.stage, lang) : kindName("pokemon", lang)) : kindName(card.kind, lang)}</Chip>
-              <ExLogo rule={card.rule} />
+              {card.rule !== "normal" && <Chip tone="text">{ruleName(card.rule, lang)}</Chip>}
               {card.groups.map((g) => (
                 <Chip key={g}>{groupName(g, lang)}</Chip>
               ))}
@@ -146,9 +146,11 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
                             <Thumb card={c} />
                           </Pressable>
                           {/* ex・メガシンカex はひと目で分かるように印を付ける */}
-                          <span className={`pointer-events-none absolute right-[-6px] -top-1.5 ${c.rule === "mega_ex" ? "" : "drop-shadow-[0_1px_1px_rgb(0_0_0/0.45)]"}`}>
-                            <ExLogo rule={c.rule} small />
-                          </span>
+                          {c.rule !== "normal" && (
+                            <span className={`pointer-events-none absolute -top-1.5 -right-1.5 rounded-full px-1 text-[8px] leading-[14px] font-extrabold whitespace-nowrap text-white shadow ${c.rule === "mega_ex" ? "bg-gradient-to-r from-[#8b5cf6] to-[#ec4899]" : "bg-[#2b3445]"}`}>
+                              {c.rule === "mega_ex" ? t("メガex", "Mega") : "ex"}
+                            </span>
+                          )}
                         </div>
                       ))}
                     </div>

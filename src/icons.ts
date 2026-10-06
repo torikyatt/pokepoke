@@ -1,14 +1,9 @@
 // タイプ（エネルギー）とレアリティのアイコン画像（src/assets/）。
 // ビルドで画像のURLになる（1ファイル版では data: URL としてHTMLに埋め込まれる）
-import type { EnergyType, Rule } from "./types.ts";
-import exLogo from "./assets/ex.png";
-import megaExLogo from "./assets/ex-mega.png";
+import type { EnergyType } from "./types.ts";
 
 const energy = import.meta.glob<string>("./assets/energy/*.png", { eager: true, query: "?url", import: "default" });
 const rarity = import.meta.glob<string>("./assets/rarity/*.png", { eager: true, query: "?url", import: "default" });
-
-/** ex のロゴ（ex は金色、メガシンカex は黒い文字に金のふち）。ふつうのポケモンは無し */
-export const exLogoUrl = (r: Rule): string | undefined => (r === "mega_ex" ? megaExLogo : r === "ex" ? exLogo : undefined);
 
 export const energyIconUrl = (t: EnergyType) => energy[`./assets/energy/${t}.png`];
 

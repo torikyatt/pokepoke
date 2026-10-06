@@ -1,37 +1,17 @@
 import { useRef, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { thumbUrls } from "../data/load.ts";
-import { energyIconUrl, exLogoUrl } from "../icons.ts";
+import { energyIconUrl } from "../icons.ts";
 import { useNav, type Tab } from "../nav.ts";
 import { useSettings, useToast } from "../store.ts";
-import type { AppCard, EnergyType, Rule } from "../types.ts";
-import { cardName, ruleName, typeName, useLang, useT } from "../i18n.ts";
+import type { AppCard, EnergyType } from "../types.ts";
+import { cardName, typeName, useLang, useT } from "../i18n.ts";
 
 export function EnergyIcon({ type, size = "md" }: { type: EnergyType; size?: "sm" | "md" | "lg" | "xl" | "fill" }) {
   // fill: 置き場所いっぱいの大きさ
   const s = { sm: "h-4 w-4", md: "h-5 w-5", lg: "h-7 w-7", xl: "h-9 w-9", fill: "aspect-square w-full" }[size];
   const lang = useLang();
   return <img src={energyIconUrl(type)} alt={typeName(type, lang)} title={typeName(type, lang)} draggable={false} className={`inline-block shrink-0 rounded-full select-none ${s}`} />;
-}
-
-/** ex・メガシンカex の印（ふつうのポケモンは何も出さない）。
- *  ex は金色のロゴだけ。メガシンカex は紫〜ピンクの札に「メガ」と、黒い文字に金のふちの ex のロゴ。
- *  small: 進化ラインのカードの角に付ける小さいもの */
-export function ExLogo({ rule, small }: { rule: Rule; small?: boolean }) {
-  const lang = useLang();
-  const url = exLogoUrl(rule);
-  if (!url) return null;
-  const img = (h: string) => <img src={url} alt={rule === "mega_ex" ? "ex" : ruleName(rule, lang)} draggable={false} className={`inline-block w-auto shrink-0 select-none ${h}`} />;
-  if (rule !== "mega_ex") return <span title={ruleName(rule, lang)} className="inline-flex shrink-0">{img(small ? "h-4" : "h-6")}</span>;
-  return (
-    <span
-      title={ruleName(rule, lang)}
-      className={`inline-flex shrink-0 items-center rounded-full bg-gradient-to-r from-[#8b5cf6] to-[#ec4899] font-extrabold whitespace-nowrap text-white shadow ${small ? "h-[14px] gap-px pr-0.5 pl-1 text-[8px]" : "h-7 gap-0.5 pr-1.5 pl-2.5 text-xs"}`}
-    >
-      {lang === "en" ? "Mega" : "メガ"}
-      {img(small ? "h-[11px]" : "h-5")}
-    </span>
-  );
 }
 
 export function Cost({ cost }: { cost: Partial<Record<EnergyType, number>> }) {
