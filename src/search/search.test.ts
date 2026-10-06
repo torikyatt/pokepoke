@@ -327,6 +327,22 @@ describe("雑なローマ字で日本語を探す", () => {
     expect(engine.parse("kaifuku").map((c) => c.id)).toContain("tag:heal.hp");
     expect(engine.parse("ene kasoku").map((c) => c.id)).toContain("tag:energy.accel");
   });
+  it("1文字のタイプ（p＝超）を読み、psychic をサポート「サイキッカー」と取り違えない", () => {
+    const ids_ = (q: string) => engine.parse(q).map((c) => c.id);
+    expect(ids_("p energy")).toEqual(ids_("psychic energy"));
+    expect(ids_("p energy")).toContain("type:psychic");
+    expect(ids_("psychic energy")).not.toContain("name:psychic");
+    expect(ids_("psychic type")).toEqual(["type:psychic"]);
+    expect(ids_("2p")).toEqual(["cost:psychic2"]);
+    expect(ids_("2 psychic attack")).toContain("cost:psychic2");
+    expect(ids_("weak to p")).toEqual(["weakness:psychic"]);
+    expect(ids_("r type")).toEqual(["type:fire"]);
+    expect(ids_("mewtwo p")).not.toContain("name:psychic");
+    // 「p」だけは名前を打っている途中かもしれないので広げない
+    expect(ids_("p")).toEqual([]);
+    expect(ids_("超エネ")).toEqual(["type:psychic"]);
+    expect(engine.explain("超エネ").unread).toEqual([]);
+  });
   it("英語の検索はそのまま", () => {
     expect(engine.parse("fire energy acceleration").map((c) => c.id)).toEqual(expect.arrayContaining(["type:fire", "tag:energy.accel"]));
   });

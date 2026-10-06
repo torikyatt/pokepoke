@@ -72,6 +72,12 @@ const TYPE_WORD_EN: [string, EnergyType][] = [
   ["fighting", "fighting"], ["darkness", "darkness"], ["dark", "darkness"], ["metal", "metal"], ["steel", "metal"], ["dragon", "dragon"], ["colorless", "colorless"],
 ];
 const TYPE_RE_EN = TYPE_WORD_EN.map(([w]) => w).join("|");
+// 1文字のタイプの略し方（英語版カードゲームの書き方: G草 R炎 W水 L雷 P超 F闘 D悪 M鋼 C無色）
+const TYPE_ABBR_EN: Record<string, string> = { g: "grass", r: "fire", w: "water", l: "lightning", p: "psychic", f: "fighting", d: "darkness", m: "metal", c: "colorless" };
+// タイプの言葉が、カードではなくタイプを指している言い方（「psychic energy」「2 psychic」「weak to psychic」）。
+// サポート「サイキッカー」（Psychic）の名前と区別する
+const TYPE_CTX_AFTER_EN = "\\s+(?:energy|energies|types?|attacks?|attackers?|pokemon|decks?)(?![a-z0-9])";
+const TYPE_CTX_BEFORE_EN = "(?:\\d|weak(?:ness)?(?:\\s+(?:to|is|against))?)\\s*";
 const typeOfEn = (w: string) => TYPE_WORD_EN.find(([x]) => x === w)![1];
 const NUM_EN: Record<string, number> = { zero: 0, one: 1, two: 2, three: 3, four: 4, five: 5 };
 const numEn = (w: string) => NUM_EN[w] ?? +w;
@@ -344,8 +350,16 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       // カード名
       for (const n of enNameList) {
         if (!q.includes(n)) continue;
-        take(new RegExp(`${W(n)}${END}`, "g"), () => add({ id: `name:${n}`, kind: "name", name: n, label: `名前「${enNames.get(n)![0].nameJa}」`, en: `Name "${enNames.get(n)![0].nameEn}"`, weight: 3 }));
+        // タイプと同じ名前（Psychic）は、タイプを指す言い方のときは名前にしない
+        const typeWord = TYPE_WORD_EN.some(([w]) => w === n);
+        const re = typeWord ? `(?<!${TYPE_CTX_BEFORE_EN})${W(n)}(?!${TYPE_CTX_AFTER_EN})${END}` : `${W(n)}${END}`;
+        take(new RegExp(re, "g"), () => add({ id: `name:${n}`, kind: "name", name: n, label: `名前「${enNames.get(n)![0].nameJa}」`, en: `Name "${enNames.get(n)![0].nameEn}"`, weight: 3 }));
       }
+      // 「p energy」「2p」「weak to p」の1文字の p → psychic（超）。ほかの言葉と一緒に書いたときだけ。
+      // カード名を読んだ後で広げるので、広げた psychic がサポート「サイキッカー」（Psychic）になることはない。
+      // 「p」だけのときは、名前を打っている途中かもしれないのでそのまま
+      q = q.replace(/(\d)([grwlpfdmc])(?![a-z0-9])/g, "$1 $2");
+      if (/\S\s+\S/.test(q.trim())) q = q.replace(/(?<![a-z0-9])([grwlpfdmc])(?![a-z0-9])/g, (_, l: string) => TYPE_ABBR_EN[l]);
       // 数値
       take(new RegExp(`(?<![a-z])hp\\s*(?:of\\s+)?${PRE_EN}(\\d+)${POST_EN}|(\\d+)\\s*hp${POST_EN}`, "g"), (m) => add(hpCond(opEn(m[1], m[3] ?? m[5]), +(m[2] ?? m[4]))));
       take(new RegExp(`(?:free|no|zero)\\s+retreat(?:\\s+cost)?${END}`, "g"), () => add(retreatCond("eq", 0)));
@@ -358,11 +372,12 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       take(new RegExp(`(?<![a-z])weak(?:ness)?\\s+(?:to\\s+|is\\s+|against\\s+)?(${TYPE_RE_EN})${END}`, "g"), (m) => add(weakCond(typeOfEn(m[1]))));
       take(new RegExp(`(?<![a-z])(?:ohko|one\\s+hit\\s+(?:ko|knock\\s*out)|one\\s+shot|one\\s+hit)${END}`, "g"), () => add(OHKO));
       take(new RegExp(`(?:(?<![a-z])(?:any|colorless)\\s+energy\\s+only|(?<![a-z])only\\s+colorless(?:\\s+energy)?|(?<![a-z])any\\s+(?:type\\s+of\\s+)?energy)${END}`, "g"), () => add(COLORLESS_ONLY));
-      take(new RegExp(`(?<![a-z])(${TYPE_RE_EN})(?:\\s+energy)?\\s+attacks?${END}|(?<![a-z])attacks?\\s+(?:using|with|costing|that\\s+costs?|that\\s+uses?)\\s+(?:only\\s+)?(${TYPE_RE_EN})(?:\\s+energy)?${END}`, "g"), (m) =>
-        add(attackTypeCond(typeOfEn(m[1] ?? m[2]))),
-      );
+      // 「2 psychic attack」は数を先に読む（psychic 2つのワザ）
       take(new RegExp(`${N_EN}\\s+(${TYPE_RE_EN})(?:\\s+energy|\\s+energies)?${END}|(?<![a-z])(${TYPE_RE_EN})\\s+energy\\s*x?\\s*${N_EN}${END}`, "g"), (m) =>
         add(costCond(typeOfEn(m[2] ?? m[3]), numEn(m[1] ?? m[4]))),
+      );
+      take(new RegExp(`(?<![a-z])(${TYPE_RE_EN})(?:\\s+energy)?\\s+attacks?${END}|(?<![a-z])attacks?\\s+(?:using|with|costing|that\\s+costs?|that\\s+uses?)\\s+(?:only\\s+)?(${TYPE_RE_EN})(?:\\s+energy)?${END}`, "g"), (m) =>
+        add(attackTypeCond(typeOfEn(m[1] ?? m[2]))),
       );
       take(new RegExp(`${PRE_EN}${N_EN}\\s+(?:energy|energies|cost)${POST_EN}${END}|(?<![a-z])costs?\\s+${PRE_EN}${N_EN}${POST_EN}${END}`, "g"), (m) =>
         add(costTotalCond(opEn(m[1] ?? m[4], m[3] ?? m[6], "le"), numEn(m[2] ?? m[5]))),
@@ -426,7 +441,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       q = "";
     }
     // 英語の検索文（アルファベットが3文字以上続くときだけ）
-    if (/[a-z]{3,}/.test(q)) parseEn();
+    if (/[a-z]{3,}/.test(q) || /(?<![a-z0-9])\d+\s*[grwlpfdmc](?![a-z0-9])/.test(q)) parseEn(); // 「2p」（超2つ）も英語として読む
 
     // 0. 実際の使われ方
     //   「メガルカリオexデッキ」「ルカリオのデッキ」 → 大会のデッキタイプに入っているカード
@@ -516,6 +531,8 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     take(/(?:どのえねでも|どんなえねでも|なんのえねでも|無色だけ|無色のみ|無色えねだけ)/g, () => {
       add(COLORLESS_ONLY);
     });
+    // 「超エネ」だけ（後ろに何も続かない）→ そのタイプ。「エネ」を読めなかった言葉に残さない
+    take(new RegExp(`(${TYPE_RE})えね(?=\\s|$)`, "g"), (m) => add(condOf({ type: typeOf(m[1]) }, 1, m[0])));
     take(new RegExp(`(?:えね|こすと)(\\d+)(?:個|こ|つ)?${CMP}|(\\d+)(?:個|こ|つ)?(?:の)?えね(?:で|が)?${CMP}`, "g"), (m) => {
       const n = +(m[1] ?? m[3]);
       const raw = m[2] ?? m[4];
