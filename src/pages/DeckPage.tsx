@@ -2,7 +2,8 @@ import { toPng } from "html-to-image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { PoolFab, PoolGrid, PoolToolbar, QueryBox, usePoolResults } from "../components/pool.tsx";
-import { EnergyIcon, ENERGY_COLOR, energyLetter, Header, IconDeck, Pressable, Thumb } from "../components/ui.tsx";
+import { EnergyIcon, Header, IconDeck, Pressable, Thumb } from "../components/ui.tsx";
+import { energyIconUrl } from "../icons.ts";
 import { useData } from "../context.tsx";
 import { largeUrl, thumbUrl } from "../data/load.ts";
 import { useSettings } from "../store.ts";
@@ -579,15 +580,7 @@ function DeckImage({ deck, cards, qr, ref }: { deck: Deck; cards: AppCard[]; qr:
           <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 8px 6px 16px", ...panel, borderRadius: 999, ...nowrap }}>
             <span style={{ fontSize: 15, fontWeight: 800, color: "#8794a7", ...nowrap }}>{t("エネルギー", "Energy")}</span>
             {deck.energy.map((e) => (
-              <span
-                key={e}
-                style={{
-                  width: 30, height: 30, borderRadius: 999, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15, fontWeight: 800, lineHeight: 1,
-                  background: ENERGY_COLOR[e].bg, color: ENERGY_COLOR[e].fg, border: e === "colorless" ? "1px solid #d5dde7" : "none", ...nowrap,
-                }}
-              >
-                {energyLetter(e, uiLang)}
-              </span>
+              <img key={e} src={energyIconUrl(e)} alt="" width={30} height={30} style={{ width: 30, height: 30, borderRadius: 999, display: "block" }} />
             ))}
           </div>
         )}

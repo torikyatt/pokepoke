@@ -2,6 +2,7 @@
 import { useData } from "../context.tsx";
 import type { AppCard, AppPrint, AppSet } from "../types.ts";
 import { useLang, type Lang } from "../i18n.ts";
+import { rarityIconUrl } from "../icons.ts";
 
 // 弾の色（発売順に色相を回す）。プロモは灰色
 const HUES = [205, 350, 140, 30, 270, 180, 55, 315, 95, 240, 10, 160];
@@ -25,6 +26,12 @@ export const RARITY_JA: Record<string, string> = {
   "◊": "◆", "◊◊": "◆◆", "◊◊◊": "◆◆◆", "◊◊◊◊": "◆◆◆◆", "☆": "★", "☆☆": "★★", "☆☆☆": "★★★", "Crown Rare": "👑", Promo: "プロモ",
 };
 export const rarityLabel = (r: string, lang: Lang) => (lang === "en" && r === "Promo" ? "Promo" : RARITY_JA[r] ?? r);
+/** レアリティのアイコン（アイコンが無いものは文字） */
+export function Rarity({ r, lang }: { r: string; lang: Lang }) {
+  const url = rarityIconUrl(r);
+  if (!url) return <span className="shrink-0 text-[10px] font-bold text-muted">{rarityLabel(r, lang)}</span>;
+  return <img src={url} alt={rarityLabel(r, lang)} title={rarityLabel(r, lang)} draggable={false} className={`inline-block shrink-0 select-none ${r === "Promo" ? "h-3.5" : "h-[18px]"} w-auto`} />;
+}
 const RANK = ["◊", "◊◊", "◊◊◊", "◊◊◊◊", "☆", "☆☆", "☆☆☆", "Crown Rare"];
 
 /** 弾名（日本語）＋パック名。弾にパックが複数あって、どれからも出るなら「共通」。英語は弾名だけ */
@@ -66,7 +73,7 @@ export function PrintLine({ p, compact }: { p: AppPrint; compact?: boolean }) {
     <span className="flex min-w-0 items-center gap-1.5">
       <SetBadge set={p.set} />
       <span className={`truncate font-bold ${compact ? "text-[11px]" : "text-xs"}`}>{packLabel(p, data.sets, multi, lang)}</span>
-      <span className="shrink-0 text-[10px] font-bold text-muted">{rarityLabel(p.rarity, lang)}</span>
+      <Rarity r={p.rarity} lang={lang} />
     </span>
   );
 }

@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import { printImageUrl, thumbUrl } from "../data/load.ts";
 import { useSettings } from "../store.ts";
 import type { AppCard } from "../types.ts";
-import { SetBadge, rarityLabel } from "./prints.tsx";
+import { Rarity, SetBadge } from "./prints.tsx";
 import { cardName, useLang, useT } from "../i18n.ts";
 
 export function PrintGallery({ card, index, onIndex }: { card: AppCard; index: number; onIndex: (i: number) => void }) {
@@ -121,7 +121,7 @@ export function PrintGallery({ card, index, onIndex }: { card: AppCard; index: n
           </div>
           <div className="flex items-center justify-center gap-1 text-[10px] font-bold text-muted">
             <SetBadge set={p.set} />
-            <span>{rarityLabel(p.rarity, uiLang)}</span>
+            <Rarity r={p.rarity} lang={uiLang} />
             <span className="tabular-nums">
               {index + 1}/{n}
             </span>
