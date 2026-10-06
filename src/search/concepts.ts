@@ -11,6 +11,7 @@ const VOCAB: Record<string, string[]> = {
   trash: ["トラッシュ", "墓地", "捨て札"],
   deck: ["山札", "デッキ", "やまふだ"],
   hand: ["手札", "てふだ"],
+  bench_from: ["ベンチから", "ベンチにいても", "ベンチでも", "控えから", "後ろから"],
   bench: ["ベンチ", "控え", "後ろ"],
   active: ["バトル場", "バトルポケモン", "バトル"],
   opp: ["相手", "敵"],
@@ -122,6 +123,7 @@ export const widen = (cs: Iterable<string>) => {
   const out = new Set(cs);
   if (out.has("trash_from")) out.add("trash");
   if (out.has("deck_from")) out.add("deck");
+  if (out.has("bench_from")) out.add("bench");
   if (out.has("basic")) out.add("pokemon");
   return out;
 };

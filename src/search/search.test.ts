@@ -105,6 +105,16 @@ describe("受け入れテスト", () => {
     }
   });
 
+  it("ベンチから攻撃できる（ゲッコウガ・ダークライex）と、ベンチに攻撃できる（ベンチ狙撃）を分ける", () => {
+    const tagsOf = (q: string) => engine.parse(q).flatMap((c) => (c.kind === "tag" ? [c.tag] : []));
+    expect(tagsOf("ベンチから攻撃できる")).toEqual(["damage.direct.bench"]);
+    expect(tagsOf("ベンチに攻撃")).toEqual(["damage.bench"]);
+    const names = engine.search("ベンチからダメージを与えられる特性", 99).map((h) => h.card.nameJa);
+    for (const n of ["ゲッコウガ", "ダークライex"]) expect(names).toContain(n);
+    expect(names).not.toContain("サンダースex"); // バトル場にいるときだけ
+    expect(engine.explain("ベンチからダメージを与えられる特性").unread).toEqual([]);
+  });
+
   it("エネ加速できる炎のカード", () => {
     const all = ids("エネ加速できる炎のカード");
     // ブーバー・リザードンex（エネゾーンから自分へ）、ブースター（ベンチへ）、カキ（サポート）

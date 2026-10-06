@@ -281,6 +281,16 @@
       match:
         - 'do \d+ damage to (your opponent|1 of your opponent|each of your opponent|that Pokémon)'
         - 'move \d+ of its damage to your opponent'
+      children:
+        # ゲッコウガ・ダークライex など: 特性で相手にダメージを与え、バトル場にいなくても（ベンチからでも）使える
+        - id: damage.direct.bench
+          ja: ベンチからでもダメージ
+          en: Damage even from the Bench
+          on: [ability]
+          match:
+            - 'do \d+ damage to (your opponent|1 of your opponent|each of your opponent|that Pokémon)'
+          exclude:
+            - '([Ii]f|[Aa]s long as) this Pokémon is in the Active Spot'
     - id: damage.pierce
       ja: 弱点・効果を無視
       en: Ignores Weakness or effects
