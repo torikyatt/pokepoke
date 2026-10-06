@@ -1,13 +1,13 @@
 // カード詳細の「このカードを使ったデッキ」: 大会で使われたデッキリストを並べ、そのまま自分のデッキとしてコピーできる
 import { useMemo, useState } from "react";
-import { useData } from "../context.tsx";
+import { useAddToDeck, useData } from "../context.tsx";
 import { useTournamentDecks, type TournamentDeck } from "../data/decks.ts";
 import { closeDetail, openCard } from "../detail.ts";
 import { navigate } from "../router.ts";
 import { guessEnergy } from "../deck.ts";
 import { useDecks, useToast } from "../store.ts";
 import type { AppCard } from "../types.ts";
-import { Chip, EnergyIcon, Thumb } from "./ui.tsx";
+import { Chip, EnergyIcon, Pressable, Thumb } from "./ui.tsx";
 import { cardName, useLang, useT } from "../i18n.ts";
 
 const PAGE = 8;
@@ -115,6 +115,7 @@ function DeckRow({ d, highlight, keepOpen }: { d: TournamentDeck; highlight: str
   const show = useToast((s) => s.show);
   const t = useT();
   const lang = useLang();
+  const addToDeck = useAddToDeck();
   const archName = lang === "en" ? d.archEn : d.arch;
   // ポケモン → トレーナーズの順、図鑑順に
   const cards = d.cards
@@ -156,10 +157,10 @@ function DeckRow({ d, highlight, keepOpen }: { d: TournamentDeck; highlight: str
       </div>
       <div className="mt-2 grid grid-cols-8 gap-1">
         {cards.map(({ card, n }) => (
-          <button key={card.id} type="button" onClick={() => openCard(card.id, cards.map((x) => x.card.id))} aria-label={t(`${card.nameJa} ${n}枚`, `${cardName(card, lang)} ×${n}`)} className={`relative rounded-[3px] ${card.id === highlight ? "ring-2 ring-accent" : ""}`}>
+          <Pressable key={card.id} onTap={() => openCard(card.id, cards.map((x) => x.card.id))} onLongPress={() => addToDeck(card)} label={t(`${card.nameJa} ${n}枚`, `${cardName(card, lang)} ×${n}`)} className={`relative rounded-[3px] ${card.id === highlight ? "ring-2 ring-accent" : ""}`}>
             <Thumb card={card} className="rounded-[3px]" />
             {n > 1 && <span className="absolute right-0 bottom-0 rounded-tl-[4px] bg-badge px-1 text-[9px] leading-tight font-extrabold text-white">×{n}</span>}
-          </button>
+          </Pressable>
         ))}
       </div>
       <button type="button" onClick={copy} className="btn-ok mt-2.5 w-full rounded-full py-2 text-xs tracking-normal">

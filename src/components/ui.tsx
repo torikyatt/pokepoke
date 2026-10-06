@@ -91,7 +91,7 @@ export function Toggle({ on, onChange, label }: { on: boolean; onChange: (v: boo
 }
 
 /** 長押しとタップを分けて扱うボタン */
-export function Pressable({ onTap, onLongPress, children, className = "", label }: { onTap?: () => void; onLongPress?: () => void; children: ReactNode; className?: string; label?: string }) {
+export function Pressable({ onTap, onLongPress, children, className = "", label }: { onTap?: (el: HTMLButtonElement) => void; onLongPress?: () => void; children: ReactNode; className?: string; label?: string }) {
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const long = useRef(false);
   const start = useRef<{ x: number; y: number }>(undefined);
@@ -118,8 +118,8 @@ export function Pressable({ onTap, onLongPress, children, className = "", label 
       onPointerLeave={cancel}
       onPointerCancel={cancel}
       onContextMenu={(e) => e.preventDefault()}
-      onClick={() => {
-        if (!long.current) onTap?.();
+      onClick={(e) => {
+        if (!long.current) onTap?.(e.currentTarget);
       }}
     >
       {children}

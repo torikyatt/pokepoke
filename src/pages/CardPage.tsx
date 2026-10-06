@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Chip, Cost, EnergyIcon, PoolCard, Thumb } from "../components/ui.tsx";
+import { Chip, Cost, EnergyIcon, PoolCard, Pressable, Thumb } from "../components/ui.tsx";
 import { useAddToDeck, useData } from "../context.tsx";
 import { closeDetail, openCard, setScrollAnchor } from "../detail.ts";
 
@@ -135,22 +135,23 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
                     {/* 同じ段は1行に並べ、はみ出したら横にスクロール（印や枠が切れないよう少し余白をとる） */}
                     <div data-evo-row className="scrollbar-none relative -my-1 flex min-w-0 flex-1 gap-1.5 overflow-x-auto px-1.5 py-1.5">
                       {level.cards.map((c) => (
-                        <button
-                          key={c.id}
-                          type="button"
-                          data-current={c.id === card.id ? "" : undefined}
-                          onClick={(e) => openFromEvo(e.currentTarget, c.id, line.flatMap((l) => l.cards.map((x) => x.id)))}
-                          title={cardName(c, lang)}
-                          className={`relative w-12 shrink-0 rounded-md ${c.id === card.id ? "ring-[3px] ring-accent" : ""}`}
-                        >
-                          <Thumb card={c} />
+                        // 長押しでデッキに追加（ほかのカードの並びと同じ）
+                        <div key={c.id} data-current={c.id === card.id ? "" : undefined} className="relative w-12 shrink-0">
+                          <Pressable
+                            onTap={(el) => openFromEvo(el, c.id, line.flatMap((l) => l.cards.map((x) => x.id)))}
+                            onLongPress={() => addToDeck(c)}
+                            label={cardName(c, lang)}
+                            className={`rounded-md ${c.id === card.id ? "ring-[3px] ring-accent" : ""}`}
+                          >
+                            <Thumb card={c} />
+                          </Pressable>
                           {/* ex・メガシンカex はひと目で分かるように印を付ける */}
                           {c.rule !== "normal" && (
                             <span className={`pointer-events-none absolute -top-1.5 -right-1.5 rounded-full px-1 text-[8px] leading-[14px] font-extrabold whitespace-nowrap text-white shadow ${c.rule === "mega_ex" ? "bg-gradient-to-r from-[#8b5cf6] to-[#ec4899]" : "bg-[#2b3445]"}`}>
                               {c.rule === "mega_ex" ? t("メガex", "Mega") : "ex"}
                             </span>
                           )}
-                        </button>
+                        </div>
                       ))}
                     </div>
                   </div>
@@ -205,9 +206,11 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
                   <li key={g.key} className="neu flex gap-3 rounded-2xl p-3">
                     <div className="flex shrink-0 gap-1">
                       {g.others.map((c) => (
-                        <button key={c.id} type="button" onClick={() => openCard(c.id, [...new Set(comboGroups.flatMap((x) => x.others.map((o) => o.id)))])} className="w-12 shrink-0" aria-label={cardName(c, lang)}>
-                          <Thumb card={c} className="rounded-[4px]" />
-                        </button>
+                        <div key={c.id} className="w-12 shrink-0">
+                          <Pressable onTap={() => openCard(c.id, [...new Set(comboGroups.flatMap((x) => x.others.map((o) => o.id)))])} onLongPress={() => addToDeck(c)} label={cardName(c, lang)}>
+                            <Thumb card={c} className="rounded-[4px]" />
+                          </Pressable>
+                        </div>
                       ))}
                     </div>
                     <div className="min-w-0 flex-1 text-xs leading-relaxed">
