@@ -111,14 +111,14 @@ export function SettingsPage({ embedded }: { embedded?: boolean }) {
           <h2 className="text-sm font-extrabold text-ink">{t("POKÉPOKE INDECKS について", "About POKÉPOKE INDECKS")}</h2>
           <p>
             {t(
-              "個人用の非公式ツールです。ポケモン・ポケモンカードゲーム Pocket は任天堂・クリーチャーズ・ゲームフリーク・株式会社ポケモンの商標です。",
-              "An unofficial personal tool. Pokémon and Pokémon TCG Pocket are trademarks of Nintendo, Creatures, GAME FREAK and The Pokémon Company.",
+              "個人が運営する非公式のツールです。ポケモン・Pokémon Trading Card Game Pocket（ポケポケ）は、任天堂・クリーチャーズ・ゲームフリーク・株式会社ポケモンの商標です。",
+              "An unofficial tool run by an individual. Pokémon and Pokémon Trading Card Game Pocket are trademarks of Nintendo, Creatures, GAME FREAK and The Pokémon Company.",
             )}
           </p>
           <p>
             {t(
-              "検索をよくするために、検索された言葉・当たった件数・結果のカードを開いたかどうかを集めています。誰が検索したか（IPアドレスなど）は記録しません。お問い合わせでいただいたメールアドレスは、お返事のためだけに使います。",
-              "To improve search, we collect the words searched, how many cards matched, and whether a result was opened. We do not record who searched (e.g. IP addresses). Email addresses sent via the contact form are used only to reply.",
+              "ふだんの言葉での検索をより使いやすくするため、検索された言葉と、その結果の件数などを収集しています。IPアドレスなど、どなたが検索したかが分かる情報は一切記録いたしません。お問い合わせの際にいただいたメールアドレスは、お返事のためだけに使用いたします。",
+              "To make plain-language search work better, we collect the words searched and related figures such as the number of results. We never record anything that identifies who searched, such as IP addresses. Email addresses received through the contact form are used only to reply to you.",
             )}
           </p>
         </section>
