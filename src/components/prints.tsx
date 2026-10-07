@@ -23,9 +23,10 @@ export function SetBadge({ set }: { set: string }) {
 }
 
 export const RARITY_JA: Record<string, string> = {
-  "◊": "◆", "◊◊": "◆◆", "◊◊◊": "◆◆◆", "◊◊◊◊": "◆◆◆◆", "☆": "★", "☆☆": "★★", "☆☆☆": "★★★", "Crown Rare": "👑", Promo: "プロモ",
+  "◊": "◆", "◊◊": "◆◆", "◊◊◊": "◆◆◆", "◊◊◊◊": "◆◆◆◆", "☆": "★", "☆☆": "★★", "☆☆☆": "★★★", "✵": "色違い★", "✵✵": "色違い★★", "Crown Rare": "👑", Promo: "プロモ",
 };
-export const rarityLabel = (r: string, lang: Lang) => (lang === "en" && r === "Promo" ? "Promo" : RARITY_JA[r] ?? r);
+const RARITY_EN: Record<string, string> = { Promo: "Promo", "✵": "Shiny ★", "✵✵": "Shiny ★★" };
+export const rarityLabel = (r: string, lang: Lang) => (lang === "en" && RARITY_EN[r] ? RARITY_EN[r] : RARITY_JA[r] ?? r);
 /** レアリティのアイコン（アイコンが無いものは文字） */
 export function Rarity({ r, lang }: { r: string; lang: Lang }) {
   const icons = rarityIcons(r);
@@ -38,7 +39,7 @@ export function Rarity({ r, lang }: { r: string; lang: Lang }) {
     </span>
   );
 }
-const RANK = ["◊", "◊◊", "◊◊◊", "◊◊◊◊", "☆", "☆☆", "☆☆☆", "Crown Rare"];
+const RANK = ["◊", "◊◊", "◊◊◊", "◊◊◊◊", "☆", "☆☆", "☆☆☆", "✵", "✵✵", "Crown Rare"];
 
 /** 弾名（日本語）＋パック名。弾にパックが複数あって、どれからも出るなら「共通」。英語は弾名だけ */
 export function packLabel(p: AppPrint, sets: AppSet[], multiPack: Set<string>, lang: Lang = "ja"): string {

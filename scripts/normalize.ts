@@ -69,7 +69,8 @@ for (const xs of groups.values()) {
   const x = sorted[0];
   const kind = kindOf(x);
   const prints: Print[] = sorted.map((p) => ({
-    id: p.id, set: p.set_code, setName: p.set_name, rarity: p.rarity, image: p.image,
+    // 色違い（shiny）は元データでは ☆・☆☆ なので、✵・✵✵ に書き分ける（アートレアの ☆ と区別する）
+    id: p.id, set: p.set_code, setName: p.set_name, rarity: p.shiny && /^☆+$/.test(p.rarity ?? "") ? "✵".repeat(p.rarity!.length) : p.rarity, image: p.image,
     released: p.release_date ?? undefined, builderNr: p.deckBuilderNr ?? undefined,
   }));
   const card: Card = {
