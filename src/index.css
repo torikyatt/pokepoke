@@ -35,6 +35,8 @@ body {
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior-y: none;
   font-feature-settings: "palt";
+  /* 2本指で画面を拡大しない・ダブルタップで拡大しない（アプリとして使うので。カード画像はタップで拡大表示がある） */
+  touch-action: pan-x pan-y;
 }
 
 @layer components {

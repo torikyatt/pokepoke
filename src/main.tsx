@@ -17,6 +17,9 @@ import { createEngine } from "./search/engine.ts";
 import { createSynergy } from "./synergy.ts";
 import { cardName, siteTitle, useLang, useT } from "./i18n.ts";
 
+// iPhone の Safari は viewport の user-scalable=no を無視するので、2本指の拡大（ジェスチャー）も止める
+document.addEventListener("gesturestart", (e) => e.preventDefault());
+
 // 本番ビルドでは import.meta.env.DEV が false になり、レビューページは含まれない
 const ReviewPage = import.meta.env.DEV ? lazy(() => import("./pages/ReviewPage.tsx")) : null;
 const TABS: Tab[] = ["search", "deck", "settings"];
