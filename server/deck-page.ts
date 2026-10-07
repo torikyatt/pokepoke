@@ -1,8 +1,9 @@
 // デッキの共有リンク（/d/<共有コード>・/en/d/<共有コード>）のページ。
 // アプリは # 以降で画面を切り替えるので、LINE・X・Discord などのリンクのプレビューからはトップページしか見えない。
-// そこで、トップページ（index.html）に、デッキ名を頭にしたタイトル・説明・サムネ（デッキの主役のカードの画像）を書き足して返す。
+// そこで、トップページ（index.html）に、デッキ名を頭にしたタイトルと説明を書き足して返す。
+// サムネはつけない（トップページと同じく、サイトのアイコンが出る）。
 // 人が開くと、index.html の起動スクリプトが /#/share/<共有コード> に切り替え、アプリの共有デッキの画面が開く。
-//   カードの名前・画像・主役らしさは、ビルドで作る /deck-cards.json（scripts/seo-pages.ts）から引く
+//   カードの名前・主役らしさは、ビルドで作る /deck-cards.json（scripts/seo-pages.ts）から引く
 //   共有コードの読み方は src/deck.ts の decodeShare（v2: 「2~エネ~カード~名前」）と同じ
 
 interface Assets {
@@ -12,8 +13,8 @@ interface DeckCtx {
   request: Request;
   env: { ASSETS: Assets };
 }
-/** カードID → [主役らしさ, 日本語名, 英語名, 日本語の画像, 英語の画像] */
-type CardRow = [number, string, string, string, string];
+/** カードID → [主役らしさ, 日本語名, 英語名] */
+type CardRow = [number, string, string];
 
 const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const cut = (s: string, n: number) => ([...s].length > n ? `${[...s].slice(0, n - 1).join("")}…` : s);
@@ -56,8 +57,6 @@ export async function deckPage({ request, env }: DeckCtx, lang: "ja" | "en"): Pr
   }
 
   const known = deck.cards.filter(([id]) => cards[id]);
-  // 主役: ex（メガシンカex）を優先し、同じなら枚数が多いもの、さらに同じなら先に入れたもの
-  const key = [...known].sort((a, b) => cards[b[0]][0] - cards[a[0]][0] || b[1] - a[1])[0];
   const nameOf = (id: string) => cards[id][lang === "en" ? 2 : 1];
   const count = deck.cards.reduce((s, [, n]) => s + n, 0);
   // 説明: 主なポケモン（主役らしい順に3枚まで）
@@ -68,7 +67,6 @@ export async function deckPage({ request, env }: DeckCtx, lang: "ja" | "en"): Pr
     lang === "en"
       ? `A ${count}-card Pokémon TCG Pocket deck${mains.length ? ` with ${mains.join(", ")}` : ""}. Open it in POKÉPOKE INDECKS to see the cards and copy it to your decks.`
       : `ポケポケ（Pokémon TCG Pocket）の${count}枚のデッキ${mains.length ? `（${mains.join("・")}）` : ""}。POKÉPOKE INDECKS で開くと、カードの一覧を見たり、自分のデッキに取り込んだりできます。`;
-  const image = key ? new URL(`/${cards[key[0]][lang === "en" ? 4 : 3]}`, url).href : "";
 
   const head = [
     `<base href="/">`,
@@ -81,7 +79,6 @@ export async function deckPage({ request, env }: DeckCtx, lang: "ja" | "en"): Pr
     `<meta property="og:title" content="${esc(title)}">`,
     `<meta property="og:description" content="${esc(desc)}">`,
     `<meta property="og:url" content="${esc(url.href)}">`,
-    ...(image ? [`<meta property="og:image" content="${esc(image)}">`] : []),
     `<meta name="twitter:card" content="summary">`,
   ].join("\n    ");
   const html = (await top.text())
