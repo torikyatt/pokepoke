@@ -11,6 +11,7 @@ import { loadTaxonomy } from "./lib/taxonomy.ts";
 import { createReader, hasKanji } from "./lib/reading.ts";
 import { jaImageFile } from "./lib/ja-images.ts";
 import { enImageFile, enImageRemote } from "../src/en-images.ts";
+import { recommendScore } from "../src/deck-score.ts";
 import type { Card, Effect } from "./lib/types.ts";
 import type { G8Card } from "./lib/game8.ts";
 import type { AppArchetype, AppAttack, AppCard, AppCombo, AppData, AppHelp, AppMeta, HelpTarget, AppEffect, AppPrint, AppSet, EnergyType, LexEntry, RequireInfo, Selector, Slot } from "../src/types.ts";
@@ -296,6 +297,7 @@ if (existsSync(combosFile)) {
   console.log(`攻略記事の組み合わせ: ${combos.length} 件`);
 }
 
+const deckCore: NonNullable<AppData["deckCore"]> = {};
 // 大会のデッキリスト（data/meta/decks.json）→ src/data/decks.json（カード詳細の「このカードを使ったデッキ」用。必要になってから読み込む）
 const decksFile = join(DATA, "meta/decks.json");
 if (existsSync(decksFile)) {
@@ -319,6 +321,25 @@ if (existsSync(decksFile)) {
     decks.push([t, archIndex.get(archId)!, place, w, l, ties, energy, cardsStr, dup]);
   }
   writeFileSync(join(ROOT, "src/data/decks.json"), JSON.stringify({ fetchedAt: raw.fetchedAt, tournaments: raw.tournaments, archetypes: archs, decks }));
+  // 検索の「〇〇デッキ」用: カードごとに、そのカードを使ったデッキのおすすめ順（カード詳細と同じ）上位 DECK_CORE_TOP 件で、
+  // ほかのカードが何割のデッキに入っているか（同じ構成の数 dup も1件として数える）。20%以上のものを、多い順に25枚まで
+  const DECK_CORE_TOP = 30;
+  const newest = Math.max(0, ...raw.tournaments.map(([, date]) => Date.parse(date)));
+  const scored = decks.map((d) => {
+    const [t, , place, wins, losses, , , cardsStr, dup] = d as [number, number, number, number, number, number, string, string, number];
+    const [, date, players] = raw.tournaments[t];
+    return { ids: [...new Set(cardsStr.split(" ").map((x) => x.split("*")[0]))], score: recommendScore({ date, players, place, wins, losses, dup }, newest) };
+  });
+  const byCard = new Map<string, typeof scored>();
+  for (const d of scored) for (const id of d.ids) (byCard.get(id) ?? byCard.set(id, []).get(id)!).push(d);
+  for (const [id, ds] of byCard) {
+    const top = ds.sort((a, b) => b.score - a.score).slice(0, DECK_CORE_TOP);
+    const count = new Map<string, number>();
+    for (const d of top) for (const o of d.ids) if (o !== id) count.set(o, (count.get(o) ?? 0) + 1);
+    const cards = [...count].map(([o, n]): [string, number] => [o, +(n / top.length).toFixed(2)]).filter(([, r]) => r >= 0.2).sort((a, b) => b[1] - a[1]).slice(0, 25);
+    deckCore[id] = { n: top.length, cards };
+  }
+  console.log(`カードごとのおすすめ上位デッキ: ${Object.keys(deckCore).length} 枚分`);
   console.log(`大会のデッキリスト: ${decks.length} 件（${archs.length} デッキタイプ）${dropped ? ` ・ 知らないカードを含むため除外 ${dropped} 件` : ""}`);
 } else writeFileSync(join(ROOT, "src/data/decks.json"), JSON.stringify({ fetchedAt: "", tournaments: [], archetypes: [], decks: [] }));
 
@@ -397,6 +418,7 @@ const data: AppData = {
   ...(meta ? { meta } : {}),
   ...(combos.length ? { combos } : {}),
   ...(helps.length ? { helps } : {}),
+  ...(Object.keys(deckCore).length ? { deckCore } : {}),
 };
 mkdirSync(join(ROOT, "src/data"), { recursive: true });
 writeFileSync(join(ROOT, "src/data/ja-image-urls.json"), JSON.stringify([...jaImageUrls].sort()));

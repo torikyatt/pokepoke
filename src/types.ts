@@ -201,6 +201,8 @@ export interface AppData {
   combos?: AppCombo[];
   helps?: AppHelp[];
   lexiconEn?: LexEntry[]; // 英語の検索用の表現辞書（data/lexicon-en.yaml）
+  // カードごとの、そのカードを使った大会のデッキ（おすすめ順の上位 n 件）でのほかのカードの採用率（多い順）。検索の「〇〇デッキ」に使う
+  deckCore?: Record<string, { n: number; cards: [string, number][] }>;
 }
 
 export const TYPE_JA: Record<EnergyType, string> = {

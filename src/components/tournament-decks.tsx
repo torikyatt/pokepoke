@@ -9,6 +9,7 @@ import { useDecks, useToast } from "../store.ts";
 import type { AppCard } from "../types.ts";
 import { Chip, EnergyIcon, Pressable, Thumb } from "./ui.tsx";
 import { cardName, useLang, useT } from "../i18n.ts";
+import { recommendScore } from "../deck-score.ts";
 
 const PAGE = 8;
 
@@ -17,21 +18,6 @@ const strength = (d: TournamentDeck) => (d.place ? d.place / Math.max(d.players,
 
 type Order = "recommended" | "new" | "best";
 const ORDERS: [Order, string, string][] = [["recommended", "おすすめ", "Recommended"], ["new", "新しい順", "Newest"], ["best", "成績順", "Best results"]];
-const DAY = 86400e3;
-const HALF_LIFE_DAYS = 21; // 3週間ごとに重みが半分になる
-
-/**
- * おすすめ度: 最近の大会で好成績なものほど高い。
- *   成績 = 上位何%か（1位なら1に近い）＋ 上位8位以内なら加点 ＋ 大きな大会なら少し加点 ＋ 同じ構成が多ければ少し加点
- *   新しさ = 最新の大会から3週間ごとに半分
- */
-function recommendScore(d: TournamentDeck, newest: number): number {
-  const top = d.place ? 1 - (d.place - 1) / Math.max(d.players, 1) : Math.max(0, 0.5 + (d.wins - d.losses) * 0.05);
-  const quality = top + (d.place && d.place <= 8 ? 0.3 : 0) + 0.1 * Math.log10(Math.max(d.players, 32) / 32) + 0.05 * Math.log2(d.dup);
-  const age = Math.max(0, (newest - Date.parse(d.date)) / DAY);
-  return quality * 0.5 ** (age / HALF_LIFE_DAYS);
-}
-
 export function CardDecks({ card, keepOpen }: { card: AppCard; keepOpen?: boolean }) {
   const index = useTournamentDecks();
   const [arch, setArch] = useState<string>();

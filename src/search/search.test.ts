@@ -405,10 +405,17 @@ describe("「〇〇と相性がいい」「〇〇デッキ」はどのカード�
     const bad = pick(namesEn, (n) => /[^a-z ]/i.test(n)).flatMap((n) => [ok(`pairs with ${n}`), ok(`${n} deck`)]).filter(Boolean);
     expect(bad).toEqual([]);
   });
-  it("大会のデッキタイプに無いカードは、そのカードと進化ラインを先頭に、相性のいいカードを並べる", () => {
-    const top = engine.search("ナッシーexデッキ").slice(0, 4).map((h) => h.card.nameJa);
-    expect(top[0]).toBe("ナッシーex");
-    expect(top).toContain("タマタマ");
+  it("大会のデッキタイプに無いカードは、そのカードを先頭に、大会のおすすめ上位のデッキでよく一緒に使われる順に並べる", () => {
+    const hits = engine.search("ナッシーexデッキ");
+    expect(engine.parse("ナッシーexデッキ")[0].label).toContain("大会のおすすめ上位");
+    expect(hits[0].card.nameJa).toBe("ナッシーex");
+    expect(hits.slice(0, 8).map((h) => h.card.nameJa)).toContain("タマタマ");
+    // 採用率の高い順（主役のあと）
+    const rates = hits.slice(1).map((h) => Number(h.note?.match(/\d+/)?.[0] ?? 0));
+    expect(rates).toEqual([...rates].sort((a, b) => b - a));
+    // 大会のデータが無いカードは、進化ラインと相性のいいカードで
+    const none = data.cards.find((c) => c.kind === "pokemon" && !data.deckCore?.[c.id] && c.evolvesTo.length && !/（/.test(c.nameJa) && !data.cards.some((o) => o !== c && o.nameJa === c.nameJa));
+    if (none) expect(engine.parse(`${none.nameJa}デッキ`)[0].label).toContain("進化ライン");
     // 長い名前を優先（ヒスイゾロアークex を ゾロアークex のデッキにしない）
     expect(engine.parse("ヒスイゾロアークexデッキ")[0].label).toContain("ヒスイゾロアークex");
     // 姿違いのカードは、かっこを外した名前でも（イエッサンex → イエッサンex（メス）、オドリドリ → 4つの姿すべて）

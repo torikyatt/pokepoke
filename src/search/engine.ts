@@ -257,10 +257,33 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     (coUse.get(b) ?? coUse.set(b, new Map()).get(b)!).set(a, ba);
   }
   const partnerCache = new Map<string, Map<string, number>>();
-  /** 相性のいいカード → 点。deck のときは、そのカードと進化ラインも（点 10） */
+  /** そのカードを使った大会のデッキ（おすすめ順の上位）が3件以上あるカード */
+  const coreOf = (ids: string[]) => ids.map((id) => data.deckCore?.[id]).filter((x) => x && x.n >= 3) as NonNullable<AppData["deckCore"]>[string][];
+  /** 「〇〇デッキ」で、大会のおすすめ上位のデッキでの採用率（カード → 0〜1）。大会のデータが無ければ undefined */
+  const coreRates = (ids: string[]) => {
+    const cores = coreOf(ids);
+    if (!cores.length) return undefined;
+    const m = new Map<string, number>();
+    for (const core of cores) for (const [o, r] of core.cards) m.set(o, Math.max(m.get(o) ?? 0, r));
+    return m;
+  };
+  /**
+   * 相性のいいカード → 点（4まで）。deck のときは、並べる順の点そのもの:
+   *   大会のおすすめ上位のデッキがあれば、そのカード 12・ほかは採用率×10（大会で一緒に使われている順）
+   *   無ければ、そのカード 11・進化ライン 10・相性のいいカード（4まで）
+   */
   const partnerScores = (ids: string[], deck = false) => {
     const key = `${deck ? "d" : "p"}:${ids.join(",")}`;
     let m = partnerCache.get(key);
+    if (!m && deck) {
+      const rates = coreRates(ids);
+      if (rates) {
+        m = new Map([...rates].map(([o, r]) => [o, 10 * r]));
+        for (const id of ids) m.set(id, 12);
+        partnerCache.set(key, m);
+        return m;
+      }
+    }
     if (!m) {
       m = new Map();
       for (const id of ids) {
@@ -274,12 +297,24 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       if (!m.size)
         for (const [o, u] of Object.entries(usage).sort((a, b) => b[1] - a[1]).slice(0, 41))
           if (!ids.includes(o) && cardById.has(o)) m.set(o, 4 * u);
-      if (deck) for (const id of ids) for (const c of lineOf(cardById.get(id)!)) m.set(c.id, ids.includes(c.id) ? 11 : 10);
+      if (deck) {
+        for (const [o, s] of m) m.set(o, Math.min(4, s));
+        for (const id of ids) for (const c of lineOf(cardById.get(id)!)) m.set(c.id, ids.includes(c.id) ? 11 : 10);
+      }
       partnerCache.set(key, m);
     }
     return m;
   };
   const usage = data.meta?.usage ?? {};
+  /** 大会のデッキタイプに無いカードの「〇〇デッキ」。大会のおすすめ上位のデッキがあればそれで、無ければ進化ラインと相性のいいカードで */
+  const deckOfCond = (cs: AppCard[]): Cond => {
+    const ids = cs.map((c) => c.id);
+    const core = coreOf(ids);
+    const n = Math.max(0, ...core.map((x) => x.n));
+    return core.length
+      ? { id: `partner-deck:${nameEnOf(cs)}`, kind: "partner", deck: true, cards: ids, label: `「${nameJaOf(cs)}」のデッキ（大会のおすすめ上位${n}件から）`, en: `${nameEnOf(cs)} deck (top ${n} tournament lists)`, weight: 2 }
+      : { id: `partner-deck:${nameEnOf(cs)}`, kind: "partner", deck: true, cards: ids, label: `「${nameJaOf(cs)}」のデッキ（進化ラインと相性のいいカード）`, en: `${nameEnOf(cs)} deck (evolution line & partners)`, weight: 2 };
+  };
 
   // 全文検索用の文（カードごと）
   const haystack = new Map<string, { ja: string; en: string; name: string; nameEn: string }>();
@@ -408,7 +443,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
             add({ id: `deck:${arch.archs.join(",")}`, kind: "deck", archs: arch.archs, label: one ? `「${one.nameJa}」デッキ` : `「${arch.label}」のデッキ`, en: one ? `"${one.nameEn}" deck` : `${arch.labelEn} decks`, weight: 2 });
           } else {
             const cs = enNames.get(w)!;
-            add({ id: `partner-deck:${nameEnOf(cs)}`, kind: "partner", deck: true, cards: cs.map((c) => c.id), label: `「${nameJaOf(cs)}」のデッキ（進化ラインと相性のいいカード）`, en: `${nameEnOf(cs)} deck (evolution line & partners)`, weight: 2 });
+            add(deckOfCond(cs));
           }
         });
       }
@@ -546,7 +581,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
           add({ id: `deck:${arch.archs.join(",")}`, kind: "deck", archs: arch.archs, label, en, weight: 2 });
         } else {
           const cs = cardsByName.get(w)!;
-          add({ id: `partner-deck:${nameEnOf(cs)}`, kind: "partner", deck: true, cards: cs.map((c) => c.id), label: `「${nameJaOf(cs)}」のデッキ（進化ラインと相性のいいカード）`, en: `${nameEnOf(cs)} deck (evolution line & partners)`, weight: 2 });
+          add(deckOfCond(cs));
         }
       });
     }
@@ -839,6 +874,10 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     const deckRate = new Map<string, number>();
     for (const d of decks) for (const id of d.archs) for (const c of archById.get(id)?.cards ?? []) if (c.rate >= 0.15) deckRate.set(c.id, Math.max(deckRate.get(c.id) ?? 0, c.rate));
     const partnerMaps = partnerConds.map((p) => ({ cond: p, map: partnerScores(p.cards, p.deck) }));
+    const coreDeck = (() => {
+      const p = partnerConds.find((x) => x.deck && coreOf(x.cards).length);
+      return p && { cards: p.cards, rates: coreRates(p.cards)! };
+    })();
 
     const hits: Hit[] = [];
     for (const card of data.cards) {
@@ -878,7 +917,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       if (metaCond && (usage[card.id] ?? 0) < 0.01) continue;
       let useScore = 0;
       if (decks.length) useScore += 4 * deckRate.get(card.id)!;
-      for (const p of partnerMaps) useScore += Math.min(p.map.get(card.id)! >= 10 ? p.map.get(card.id)! - 4 : 4, p.map.get(card.id)!); // デッキの主役、進化ラインの順に先頭へ
+      for (const p of partnerMaps) useScore += p.cond.deck ? p.map.get(card.id)! : Math.min(4, p.map.get(card.id)!); // 「〇〇デッキ」は、その並び（主役が先頭）
       if (metaCond) useScore += Math.min(4, 8 * (usage[card.id] ?? 0));
 
       // ソフト条件: ワザ・特性ごとに数え、同じワザ内でそろうと加点
@@ -945,8 +984,10 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       if ((soft.length || needNames.length || texts.length) && !matched.size) continue;
       for (const c of conds) if (!["tag", "variable", "name", "text"].includes(c.kind)) matched.add(c.id);
       if (atkConds.length) for (const a of okAttacks) effectNames.set(a.nameJa ?? a.nameEn ?? "", a.nameEn ?? a.nameJa ?? "");
-      const note = decks.length ? `採用率 ${Math.round(deckRate.get(card.id)! * 100)}%` : metaCond ? `大会で ${((usage[card.id] ?? 0) * 100).toFixed(1)}%` : undefined;
-      const noteEn = decks.length ? `In ${Math.round(deckRate.get(card.id)! * 100)}% of lists` : metaCond ? `${((usage[card.id] ?? 0) * 100).toFixed(1)}% in tournaments` : undefined;
+      // 「〇〇デッキ」（大会のおすすめ上位から）: そのデッキたちでの採用率
+      const coreRate = coreDeck && !coreDeck.cards.includes(card.id) ? coreDeck.rates.get(card.id) : undefined;
+      const note = decks.length ? `採用率 ${Math.round(deckRate.get(card.id)! * 100)}%` : coreRate !== undefined ? `採用率 ${Math.round(coreRate * 100)}%` : metaCond ? `大会で ${((usage[card.id] ?? 0) * 100).toFixed(1)}%` : undefined;
+      const noteEn = decks.length ? `In ${Math.round(deckRate.get(card.id)! * 100)}% of lists` : coreRate !== undefined ? `In ${Math.round(coreRate * 100)}% of lists` : metaCond ? `${((usage[card.id] ?? 0) * 100).toFixed(1)}% in tournaments` : undefined;
       hits.push({ card, score, ...(byText || toolAsItem ? { loose: true } : {}), matched: [...matched], effects: [...effectNames.keys()].filter(Boolean), effectsEn: [...effectNames.values()].filter(Boolean), ...(note ? { note, noteEn } : {}) });
     }
     hits.sort((a, b) => b.score - a.score || order(a.card) - order(b.card));
