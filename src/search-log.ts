@@ -4,10 +4,35 @@
 //   ・入力の途中（「リ」「リザ」…）は送らず、2秒止まった言葉だけ。同じ言葉はページを開いている間1回だけ
 //   ・メールアドレス・長い数字・URL のような、個人の情報かもしれない言葉は送らない
 //   ・開発中・1ファイル版（file://）では送らない
+//   ・1つの端末から送るのは1日 DAILY_MAX 回まで（サーバーの無料枠を使い切らないように。開いた記録も1回に数える）
 import { isSingleFile } from "./data/load.ts";
 
 const enabled = typeof window !== "undefined" && !import.meta.env.DEV && !isSingleFile && location.protocol === "https:";
 const SETTLE = 2000;
+const DAILY_MAX = 20;
+const COUNT_KEY = "pokepoke.qlog";
+
+/** 今日まだ送ってよければ、回数を1つ数えて true（数えられない端末では、ページを開いている間だけ数える） */
+let memCount = { day: "", n: 0 };
+function allow(): boolean {
+  const day = new Date().toISOString().slice(0, 10);
+  let c = memCount;
+  try {
+    c = JSON.parse(localStorage.getItem(COUNT_KEY) ?? "null") ?? c;
+  } catch {
+    // そのまま
+  }
+  if (c.day !== day) c = { day, n: 0 };
+  if (c.n >= DAILY_MAX) return false;
+  c = { day, n: c.n + 1 };
+  memCount = c;
+  try {
+    localStorage.setItem(COUNT_KEY, JSON.stringify(c));
+  } catch {
+    // 保存できなくても、ページを開いている間は数えている
+  }
+  return true;
+}
 
 const sent = new Set<string>();
 const opened = new Set<string>();
@@ -18,6 +43,7 @@ const clean = (q: string) => q.replace(/\s+/g, " ").trim();
 const ok = (q: string) => q.length > 0 && q.length <= 60 && !/@|https?:|www\.|\d{5,}/i.test(q);
 
 function send(body: object) {
+  if (!allow()) return;
   const data = JSON.stringify(body);
   try {
     if (navigator.sendBeacon?.("/api/q", data)) return;
