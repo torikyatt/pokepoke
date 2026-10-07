@@ -411,6 +411,13 @@ describe("「〇〇と相性がいい」「〇〇デッキ」はどのカード�
     expect(top).toContain("タマタマ");
     // 長い名前を優先（ヒスイゾロアークex を ゾロアークex のデッキにしない）
     expect(engine.parse("ヒスイゾロアークexデッキ")[0].label).toContain("ヒスイゾロアークex");
+    // 姿違いのカードは、かっこを外した名前でも（イエッサンex → イエッサンex（メス）、オドリドリ → 4つの姿すべて）
+    expect(engine.parse("イエッサンexと相性がいい")[0].kind).toBe("partner");
+    expect(engine.search("イエッサンexと相性がいい").length).toBeGreaterThan(5);
+    expect(engine.search("イエッサンexデッキ")[0].card.nameJa).toBe("イエッサンex（メス）");
+    expect(engine.parse("オドリドリと相性がいい")[0].label).toBe("「オドリドリ」と相性がいい");
+    expect(engine.search("イエッサンex").map((h) => h.card.nameJa)).toContain("イエッサンex（メス）");
+    expect(engine.search("castform deck").length).toBeGreaterThan(3);
     // どのデッキにも入る定番のカードは、大会でよく使われるカード
     expect(engine.search("博士の研究と相性がいい").length).toBeGreaterThan(10);
   });

@@ -149,7 +149,8 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     maxLen = Math.max(maxLen, n.length);
   }
   // カード名（正規化）。3文字以上だけ（短い名前は他の言葉に紛れる）
-  const names = [...new Set(data.cards.map((c) => normalize(c.nameJa).replace(/ /g, "")))].filter((n) => n.length >= 3).sort((a, b) => b.length - a.length);
+  // 姿違い（「イエッサンex（メス）」）は、かっこを外した名前（「イエッサンex」）でも
+  const names = [...new Set(data.cards.flatMap((c) => [c.nameJa, c.nameJa.replace(/（[^）]*）/g, "")].map((n) => normalize(n).replace(/ /g, ""))))].filter((n) => n.length >= 3).sort((a, b) => b.length - a.length);
   // 大会のデッキタイプ: 「メガルカリオex＆ルカリオ」のような名前全体と、デッキ名になっているカードの名前（ex を省いた形も）
   const archetypes = data.meta?.archetypes ?? [];
   const archById = new Map(archetypes.map((a) => [a.id, a]));
@@ -185,9 +186,14 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
   }
   // 英語のカード名（3文字以上）→ カード
   const enNames = new Map<string, AppCard[]>();
+  // 姿違いの名前は、姿の言葉を外した名前でも引ける（「ogerpon ex」→ Teal Mask Ogerpon ex、「castform」→ 3つの姿）
+  const EN_FORM = /\b(?:(?:teal|hearthflame|wellspring|cornerstone)\s*mask\s*|(?:rainy|snowy|sunny)\s+form\b|(?:dawn\s+wings|dusk\s+mane)\s+)/gi;
   for (const c of data.cards) {
-    const n = enKey(c.nameEn);
-    if (n.length >= 3) (enNames.get(n) ?? enNames.set(n, []).get(n)!).push(c);
+    for (const n of new Set([enKey(c.nameEn), enKey(c.nameEn.replace(EN_FORM, " "))])) {
+      if (n.length < 3) continue;
+      const cs = enNames.get(n) ?? enNames.set(n, []).get(n)!;
+      if (!cs.includes(c)) cs.push(c);
+    }
   }
   const enNameList = [...enNames.keys()].sort((a, b) => b.length - a.length);
   // 英語の表現辞書（長いものから当てる）
@@ -213,13 +219,21 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     const k = romajiKey(src);
     if (k.length >= 3) (romajiLex.get(k) ?? romajiLex.set(k, []).get(k)!).push(e);
   }
-  // 「〇〇と相性がいい」の〇〇に使うカード名（2文字以上）
-  const partnerNames = [...new Set(data.cards.map((c) => normalize(c.nameJa).replace(/ /g, "")))].filter((n) => n.length >= 2).sort((a, b) => b.length - a.length);
+  // 「〇〇と相性がいい」の〇〇に使うカード名（2文字以上）。
+  // 姿違いの名前は、かっこを外した名前でも引ける（「イエッサンex」→ イエッサンex（メス）、「オドリドリ」→ 4つの姿すべて）
   const cardsByName = new Map<string, AppCard[]>();
+  const addName = (n: string, c: AppCard) => {
+    const cs = cardsByName.get(n) ?? cardsByName.set(n, []).get(n)!;
+    if (!cs.includes(c)) cs.push(c);
+  };
   for (const c of data.cards) {
-    const n = normalize(c.nameJa).replace(/ /g, "");
-    (cardsByName.get(n) ?? cardsByName.set(n, []).get(n)!).push(c);
+    addName(normalize(c.nameJa).replace(/ /g, ""), c);
+    if (/（/.test(c.nameJa)) addName(normalize(c.nameJa.replace(/（[^）]*）/g, "")).replace(/ /g, ""), c);
   }
+  const partnerNames = [...cardsByName.keys()].filter((n) => n.length >= 2).sort((a, b) => b.length - a.length);
+  /** 表示名: 姿が違うカードをまとめて指すときは、かっこ・姿の言葉を外した名前 */
+  const nameJaOf = (cs: AppCard[]) => (new Set(cs.map((c) => c.nameJa)).size === 1 ? cs[0].nameJa : cs[0].nameJa.replace(/（[^）]*）/g, ""));
+  const nameEnOf = (cs: AppCard[]) => (new Set(cs.map((c) => c.nameEn)).size === 1 ? cs[0].nameEn : cs[0].nameEn.replace(EN_FORM, " ").replace(/\s+/g, " ").trim());
   const cardById = new Map(data.cards.map((c) => [c.id, c]));
   /** 進化ライン（進化前を上へ、進化後を下へたどる。きょうだいの進化先は入れない） */
   const lineOf = (c: AppCard): AppCard[] => {
@@ -394,7 +408,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
             add({ id: `deck:${arch.archs.join(",")}`, kind: "deck", archs: arch.archs, label: one ? `「${one.nameJa}」デッキ` : `「${arch.label}」のデッキ`, en: one ? `"${one.nameEn}" deck` : `${arch.labelEn} decks`, weight: 2 });
           } else {
             const cs = enNames.get(w)!;
-            add({ id: `partner-deck:${cs[0].nameEn}`, kind: "partner", deck: true, cards: cs.map((c) => c.id), label: `「${cs[0].nameJa}」のデッキ（進化ラインと相性のいいカード）`, en: `${cs[0].nameEn} deck (evolution line & partners)`, weight: 2 });
+            add({ id: `partner-deck:${nameEnOf(cs)}`, kind: "partner", deck: true, cards: cs.map((c) => c.id), label: `「${nameJaOf(cs)}」のデッキ（進化ラインと相性のいいカード）`, en: `${nameEnOf(cs)} deck (evolution line & partners)`, weight: 2 });
           }
         });
       }
@@ -408,7 +422,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
           );
           take(re, () => {
             const cs = enNames.get(n)!;
-            add({ id: `partner:${cs[0].nameEn}`, kind: "partner", cards: cs.map((c) => c.id), label: `「${cs[0].nameJa}」と相性がいい`, en: `Pairs with ${cs[0].nameEn}`, weight: 2 });
+            add({ id: `partner:${nameEnOf(cs)}`, kind: "partner", cards: cs.map((c) => c.id), label: `「${nameJaOf(cs)}」と相性がいい`, en: `Pairs with ${nameEnOf(cs)}`, weight: 2 });
           });
         }
       }
@@ -419,7 +433,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
         // タイプと同じ名前（Psychic）は、タイプを指す言い方のときは名前にしない
         const typeWord = TYPE_WORD_EN.some(([w]) => w === n);
         const re = typeWord ? `(?<!${TYPE_CTX_BEFORE_EN})${W(n)}(?!${TYPE_CTX_AFTER_EN})${END}` : `${W(n)}${END}`;
-        take(new RegExp(re, "g"), () => add({ id: `name:${n}`, kind: "name", name: n, label: `名前「${enNames.get(n)![0].nameJa}」`, en: `Name "${enNames.get(n)![0].nameEn}"`, weight: 3 }));
+        take(new RegExp(re, "g"), () => add({ id: `name:${n}`, kind: "name", name: n, label: `名前「${nameJaOf(enNames.get(n)!)}」`, en: `Name "${nameEnOf(enNames.get(n)!)}"`, weight: 3 }));
       }
       // 「p energy」「2p」「weak to p」の1文字の p → psychic（超）。ほかの言葉と一緒に書いたときだけ。
       // カード名を読んだ後で広げるので、広げた psychic がサポート「サイキッカー」（Psychic）になることはない。
@@ -532,7 +546,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
           add({ id: `deck:${arch.archs.join(",")}`, kind: "deck", archs: arch.archs, label, en, weight: 2 });
         } else {
           const cs = cardsByName.get(w)!;
-          add({ id: `partner-deck:${cs[0].nameEn}`, kind: "partner", deck: true, cards: cs.map((c) => c.id), label: `「${cs[0].nameJa}」のデッキ（進化ラインと相性のいいカード）`, en: `${cs[0].nameEn} deck (evolution line & partners)`, weight: 2 });
+          add({ id: `partner-deck:${nameEnOf(cs)}`, kind: "partner", deck: true, cards: cs.map((c) => c.id), label: `「${nameJaOf(cs)}」のデッキ（進化ラインと相性のいいカード）`, en: `${nameEnOf(cs)} deck (evolution line & partners)`, weight: 2 });
         }
       });
     }
@@ -541,9 +555,8 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       for (const n of partnerNames) {
         if (!flat.includes(n)) continue;
         take(new RegExp(`${spaced(n)}\\s*(?:と|との|に)(?:の)?(?:相性|あいしよう|しなじ|一緒|いつしよ|組み合わせ|くみあわせ|組(?:め|む|みたい)|く(?:め|む|みたい)|合う|あう|合わせ|あわせ)(?:が|の)?(?:いい|良い|よい|ある|抜群|ばつぐん)?`, "g"), () => {
-          const ids = cardsByName.get(n)!.map((c) => c.id);
-          const c0 = cardsByName.get(n)![0];
-          add({ id: `partner:${c0.nameEn}`, kind: "partner", cards: ids, label: `「${c0.nameJa}」と相性がいい`, en: `Pairs with ${c0.nameEn}`, weight: 2 });
+          const cs = cardsByName.get(n)!;
+          add({ id: `partner:${nameEnOf(cs)}`, kind: "partner", cards: cs.map((c) => c.id), label: `「${nameJaOf(cs)}」と相性がいい`, en: `Pairs with ${nameEnOf(cs)}`, weight: 2 });
         });
       }
     }
