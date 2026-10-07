@@ -1,5 +1,5 @@
 // PC（横幅1024px以上）の画面: カード一覧・カード詳細・デッキを横に並べ、ページを切り替えずに検索と構築ができる
-import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
+import { useEffect, useLayoutEffect, useMemo } from "react";
 import { DetailPane } from "../components/detail.tsx";
 import { EnergyIcon, Logo, Pressable, Thumb, Toast } from "../components/ui.tsx";
 import { useData } from "../context.tsx";
@@ -8,7 +8,7 @@ import { openCard } from "../detail.ts";
 import { parseHash, useNav } from "../nav.ts";
 import { RouteContext, navigate, useHash } from "../router.ts";
 import { useDecks, useSettings, useToast, type Deck } from "../store.ts";
-import { deckCards, DeckList, EnergyZone, IMPORT_ACCEPT, SharePage, useDeckExport, useImportDeckFile } from "./DeckPage.tsx";
+import { deckCards, DeckList, EnergyZone, ImportDeckButton, SharePage, useDeckExport } from "./DeckPage.tsx";
 import { SearchPage } from "./SearchPage.tsx";
 import { SettingsPage } from "./SettingsPage.tsx";
 import { cardName, useLang, useT } from "../i18n.ts";
@@ -119,14 +119,12 @@ function DeckColumn({ deck }: { deck?: Deck }) {
   const { decks, create, select, update, remove } = useDecks();
   const { deckView, setDeckView } = useSettings();
   const show = useToast((s) => s.show);
-  const fileRef = useRef<HTMLInputElement>(null);
-  const { savePng, share, exporting, image } = useDeckExport(deck);
+  const { savePng, share, copyCode, exporting, image } = useDeckExport(deck);
   const cards = deck ? deckCards(deck, byId) : [];
   const check = deck ? checkDeck(deck, byId) : undefined;
   const t = useT();
   const lang = useLang();
 
-  const onImport = useImportDeckFile();
   const small = "neu-sm neu-press rounded-full px-3 py-1.5 text-xs font-extrabold disabled:opacity-40";
   const btn = "neu-sm neu-press rounded-2xl py-2 text-xs font-extrabold disabled:opacity-40";
 
@@ -149,20 +147,7 @@ function DeckColumn({ deck }: { deck?: Deck }) {
         <button type="button" onClick={() => create()} className={`${small} text-accent-deep`}>
           {t("＋ 新規", "＋ New")}
         </button>
-        <button type="button" onClick={() => fileRef.current?.click()} className={`${small} text-muted`}>
-          {t("読み込み", "Import")}
-        </button>
-        <input
-          ref={fileRef}
-          type="file"
-          accept={IMPORT_ACCEPT}
-          className="hidden"
-          onChange={(e) => {
-            const f = e.target.files?.[0];
-            if (f) onImport(f);
-            e.target.value = "";
-          }}
-        />
+        <ImportDeckButton className={`${small} text-muted`} />
       </div>
 
       {!deck ? (
@@ -230,8 +215,8 @@ function DeckColumn({ deck }: { deck?: Deck }) {
             <button type="button" disabled={!cards.length} onClick={share} className={btn}>
               {t("共有URL", "Share URL")}
             </button>
-            <button type="button" onClick={() => download(`${deck.name}.json`, JSON.stringify(toFile([deck]), null, 1))} className={btn}>
-              {t("JSON書き出し", "Export JSON")}
+            <button type="button" disabled={!cards.length} onClick={copyCode} className={btn}>
+              {t("共有コードをコピー", "Copy share code")}
             </button>
             <button type="button" onClick={() => create(t(`${deck.name}のコピー`, `${deck.name} (copy)`), { cards: [...deck.cards], energy: [...deck.energy] })} className={btn}>
               {t("複製", "Duplicate")}

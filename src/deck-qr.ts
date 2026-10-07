@@ -14,6 +14,12 @@ export function shareUrlOf(deck: Pick<Deck, "name" | "cards" | "energy">): strin
   return `${location.origin}${getLang() === "en" ? "/en" : ""}/d/${code}`;
 }
 
+/** 共有URL（/d/<共有コード>・#/share/<共有コード>）や、まわりに文字のある貼り付けから、共有コードを取り出す。URLでなければそのまま */
+export function shareCodeOf(text: string): string {
+  const t = text.trim();
+  return t.match(/(?:#\/share|https?:\/\/[^/\s]+(?:\/en)?\/d)\/([^/?#\s]+)/)?.[1] ?? t.match(/(?:^|\s)(2~[^\s]+)/)?.[1] ?? t;
+}
+
 /** 文字列を QR コードの画像（data URL）にする。1マス cell px、まわりに規格どおり4マスの白い余白。size は画像の幅（px） */
 export function qrImage(text: string, cell = 3): { url: string; size: number } {
   const qr = qrcode(0, "M");
@@ -36,7 +42,7 @@ export async function deckFromImage(file: Blob): Promise<ReturnType<typeof decod
   ctx.drawImage(bmp, 0, 0, w, h);
   const found = jsQR(ctx.getImageData(0, 0, w, h).data, w, h, { inversionAttempts: "dontInvert" });
   if (!found) return undefined;
-  const code = found.data.match(/(?:#\/share|^https?:\/\/[^/]+(?:\/en)?\/d)\/([^/?#\s]+)/)?.[1] ?? found.data.trim();
+  const code = shareCodeOf(found.data);
   try {
     return decodeShare(code);
   } catch {

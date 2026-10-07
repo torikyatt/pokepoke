@@ -2,12 +2,12 @@ import { toPng } from "html-to-image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { PoolFab, PoolGrid, PoolToolbar, QueryBox, usePoolResults } from "../components/pool.tsx";
-import { EnergyIcon, Header, IconDeck, Pressable, Thumb } from "../components/ui.tsx";
+import { EnergyIcon, Header, IconDeck, Pressable, Sheet, Thumb } from "../components/ui.tsx";
 import { energyIconUrl } from "../icons.ts";
 import { useData } from "../context.tsx";
 import { largeUrl, thumbUrl } from "../data/load.ts";
 import { useSettings } from "../store.ts";
-import { canAdd, checkDeck, DECK_SIZE, decodeShare, download, fromFile, guessEnergy, MAX_ENERGY, MAX_SAME_NAME, toFile } from "../deck.ts";
+import { canAdd, checkDeck, DECK_SIZE, decodeShare, download, encodeShare, fromFile, guessEnergy, MAX_ENERGY, MAX_SAME_NAME, toFile } from "../deck.ts";
 import { navigate } from "../router.ts";
 import { openCard } from "../detail.ts";
 import { logOpen, logSearch } from "../search-log.ts";
@@ -17,7 +17,7 @@ import type { AppCard, EnergyType } from "../types.ts";
 import { useQueryConds } from "./SearchPage.tsx";
 import { mainPrint, packLabel, PrintLine, SetBadge, useMultiPackSets } from "../components/prints.tsx";
 import { cardName, useLang, useT } from "../i18n.ts";
-import { deckFromImage, qrImage, shareUrlOf } from "../deck-qr.ts";
+import { deckFromImage, qrImage, shareCodeOf, shareUrlOf } from "../deck-qr.ts";
 
 /** デッキのカード（同じカードは1回）。詳細の前・次のカードに使う */
 const uniqIds = (cards: AppCard[]) => [...new Set(cards.map((c) => c.id))];
@@ -37,7 +37,7 @@ const SLOT_VISIBLE = { s: 10, m: 7, l: 5 } as const;
 
 // ---------------- 一覧 ----------------
 
-/** 「読み込み」: JSON の書き出しファイルか、デッキの画像（QR コード入り）から取り込む */
+/** ファイルの読み込み: JSON の書き出しファイルか、デッキの画像（QR コード入り）から取り込む。取り込めたら true */
 export function useImportDeckFile() {
   const { byId } = useData();
   const importDecks = useDecks((s) => s.importDecks);
@@ -47,46 +47,103 @@ export function useImportDeckFile() {
     try {
       if (file.type.startsWith("image/")) {
         const d = await deckFromImage(file);
-        if (!d) return show(t("画像からデッキのQRコードが見つかりませんでした", "No deck QR code found in the image"), "error");
+        if (!d) {
+          show(t("画像からデッキのQRコードが見つかりませんでした", "No deck QR code found in the image"), "error");
+          return false;
+        }
         importDecks([{ name: d.name, energy: d.energy, cards: d.cards.filter((id) => byId.has(id)) }]);
-        return show(t(`「${d.name}」を画像から読み込みました`, `Imported “${d.name}” from the image`));
+        show(t(`「${d.name}」を画像から読み込みました`, `Imported “${d.name}” from the image`));
+        return true;
       }
       const n = importDecks(fromFile(JSON.parse(await file.text()), byId));
       show(t(`${n} 個のデッキを読み込みました`, `Imported ${n} deck${n === 1 ? "" : "s"}`));
+      return true;
     } catch (e) {
       show(e instanceof Error ? e.message : t("読み込めませんでした", "Couldn't import"), "error");
+      return false;
     }
   };
 }
 /** 読み込みで選べるファイル（書き出したJSONと、デッキの画像） */
 export const IMPORT_ACCEPT = "application/json,.json,image/*";
 
-export function DeckListPage() {
+/** 「読み込み」ボタンと、その画面: ファイル（デッキの画像・JSON）を選ぶか、共有コード（共有URLでも）を貼り付ける */
+export function ImportDeckButton({ className }: { className: string }) {
   const { byId } = useData();
-  const { decks, create, select } = useDecks();
-  const fileRef = useRef<HTMLInputElement>(null);
+  const importDecks = useDecks((s) => s.importDecks);
+  const show = useToast((s) => s.show);
   const t = useT();
-  const onImport = useImportDeckFile();
+  const onFile = useImportDeckFile();
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [open, setOpen] = useState(false);
+  const [code, setCode] = useState("");
+  const fromCode = () => {
+    try {
+      const d = decodeShare(shareCodeOf(code));
+      const cards = d.cards.filter((id) => byId.has(id));
+      if (!cards.length) throw new Error();
+      importDecks([{ name: d.name, energy: d.energy, cards }]);
+      show(t(`「${d.name}」を読み込みました`, `Imported “${d.name}”`));
+      setCode("");
+      setOpen(false);
+    } catch {
+      show(t("共有コードを読めませんでした。コピーしたものをそのまま貼り付けてください", "Couldn't read the share code. Paste it exactly as copied."), "error");
+    }
+  };
   return (
-    <div>
-      <Header
-        title={t("デッキ", "Decks")}
-        right={
-          <>
-            <button type="button" className="neu-sm neu-press rounded-full px-3 py-1.5 text-xs font-bold text-muted" onClick={() => fileRef.current?.click()}>
-              {t("読み込み", "Import")}
+    <>
+      <button type="button" className={className} onClick={() => setOpen(true)}>
+        {t("読み込み", "Import")}
+      </button>
+      <Sheet open={open} onClose={() => setOpen(false)} title={t("デッキを読み込む", "Import decks")} z="z-[60]">
+        <div className="space-y-5 pt-1 pb-2">
+          <div>
+            <p className="mb-2 text-xs font-extrabold text-muted">{t("共有コード（共有URLでも）", "Share code (or share URL)")}</p>
+            <textarea
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              rows={3}
+              placeholder={t("ここに貼り付け", "Paste here")}
+              className="neu-in w-full resize-none rounded-2xl px-3 py-2.5 text-sm font-medium break-all outline-none"
+            />
+            <button type="button" disabled={!code.trim()} onClick={fromCode} className="btn-ok mt-2 w-full rounded-full py-2.5 text-sm disabled:opacity-40">
+              {t("このコードで読み込む", "Import this code")}
+            </button>
+          </div>
+          <div>
+            <p className="mb-2 text-xs font-extrabold text-muted">{t("ファイルから（デッキの画像・書き出したJSON）", "From a file (deck image or exported JSON)")}</p>
+            <button type="button" onClick={() => fileRef.current?.click()} className="neu-sm neu-press w-full rounded-full py-2.5 text-sm font-extrabold text-muted">
+              {t("ファイルを選ぶ", "Choose a file")}
             </button>
             <input
               ref={fileRef}
               type="file"
               accept={IMPORT_ACCEPT}
               className="hidden"
-              onChange={(e) => {
+              onChange={async (e) => {
                 const f = e.target.files?.[0];
-                if (f) onImport(f);
                 e.target.value = "";
+                if (f && (await onFile(f))) setOpen(false);
               }}
             />
+          </div>
+        </div>
+      </Sheet>
+    </>
+  );
+}
+
+export function DeckListPage() {
+  const { byId } = useData();
+  const { decks, create, select } = useDecks();
+  const t = useT();
+  return (
+    <div>
+      <Header
+        title={t("デッキ", "Decks")}
+        right={
+          <>
+            <ImportDeckButton className="neu-sm neu-press rounded-full px-3 py-1.5 text-xs font-bold text-muted" />
           </>
         }
       />
@@ -320,6 +377,18 @@ export function useDeckExport(deck: Deck | undefined) {
     }
   };
 
+  /** 共有コード（「読み込み」に貼り付けると取り込める）をコピー */
+  const copyCode = async () => {
+    if (!deck) return;
+    const code = encodeShare(deck);
+    try {
+      await navigator.clipboard.writeText(code);
+      show(t("共有コードをコピーしました。相手は「読み込み」に貼り付けると取り込めます", "Share code copied. Paste it into “Import” to load the deck."));
+    } catch {
+      prompt(t("この共有コードをコピーしてください", "Copy this share code"), code);
+    }
+  };
+
   const image = deck && (
     <>
       <div style={{ position: "fixed", left: -10000, top: 0 }} aria-hidden>
@@ -334,7 +403,7 @@ export function useDeckExport(deck: Deck | undefined) {
       )}
     </>
   );
-  return { savePng, share, exporting, image };
+  return { savePng, share, copyCode, exporting, image };
 }
 
 // ---------------- 確認・書き出し ----------------
@@ -345,7 +414,7 @@ export function DeckViewPage({ id }: { id: string }) {
   const { update, remove, create } = useDecks();
   const show = useToast((s) => s.show);
   const { deckView, setDeckView } = useSettings();
-  const { savePng, share, exporting, image } = useDeckExport(deck);
+  const { savePng, share, copyCode, exporting, image } = useDeckExport(deck);
   const t = useT();
   const lang = useLang();
   if (!deck) return <Header title={t("デッキが見つかりません", "Deck not found")} back={() => navigate("/deck")} />;
@@ -412,8 +481,8 @@ export function DeckViewPage({ id }: { id: string }) {
           <button type="button" disabled={!cards.length} onClick={share} className={btn}>
             {t("共有URL", "Share URL")}
           </button>
-          <button type="button" onClick={() => download(`${deck.name}.json`, JSON.stringify(toFile([deck]), null, 1))} className={btn}>
-            {t("書き出し（JSON）", "Export (JSON)")}
+          <button type="button" disabled={!cards.length} onClick={copyCode} className={btn}>
+            {t("共有コードをコピー", "Copy share code")}
           </button>
           <button
             type="button"
