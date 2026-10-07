@@ -7,31 +7,7 @@ import { logOpen, logSearch } from "../search-log.ts";
 import { usePool } from "../pool.ts";
 import { navigate, searchPath, useRoute } from "../router.ts";
 import { dateStr, useLang, useT } from "../i18n.ts";
-
-export const EXAMPLES_EN = [
-  "fire energy acceleration",
-  "lightning pokemon that hit the bench",
-  "basic with free retreat",
-  "supporter that shrinks opponent's hand",
-  "attack that gets stronger with coin flips",
-  "hp 150+ metal pokemon",
-  "mega lucario ex deck",
-  "pairs with miraidon ex",
-  "popular supporters",
-];
-export const EXAMPLES = [
-  "エネ加速できる炎のカード",
-  "ベンチに攻撃できる雷ポケモン",
-  "にげるエネ0のたね",
-  "相手の手札を減らすサポート",
-  "コインで火力が上がるワザ",
-  "水1個であとは無色のワザ",
-  "トラッシュの枚数で変わる",
-  "HP150以上の鋼ポケモン",
-  "メガルカリオexデッキ",
-  "ミライドンexと相性がいいカード",
-  "大会でよく使われるサポート",
-];
+import { pickExamples } from "../examples.ts";
 
 const csv = (s: string | null) => (s ? s.split(",").filter(Boolean) : []);
 
@@ -64,6 +40,8 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
   const lang = useLang();
   const t = useT();
   useEffect(() => logSearch(q, total, "search", lang, unread), [q, total, lang, unread]);
+  // 検索の例: 開くたび・検索欄を空に戻すたびに選び直す
+  const examples = useMemo(() => pickExamples(lang), [lang, !q]);
   const labelOf = useMemo(() => new Map(parsed.map((c) => [c.id, lang === "en" ? c.en : c.label])), [parsed, lang]);
 
   const go = (patch: { q?: string; x?: string[] }, replace = true) =>
@@ -109,7 +87,7 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
             )}
             <p className="mb-2 text-xs font-bold text-muted">{t("ふだんの言葉で探せます（タップで詳細・長押しでデッキに追加）", "Search in plain words (tap for details, long-press to add to your deck)")}</p>
             <div className={wide ? "flex flex-wrap gap-2 pb-2" : "scrollbar-none -mx-4 flex gap-2 overflow-x-auto px-4 pb-2"}>
-              {(lang === "en" ? EXAMPLES_EN : EXAMPLES).map((ex) => (
+              {examples.map((ex) => (
                 <Chip key={ex} onClick={() => go({ q: ex }, false)}>
                   {ex}
                 </Chip>

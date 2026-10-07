@@ -7,6 +7,7 @@ import { createEngine, effectsOf } from "./engine.ts";
 import { createSynergy } from "../synergy.ts";
 import { normalize } from "./normalize.ts";
 import type { AppData } from "../types.ts";
+import { EXAMPLES_EN, EXAMPLES_JA, pickExamples } from "../examples.ts";
 
 const data: AppData = JSON.parse(readFileSync(join(import.meta.dirname, "../data/app-data.json"), "utf8"));
 const engine = createEngine(data, { partners: createSynergy(data).partners });
@@ -366,5 +367,23 @@ describe("雑なローマ字で日本語を探す", () => {
   });
   it("英語の検索はそのまま", () => {
     expect(engine.parse("fire energy acceleration").map((c) => c.id)).toEqual(expect.arrayContaining(["type:fire", "tag:energy.accel"]));
+  });
+});
+
+describe("検索欄の下の例", () => {
+  it("どの例も、読めない言葉が残らず1枚以上当たる", () => {
+    const bad: string[] = [];
+    for (const q of [...EXAMPLES_JA.talk, ...EXAMPLES_JA.basic, ...EXAMPLES_EN.talk, ...EXAMPLES_EN.basic]) {
+      const { conds, unread } = engine.explain(q);
+      if (unread.length || !engine.run(conds).length) bad.push(`${q} ${JSON.stringify(unread)}`);
+    }
+    expect(bad).toEqual([]);
+  });
+  it("同じ例が重ならず、決まった数だけ選ぶ", () => {
+    const xs = pickExamples("ja");
+    expect(xs).toHaveLength(12);
+    expect(new Set(xs).size).toBe(12);
+    expect(new Set([...EXAMPLES_JA.talk, ...EXAMPLES_JA.basic]).size).toBe(EXAMPLES_JA.talk.length + EXAMPLES_JA.basic.length);
+    expect(new Set([...EXAMPLES_EN.talk, ...EXAMPLES_EN.basic]).size).toBe(EXAMPLES_EN.talk.length + EXAMPLES_EN.basic.length);
   });
 });

@@ -76,7 +76,7 @@ const TYPE_RE_EN = TYPE_WORD_EN.map(([w]) => w).join("|");
 const TYPE_ABBR_EN: Record<string, string> = { g: "grass", r: "fire", w: "water", l: "lightning", p: "psychic", f: "fighting", d: "darkness", m: "metal", c: "colorless" };
 // タイプの言葉が、カードではなくタイプを指している言い方（「psychic energy」「2 psychic」「weak to psychic」）。
 // サポート「サイキッカー」（Psychic）の名前と区別する
-const TYPE_CTX_AFTER_EN = "\\s+(?:energy|energies|types?|attacks?|attackers?|pokemon|decks?)(?![a-z0-9])";
+const TYPE_CTX_AFTER_EN = "\\s+(?:energy|energies|types?|attacks?|attackers?|pokemon|decks?|basics?|stage|ex)(?![a-z0-9])";
 const TYPE_CTX_BEFORE_EN = "(?:\\d|weak(?:ness)?(?:\\s+(?:to|is|against))?)\\s*";
 const typeOfEn = (w: string) => TYPE_WORD_EN.find(([x]) => x === w)![1];
 const NUM_EN: Record<string, number> = { zero: 0, one: 1, two: 2, three: 3, four: 4, five: 5 };
