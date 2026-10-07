@@ -130,6 +130,7 @@ function page(c: AppCard, l: L): string {
     .replace(/\s*<title>[\s\S]*?<\/title>/, "")
     .replace(/\s*<meta name="description"[^>]*>/, "")
     .replace(/\s*<link rel="canonical"[^>]*>/, "")
+    .replace(/\s*<meta (?:property="og:|name="twitter:)[^>]*>/g, "")
     .replace(/<html lang="[^"]*">/, `<html lang="${l}">`)
     .replace("<head>", `<head>\n    ${head}`)
     .replace('<div id="root"></div>', `<div id="root">${html}</div>`);

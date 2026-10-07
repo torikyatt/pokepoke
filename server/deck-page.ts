@@ -1,7 +1,7 @@
 // デッキの共有リンク（/d/<共有コード>・/en/d/<共有コード>）のページ。
 // アプリは # 以降で画面を切り替えるので、LINE・X・Discord などのリンクのプレビューからはトップページしか見えない。
 // そこで、トップページ（index.html）に、デッキ名を頭にしたタイトルと説明を書き足して返す。
-// サムネはつけない（トップページと同じく、サイトのアイコンが出る）。
+// サムネはトップページと同じサイトのアイコン。
 // 人が開くと、index.html の起動スクリプトが /#/share/<共有コード> に切り替え、アプリの共有デッキの画面が開く。
 //   カードの名前・主役らしさは、ビルドで作る /deck-cards.json（scripts/seo-pages.ts）から引く
 //   共有コードの読み方は src/deck.ts の decodeShare（v2: 「2~エネ~カード~名前」）と同じ
@@ -79,12 +79,15 @@ export async function deckPage({ request, env }: DeckCtx, lang: "ja" | "en"): Pr
     `<meta property="og:title" content="${esc(title)}">`,
     `<meta property="og:description" content="${esc(desc)}">`,
     `<meta property="og:url" content="${esc(url.href)}">`,
+    // サムネはカードの画像ではなく、トップページと同じサイトのアイコン
+    `<meta property="og:image" content="${esc(new URL("/icons/icon-512.png", url).href)}">`,
     `<meta name="twitter:card" content="summary">`,
   ].join("\n    ");
   const html = (await top.text())
     .replace(/\s*<title>[\s\S]*?<\/title>/, "")
     .replace(/\s*<meta name="description"[^>]*>/, "")
     .replace(/\s*<link rel="canonical"[^>]*>/, "")
+    .replace(/\s*<meta (?:property="og:|name="twitter:)[^>]*>/g, "")
     .replace(/<html lang="[^"]*">/, `<html lang="${lang}">`)
     // 文字コードの指定より後ろに入れる
     .replace(/<meta charset="[^"]*"\s*\/?>/, (m) => `${m}\n    ${head}`);

@@ -99,14 +99,17 @@ interface SettingsState {
   slotSize: "s" | "m" | "l"; // デッキ編集画面の上の枠の大きさ
   setSlotSize: (v: "s" | "m" | "l") => void;
 }
+const defaultLang = (): "ja" | "en" =>
+  typeof navigator === "undefined" || /bot|crawl|spider|slurp|google|bing|yandex|baidu|lighthouse/i.test(navigator.userAgent) || /^ja\b/i.test(navigator.language ?? "ja") ? "ja" : "en";
 export const useSettings = create<SettingsState>()(
   persist(
     (set) => ({
-      // はじめて開いたときは、ブラウザの言語が日本語なら日本語、それ以外は英語
-      lang: typeof navigator !== "undefined" && !/^ja\b/i.test(navigator.language ?? "ja") ? "en" : "ja",
+      // はじめて開いたときは、ブラウザの言語が日本語なら日本語、それ以外は英語。
+      // 検索エンジン（Googlebot など英語の環境で開く）には日本語で見せる（英語のページは /en/card/… にある）
+      lang: defaultLang(),
       // 表示言語を変えたら、カード画像の言語も合わせる（画像だけ別の言語にもできる）
       setLang: (lang) => set({ lang, imageLang: lang }),
-      imageLang: typeof navigator !== "undefined" && !/^ja\b/i.test(navigator.language ?? "ja") ? "en" : "ja",
+      imageLang: defaultLang(),
       setImageLang: (imageLang) => set({ imageLang }),
       deckView: "grid",
       setDeckView: (deckView) => set({ deckView }),
