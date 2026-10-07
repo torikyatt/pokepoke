@@ -124,12 +124,12 @@ const typeOf = (w: string) => TYPE_WORD.find(([x]) => x === w)![1];
 const CMP = "(以上|以下|まで|以内|未満|超え|超)?";
 
 // 検索文から外す言葉（全文検索語に残しても意味がない）
-const FILLER = /^(によつて|よつて|について|の|が|を|に|で|と|は|も|や|へ|な|だ|から|まで|して|する|できる|される|いる|ある|いい|よい|系|やつ|もの|こと|かんじ|感じ|よう|ような|ように|ようにする|ほしい|欲しい|さがして|探して|おしえて|教えて|ください|かど|ぽけもん|ひつよう|必要|えねが|えねは|でいい|強い|つよい|一覧|全部|使える|使う|つかえる|つかう|打てる|撃てる)+|(の|が|を|に|で|と|は|も|や|へ|な|だ|する|できる|いい|系|やつ|もの|かど|かんじ|よう|ような|ように|ようにする|でいい|使える|使う|つかえる|つかう|打てる|撃てる)+$/g;
+const FILLER = /^(によつて|よつて|について|の|が|を|に|で|と|は|も|や|へ|な|だ|から|まで|して|する|できる|される|いる|ある|いい|よい|系|やつ|もの|こと|かんじ|感じ|よう|ような|ように|ようにする|ほしい|欲しい|さがして|探して|おしえて|教えて|ください|かど|ぽけもん|ひつよう|必要|えねが|えねは|でいい|強い|つよい|一覧|全部|使える|使う|つかえる|つかう|打てる|撃てる)+|(付与|ふよ|の|が|を|に|で|と|は|も|や|へ|な|だ|する|できる|いい|系|やつ|もの|かど|かんじ|よう|ような|ように|ようにする|でいい|使える|使う|つかえる|つかう|打てる|撃てる)+$/g;
 
 // 助詞（と・で・に・だ…）と同じ字で始まる言葉。全文検索語にするとき、頭を助詞として削らない
 const PROTECT = /^(とらつしゆ|とれなず|とくしゆ|どうぐ|でつき|にげる|だめじ|なかま|のこり|はんぶん|もどす|もどる|へんか)/;
 const FILLER_LEAD_ONE = new RegExp(`^(?:${FILLER.source.slice(2, FILLER.source.indexOf(")+|"))})`);
-const FILLER_TAIL = /(の|が|を|に|で|と|は|も|や|へ|な|だ|する|できる|いい|系|やつ|もの|かど|かんじ|よう|ような|ように|ようにする|でいい|使える|使う|つかえる|つかう|打てる|撃てる)+$/g;
+const FILLER_TAIL = /(付与|ふよ|の|が|を|に|で|と|は|も|や|へ|な|だ|する|できる|いい|系|やつ|もの|かど|かんじ|よう|ような|ように|ようにする|でいい|使える|使う|つかえる|つかう|打てる|撃てる)+$/g;
 
 export interface EngineOptions {
   /** 相性のいいカード（「〇〇と相性がいい」の検索に使う） */
@@ -230,10 +230,19 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     addName(normalize(c.nameJa).replace(/ /g, ""), c);
     if (/（/.test(c.nameJa)) addName(normalize(c.nameJa.replace(/（[^）]*）/g, "")).replace(/ /g, ""), c);
   }
+  // 「サーナイトex」のように、メガシンカexの「メガ」を省いた名前でも（その名前のカードが別に無いときだけ）
+  for (const c of data.cards) {
+    const m = /^めが(.+ex)$/.exec(normalize(c.nameJa).replace(/ /g, ""));
+    if (m && (!cardsByName.has(m[1]) || cardsByName.get(m[1])!.every((x) => x.rule === "mega_ex"))) addName(m[1], c);
+  }
   const partnerNames = [...cardsByName.keys()].filter((n) => n.length >= 2).sort((a, b) => b.length - a.length);
+  const cardNameKeys = [...cardsByName.keys()];
   /** 表示名: 姿が違うカードをまとめて指すときは、かっこ・姿の言葉を外した名前 */
-  const nameJaOf = (cs: AppCard[]) => (new Set(cs.map((c) => c.nameJa)).size === 1 ? cs[0].nameJa : cs[0].nameJa.replace(/（[^）]*）/g, ""));
-  const nameEnOf = (cs: AppCard[]) => (new Set(cs.map((c) => c.nameEn)).size === 1 ? cs[0].nameEn : cs[0].nameEn.replace(EN_FORM, " ").replace(/\s+/g, " ").trim());
+  //   違うカードをいくつか指すときは「カイリュー＆タケルライコ」
+  const nameJaOf = (cs: AppCard[]) =>
+    new Set(cs.map((c) => c.nameJa)).size === 1 ? cs[0].nameJa : [...new Set(cs.map((c) => c.nameJa.replace(/（[^）]*）/g, "")))].join("＆");
+  const nameEnOf = (cs: AppCard[]) =>
+    new Set(cs.map((c) => c.nameEn)).size === 1 ? cs[0].nameEn : [...new Set(cs.map((c) => c.nameEn.replace(EN_FORM, " ").replace(/\s+/g, " ").trim()))].join(" & ");
   const cardById = new Map(data.cards.map((c) => [c.id, c]));
   /** 進化ライン（進化前を上へ、進化後を下へたどる。きょうだいの進化先は入れない） */
   const lineOf = (c: AppCard): AppCard[] => {
@@ -429,6 +438,19 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       // 単語の切れ目で当てる（「heal」が「wheel」の中で当たらないように）。複数語は空白の数を問わない
       const W = (w: string) => `(?<![a-z0-9])${esc(w).replace(/ /g, "\\s+")}`;
       const END = "(?![a-z0-9])";
+      // 日本語の名前をそのまま英語にした呼び方（「monster ball」→ Poké Ball）
+      q = q.replace(/(?<![a-z])monster\s*balls?(?![a-z])/g, "poke ball");
+      // 打ちかけの名前（「professor」→ Professor's Research ほか）: 文まるごとが、カード名の単語の頭と同じなら、その名前で探す
+      {
+        const w = q.trim();
+        if (w.length >= 4 && /^[a-z ]+$/.test(w) && !lexEn.has(w) && !enNames.has(w)) {
+          const hit = enNameList.filter((n) => new RegExp(`(?<![a-z])${esc(w)}`).test(n));
+          if (hit.length && hit.length <= 12) {
+            add({ id: `name:${w}`, kind: "name", name: w, label: `名前に「${w}」`, en: `Name contains "${w}"`, weight: 3 });
+            q = "";
+          }
+        }
+      }
       // 「mega lucario ex deck」→ 大会のデッキタイプ。大会のデッキタイプに無いカード（「pikachu ex deck」）は、そのカードと進化ライン＋相性のいいカード。
       // 長い名前から当てる（「hisuian zoroark ex deck」を「zoroark ex」のデッキにしない）。同じ名前なら大会のデッキタイプを先に
       const deckEntries = [
@@ -589,7 +611,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     if (opts.partners) {
       for (const n of partnerNames) {
         if (!flat.includes(n)) continue;
-        take(new RegExp(`${spaced(n)}\\s*(?:と|との|に)(?:の)?(?:相性|あいしよう|しなじ|一緒|いつしよ|組み合わせ|くみあわせ|組(?:め|む|みたい)|く(?:め|む|みたい)|合う|あう|合わせ|あわせ)(?:が|の)?(?:いい|良い|よい|ある|抜群|ばつぐん)?`, "g"), () => {
+        take(new RegExp(`${spaced(n)}\\s*(?:(?:と|との|に)(?:の)?\\s*(?:相性|あいしよう|しなじ|一緒|いつしよ|組み合わせ|くみあわせ|組(?:め|む|みたい)|く(?:め|む|みたい)|合う|あう|合わせ|あわせ)|(?:の)?(?:相性|あいしよう|しなじ|相方|あいかた|ぱとな|相棒|あいぼう))(?:が|の)?(?:いい|良い|よい|ある|抜群|ばつぐん)?`, "g"), () => {
           const cs = cardsByName.get(n)!;
           add({ id: `partner:${nameEnOf(cs)}`, kind: "partner", cards: cs.map((c) => c.id), label: `「${nameJaOf(cs)}」と相性がいい`, en: `Pairs with ${nameEnOf(cs)}`, weight: 2 });
         });
@@ -849,6 +871,42 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       c.pin = true;
       out.push(condOf({ type: t }, 1, c.name));
       break;
+    }
+    // 打ちかけ・省いた名前（「げっこう」「タケル」「ボール」「博士」「りゅうせい」）: 読めずに残った言葉が、
+    // 空白で区切った言葉まるごとで、カード名やワザ・特性の名前の一部なら、その名前で探す
+    for (const c of [...out]) {
+      if (c.kind !== "text" || c.read || c.term.length < 2 || /^[a-z0-9]+$/.test(c.term)) continue;
+      // 助詞として削られた頭・お尻（「にじいろ」の「に」）も戻して、空白で区切った言葉まるごとで見る
+      const t = segments.find((sg) => sg.includes(c.term) && sg.length <= c.term.length + 2);
+      if (!t) continue;
+      if (cardNameKeys.some((n) => n.includes(t))) {
+        out.splice(out.indexOf(c), 1, { id: `name:${t}`, kind: "name", name: t, label: `名前に「${t}」`, en: `Name contains "${t}"`, weight: 3 });
+        continue;
+      }
+      const effKeys = [...effectNames.keys()].filter((k) => k.includes(t));
+      if (effKeys.length && effKeys.length <= 8) {
+        const ids = [...new Set(effKeys.flatMap((k) => effectNames.get(k)!.ids))];
+        out.splice(out.indexOf(c), 1, { id: `effect:${t}`, kind: "name", name: t, ids, weight: 3, label: `ワザ・特性の名前に「${t}」`, en: `Attack/Ability name contains "${t}"` });
+      }
+    }
+    // 「カイリュー タケルライコ デッキ」: デッキの言葉の前に並んだほかのカード名も、そのデッキのカードとしてまとめる
+    {
+      const di = out.findIndex((c) => c.kind === "partner" && c.deck);
+      const named = out.filter((c): c is Extract<Cond, { kind: "name" }> => c.kind === "name" && !c.ids);
+      if (di >= 0 && named.length) {
+        const deckC = out[di] as Extract<Cond, { kind: "partner" }>;
+        const extra = named.flatMap((n) => cardsByName.get(n.name) ?? data.cards.filter((c) => haystack.get(c.id)!.name.includes(n.name)));
+        if (extra.length) {
+          const cs = [...new Set([...extra, ...deckC.cards.map((id) => cardById.get(id)!)])];
+          out.splice(di, 1, deckOfCond(cs));
+          for (const n of named) out.splice(out.indexOf(n), 1);
+        }
+      }
+      // 大会のデッキタイプ（「メガルカリオexデッキ」）と、そのデッキに入っているカードの名前は、名前で絞らない
+      const arch = out.find((c): c is Extract<Cond, { kind: "deck" }> => c.kind === "deck");
+      if (arch)
+        for (const n of out.filter((c): c is Extract<Cond, { kind: "name" }> => c.kind === "name" && !c.ids))
+          if (arch.archs.some((a) => archById.get(a)?.cards.some((x) => haystack.get(x.id)?.name.includes(n.name)))) out.splice(out.indexOf(n), 1);
     }
     const unread = [...new Set([...out.flatMap((c) => (c.kind === "text" && !c.read ? [c.term] : [])), ...dropped])].filter((w) => !exactNames.has(w));
     return { conds: out, unread };

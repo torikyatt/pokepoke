@@ -449,3 +449,25 @@ describe("言い回し", () => {
     expect(ids_("tool that adds hp")).toContain("tag:defense.hp_up");
   });
 });
+
+describe("検索ワードの集計から（10/7）", () => {
+  const first = (q: string) => engine.search(q).map((h) => h.card.nameJa);
+  it("打ちかけ・省いた名前", () => {
+    for (const [q, name] of [["げっこう", "ゲッコウガ"], ["タケル", "タケルライコ"], ["ボール", "モンスターボール"], ["博士", "博士の研究"], ["にじいろ", "にじいろの洞窟"], ["ぎがいあす", "ギガイアスex"], ["professor", "博士の研究"], ["monster ball", "モンスターボール"]] as const) {
+      expect(engine.explain(q).unread, q).toEqual([]);
+      expect(first(q), q).toContain(name);
+    }
+    expect(first("りゅうせい サポート")).toEqual(["シャガ"]);
+  });
+  it("相性・デッキの言い方", () => {
+    for (const q of ["サーナイトexと相性がいい", "イエッサンex 相性がいい", "イエッサンex相性がいい", "リザードンex 相方"]) expect(engine.parse(q).map((c) => c.kind), q).toEqual(["partner"]);
+    const d = engine.parse("カイリュー タケルライコ デッキ");
+    expect(d).toHaveLength(1);
+    expect(d[0].label).toContain("カイリュー＆タケルライコ");
+  });
+  it("付与・眠・goods", () => {
+    expect(engine.explain("どく付与").unread).toEqual([]);
+    expect(engine.parse("眠").map((c) => c.id)).toEqual(["tag:status.sleep"]);
+    expect(engine.parse("husigi goods").map((c) => c.kind)).toContain("cardKind");
+  });
+});

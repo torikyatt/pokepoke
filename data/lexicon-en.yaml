@@ -144,7 +144,7 @@ types:
 kinds:
   pokemon: [pokemon, pokemon card, pokemon cards, pokemon only, only pokemon]
   trainer: [trainer, trainers, trainer card, trainer cards, non pokemon]
-  item: [item, items, item card, item cards, gear]
+  item: [goods, good card, item, items, item card, item cards, gear]
   supporter: [supporter, supporters, supporter card, supporter cards, support card]
   tool: [tool, tools, pokemon tool, pokemon tools, tool card, held items]
   fossil: [fossil, fossils, fossil pokemon, fossil card, restore fossil, amber]
