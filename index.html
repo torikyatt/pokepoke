@@ -40,6 +40,29 @@
       // 古いサイトの転送ページから来たのでなければ、取り込む前に確かめる
       // 検索エンジン用のカードページ（/card/<ID>・/en/card/<ID>、scripts/seo-pages.ts）から開いたら、
       // アプリのカード詳細（/#/card/<ID>）にする。英語のページで、まだ言語を選んでいなければ英語にする
+      // www.pokepokeindex.com で開いたら、www なし（pokepokeindex.com）に移る。ブラウザに保存してあるデッキ・お気に入り・設定は
+      // www のあり・なしで別々に記録されるので、最初の1回だけ一緒に持っていく（下の #move= の受け取りで、今あるものに足す）。
+      // カードページ・デッキの共有リンクから来たときは、移った先でそのカード・デッキを開く
+      (function () {
+        if (!/^www\./.test(location.hostname)) return;
+        var home = "https://" + location.hostname.slice(4);
+        var p = location.pathname;
+        var c = /^\/(en\/)?card\/([a-z0-9-]+)\/?$/.exec(p), d = /^\/(en\/)?d\/([^/?#]+)\/?$/.exec(p);
+        var to = location.hash.length > 2 && location.hash.indexOf("#move=") !== 0 ? location.hash : c ? "#/card/" + c[2] : d ? "#/share/" + d[2] : "#/";
+        var data = {}, n = 0;
+        try {
+          if (localStorage.getItem("pokepoke.moved") == null) {
+            ["pokepoke.decks", "pokepoke.favorites", "pokepoke.settings"].forEach(function (k) {
+              var v = localStorage.getItem(k);
+              if (v != null) { data[k] = v; n++; }
+            });
+            localStorage.setItem("pokepoke.moved", "1");
+          }
+        } catch (e) {}
+        if (!n) return location.replace(home + p + location.search + location.hash);
+        var packed = btoa(unescape(encodeURIComponent(JSON.stringify(data)))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+        location.replace(home + "/#move=" + packed + "&to=" + encodeURIComponent(to));
+      })();
       // デッキの共有リンク（/d/<共有コード>・/en/d/<共有コード>、server/deck-page.ts）も同じように、共有デッキの画面（/#/share/<共有コード>）にする
       (function () {
         var d = /^\/(en\/)?d\/([^/?#]+)\/?$/.exec(location.pathname);
@@ -75,7 +98,8 @@
           var favs = ids((state("pokepoke.favorites") || {}).ids, 5000);
           var lang = (state("pokepoke.settings") || {}).lang;
           if (!decks.length && !favs.length) throw 0;
-          var fromOld = /^https:\/\/torikyatt\.github\.io\//.test(document.referrer);
+          // 古いサイト（GitHub Pages）と、www つきのこのサイトから来たときは確かめない
+          var fromOld = /^https:\/\/(?:torikyatt\.github\.io|www\.pokepokeindex\.com)\//.test(document.referrer);
           if (!fromOld && !confirm("ほかのページから、デッキ " + decks.length + " 個・お気に入り " + favs.length + " 件を、このブラウザに取り込もうとしています。取り込みますか？\n（心当たりがなければ「キャンセル」）")) throw 0;
           var read = function (k) { try { return JSON.parse(localStorage.getItem(k) || "null"); } catch (e) { return null; } };
           var cur = read("pokepoke.decks");
