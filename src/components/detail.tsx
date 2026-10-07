@@ -29,10 +29,9 @@ export function FavToggle({ card }: { card: AppCard }) {
       }}
       aria-label={on ? t("お気に入りから外す", "Remove from favorites") : t("お気に入りに追加", "Add to favorites")}
       title={on ? t("お気に入りから外す", "Remove from favorites") : t("お気に入りに追加", "Add to favorites")}
-      className={`flex shrink-0 items-center gap-0.5 rounded-full px-2 py-1 text-[10px] font-extrabold transition active:scale-95 ${on ? "bg-[#ffe3e8] text-[#e5566a]" : "neu-sm text-muted"}`}
+      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition active:scale-95 ${on ? "bg-[#ffe3e8] text-[#e5566a]" : "neu-sm text-muted"}`}
     >
-      <IconHeart filled={on} className="h-3.5 w-3.5" />
-      {on ? t("登録済み", "Favorited") : t("お気に入り", "Favorite")}
+      <IconHeart filled={on} className="h-4 w-4" />
     </button>
   );
 }
@@ -436,13 +435,13 @@ export function DetailSheet() {
 
 /**
  * 前・次のカードへ移ったとき、詳細を少しだけ横にずらした位置に描き、すぐ（0.2秒で）真ん中へ戻す。
- * 次へは左にずれたところから、前へは右にずれたところから。戻る速さは、はじめ速くだんだん緩やかに
+ * 次へは右にずれたところから、前へは左にずれたところから（次のカードが右から入ってくる向き）。戻る速さは、はじめ速くだんだん緩やかに
  */
 function useStepNudge(...els: React.RefObject<HTMLElement | null>[]) {
   const step = useDetail((s) => s.step);
   useEffect(() => {
     if (!step) return;
-    const dx = useDetail.getState().stepDir > 0 ? -14 : 14;
+    const dx = useDetail.getState().stepDir > 0 ? 14 : -14;
     for (const el of els) el.current?.animate([{ transform: `translateX(${dx}px)` }, { transform: "none" }], { duration: 200, easing: "cubic-bezier(.2,.8,.2,1)" });
   }, [step]);
 }

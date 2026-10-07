@@ -34,7 +34,7 @@ export function Rarity({ r, lang }: { r: string; lang: Lang }) {
   return (
     <span role="img" aria-label={rarityLabel(r, lang)} title={rarityLabel(r, lang)} className="inline-flex shrink-0 items-center">
       {icons.map((src, i) => (
-        <img key={i} src={src} alt="" draggable={false} className={`inline-block shrink-0 select-none ${r === "Promo" ? "h-3.5 w-auto" : r === "Crown Rare" ? "h-3 w-auto" : "h-3.5 w-3.5"}`} />
+        <img key={i} src={src} alt="" draggable={false} className={`inline-block shrink-0 select-none ${r === "Promo" ? "h-3.5 w-auto" : "h-3.5 w-3.5"}`} />
       ))}
     </span>
   );

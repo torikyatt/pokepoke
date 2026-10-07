@@ -43,8 +43,9 @@ export function usePoolResults(conds: Cond[]) {
 }
 
 /** n/20・お気に入り・カードの大きさ・虫めがね（PCでは並べ替え・絞り込みも）のバー */
-export function PoolToolbar({ left, searchOpen, onSearch, filter }: { left: ReactNode; searchOpen?: boolean; onSearch?: () => void; filter?: boolean }) {
+export function PoolToolbar({ left, searchOpen, onSearch, filter, history }: { left: ReactNode; searchOpen?: boolean; onSearch?: () => void; filter?: boolean; history?: boolean }) {
   const { columns, setColumns, favOnly, setFavOnly } = usePool();
+  const [viewedOpen, setViewedOpen] = useState(false);
   const nFav = useFavorites((s) => s.ids.length);
   const t = useT();
   const seg = (on: boolean) => `flex h-7 w-8 items-center justify-center rounded-full transition ${on ? "bg-white text-accent shadow" : "text-muted"}`;
@@ -70,6 +71,14 @@ export function PoolToolbar({ left, searchOpen, onSearch, filter }: { left: Reac
           <IconCardsSmall />
         </button>
       </div>
+      {/* PC: スマホの右下の丸ボタンの代わりに、見たカードの履歴をここから開く */}
+      {history && (
+        <button type="button" onClick={() => setViewedOpen(true)} aria-label={t("見たカード", "Viewed cards")} title={t("見たカード", "Viewed cards")} className="neu-sm neu-press flex h-8 w-8 items-center justify-center rounded-full text-[#5aa9d6]">
+          <span className="scale-75">
+            <IconHistory />
+          </span>
+        </button>
+      )}
       {filter && (
         <>
           <span className="h-6 w-px bg-line" />
@@ -84,6 +93,7 @@ export function PoolToolbar({ left, searchOpen, onSearch, filter }: { left: Reac
           </button>
         </>
       )}
+      {history && <ViewedSheet open={viewedOpen} onClose={() => setViewedOpen(false)} closeOnOpen />}
     </div>
   );
 }
@@ -282,7 +292,7 @@ export function PoolFab({ bottom = "bottom-24", history }: { bottom?: string; hi
  * 詳細はこのシートの上に重ねて開き、閉じるとまた履歴の続きを見られる。
  * 開いている間は並びを止めておく（詳細で見たカードが先頭へ動いて、見ていた場所がずれないように）
  */
-function ViewedSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
+function ViewedSheet({ open, onClose, closeOnOpen }: { open: boolean; onClose: () => void; closeOnOpen?: boolean }) {
   const { byId } = useData();
   const clear = useViewed((s) => s.clear);
   const [ids, setIds] = useState<string[]>([]);
@@ -319,7 +329,11 @@ function ViewedSheet({ open, onClose }: { open: boolean; onClose: () => void }) 
           {cards.map((c) => (
             <li key={c.id}>
               <Pressable
-                onTap={() => openCard(c.id, cards.map((x) => x.id))}
+                onTap={() => {
+                  openCard(c.id, cards.map((x) => x.id));
+                  // PC は詳細が真ん中の列に出るので、履歴を閉じて見えるようにする
+                  if (closeOnOpen) onClose();
+                }}
                 onLongPress={() => addToDeck(c)}
                 label={cardName(c, lang)}
                 className="flex w-full items-center gap-3 py-2 text-left"

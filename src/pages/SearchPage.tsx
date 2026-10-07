@@ -89,6 +89,7 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
         />
         <PoolToolbar
           filter={wide}
+          history={wide}
           left={
             <>
               <span>{hits.length}</span>
