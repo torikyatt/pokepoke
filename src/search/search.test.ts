@@ -387,3 +387,51 @@ describe("検索欄の下の例", () => {
     expect(new Set([...EXAMPLES_EN.talk, ...EXAMPLES_EN.basic]).size).toBe(EXAMPLES_EN.talk.length + EXAMPLES_EN.basic.length);
   });
 });
+
+describe("「〇〇と相性がいい」「〇〇デッキ」はどのカードでも使える", () => {
+  const names = [...new Set(data.cards.map((c) => c.nameJa))];
+  const namesEn = [...new Set(data.cards.map((c) => c.nameEn))];
+  // 全部だと時間がかかるので、7枚に1枚（名前に記号・かっこ・英字があるものは全部）
+  const pick = <T,>(xs: T[], odd: (x: T) => boolean) => xs.filter((x, i) => i % 7 === 0 || odd(x));
+  const ok = (q: string) => {
+    const e = engine.explain(q);
+    return !e.unread.length && engine.run(e.conds).length > 0 && e.conds.some((c) => c.kind === "partner" || c.kind === "deck") ? "" : q;
+  };
+  it("日本語", () => {
+    const bad = pick(names, (n) => /[^ぁ-んァ-ヶー一-龯]/.test(n)).flatMap((n) => [ok(`${n}と相性がいいカード`), ok(`${n}デッキ`)]).filter(Boolean);
+    expect(bad).toEqual([]);
+  });
+  it("英語", () => {
+    const bad = pick(namesEn, (n) => /[^a-z ]/i.test(n)).flatMap((n) => [ok(`pairs with ${n}`), ok(`${n} deck`)]).filter(Boolean);
+    expect(bad).toEqual([]);
+  });
+  it("大会のデッキタイプに無いカードは、そのカードと進化ラインを先頭に、相性のいいカードを並べる", () => {
+    const top = engine.search("ナッシーexデッキ").slice(0, 4).map((h) => h.card.nameJa);
+    expect(top[0]).toBe("ナッシーex");
+    expect(top).toContain("タマタマ");
+    // 長い名前を優先（ヒスイゾロアークex を ゾロアークex のデッキにしない）
+    expect(engine.parse("ヒスイゾロアークexデッキ")[0].label).toContain("ヒスイゾロアークex");
+    // どのデッキにも入る定番のカードは、大会でよく使われるカード
+    expect(engine.search("博士の研究と相性がいい").length).toBeGreaterThan(10);
+  });
+});
+
+describe("言い回し", () => {
+  const ids_ = (q: string) => engine.parse(q).map((c) => c.id);
+  it("毎ターン・しながら・HPが高い／低い・2進化のサポート・山札から進化・入れ替えできるグッズ", () => {
+    expect(engine.explain("毎ターン使える特性").unread).toEqual([]);
+    expect(engine.explain("回復しながら攻撃").unread).toEqual([]);
+    expect(ids_("回復しながら攻撃").some((id) => id.startsWith("tag:heal"))).toBe(true);
+    expect(ids_("HPが高いたね")).toEqual(expect.arrayContaining(["hp:ge130", "stage:basic"]));
+    expect(ids_("HPが低いポケモン")).toContain("hp:le60");
+    expect(engine.search("2進化のサポート").length).toBeGreaterThan(0);
+    expect(ids_("山札から進化")).toContain("tag:field.evolve");
+    expect(engine.search("入れ替えできるグッズ").map((h) => h.card.nameJa)).toContain("むしよけスプレー");
+  });
+  it("英語: reduce damage taken / stop abilities / tool that adds hp / non-ex / return to hand / high hp", () => {
+    for (const q of ["reduce damage taken", "stop abilities", "tool that adds hp", "non-ex pokemon", "return pokemon to hand", "high hp basic"]) expect(engine.explain(q).unread, q).toEqual([]);
+    expect(ids_("non-ex pokemon")).toContain("rule:not_ex");
+    expect(ids_("stop abilities")).toContain("tag:disrupt.lock.ability");
+    expect(ids_("tool that adds hp")).toContain("tag:defense.hp_up");
+  });
+});
