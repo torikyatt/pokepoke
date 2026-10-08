@@ -85,14 +85,30 @@ function jaLocal(url: string): string {
 const enLocal = (printId: string) => (existsSync(join(ROOT, "public", enImageFile(printId))) ? enImageFile(printId) : enImageRemote(printId));
 let enLocalCount = 0;
 
+/**
+ * ハイクラスパックex（A4b）は、同じ絵柄の通常版とキラ版が別の番号で入っている。Game8 には片方しか載っていないことが多いので、
+ * 日本語画像の無い方には、同じカードのもう片方の日本語画像を使う（絵柄は同じ。キラの光り方だけ違う）
+ */
+function withFoilImages(prints: AppPrint[]): AppPrint[] {
+  for (const p of prints) {
+    if (p.imageJa || p.set !== "a4b") continue;
+    const twin = prints.find((q) => q !== p && q.set === "a4b" && q.imageJa);
+    if (twin) p.imageJa = twin.imageJa;
+  }
+  return prints;
+}
+
 function printOf(c: Card, p: Card["prints"][number]): AppPrint {
   const out: AppPrint = { id: p.id, set: p.set, setName: p.setName, rarity: p.rarity };
   // 英語画像は収録IDから場所が決まるので、まだ自前で置いていないものだけ元の URL を持たせる
   if (enLocal(p.id) === enImageFile(p.id)) enLocalCount++;
   else out.imageEn = enImageRemote(p.id);
+  // 手で置いた日本語画像（public/cards-ja/manual/<収録ID>.webp。Game8 に無いもの）があれば、それを使う
+  const manual = `cards-ja/manual/${p.id}.webp`;
+  if (existsSync(join(ROOT, "public", manual))) out.imageJa = manual;
   const g = (g8Match[c.id]?.g8 ?? []).map((id) => g8ById.get(id)).find((x) => x && x.set === g8SetOf(p.set) && x.number === Number(p.id.split("-").pop()));
   if (!g) return out;
-  if (g.image) out.imageJa = jaLocal(g.image);
+  if (g.image && !out.imageJa) out.imageJa = jaLocal(g.image);
   const setJa = setJaOf(p.set);
   if (g.pack && g.pack !== "-") {
     const sub = g.pack.startsWith(setJa) ? g.pack.slice(setJa.length) : g.pack === setJa ? "" : g.pack;
@@ -194,7 +210,7 @@ const out: AppCard[] = cards.map((c) => {
     evolvesTo: c.evolvesTo,
     attacks,
     // 絵柄は「いちばん基本のもの」を先頭に（一覧・詳細・サムネイルはこれ）
-    prints: orderedPrints(c.prints).map((p) => printOf(c, p)),
+    prints: withFoilImages(orderedPrints(c.prints).map((p) => printOf(c, p))),
     image: enLocal(basePrint(c.prints).id),
     ...(jaImageOf(c) ? { imageJa: jaLocal(jaImageOf(c)!) } : {}),
     ...(existsSync(join(ROOT, "public/thumbs-ja", `${c.id}.webp`)) ? { jaThumb: true as const } : {}),

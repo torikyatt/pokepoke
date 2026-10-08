@@ -43,12 +43,18 @@ const num = (v: unknown) => (/^\d+$/.test(s(v)) ? Number(s(v)) : undefined);
 
 const [cardRows, moveRows] = [tables[0]?.db_data ?? [], tables[1]?.db_data ?? []];
 
+// 収録番号。Game8 の一覧の番号の列がずれていることがある（B3b-027〜040 がみな 26 になっているなど）ので、
+// 番号の表記（「031/69」）を優先し、無ければ番号の列を使う
+const numberOf = (r: Record<string, any>) => {
+  const label = /^(\d+)\//.exec(s(r.col_4));
+  return label ? Number(label[1]) : Number(s(r.col_2));
+};
 const cards: G8Card[] = cardRows.map((r) => ({
   g8Id: r.id,
   url: s(r.url) || undefined,
   title: s(r.title),
   set: s(r.col_3),
-  number: Number(s(r.col_2)),
+  number: numberOf(r),
   numberLabel: s(r.col_4),
   rarity: s(r.col_1),
   category: s(r.col_5),
