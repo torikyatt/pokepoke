@@ -498,7 +498,7 @@ describe("特殊な効果（効果文の洗い出しから）", () => {
       ["使うたびに強くなる", "tag:damage.boost.stack", "メガクチートex"],
       ["もうどく", "tag:status.poison.strong", "ドクロッグ"],
       ["ランダムな状態異常", "tag:status_choice", "アローラベトベトンex"],
-      ["2つのタイプ", "tag:passive.dual_type", "ウーラオス"],
+      ["2つのタイプ", "tag:passive.dual_type", "れんげきウーラオス"],
       ["進化前のワザを使える", "tag:field.copy", "セレビィ"],
       ["オモテの数だけダメージ", "tag:coin.multi", "カイロス"],
       ["smokescreen", "tag:disrupt.lock.attack.coin", "マタドガス"],

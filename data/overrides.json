@@ -1,10 +1,13 @@
 {
- "_comment": "手動修正。matchJa: プリントID → Game8のg8Id（照合の確定）。nameJa: Game8 のワザ名・特性名の誤り → 正しい名前。tags: カードID → スロット(ability/text/attack0…) → {add, remove}",
+ "_comment": "手動修正。matchJa: プリントID → Game8のg8Id（照合の確定）。nameJa: Game8 のワザ名・特性名の誤り → 正しい名前。cardNameJa: カードID → 正しいカード名（Game8 のカード名の誤り・略し）。tags: カードID → スロット(ability/text/attack0…) → {add, remove}",
  "matchJa": {
   "b3-152": 1987664
  },
  "nameJa": {
   "もれたガス": "もれだすガス"
+ },
+ "cardNameJa": {
+  "b3-051": "れんげきウーラオス"
  },
  "tags": {}
 }
