@@ -121,7 +121,7 @@ tags:
   coin.risk: [fails on tails, tails penalty, may fail, risky, whiff on tails]
   coin.control: [coin control, guaranteed heads, always heads, reflip, coin manipulation]
   drawback: [drawback, drawbacks, downside, penalty, side effect]
-  drawback.cant_attack: [cant attack next turn, recharge, one turn rest, cooldown, attack every other turn]
+  drawback.cant_attack: [can't move next turn, cannot move next turn, skip next turn, skips next turn, immobile next turn, rest next turn, cant attack next turn, recharge, one turn rest, cooldown, attack every other turn]
   drawback.self_status: [self status, confuses itself, falls asleep, puts itself to sleep, self inflicted]
   drawback.discard_hand: [discard from hand, discard a card, hand cost, discard cards from hand]
   drawback.discard_deck: [discard own deck, self mill, discard top of deck, mill yourself, fill discard pile]

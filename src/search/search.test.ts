@@ -471,3 +471,19 @@ describe("検索ワードの集計から（10/7）", () => {
     expect(engine.parse("husigi goods").map((c) => c.kind)).toContain("cardKind");
   });
 });
+
+describe("反動・動けなくなる", () => {
+  const ids_ = (q: string) => engine.parse(q).map((c) => c.id);
+  it("ワザを使うと次の番に動けなくなる（ワザが使えない・自分がねむる）", () => {
+    for (const q of ["動けなくなる", "次のターン動けない", "わざを使うと次のターン動けなくなる", "技を使うと次のターン技が使えなくなる", "反動で動けない", "同じワザを連続で使えない", "次のターン同じ技が使えない", "can't move next turn"]) {
+      expect(engine.explain(q).unread, q).toEqual([]);
+      expect(ids_(q), q).toContain("tag:drawback.cant_attack");
+    }
+    // 「反動」だけなら、自分へのダメージも動けなくなるものも
+    expect(ids_("反動")).toEqual(expect.arrayContaining(["tag:damage.self", "tag:drawback.cant_attack"]));
+    expect(ids_("反動ダメージ")).toEqual(["tag:damage.self"]);
+    // 「相手を動けなくする」は相手の側
+    expect(ids_("相手を動けなくする")).toEqual(expect.arrayContaining(["tag:disrupt.lock.attack", "tag:status.paralysis"]));
+    expect(ids_("相手を動けなくする")).not.toContain("tag:drawback.cant_attack");
+  });
+});
