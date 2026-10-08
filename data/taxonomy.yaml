@@ -305,6 +305,13 @@
         - 'takes \+\d+ damage'
         - 'takes \+\d+ damage from being Poisoned'
         - 'is chosen 1 more time'
+      children:
+        # ヒートアップクランチ・ころがりフィーバー: 使うたびにこのワザのダメージが上がっていく
+        - id: damage.boost.stack
+          ja: 使うたびに強くなる
+          en: Stacks each time it's used
+          match:
+            - 'This effect stacks'
     - id: damage.delayed
       ja: 時間差でダメージ・きぜつ
       en: Delayed damage or KO
@@ -414,11 +421,32 @@
   # （同時に成り立つのは最大で、どく＋やけど＋ねむり・マヒ・こんらんのどれか1つ、の3つ）
   supplies: [supply.status]
   children:
-    - { id: status.poison, ja: どく, en: Poisoned, supplies: [supply.status.poison], match: ['Poisoned'] }
+    - id: status.poison
+      ja: どく
+      en: Poisoned
+      supplies: [supply.status.poison]
+      match: ['Poisoned']
+      children:
+        # どくどく・バッドポイズン: どくのダメージがふつうより大きい（もうどく）
+        - id: status.poison.strong
+          ja: どくのダメージが大きい（もうどく）
+          en: Stronger Poison
+          match:
+            - 'instead of the usual amount for this Special Condition'
     - { id: status.burn, ja: やけど, en: Burned, supplies: [supply.status.burn], match: ['Burned'] }
     - { id: status.paralysis, ja: マヒ, en: Paralyzed, supplies: [supply.status.paralysis], match: ['Paralyzed'] }
     - { id: status.sleep, ja: ねむり, en: Asleep, supplies: [supply.status.sleep], match: ['Asleep'] }
     - { id: status.confusion, ja: こんらん, en: Confused, supplies: [supply.status.confusion], match: ['Confused'] }
+
+
+# ケミカルパニック・バラエティパウダー・セレクトパウダー: どの状態異常にするかがランダム・選べる
+# （状態異常そのものではないので status の下には置かない。status の下は5つの状態異常だけ）
+- id: status_choice
+  ja: 状態異常をランダム・選んでかける
+  en: Random or chosen Special Condition
+  match:
+    - 'Special Condition from among'
+    - 'Choose either (Poisoned|Burned|Paralyzed|Asleep|Confused)'
 
 - id: disrupt
   ja: 妨害
@@ -476,6 +504,19 @@
             - 'it can.t attack during your opponent'
             - 'can.t use the chosen attack'
             - 'that attack doesn.t happen'
+          children:
+            # えんまく・フラッシュ: ワザを使うときにコインを投げさせ、ウラなら失敗
+            - id: disrupt.lock.attack.coin
+              ja: 相手のワザをコインで失敗させる
+              en: Opponent's attack may fail (coin)
+              match:
+                - 'tries to use an attack, your opponent flips a coin'
+            # ドわすれ: ワザを1つだけ使えなくする
+            - id: disrupt.lock.attack.one
+              ja: 相手のワザを1つ使えなくする
+              en: Lock one of the opponent's attacks
+              match:
+                - 'can.t use the chosen attack'
         - id: disrupt.lock.retreat
           ja: にげる封じ
           en: Retreat lock
@@ -639,6 +680,12 @@
       ja: どうぐで強化
       en: Boosted by Pokémon Tool
       on: [tool]
+    # ダブルタイプ（ウーラオス）: 場にいる間、2つのタイプになる
+    - id: passive.dual_type
+      ja: 2つのタイプになる
+      en: Has two types
+      match:
+        - 'it is \[[A-Z]\] and \[[A-Z]\] type'
     - id: passive.type_boost
       ja: タイプ・グループ全体を強化
       en: Type or group-wide boost

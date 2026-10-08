@@ -148,6 +148,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     (lex.get(n) ?? lex.set(n, []).get(n)!).push(e);
     maxLen = Math.max(maxLen, n.length);
   }
+  const lexKeys = [...lex.keys()];
   // カード名（正規化）。3文字以上だけ（短い名前は他の言葉に紛れる）
   // 姿違い（「イエッサンex（メス）」）は、かっこを外した名前（「イエッサンex」）でも
   const names = [...new Set(data.cards.flatMap((c) => [c.nameJa, c.nameJa.replace(/（[^）]*）/g, "")].map((n) => normalize(n).replace(/ /g, ""))))].filter((n) => n.length >= 3).sort((a, b) => b.length - a.length);
@@ -878,7 +879,8 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       if (c.kind !== "text" || c.read || c.term.length < 2 || /^[a-z0-9]+$/.test(c.term)) continue;
       // 助詞として削られた頭・お尻（「にじいろ」の「に」）も戻して、空白で区切った言葉まるごとで見る
       const t = segments.find((sg) => sg.includes(c.term) && sg.length <= c.term.length + 2);
-      if (!t) continue;
+      // 辞書の言葉の頭（「エネ」「ダメージ」）は、名前の一部としては読まない
+      if (!t || (/^[ぁ-ん]+$/.test(t) && lexKeys.some((k) => k.startsWith(t)))) continue;
       if (cardNameKeys.some((n) => n.includes(t))) {
         out.splice(out.indexOf(c), 1, { id: `name:${t}`, kind: "name", name: t, label: `名前に「${t}」`, en: `Name contains "${t}"`, weight: 3 });
         continue;

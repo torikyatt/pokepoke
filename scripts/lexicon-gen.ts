@@ -39,9 +39,14 @@ const targetOf = (cat: string, key: string): LexTarget => {
 
 interface Item { cat: string; key: string; entries: Map<string, { expr: string; weight: number }> }
 const items: Item[] = [];
+// タグの表示名（検索結果の条件の札に出る「相手がどくだと変わる」など）も、そのまま打てば当たるようにする。
+// いちばん上の大きな分け方（エネルギー・ダメージ…）は、ほかの言葉の一部として出てきやすいので入れない。「・」で2つ並べた名前も入れない
+const labelOf = new Map(loadTaxonomy(DATA).filter((t) => t.depth >= 2 && !/[・（(]/.test(t.ja)).map((t) => [t.id, t.ja]));
 for (const cat of Object.keys(SUFFIX)) {
   const groups: Record<string, string[]> = cat === "variable" ? { variable: seed.variable } : seed[cat];
-  for (const [key, cores] of Object.entries(groups)) {
+  for (const [key, seedCores] of Object.entries(groups)) {
+    const label = cat === "tags" ? labelOf.get(key) : undefined;
+    const cores = label && !seedCores.includes(label) ? [...seedCores, label] : seedCores;
     const entries = new Map<string, { expr: string; weight: number }>();
     for (const core of cores) {
       for (const suf of SUFFIX[cat]) {

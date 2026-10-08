@@ -487,3 +487,33 @@ describe("反動・動けなくなる", () => {
     expect(ids_("相手を動けなくする")).not.toContain("tag:drawback.cant_attack");
   });
 });
+
+describe("特殊な効果（効果文の洗い出しから）", () => {
+  const tagOf = (q: string) => engine.parse(q).filter((c) => c.kind === "tag").map((c) => c.id);
+  it("えんまく・ドわすれ・使うたびに強くなる・もうどく・状態異常を選ぶ・2つのタイプ・進化前のワザ・オモテの数だけ", () => {
+    const cases: [string, string, string][] = [
+      ["えんまく", "tag:disrupt.lock.attack.coin", "マタドガス"],
+      ["相手のワザを失敗させる", "tag:disrupt.lock.attack.coin", "ライボルト"],
+      ["ドわすれ", "tag:disrupt.lock.attack.one", "ヌオー"],
+      ["使うたびに強くなる", "tag:damage.boost.stack", "メガクチートex"],
+      ["もうどく", "tag:status.poison.strong", "ドクロッグ"],
+      ["ランダムな状態異常", "tag:status_choice", "アローラベトベトンex"],
+      ["2つのタイプ", "tag:passive.dual_type", "ウーラオス"],
+      ["進化前のワザを使える", "tag:field.copy", "セレビィ"],
+      ["オモテの数だけダメージ", "tag:coin.multi", "カイロス"],
+      ["smokescreen", "tag:disrupt.lock.attack.coin", "マタドガス"],
+      ["badly poisoned", "tag:status.poison.strong", "ドヒドイデ"],
+    ];
+    for (const [q, tag, card] of cases) {
+      expect(engine.explain(q).unread, q).toEqual([]);
+      expect(tagOf(q), q).toContain(tag);
+      expect(engine.search(q, Infinity).map((h) => h.card.nameJa), q).toContain(card);
+    }
+  });
+  it("分類の名前（条件の札に出る名前）をそのまま打っても読める", () => {
+    for (const t of data.tags.filter((t) => t.parent && !/[・（(]/.test(t.ja))) {
+      const ids = engine.parse(t.ja).map((c) => c.id);
+      expect(ids.some((id) => id === `tag:${t.id}` || id.startsWith(`tag:${t.id}.`)), t.ja).toBe(true);
+    }
+  });
+});

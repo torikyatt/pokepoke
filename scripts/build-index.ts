@@ -391,6 +391,14 @@ if (existsSync(lexEnFile)) {
         lexiconEn.push({ expr: e, target: targetOf(cat, key), weight: 1 });
       }
   }
+  // タグの英語の表示名（「If opponent is Poisoned」など）も、そのまま打てば当たるように（かっこの補足は外す）
+  for (const t of tax) {
+    if (t.depth < 2 || !t.en) continue;
+    const e = t.en.replace(/\s*\([^)]*\)/g, "").toLowerCase().trim();
+    if (!e || lexiconEn.some((x) => x.expr === e)) continue;
+    seen.set(e, (seen.get(e) ?? 0) + 1);
+    lexiconEn.push({ expr: e, target: { tag: t.id }, weight: 1 });
+  }
   // 同じ表現が別の項目にもあれば、両方に結びつけて重みを下げる
   for (const e of lexiconEn) if (seen.get(e.expr)! > 1) e.weight = 0.7;
   console.log(`英語の表現辞書: ${lexiconEn.length} 件`);
