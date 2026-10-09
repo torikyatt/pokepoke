@@ -759,6 +759,11 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
         add(effectCond(seg, eff));
         continue;
       }
+      // 2文字のカード名（「パモ」「ハラ」「ネモ」）: 言葉まるごとがカード名と同じなら、その名前で探す（助詞「も」「ら」として削られないように）
+      if ([...seg].length === 2 && cardsByName.has(seg) && !lex.has(seg)) {
+        add({ id: `name:${seg}`, kind: "name", name: seg, label: `名前「${nameJaOf(cardsByName.get(seg)!)}」`, en: `Name "${nameEnOf(cardsByName.get(seg)!)}"`, weight: 3 });
+        continue;
+      }
       // 打ちかけのワザ名・特性名（「きらめくお」→ きらめくおくりもの）: 4文字以上で、ワザ・特性の名前の頭と同じ。
       // カード名の一部・辞書の言葉で始まるもの（「ほのおの」）は、これまでどおり読む
       if ([...seg].length >= 4 && !lex.has(seg) && !cardNameKeys.some((n) => n.includes(seg)) && !lexKeys.some((k) => k.length >= 3 && seg.startsWith(k))) {
@@ -771,7 +776,8 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       }
       for (const n of names) {
         if (seg.includes(n)) {
-          add({ id: `name:${n}`, kind: "name", name: n, label: `名前「${n}」`, en: `Name "${n}"`, weight: 3 });
+          const cs = cardsByName.get(n);
+          add({ id: `name:${n}`, kind: "name", name: n, label: `名前「${cs ? nameJaOf(cs) : n}」`, en: `Name "${cs ? nameEnOf(cs) : n}"`, weight: 3 });
           seg = seg.split(n).join(" ");
         }
       }
@@ -1071,6 +1077,8 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
         if (nameHit(card, h, n)) {
           // 名前で探したときも、大会でよく使われているものを少し上に（hakase → 博士の研究が先）
           score += (n.weight ?? 3) + Math.min(0.1, usage[card.id] ?? 0);
+          // 名前がぴったり同じカードを、名前の一部に含むカード（「カイ」→ カイリュー）より先に
+          if (!n.ids && h.name === n.name) score += 0.5;
           matched.add(n.id);
           // ワザ名・特性名で探したときは、そのワザ・特性の名前を結果に出す
           if (n.id.startsWith("effect:"))

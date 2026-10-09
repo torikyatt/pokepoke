@@ -550,3 +550,16 @@ describe("検索レポート（10/9）から", () => {
     expect(engine.parse("ほのおの").map((c) => c.id)).toEqual(["type:fire"]);
   });
 });
+
+describe("2文字のカード名", () => {
+  it("「パモ」「ハラ」「ネモ」など、名前まるごとで探すと、そのカードが先頭", () => {
+    const short = [...new Set(data.cards.map((c) => c.nameJa.replace(/（[^）]*）/g, "")).filter((n) => [...n].length === 2))];
+    expect(short).toContain("パモ");
+    for (const n of short) {
+      const hits = engine.search(n, Infinity);
+      expect(engine.explain(n).unread, n).toEqual([]);
+      expect(hits[0]?.card.nameJa.replace(/（[^）]*）/g, ""), n).toBe(n);
+    }
+    expect(engine.parse("パモット")[0].label).toBe("名前「パモット＆パーモット」");
+  });
+});
