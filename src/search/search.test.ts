@@ -517,3 +517,36 @@ describe("特殊な効果（効果文の洗い出しから）", () => {
     }
   });
 });
+
+describe("検索レポート（10/9）から", () => {
+  const top = (q: string, n = 3) => engine.search(q, Infinity).slice(0, n).map((h) => h.card.nameJa);
+  it("HP最大・火力最大 → その順に並べる", () => {
+    for (const q of ["HP最大のポケモン", "HPが一番高い", "いちばんHPが高いポケモン", "HP", "highest hp"]) {
+      expect(engine.explain(q).unread, q).toEqual([]);
+      const hits = engine.search(q, Infinity);
+      expect(hits.length, q).toBeGreaterThan(100);
+      expect(hits[0].card.hp, q).toBe(Math.max(...data.cards.map((c) => c.hp ?? 0)));
+    }
+    const low = engine.search("HPが低い順", 1)[0].card.hp!;
+    expect(low).toBe(Math.min(...data.cards.filter((c) => c.hp).map((c) => c.hp!)));
+    const fire = engine.search("HPが最大の炎ポケモン", Infinity);
+    expect(fire.slice(0, 5).every((h) => h.card.type === "fire")).toBe(true);
+    for (const q of ["火力最大", "一番強いワザ", "strongest attack"])
+      expect(engine.search(q, 1)[0].card.maxDamage, q).toBe(Math.max(...data.cards.map((c) => c.maxDamage)));
+  });
+  it("打ちまちがい・ひらがな・あだ名", () => {
+    expect(engine.parse("次の晩技が使えない").map((c) => c.id)).toContain("tag:drawback.cant_attack");
+    expect(engine.parse("つぎのばんわざ").map((c) => c.id)).toContain("tag:drawback.cant_attack");
+    expect(engine.parse("1しんか").map((c) => c.id)).toEqual(["stage:stage1"]);
+    expect(top("腹バリー", 1)).toEqual(["ハラバリー"]);
+    expect(engine.parse("ちょう").map((c) => c.id)).toEqual(["type:psychic"]);
+    expect(engine.parse("メガシンカ").map((c) => c.id)).toEqual(["rule:mega_ex"]);
+  });
+  it("打ちかけのワザ名・相手の山札", () => {
+    expect(top("きらめくお", 1)).toEqual(["メレシー"]);
+    expect(engine.explain("きらめくお").unread).toEqual([]);
+    expect(engine.explain("相手の山札 さぽーろ").unread).toEqual([]);
+    expect(engine.parse("相手の山札をトラッシュ").map((c) => c.id)).toEqual(["tag:disrupt.deck"]);
+    expect(engine.parse("ほのおの").map((c) => c.id)).toEqual(["type:fire"]);
+  });
+});

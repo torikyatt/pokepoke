@@ -34,10 +34,11 @@ export type Cond = { id: string; label: string; en: string; weight?: number; wor
   | { kind: "deck"; archs: string[] } // 大会のデッキタイプに入っているカード
   | { kind: "partner"; cards: string[]; deck?: boolean } // そのカードと相性のいいカード。deck: 「〇〇デッキ」（そのカードと進化ラインを先頭に）
   | { kind: "meta" } // 大会でよく使われるカード
+  | { kind: "sort"; by: "hp" | "damage"; desc: boolean } // 「HP最大」「火力がいちばん高い」: その数字の順に並べる
 );
 
 /** 並べる順の点数に効く条件（ないときは図鑑順で並べる） */
-export const SCORED_KINDS: Cond["kind"][] = ["tag", "variable", "name", "text", "deck", "partner", "meta"];
+export const SCORED_KINDS: Cond["kind"][] = ["tag", "variable", "name", "text", "deck", "partner", "meta", "sort"];
 
 export interface Hit {
   card: AppCard;
@@ -103,6 +104,11 @@ const costTotalCond = (op: Op, n: number): Cond => ({
   id: `costTotal:${op}${n}`, kind: "costTotal", op, n, label: `合計${n}エネ${OP_JA[op] || "以下"}`, en: `${n}${op === "ge" ? "+" : op === "eq" ? "" : " or fewer"} Energy total`,
 });
 const textCond = (term: string): Cond => ({ id: `text:${term}`, kind: "text", term, label: `「${term}」を含む`, en: `Contains "${term}"`, weight: 0.4 });
+const sortCond = (by: "hp" | "damage", desc: boolean): Cond => ({
+  id: `sort:${by}${desc ? "" : ":asc"}`, kind: "sort", by, desc,
+  label: by === "hp" ? `HPが${desc ? "高い" : "低い"}順` : `ワザのダメージが${desc ? "大きい" : "小さい"}順`,
+  en: by === "hp" ? `${desc ? "Highest" : "Lowest"} HP first` : `${desc ? "Highest" : "Lowest"} damage first`,
+});
 const META: Cond = { id: "meta", kind: "meta", label: "大会でよく使われる", en: "Popular in tournaments", weight: 1 };
 const OHKO: Cond = { id: "damage:ge150", kind: "damage", op: "ge", n: 150, label: "150ダメージ以上（ワンパン級）", en: "150+ damage (one-hit KO)" };
 const FAST: Cond = { id: "costTotal:le1", kind: "costTotal", op: "le", n: 1, label: "1エネ以下で使える（速攻）", en: "Usable with 1 Energy or less (fast)" };
@@ -426,6 +432,11 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       else if ((c.weight ?? 0) > (same.weight ?? 0)) same.weight = c.weight;
     };
     let q = enKey(query.replace(/(\d+)\s*\+/g, "$1 or more "));
+    // よくある打ちまちがい・ひらがな: 「次の晩」→ 次の番、「1しんか」→ 1進化、「腹バリー」→ ハラバリー
+    q = q
+      .replace(/(?:次|つぎ)の\s*(?:晩|ばん)/g, "次の番")
+      .replace(/(\d|一|二)\s*しんか/g, "$1進化")
+      .replace(/腹ばり/g, "はらばり");
 
     const take = (re: RegExp, f: (m: RegExpExecArray) => void) => {
       q = q.replace(re, (...args) => {
@@ -499,6 +510,10 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       q = q.replace(/(\d)([grwlpfdmc])(?![a-z0-9])/g, "$1 $2");
       if (/\S\s+\S/.test(q.trim())) q = q.replace(/(?<![a-z0-9])([grwlpfdmc])(?![a-z0-9])/g, (_, l: string) => TYPE_ABBR_EN[l]);
       // 数値
+      // 「highest hp」「max hp」「most damage」→ その数字の順に並べる
+      take(new RegExp(`(?<![a-z])(?:highest|most|max(?:imum)?|biggest|largest|top)\\s*hp${END}|(?<![a-z])hp\\s*(?:max(?:imum)?|ranking)${END}|(?<![a-z])(?:sort(?:ed)?\\s+by|order\\s+by)\\s+hp${END}`, "g"), () => add(sortCond("hp", true)));
+      take(new RegExp(`(?<![a-z])(?:lowest|least|min(?:imum)?|smallest)\\s*hp${END}`, "g"), () => add(sortCond("hp", false)));
+      take(new RegExp(`(?<![a-z])(?:highest|most|max(?:imum)?|biggest|top)\\s*damage${END}|(?<![a-z])(?:strongest|hardest\\s+hitting)\\s+attacks?${END}|(?<![a-z])(?:sort(?:ed)?\\s+by|order\\s+by)\\s+damage${END}`, "g"), () => add(sortCond("damage", true)));
       // 「high hp」「low hp」→ HP130以上・HP60以下
       take(new RegExp(`(?<![a-z])(?:high|big|large|bulky|tanky)\\s*hp${END}|(?<![a-z])hp\\s+(?:is\\s+)?high${END}|(?<![a-z])(?:bulky|tanky)${END}`, "g"), () => add(hpCond("ge", 130)));
       take(new RegExp(`(?<![a-z])(?:low|small)\\s*hp${END}|(?<![a-z])hp\\s+(?:is\\s+)?low${END}`, "g"), () => add(hpCond("le", 60)));
@@ -634,6 +649,20 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     take(/(?:毎たん|まいたん|毎番|毎回|毎ターン)(?:に)?(?:使える|つかえる|使う|つかう|発動できる)?/g, () =>
       add({ id: "text:番に1回", kind: "text", term: normalize("番に1回").replace(/ /g, ""), label: "毎ターン使える（番に1回）", en: "Usable every turn", weight: 0.6, read: true }),
     );
+    // 「HP最大のポケモン」「いちばんHPが高い」「HPが高い順」→ HPの順に並べる。「HP」だけのときも
+    {
+      const BEST = "(?:一番|いちばん|最も|もつとも)";
+      const HIGH = "(?:高い|たかい|多い|おおい|大きい|おおきい)";
+      const LOW = "(?:低い|ひくい|少ない|すくない|小さい|ちいさい)";
+      const HP = "(?:hp|体力|たいりよく)";
+      take(new RegExp(`${BEST}\\s*${HP}(?:が|の)?${HIGH}|${HP}(?:が|の)?\\s*(?:${BEST}${HIGH}|最大|さいだい|最高|さいこう|max|まつくす|${HIGH}順|順)|${HP}(?:が|の)?(?:${BEST})?${HIGH}(?:もの|やつ)?順`, "g"), () => add(sortCond("hp", true)));
+      take(new RegExp(`${BEST}\\s*${HP}(?:が|の)?${LOW}|${HP}(?:が|の)?\\s*(?:${BEST}${LOW}|最小|さいしよう|最低|さいてい|${LOW}順)`, "g"), () => add(sortCond("hp", false)));
+      const DMG = "(?:だめじ|火力|かりよく|打点|だてん|威力|いりよく)";
+      take(new RegExp(`${BEST}\\s*${DMG}(?:が|の)?${HIGH}|${DMG}(?:が|の)?\\s*(?:${BEST}${HIGH}|最大|さいだい|最高|さいこう|${HIGH}順)|${BEST}\\s*(?:強い|つよい)(?:わざ|技)`, "g"), () => add(sortCond("damage", true)));
+      if (/^\s*(?:hp|体力)\s*$/.test(q)) take(/hp|体力/g, () => add(sortCond("hp", true)));
+    }
+    // 「ちょう」だけ（ひらがなで打った「超」）→ 超タイプ。「ちょうはつ」などの一部では読まない
+    take(/(?<![ぁ-ん])ちよう(?:たいぷ|えね)?(?![ぁ-ん])/g, () => add(condOf({ type: "psychic" }, 1, "ちょう")));
     // 「HPが高い」「HPが低い」→ HP130以上・HP60以下
     take(/(?:hp|体力)(?:が|の)?(?:高い|たかい|多い|おおい|高め|たかめ)/g, () => add(hpCond("ge", 130)));
     take(/(?:hp|体力)(?:が|の)?(?:低い|ひくい|少ない|すくない|低め|ひくめ)/g, () => add(hpCond("le", 60)));
@@ -729,6 +758,16 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       if (eff && !cardsByName.has(seg) && !lex.has(seg)) {
         add(effectCond(seg, eff));
         continue;
+      }
+      // 打ちかけのワザ名・特性名（「きらめくお」→ きらめくおくりもの）: 4文字以上で、ワザ・特性の名前の頭と同じ。
+      // カード名の一部・辞書の言葉で始まるもの（「ほのおの」）は、これまでどおり読む
+      if ([...seg].length >= 4 && !lex.has(seg) && !cardNameKeys.some((n) => n.includes(seg)) && !lexKeys.some((k) => k.length >= 3 && seg.startsWith(k))) {
+        const keys = [...effectNames.keys()].filter((k) => k.startsWith(seg) && k !== seg);
+        if (keys.length && keys.length <= 8) {
+          const ids = [...new Set(keys.flatMap((k) => effectNames.get(k)!.ids))];
+          add({ id: `effect:${seg}`, kind: "name", name: seg, ids, weight: 3, label: `ワザ・特性の名前に「${seg}」`, en: `Attack/Ability name contains "${seg}"` });
+          continue;
+        }
       }
       for (const n of names) {
         if (seg.includes(n)) {
@@ -873,6 +912,10 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       out.push(condOf({ type: t }, 1, c.name));
       break;
     }
+    // 「相手の山札」だけが残ったとき: 相手の山札にふれる効果（見る・トラッシュする・戻す）。言葉のまま文から探すが、読めた言葉として扱う
+    for (const [i, c] of out.entries())
+      if (c.kind === "text" && /^相手の(?:山札|やまふだ|でつき)$/.test(c.term))
+        out[i] = { ...c, term: "相手の山札", label: "「相手の山札」にふれる", en: "Affects opponent's deck", read: true };
     // 打ちかけ・省いた名前（「げっこう」「タケル」「ボール」「博士」「りゅうせい」）: 読めずに残った言葉が、
     // 空白で区切った言葉まるごとで、カード名やワザ・特性の名前の一部なら、その名前で探す
     for (const c of [...out]) {
@@ -930,6 +973,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     const nameHit = (card: AppCard, h: { name: string; nameEn: string }, n: Extract<Cond, { kind: "name" }>) =>
       n.ids ? n.ids.includes(card.id) : h.name.includes(n.name) || h.nameEn.includes(n.name);
     const decks = of("deck"), partnerConds = of("partner"), metaCond = of("meta")[0];
+    const sortBy = of("sort");
     // デッキタイプ: カードごとの、そのデッキへの採用率（いちばん高いもの）
     const deckRate = new Map<string, number>();
     for (const d of decks) for (const id of d.archs) for (const c of archById.get(id)?.cards ?? []) if (c.rate >= 0.15) deckRate.set(c.id, Math.max(deckRate.get(c.id) ?? 0, c.rate));
@@ -975,7 +1019,11 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       if (decks.length && !deckRate.has(card.id)) continue;
       if (partnerMaps.some((p) => !p.map.has(card.id))) continue;
       if (metaCond && (usage[card.id] ?? 0) < 0.01) continue;
+      // 「HP最大」「火力最大」: その数字があるものだけを、大きい（小さい）順に
+      const sortVal = (s: Extract<Cond, { kind: "sort" }>) => (s.by === "hp" ? card.hp : card.maxDamage || undefined);
+      if (sortBy.some((s) => sortVal(s) === undefined)) continue;
       let useScore = 0;
+      for (const s of sortBy) useScore += s.desc ? sortVal(s)! / 100 : (400 - sortVal(s)!) / 100;
       if (decks.length) useScore += 4 * deckRate.get(card.id)!;
       for (const p of partnerMaps) useScore += p.cond.deck ? p.map.get(card.id)! : Math.min(4, p.map.get(card.id)!); // 「〇〇デッキ」は、その並び（主役が先頭）
       if (metaCond) useScore += Math.min(4, 8 * (usage[card.id] ?? 0));
@@ -1026,7 +1074,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
           matched.add(n.id);
           // ワザ名・特性名で探したときは、そのワザ・特性の名前を結果に出す
           if (n.id.startsWith("effect:"))
-            for (const e of effectsOf(card)) if (e.nameJa && normalize(e.nameJa).replace(/ /g, "") === n.name || (e.nameEn && enKey(e.nameEn) === n.name)) effectNames.set(e.nameJa ?? e.nameEn ?? "", e.nameEn ?? e.nameJa ?? "");
+            for (const e of effectsOf(card)) if (e.nameJa && normalize(e.nameJa).replace(/ /g, "").includes(n.name) || (e.nameEn && enKey(e.nameEn) === n.name)) effectNames.set(e.nameJa ?? e.nameEn ?? "", e.nameEn ?? e.nameJa ?? "");
         }
         // 効果文でそのカードを名指ししている（タケシ「イワーク」）。持っているカードより下に
         else if (!n.ids && quoted.get(card.id)?.[/^[a-z0-9 ]+$/.test(n.name) ? "en" : "ja"].some((x) => x.includes(n.name))) {
