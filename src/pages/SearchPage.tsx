@@ -93,6 +93,10 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
                 </Chip>
               ))}
             </div>
+            {/* パック別のカード一覧（文字だけのページ）。検索エンジンがここから全カードのページへたどれるよう、ふつうのリンクにする */}
+            <a href={lang === "en" ? "/en/cards" : "/cards"} className="text-xs font-bold text-accent-deep underline">
+              {t("パック別のカード一覧", "All cards by set")}
+            </a>
           </div>
         )}
         {q && !favOnly && hits.length === 0 && <p className="py-8 text-center text-sm font-bold text-muted">{t("見つかりませんでした。条件をタップして外すか、絞り込みをゆるめてください。", "Nothing found. Tap a condition to remove it, or loosen the filters.")}</p>}

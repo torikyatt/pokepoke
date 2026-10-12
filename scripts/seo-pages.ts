@@ -1,6 +1,7 @@
 // 検索エンジン（Google など）に載せるための、カードごとのページ・サイトマップ・robots.txt を作る。
 //   dist/card/<ID>.html      日本語のカードページ（/card/<ID>）
 //   dist/en/card/<ID>.html   英語のカードページ（/en/card/<ID>）
+//   dist/cards.html          パックごとの全カードの一覧（/cards・/en/cards）。アプリのトップからふつうのリンクでたどれるようにする
 //   dist/sitemap.xml         全ページの一覧（日本語・英語の対応つき）
 //   dist/robots.txt          /api/ は載せない・サイトマップの場所
 //   dist/_redirects          以前の共有リンク（/c/<ID>）を /card/<ID> へ
@@ -136,6 +137,92 @@ function page(c: AppCard, l: L): string {
     .replace('<div id="root"></div>', `<div id="root">${html}</div>`);
 }
 
+// パックごとの全カードの一覧（/cards・/en/cards）。アプリのトップページからふつうのリンクで来られるので、
+// 検索エンジンがトップページから全カードのページへたどれる。アプリは読み込まない、文字だけの軽いページ
+const listUrl = (l: L) => `${SITE}${l === "en" ? "/en" : ""}/cards`;
+const LIST_T = {
+  ja: {
+    title: "カード一覧（パック別）｜ポケポケ POKÉPOKE INDECKS",
+    h1: "ポケポケ カード一覧",
+    desc: (n: number) => `ポケポケ（Pokémon TCG Pocket）の全${n}種類のカードを、収録パックごとに並べた一覧です。カード名から、効果・相性のいいカード・進化ラインのページを開けます。`,
+    back: "POKÉPOKE INDECKS（カード図鑑・検索）を開く", other: "English", promo: "プロモ", released: (d: string) => `${d} 発売`, count: (n: number) => `${n}種類`,
+  },
+  en: {
+    title: "All Cards by Set | Pokémon TCG Pocket | POKÉPOKE INDECKS",
+    h1: "Pokémon TCG Pocket – All Cards",
+    desc: (n: number) => `All ${n} Pokémon TCG Pocket cards, listed by set. Open any card to see its effects, best partner cards and evolution line.`,
+    back: "Open POKÉPOKE INDECKS (card dex & search)", other: "日本語", promo: "Promo", released: (d: string) => `Released ${d}`, count: (n: number) => `${n} cards`,
+  },
+};
+const LIST_STYLE = `<style>
+body{margin:0;background:#e6ecf3}
+.seo{max-width:960px;margin:0 auto;padding:16px;color:#3d4757;font:14px/1.7 system-ui,-apple-system,"Hiragino Sans","Yu Gothic UI",sans-serif}
+.seo a{color:#22998b}.seo h1{font-size:22px;margin:4px 0}.seo h2{font-size:16px;margin:24px 0 4px}.seo nav{font-size:13px;display:flex;flex-wrap:wrap;gap:4px 12px}
+.seo .meta{font-size:12px;color:#677385}.seo ol{columns:3 13em;column-gap:20px;padding:0;margin:6px 0;list-style:none}.seo li{break-inside:avoid}
+.seo small{color:#8794a7;font-variant-numeric:tabular-nums;margin-right:6px}
+</style>`;
+function listPage(l: L): string {
+  const t = LIST_T[l];
+  const byId = new Map(data.cards.map((c) => [c.id, c]));
+  // 新しいパックから。プロモは最後
+  const sets = [...data.sets].sort((a, b) => Number(!a.released) - Number(!b.released) || b.released.localeCompare(a.released));
+  const sections = sets.flatMap((s) => {
+    // そのパックに入っているカード（同じカードの絵柄違いは、いちばん小さい番号で1つだけ）
+    const seen = new Set<string>();
+    const rows = data.cards
+      .flatMap((c) => c.prints.filter((p) => p.set === s.code).map((p) => ({ c, num: Number(p.id.split("-").pop()) })))
+      .sort((a, b) => a.num - b.num)
+      .filter((r) => !seen.has(r.c.id) && seen.add(r.c.id));
+    if (!rows.length) return [];
+    const setName = l === "en" ? s.name : s.nameJa || s.name;
+    return [
+      `<section id="${s.code}"><h2>${esc(setName)} <small>${s.code.toUpperCase()}</small></h2>`,
+      `<div class="meta">${[s.released && t.released(s.released), t.count(rows.length)].filter(Boolean).join(" ・ ")}</div>`,
+      `<ol>${rows.map((r) => `<li><small>${String(r.num).padStart(3, "0")}</small><a href="${path(byId.get(r.c.id)!, l)}">${esc(name(r.c, l))}</a></li>`).join("")}</ol></section>`,
+    ];
+  });
+  const toc = sets.filter((s) => data.cards.some((c) => c.prints.some((p) => p.set === s.code))).map((s) => `<a href="#${s.code}">${esc(l === "en" ? s.name : s.nameJa || s.name)}</a>`);
+  const desc = t.desc(data.cards.length);
+  return `<!doctype html>
+<html lang="${l}">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>${esc(t.title)}</title>
+    <meta name="description" content="${esc(desc)}">
+    <link rel="canonical" href="${listUrl(l)}">
+    <link rel="alternate" hreflang="ja" href="${listUrl("ja")}">
+    <link rel="alternate" hreflang="en" href="${listUrl("en")}">
+    <link rel="alternate" hreflang="x-default" href="${listUrl("ja")}">
+    <link rel="icon" href="/favicon.ico" sizes="48x48">
+    <link rel="icon" type="image/png" sizes="96x96" href="/icons/icon-96.png">
+    <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+    <link rel="apple-touch-icon" href="/icons/icon-180.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="POKÉPOKE INDECKS">
+    <meta property="og:title" content="${esc(t.title)}">
+    <meta property="og:description" content="${esc(desc)}">
+    <meta property="og:url" content="${listUrl(l)}">
+    <meta property="og:image" content="${SITE}/icons/icon-512.png">
+    <meta name="twitter:card" content="summary">
+    ${LIST_STYLE}
+  </head>
+  <body>
+    <main class="seo">
+      <nav><a href="/">${t.back}</a><a href="${l === "en" ? "/cards" : "/en/cards"}" hreflang="${l === "en" ? "ja" : "en"}">${t.other}</a></nav>
+      <h1>${t.h1}</h1>
+      <p class="meta">${esc(desc)}</p>
+      <nav>${toc.join("")}</nav>
+      ${sections.join("\n      ")}
+    </main>
+  </body>
+</html>
+`;
+}
+mkdirSync(join(DIST, "en"), { recursive: true });
+writeFileSync(join(DIST, "cards.html"), listPage("ja"));
+writeFileSync(join(DIST, "en/cards.html"), listPage("en"));
+
 let n = 0;
 for (const l of ["ja", "en"] as const) {
   const dir = join(DIST, l === "en" ? "en/card" : "card");
@@ -150,6 +237,7 @@ for (const l of ["ja", "en"] as const) {
 const alt = (c: AppCard) => (["ja", "en"] as const).map((l) => `<xhtml:link rel="alternate" hreflang="${l}" href="${url(c, l)}"/>`).join("");
 const urls = [
   `<url><loc>${SITE}/</loc><lastmod>${day}</lastmod></url>`,
+  ...(["ja", "en"] as const).map((l) => `<url><loc>${listUrl(l)}</loc><lastmod>${day}</lastmod>${(["ja", "en"] as const).map((x) => `<xhtml:link rel="alternate" hreflang="${x}" href="${listUrl(x)}"/>`).join("")}</url>`),
   ...data.cards.flatMap((c) => (["ja", "en"] as const).map((l) => `<url><loc>${url(c, l)}</loc><lastmod>${day}</lastmod>${alt(c)}</url>`)),
 ];
 writeFileSync(
@@ -163,4 +251,4 @@ const rank = (c: AppCard) => (c.kind !== "pokemon" ? 0 : c.rule === "mega_ex" ? 
 writeFileSync(join(DIST, "deck-cards.json"), JSON.stringify(Object.fromEntries(data.cards.map((c) => [c.id, [rank(c), name(c, "ja"), name(c, "en")]]))));
 // 以前の共有リンク（/c/<ID>）は新しいカードページへ
 writeFileSync(join(DIST, "_redirects"), `/c/:id /card/:id 301\n`);
-console.log(`カードページ ${n} 枚（日本語・英語）・sitemap.xml（${urls.length} URL）・robots.txt・_redirects → dist/`);
+console.log(`カードページ ${n} 枚（日本語・英語）・カード一覧（/cards・/en/cards）・sitemap.xml（${urls.length} URL）・robots.txt・_redirects → dist/`);
