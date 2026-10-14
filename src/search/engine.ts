@@ -81,6 +81,13 @@ const TYPE_ABBR_EN: Record<string, string> = { g: "grass", r: "fire", w: "water"
 const TYPE_CTX_AFTER_EN = "\\s+(?:energy|energies|types?|attacks?|attackers?|pokemon|decks?|basics?|stage|ex)(?![a-z0-9])";
 const TYPE_CTX_BEFORE_EN = "(?:\\d|weak(?:ness)?(?:\\s+(?:to|is|against))?)\\s*";
 const typeOfEn = (w: string) => TYPE_WORD_EN.find(([x]) => x === w)![1];
+// 英語圏でよく使われるカードのあだ名・くっつけ書き → カード名（照合用の形）
+const NICK_EN: Record<string, string> = {
+  zard: "charizard", zards: "charizard", gardy: "gardevoir", garde: "gardevoir", gardi: "gardevoir", gardev: "gardevoir",
+  gyara: "gyarados", rayq: "rayquaza", arti: "articuno", serp: "serperior", gio: "giovanni",
+  pokeball: "poke ball", pokeballs: "poke ball", xspeed: "x speed", redcard: "red card",
+  "prof research": "professors research", "profs research": "professors research",
+};
 const NUM_EN: Record<string, number> = { zero: 0, one: 1, two: 2, three: 3, four: 4, five: 5 };
 const numEn = (w: string) => NUM_EN[w] ?? +w;
 // 英単語の語尾の変化（複数形・三単現・過去形・進行形）
@@ -452,10 +459,39 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       const END = "(?![a-z0-9])";
       // 日本語の名前をそのまま英語にした呼び方（「monster ball」→ Poké Ball）
       q = q.replace(/(?<![a-z])monster\s*balls?(?![a-z])/g, "poke ball");
+      // 英語圏のプレイヤーがよく使う、カードのあだ名・くっつけ書き（「zard」→ Charizard、「gardy」→ Gardevoir、「pokeball」→ Poké Ball）
+      q = q.replace(new RegExp(`(?<![a-z])(?:${Object.keys(NICK_EN).join("|")})(?![a-z])`, "g"), (m) => NICK_EN[m]);
+      // よく使う略語（「dmg」→ damage、「atk」→ attack、「nrg」→ energy、「abil」→ ability）
+      q = q.replace(/(?<![a-z])(dmg|atk|atks|nrg|abil|abils)(?![a-z])/g, (m) => ({ dmg: "damage", atk: "attack", atks: "attacks", nrg: "energy", abil: "ability", abils: "abilities" })[m]!);
+      // 「2e」（2エネ）
+      q = q.replace(/(?<![a-z0-9])(\d)\s*e(?![a-z0-9])/g, "$1 energy");
+      // 英語圏の対戦用語（打ちかけの名前「aggro」→ Aggron より先に読む）
+      //   aggro: 序盤から少ないエネで大きく殴る（日本語の「アグロ」と同じ）、donk: 先攻・後攻1ターン目から殴れるたね、
+      //   big basic: HPの高いたね、pivot: にげるの軽い、入れ替え役のポケモン
+      take(new RegExp(`(?<![a-z])aggro(?:\\s+(?:decks?|attackers?|pokemon))?${END}`, "g"), () => {
+        add(costTotalCond("le", 2));
+        add(damageCond("ge", 70));
+        add({ id: "rule:any_ex", kind: "rule", value: "any_ex", label: "ex", en: "ex" });
+        add({ id: "stage:basic", kind: "stage", value: "basic", label: STAGE_JA.basic, en: STAGE_EN.basic });
+        add({ id: "stage:stage1", kind: "stage", value: "stage1", label: STAGE_JA.stage1, en: STAGE_EN.stage1 });
+      });
+      take(new RegExp(`(?<![a-z])donk(?:s|ing|ers?)?${END}`, "g"), () => {
+        add(FAST);
+        add(damageCond("ge", 40));
+        add({ id: "stage:basic", kind: "stage", value: "basic", label: STAGE_JA.basic, en: STAGE_EN.basic });
+      });
+      take(new RegExp(`(?<![a-z])big\\s+basics?${END}`, "g"), () => {
+        add({ id: "stage:basic", kind: "stage", value: "basic", label: STAGE_JA.basic, en: STAGE_EN.basic });
+        add(hpCond("ge", 130));
+      });
+      take(new RegExp(`(?<![a-z])pivots?(?:\\s+pokemon)?${END}`, "g"), () => {
+        add(retreatCond("le", 1));
+        add({ id: "stage:basic", kind: "stage", value: "basic", label: STAGE_JA.basic, en: STAGE_EN.basic });
+      });
       // 打ちかけの名前（「professor」→ Professor's Research ほか）: 文まるごとが、カード名の単語の頭と同じなら、その名前で探す
       {
         const w = q.trim();
-        if (w.length >= 4 && /^[a-z ]+$/.test(w) && !lexEn.has(w) && !enNames.has(w)) {
+        if (w.length >= 4 && /^[a-z ]+$/.test(w) && !lexEn.has(w) && !enNames.has(w) && !/^(?:meta|staples?|popular)$/.test(w)) {
           const hit = enNameList.filter((n) => new RegExp(`(?<![a-z])${esc(w)}`).test(n));
           if (hit.length && hit.length <= 12) {
             add({ id: `name:${w}`, kind: "name", name: w, label: `名前に「${w}」`, en: `Name contains "${w}"`, weight: 3 });
@@ -495,7 +531,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
           });
         }
       }
-      if (data.meta) take(new RegExp(`(?<![a-z])(?:meta|popular|tournaments?|competitive|top\\s+decks?|most\\s+used|commonly\\s+used|staples?)${END}`, "g"), () => add(META));
+      if (data.meta) take(new RegExp(`(?<![a-z])(?:meta|popular|tournaments?|competitive|top\\s+decks?|most\\s+used|commonly\\s+used|staples?|tier\\s*(?:1|one)|top\\s+tier|bdif)${END}`, "g"), () => add(META));
       // カード名
       for (const n of enNameList) {
         if (!q.includes(n)) continue;
@@ -641,7 +677,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     }
 
     // 英語の検索文（アルファベットが3文字以上続くときだけ）
-    if (/[a-z]{3,}/.test(q) || /(?<![a-z0-9])\d+\s*[grwlpfdmc](?![a-z0-9])/.test(q)) parseEn(); // 「2p」（超2つ）も英語として読む
+    if (/[a-z]{3,}/.test(q) || /(?<![a-z0-9])\d+\s*[grwlpfdmc](?![a-z0-9])/.test(q) || /(?<![a-z0-9])(?:s|st|stg)[12](?![a-z0-9])/.test(q)) parseEn(); // 「2p」（超2つ）・「s1」（1進化）も英語として読む
 
     // 「回復しながら攻撃」の「しながら」は、ただのつなぎ
     take(/しながら/g, () => {});

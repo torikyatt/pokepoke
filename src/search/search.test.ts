@@ -563,3 +563,46 @@ describe("2文字のカード名", () => {
     expect(engine.parse("パモット")[0].label).toBe("名前「パモット＆パーモット」");
   });
 });
+
+describe("英語圏の対戦用語・略語・あだ名", () => {
+  const ids = (q: string) => engine.parse(q).map((c) => c.id);
+  it("用語・略語が条件として読める", () => {
+    const cases: [string, string][] = [
+      ["fire accel", "tag:energy.accel"],
+      ["gust", "tag:disrupt.switch_opp"],
+      ["para", "tag:status.paralysis"],
+      ["psn", "tag:status.poison"],
+      ["supps", "kind:supporter"],
+      ["s1", "stage:stage1"],
+      ["s2 ex", "stage:stage2"],
+      ["evo", "stage:evolved"],
+      ["1 prizer", "rule:not_ex"],
+      ["2 prizer", "rule:any_ex"],
+      ["meta", "meta"],
+      ["tier 1", "meta"],
+      ["big basics", "hp:ge130"],
+      ["pivot", "retreat:le1"],
+      ["aggro", "costTotal:le2"],
+      ["donk", "costTotal:le1"],
+      ["2e 100 dmg", "costTotal:le2"],
+      ["chip dmg", "tag:damage.direct"],
+      ["elec ex", "type:lightning"],
+    ];
+    for (const [q, id] of cases) {
+      expect(engine.explain(q).unread, q).toEqual([]);
+      expect(ids(q), q).toContain(id);
+    }
+  });
+  it("カードのあだ名・くっつけ書き", () => {
+    const top = (q: string) => engine.search(q, Infinity).map((h) => h.card.nameEn);
+    expect(top("zard")).toContain("Charizard ex");
+    expect(top("gardy")).toContain("Gardevoir");
+    expect(top("pokeball")[0]).toBe("Poké Ball");
+    expect(top("xspeed")[0]).toBe("X Speed");
+    expect(top("prof research")[0]).toBe("Professor's Research");
+    expect(engine.parse("zard ex deck").some((c) => c.kind === "deck" || c.kind === "partner")).toBe(true);
+    // あだ名にしない: 名前をそのまま打ったとき
+    expect(top("aggron")[0]).toBe("Aggron");
+    expect(top("accelgor")[0]).toBe("Accelgor");
+  });
+});
