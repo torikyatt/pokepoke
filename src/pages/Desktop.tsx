@@ -11,6 +11,7 @@ import { useDecks, useSettings, useToast, type Deck } from "../store.ts";
 import { deckCards, DeckList, EnergyZone, ImportDeckButton, SharePage, useDeckExport } from "./DeckPage.tsx";
 import { SearchPage } from "./SearchPage.tsx";
 import { SettingsPage } from "./SettingsPage.tsx";
+import { ToolRoutes } from "./ToolsPage.tsx";
 import { cardName, useLang, useT } from "../i18n.ts";
 
 export function Desktop() {
@@ -47,6 +48,7 @@ export function Desktop() {
     return m;
   }, [deck]);
   const closeModal = () => navigate(base.search.replace(/^#/, ""));
+  const beta = useSettings((s) => s.beta);
   const t = useT();
 
   return (
@@ -57,6 +59,11 @@ export function Desktop() {
         </button>
         <span className="text-xs font-bold text-muted">{t("ふだんの言葉でカードを探す ・ 「/」で検索欄へ", "Find cards in plain words ・ press “/” to search")}</span>
         <div className="flex-1" />
+        {beta && (
+          <button type="button" onClick={() => navigate(base.tools?.replace(/^#/, "") || "/tools")} className="neu-sm neu-press rounded-full px-4 py-1.5 text-xs font-extrabold text-muted">
+            {t("ツール", "Tools")}
+          </button>
+        )}
         <button type="button" onClick={() => navigate("/settings")} className="neu-sm neu-press rounded-full px-4 py-1.5 text-xs font-extrabold text-muted">
           {t("設定", "Settings")}
         </button>
@@ -80,6 +87,11 @@ export function Desktop() {
           <SettingsPage embedded />
         </Modal>
       )}
+      {(parts[0] === "tools" || parts[0] === "list") && (
+        <Modal title={t("ツール", "Tools")} onClose={closeModal} wide>
+          <ToolRoutes parts={parts} />
+        </Modal>
+      )}
       {parts[0] === "share" && (
         <Modal title={t("共有されたデッキ", "Shared deck")} onClose={closeModal}>
           <SharePage code={parts[1] ?? ""} embedded />
@@ -90,7 +102,7 @@ export function Desktop() {
   );
 }
 
-function Modal({ title, onClose, children }: { title: string; onClose: () => void; children: React.ReactNode }) {
+function Modal({ title, onClose, children, wide }: { title: string; onClose: () => void; children: React.ReactNode; wide?: boolean }) {
   const t = useT();
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
@@ -100,7 +112,7 @@ function Modal({ title, onClose, children }: { title: string; onClose: () => voi
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-6" role="dialog" aria-modal="true" aria-label={title}>
       <button type="button" aria-label={t("閉じる", "Close")} className="absolute inset-0 bg-[#3d4757]/35" onClick={onClose} />
-      <div className="pop-in relative flex max-h-[88dvh] w-full max-w-2xl flex-col rounded-3xl bg-canvas shadow-2xl">
+      <div className={`pop-in relative flex max-h-[88dvh] w-full ${wide ? "max-w-4xl" : "max-w-2xl"} flex-col rounded-3xl bg-canvas shadow-2xl`}>
         <div className="flex items-center justify-between px-5 pt-4 pb-2">
           <h2 className="text-lg font-extrabold">{title}</h2>
           <button type="button" onClick={onClose} className="neu-sm neu-press flex h-8 w-8 items-center justify-center rounded-full text-muted" aria-label={t("閉じる", "Close")}>

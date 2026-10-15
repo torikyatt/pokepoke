@@ -4,6 +4,7 @@ import { create } from "zustand";
 import { createJSONStorage, persist, type StateStorage } from "zustand/middleware";
 import { useDetail } from "./detail.ts";
 import type { EnergyType } from "./types.ts";
+import { MAX_COUNT, sameItem, type CardList, type ListItem, type ListKind } from "./lists.ts";
 
 const safeStorage: StateStorage = {
   getItem: (k) => {
@@ -98,6 +99,8 @@ interface SettingsState {
   setDeckView: (v: "grid" | "list") => void;
   slotSize: "s" | "m" | "l"; // デッキ編集画面の上の枠の大きさ
   setSlotSize: (v: "s" | "m" | "l") => void;
+  beta: boolean; // beta機能（ツールタブ）を出す
+  setBeta: (v: boolean) => void;
 }
 const defaultLang = (): "ja" | "en" =>
   typeof navigator === "undefined" || /bot|crawl|spider|slurp|google|bing|yandex|baidu|lighthouse/i.test(navigator.userAgent) || /^ja\b/i.test(navigator.language ?? "ja") ? "ja" : "en";
@@ -115,8 +118,63 @@ export const useSettings = create<SettingsState>()(
       setDeckView: (deckView) => set({ deckView }),
       slotSize: "s",
       setSlotSize: (slotSize) => set({ slotSize }),
+      beta: false,
+      setBeta: (beta) => set({ beta }),
     }),
     { name: "pokepoke.settings", storage: createJSONStorage(() => safeStorage), version: 1 },
+  ),
+);
+
+// リスト（ツールタブ）。デッキと違って枚数の上限がなく、絵柄違い・ミラーを指定できる（lists.ts）
+interface ListState {
+  lists: CardList[];
+  create: (kind: ListKind, name?: string, items?: ListItem[]) => string;
+  remove: (id: string) => void;
+  rename: (id: string, name: string) => void;
+  /** カードを足す（同じ絵柄・ミラー・区分があれば枚数を増やす） */
+  add: (id: string, item: Omit<ListItem, "n"> & { n?: number }) => void;
+  /** 行を置き換える（絵柄・ミラー・区分を変えたとき、同じ行があればまとめる）。n が 0 なら外す */
+  setItem: (id: string, index: number, item: ListItem) => void;
+}
+const touch = (l: CardList, items: ListItem[]): CardList => ({ ...l, items, updatedAt: Date.now() });
+export const useLists = create<ListState>()(
+  persist(
+    (set, get) => ({
+      lists: [],
+      create: (kind, name, items = []) => {
+        const id = newId();
+        const en = useSettings.getState().lang === "en";
+        const n = get().lists.filter((l) => l.kind === kind).length + 1;
+        const fallback = kind === "trade" ? (en ? `Trade list ${n}` : `トレード用リスト${n}`) : en ? `List ${n}` : `リスト${n}`;
+        set((s) => ({ lists: [...s.lists, { id, name: name || fallback, kind, items, updatedAt: Date.now() }] }));
+        return id;
+      },
+      remove: (id) => set((s) => ({ lists: s.lists.filter((l) => l.id !== id) })),
+      rename: (id, name) => set((s) => ({ lists: s.lists.map((l) => (l.id === id ? { ...l, name, updatedAt: Date.now() } : l)) })),
+      add: (id, item) =>
+        set((s) => ({
+          lists: s.lists.map((l) => {
+            if (l.id !== id) return l;
+            const n = item.n ?? 1;
+            const i = l.items.findIndex((x) => sameItem(x, item));
+            if (i < 0) return touch(l, [...l.items, { ...item, n }]);
+            return touch(l, l.items.map((x, j) => (j === i ? { ...x, n: Math.min(MAX_COUNT, x.n + n) } : x)));
+          }),
+        })),
+      setItem: (id, index, item) =>
+        set((s) => ({
+          lists: s.lists.map((l) => {
+            if (l.id !== id) return l;
+            const rest = l.items.filter((_, j) => j !== index);
+            if (item.n <= 0) return touch(l, rest);
+            const k = rest.findIndex((x) => sameItem(x, item));
+            const n = Math.min(MAX_COUNT, item.n);
+            if (k < 0) return touch(l, [...rest.slice(0, index), { ...item, n }, ...rest.slice(index)]);
+            return touch(l, rest.map((x, j) => (j === k ? { ...x, n: Math.min(MAX_COUNT, x.n + n) } : x)));
+          }),
+        })),
+    }),
+    { name: "pokepoke.lists", storage: createJSONStorage(() => safeStorage), version: 1 },
   ),
 );
 

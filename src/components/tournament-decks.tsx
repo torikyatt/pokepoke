@@ -95,7 +95,7 @@ export function CardDecks({ card, keepOpen }: { card: AppCard; keepOpen?: boolea
   );
 }
 
-function DeckRow({ d, highlight, keepOpen }: { d: TournamentDeck; highlight: string; keepOpen?: boolean }) {
+export function DeckRow({ d, highlight, keepOpen }: { d: TournamentDeck; highlight?: string; keepOpen?: boolean }) {
   const { byId } = useData();
   const importDecks = useDecks((s) => s.importDecks);
   const show = useToast((s) => s.show);

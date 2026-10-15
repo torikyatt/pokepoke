@@ -5,8 +5,8 @@ import { create } from "zustand";
 import { openCard } from "./detail.ts";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-export type Tab = "search" | "deck" | "settings";
-export const TAB_ROOT: Record<Tab, string> = { search: "#/", deck: "#/deck", settings: "#/settings" };
+export type Tab = "search" | "deck" | "tools" | "settings";
+export const TAB_ROOT: Record<Tab, string> = { search: "#/", deck: "#/deck", tools: "#/tools", settings: "#/settings" };
 
 export function parseHash(hash: string) {
   const [path, qs = ""] = (hash || "#/").replace(/^#/, "").split("?");
@@ -18,6 +18,7 @@ export function tabOf(hash: string): Tab | undefined {
   const p = parseHash(hash).parts[0];
   if (p === "card") return undefined;
   if (p === "deck" || p === "share") return "deck";
+  if (p === "tools" || p === "list") return "tools";
   if (p === "settings" || p === "review") return "settings";
   return "search";
 }
@@ -101,6 +102,8 @@ export const useNav = create<NavState>()(
       })),
       // 開き直したとき、今開いているタブ以外の場所も戻せるように覚えておく
       partialize: (s) => ({ base: s.base }),
+      // 前に保存した場所に無いタブ（あとから足したツールタブ）は、そのタブの最初の画面
+      merge: (persisted, current) => ({ ...current, base: { ...current.base, ...((persisted as Partial<NavState> | undefined)?.base ?? {}) } }),
     },
   ),
 );

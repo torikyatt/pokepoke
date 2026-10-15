@@ -151,6 +151,7 @@ export function Toast() {
 
 export function BottomNav() {
   const { active: tab, goTab } = useNav();
+  const beta = useSettings((s) => s.beta);
   const t = useT();
   const item = (key: Tab, label: string, _path: string, icon: ReactNode) => (
     <button type="button" onClick={() => goTab(key)} aria-current={tab === key ? "page" : undefined} className={`flex flex-1 flex-col items-center gap-0.5 py-2 text-[11px] font-bold ${tab === key ? "text-accent" : "text-muted"}`}>
@@ -163,6 +164,8 @@ export function BottomNav() {
       <div className="mx-auto flex max-w-3xl">
         {item("search", t("カード", "Cards"), "/", <IconSearch />)}
         {item("deck", t("デッキ", "Decks"), "/deck", <IconDeck />)}
+        {/* ツールは beta機能（設定でオン）。共有されたリストを開いたときは、オフでも出す */}
+        {(beta || tab === "tools") && item("tools", t("ツール", "Tools"), "/tools", <IconTools />)}
         {item("settings", t("設定", "Settings"), "/settings", <IconGear />)}
       </div>
     </nav>
@@ -180,6 +183,14 @@ export const IconDeck = ({ className = svg }: { className?: string }) => (
   <svg viewBox="0 0 24 24" className={className} aria-hidden>
     <rect x="5" y="4" width="12" height="16" rx="2" />
     <path d="M9 2h8a2 2 0 0 1 2 2v12" strokeLinecap="round" />
+  </svg>
+);
+export const IconTools = ({ className = svg }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} aria-hidden>
+    <rect x="3.5" y="3.5" width="7" height="7" rx="1.5" />
+    <rect x="13.5" y="3.5" width="7" height="7" rx="1.5" />
+    <rect x="3.5" y="13.5" width="7" height="7" rx="1.5" />
+    <path d="M17 13.5v7M13.5 17h7" strokeLinecap="round" />
   </svg>
 );
 const IconGear = () => (

@@ -705,10 +705,10 @@ function DeckImage({ deck, cards, qr, ref }: { deck: Deck; cards: AppCard[]; qr:
 }
 
 /** 作った画像を画面に出す。長押し（PCは右クリック）で保存できる */
-function ImagePreview({ url, onClose, onDownload }: { url: string; onClose: () => void; onDownload: () => void }) {
+export function ImagePreview({ url, onClose, onDownload, label }: { url: string; onClose: () => void; onDownload: () => void; label?: string }) {
   const t = useT();
   return createPortal(
-    <div className="fixed inset-0 z-[70] flex flex-col items-center justify-center bg-[#3d4757]/60 p-3" role="dialog" aria-modal="true" aria-label={t("デッキの画像", "Deck image")}>
+    <div className="fixed inset-0 z-[70] flex flex-col items-center justify-center bg-[#3d4757]/60 p-3" role="dialog" aria-modal="true" aria-label={label ?? t("デッキの画像", "Deck image")}>
       <button type="button" aria-label={t("閉じる", "Close")} className="absolute inset-0" onClick={onClose} />
       <div className="pop-in relative flex max-h-full w-full max-w-4xl flex-col gap-2 rounded-3xl bg-panel p-3 shadow-2xl">
         <div className="flex items-center gap-2">
@@ -717,7 +717,7 @@ function ImagePreview({ url, onClose, onDownload }: { url: string; onClose: () =
             ✕
           </button>
         </div>
-        <img src={url} alt={t("デッキの画像", "Deck image")} className="min-h-0 w-full flex-1 rounded-xl object-contain" style={{ WebkitTouchCallout: "default" }} />
+        <img src={url} alt={label ?? t("デッキの画像", "Deck image")} className="min-h-0 w-full flex-1 rounded-xl object-contain" style={{ WebkitTouchCallout: "default" }} />
         <button type="button" onClick={onDownload} className="self-end text-[11px] font-bold text-accent-deep underline">
           {t("ファイルとしてダウンロード", "Download as file")}
         </button>

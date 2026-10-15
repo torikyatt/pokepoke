@@ -11,6 +11,7 @@ import { Desktop } from "./pages/Desktop.tsx";
 import { DeckBuilderPage, DeckListPage, DeckViewPage, SharePage } from "./pages/DeckPage.tsx";
 import { SearchPage } from "./pages/SearchPage.tsx";
 import { SettingsPage } from "./pages/SettingsPage.tsx";
+import { ToolRoutes } from "./pages/ToolsPage.tsx";
 import { PoolScope } from "./pool.ts";
 import { RouteContext, useHash, useRoute } from "./router.ts";
 import { createEngine } from "./search/engine.ts";
@@ -22,7 +23,7 @@ document.addEventListener("gesturestart", (e) => e.preventDefault());
 
 // 本番ビルドでは import.meta.env.DEV が false になり、レビューページは含まれない
 const ReviewPage = import.meta.env.DEV ? lazy(() => import("./pages/ReviewPage.tsx")) : null;
-const TABS: Tab[] = ["search", "deck", "settings"];
+const TABS: Tab[] = ["search", "deck", "tools", "settings"];
 
 /** タブのベースの画面 */
 function Routes() {
@@ -39,6 +40,9 @@ function Routes() {
       );
     case "share":
       return <SharePage code={parts[1] ?? ""} />;
+    case "tools":
+    case "list":
+      return <ToolRoutes parts={parts} />;
     case "settings":
       return <SettingsPage />;
     case "review":
