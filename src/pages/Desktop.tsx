@@ -11,7 +11,7 @@ import { useDecks, useSettings, useToast, type Deck } from "../store.ts";
 import { deckCards, DeckList, EnergyZone, ImportDeckButton, SharePage, useDeckExport } from "./DeckPage.tsx";
 import { SearchPage } from "./SearchPage.tsx";
 import { SettingsPage } from "./SettingsPage.tsx";
-import { ToolRoutes } from "./ToolsPage.tsx";
+import { ListColumn, SharedListColumn, ToolRoutes, useListCounts } from "./ToolsPage.tsx";
 import { cardName, useLang, useT } from "../i18n.ts";
 
 export function Desktop() {
@@ -42,11 +42,16 @@ export function Desktop() {
   }, []);
 
   const deck = useDecks((s) => s.decks.find((d) => d.id === s.currentId) ?? s.decks[0]);
-  const counts = useMemo(() => {
+  const deckCounts = useMemo(() => {
     const m = new Map<string, number>();
     for (const id of deck?.cards ?? []) m.set(id, (m.get(id) ?? 0) + 1);
     return m;
   }, [deck]);
+  // リスト（#/tools/list/<id>…）・共有されたリスト（#/list/<コード>）は、右の列にデッキの代わりに出す（カード一覧・詳細はそのまま）
+  const listId = parts[0] === "tools" && parts[1] === "list" ? parts[2] : undefined;
+  const sharedList = parts[0] === "list" ? parts.slice(1).join("/") : undefined;
+  const listCounts = useListCounts(listId);
+  const counts = listId && listCounts ? listCounts : deckCounts;
   const closeModal = () => navigate(base.search.replace(/^#/, ""));
   const beta = useSettings((s) => s.beta);
   const t = useT();
@@ -60,7 +65,7 @@ export function Desktop() {
         <span className="text-xs font-bold text-muted">{t("ふだんの言葉でカードを探す ・ 「/」で検索欄へ", "Find cards in plain words ・ press “/” to search")}</span>
         <div className="flex-1" />
         {beta && (
-          <button type="button" onClick={() => navigate(base.tools?.replace(/^#/, "") || "/tools")} className="neu-sm neu-press rounded-full px-4 py-1.5 text-xs font-extrabold text-muted">
+          <button type="button" onClick={() => navigate("/tools")} className="neu-sm neu-press rounded-full px-4 py-1.5 text-xs font-extrabold text-muted">
             {t("ツール", "Tools")}
           </button>
         )}
@@ -77,8 +82,8 @@ export function Desktop() {
         <section className="neu min-h-0 overflow-hidden rounded-3xl" aria-label={t("カード詳細", "Card details")}>
           <DetailPane />
         </section>
-        <section className="neu min-h-0 overflow-y-auto rounded-3xl" aria-label={t("デッキ", "Deck")}>
-          <DeckColumn deck={deck} />
+        <section className="neu min-h-0 overflow-y-auto rounded-3xl" aria-label={listId || sharedList ? t("リスト", "List") : t("デッキ", "Deck")}>
+          {listId ? <ListColumn key={listId} id={listId} onClose={closeModal} /> : sharedList ? <SharedListColumn code={sharedList} onClose={closeModal} /> : <DeckColumn deck={deck} />}
         </section>
       </div>
 
@@ -87,7 +92,7 @@ export function Desktop() {
           <SettingsPage embedded />
         </Modal>
       )}
-      {(parts[0] === "tools" || parts[0] === "list") && (
+      {parts[0] === "tools" && !listId && (
         <Modal title={t("ツール", "Tools")} onClose={closeModal} wide>
           <ToolRoutes parts={parts} />
         </Modal>

@@ -8,6 +8,7 @@ import { usePool } from "../pool.ts";
 import { navigate, searchPath, useRoute } from "../router.ts";
 import { dateStr, useLang, useT } from "../i18n.ts";
 import { pickExamples } from "../examples.ts";
+import { useEditTarget } from "../store.ts";
 
 const csv = (s: string | null) => (s ? s.split(",").filter(Boolean) : []);
 
@@ -42,6 +43,7 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
   useEffect(() => logSearch(q, total, "search", lang, unread), [q, total, lang, unread]);
   // 検索の例: 開くたび・検索欄を空に戻すたびに選び直す
   const examples = useMemo(() => pickExamples(lang), [lang, !q]);
+  const toList = useEditTarget((s) => !!s.list); // PCでリストを開いている間は、長押しでそのリストに足す
   const labelOf = useMemo(() => new Map(parsed.map((c) => [c.id, lang === "en" ? c.en : c.label])), [parsed, lang]);
 
   const go = (patch: { q?: string; x?: string[] }, replace = true) =>
@@ -85,7 +87,7 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
                 <Logo />
               </h1>
             )}
-            <p className="mb-2 text-xs font-bold text-muted">{t("ふだんの言葉で探せます（タップで詳細・長押しでデッキに追加）", "Search in plain words (tap for details, long-press to add to your deck)")}</p>
+            <p className="mb-2 text-xs font-bold text-muted">{toList ? t("ふだんの言葉で探せます（タップで詳細・長押しでリストに追加）", "Search in plain words (tap for details, long-press to add to the list)") : t("ふだんの言葉で探せます（タップで詳細・長押しでデッキに追加）", "Search in plain words (tap for details, long-press to add to your deck)")}</p>
             <div className={wide ? "flex flex-wrap gap-2 pb-2" : "scrollbar-none -mx-4 flex gap-2 overflow-x-auto px-4 pb-2"}>
               {examples.map((ex) => (
                 <Chip key={ex} onClick={() => go({ q: ex }, false)}>

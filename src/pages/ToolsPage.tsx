@@ -506,7 +506,7 @@ function ListPage({ id }: { id: string }) {
   );
 }
 
-function ListSection({ list, side, onAdd, readOnly }: { list: Pick<CardList, "id" | "kind" | "items">; side: ListSide; onAdd?: () => void; readOnly?: boolean }) {
+function ListSection({ list, side, onAdd, readOnly, narrow }: { list: Pick<CardList, "id" | "kind" | "items">; side: ListSide; onAdd?: () => void; readOnly?: boolean; narrow?: boolean }) {
   const { byId } = useData();
   const idx = usePrintIndex();
   const t = useT();
@@ -519,7 +519,7 @@ function ListSection({ list, side, onAdd, readOnly }: { list: Pick<CardList, "id
         <h2 className="min-w-0 flex-1 text-sm font-extrabold">{lang === "en" ? SIDE_LABEL[side][1] : SIDE_LABEL[side][0]}</h2>
         <span className="text-xs font-extrabold text-muted">{t(`${total(rows.map((r) => r.it))}枚`, `${total(rows.map((r) => r.it))}`)}</span>
       </div>
-      <div className="grid grid-cols-5 gap-2 sm:grid-cols-8">
+      <div className={`grid grid-cols-5 gap-2 ${narrow ? "" : "sm:grid-cols-8"}`}>
         {rows.map(({ it, card }) => (
           <Pressable
             key={`${it.print}-${it.mirror ? 1 : 0}`}
@@ -978,6 +978,187 @@ function SharedListPage({ code }: { code: string }) {
           {t("マイリストに保存", "Save to my lists")}
         </button>
       </div>
+      {exp.image}
+    </div>
+  );
+}
+
+// ---------------- PC: 右の列（デッキの代わりにリストを出す） ----------------
+// PCでは、リストを開くと右の列がそのリストになる。左のカード一覧・真ん中のカード詳細はそのまま使え、
+// 一覧の長押し・詳細の「＋ リストに追加」でこのリストに足す（デッキ編集と同じ）
+
+/** 右の列のリストの、カードごとの枚数（左のカード一覧の枚数表示に使う。今の追加先の区分だけ） */
+export function useListCounts(id: string | undefined): Map<string, number> | undefined {
+  const { byId } = useData();
+  const idx = usePrintIndex();
+  const list = useLists((s) => s.lists.find((l) => l.id === id));
+  const side = useEditTarget((s) => (s.list && s.list.id === id ? s.list.side : undefined));
+  return useMemo(() => {
+    if (!list || !side) return undefined;
+    const m = new Map<string, number>();
+    for (const it of list.items) {
+      const c = it.side === side && cardOfPrint(it.print, byId, idx);
+      if (c) m.set(c.id, (m.get(c.id) ?? 0) + it.n);
+    }
+    return m;
+  }, [list, side, byId, idx]);
+}
+
+const colBtn = "neu-sm neu-press rounded-2xl py-2 text-xs font-extrabold disabled:opacity-40";
+
+export function ListColumn({ id, onClose }: { id: string; onClose: () => void }) {
+  const list = useLists((s) => s.lists.find((l) => l.id === id));
+  const { rename, remove, setItem } = useLists();
+  const { byId } = useData();
+  const idx = usePrintIndex();
+  const show = useToast((s) => s.show);
+  const t = useT();
+  const lang = useLang();
+  const exp = useListExport(list);
+  const sides = SIDES[list?.kind ?? "list"];
+  const [side, setSide] = useState<ListSide>(sides[0]);
+  const [editing, setEditing] = useState<Pick<ListItem, "print" | "mirror" | "side">>();
+  useEffect(() => {
+    if (!list) return;
+    useEditTarget.setState({ list: { id, side } });
+    return () => useEditTarget.setState({ list: undefined });
+  }, [id, side, !!list]);
+  if (!list)
+    return (
+      <div className="space-y-3 p-4 text-sm font-bold text-muted">
+        <p>{t("リストが見つかりません", "List not found")}</p>
+        <button type="button" onClick={onClose} className="neu-sm neu-press rounded-full px-3 py-1.5 text-xs font-extrabold">
+          {t("← デッキに戻る", "← Back to deck")}
+        </button>
+      </div>
+    );
+  const rows = list.items.map((it, i) => ({ it, i, card: cardOfPrint(it.print, byId, idx) })).filter((r): r is { it: ListItem; i: number; card: AppCard } => r.it.side === side && !!r.card);
+  return (
+    <div className="space-y-3 p-4">
+      <div className="flex items-center gap-2">
+        <button type="button" onClick={onClose} className="neu-sm neu-press rounded-full px-3 py-1.5 text-xs font-extrabold text-muted">
+          {t("← デッキ", "← Deck")}
+        </button>
+        <div className="flex-1" />
+        <span className={`rounded-full px-2 py-0.5 text-[10px] font-extrabold ${list.kind === "trade" ? "bg-[#ffe9c7] text-[#8a5c0c]" : "neu-in text-muted"}`}>{lang === "en" ? KIND_LABEL[list.kind][1] : KIND_LABEL[list.kind][0]}</span>
+        <button type="button" onClick={() => navigate("/tools/lists")} className="neu-sm neu-press rounded-full px-3 py-1.5 text-xs font-extrabold text-muted">
+          {t("リスト一覧", "All lists")}
+        </button>
+      </div>
+      <input value={list.name} onChange={(e) => rename(list.id, e.target.value)} aria-label={t("リストの名前", "List name")} className="neu-in w-full rounded-full px-4 py-2 text-sm font-extrabold outline-none" />
+      <div className="flex items-center gap-2">
+        <span className="text-sm font-extrabold text-muted">{t(`${total(list.items.filter((x) => x.side === side))} 枚`, `${total(list.items.filter((x) => x.side === side))} cards`)}</span>
+        <div className="flex-1" />
+        {sides.length > 1 && (
+          <div className="neu-in flex rounded-full p-0.5 text-xs font-bold">
+            {sides.map((sd) => (
+              <button key={sd} type="button" aria-pressed={side === sd} onClick={() => setSide(sd)} className={`rounded-full px-3 py-1 ${side === sd ? "bg-white text-accent shadow" : "text-muted"}`}>
+                {lang === "en" ? SIDE_LABEL[sd][1] : SIDE_LABEL[sd][0]} {total(list.items.filter((x) => x.side === sd))}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+      <div className="neu-in grid grid-cols-5 gap-1.5 rounded-2xl p-2.5">
+        {rows.map((r) => (
+          <Pressable
+            key={`${r.it.print}-${r.it.mirror ? 1 : 0}`}
+            onTap={() => setEditing({ print: r.it.print, mirror: r.it.mirror, side: r.it.side })}
+            onLongPress={() => {
+              setItem(list.id, r.i, { ...r.it, n: r.it.n - 1 });
+              show(t(`「${r.card.nameJa}」を1枚減らしました`, `Removed one ${r.card.nameEn}`));
+            }}
+            label={t(`${r.card.nameJa} ${r.it.n}枚（タップで設定・長押しで1枚減らす）`, `${cardName(r.card, lang)} ×${r.it.n} (tap to edit, long-press to remove one)`)}
+            className="pop-in rounded-[4px] shadow-[1px_2px_3px_rgb(150_165_185/0.5)]"
+          >
+            <PrintThumb card={r.card} print={r.it.print} mirror={r.it.mirror} n={r.it.n} />
+          </Pressable>
+        ))}
+        {Array.from({ length: Math.max(5 - (rows.length % 5 || 5), rows.length ? 0 : 5) }, (_, i) => (
+          <div key={`e${i}`} className="flex aspect-[367/512] items-center justify-center rounded-[4px] border border-dashed border-[#c5cfdb] text-sm text-[#b8c3d1]">
+            ＋
+          </div>
+        ))}
+      </div>
+      <p className="text-[11px] font-bold text-muted">
+        {t(
+          "左の一覧で長押し、またはカード詳細の「＋ リストに追加」で追加。ここのカードはタップで絵柄・ミラー・枚数、長押しで1枚減らす",
+          "Long-press a card on the left, or use “＋ Add to list” in the card details. Tap a card here for art/mirror/count, long-press to remove one",
+        )}
+      </p>
+      <div className="grid grid-cols-3 gap-2">
+        <button type="button" disabled={!list.items.length || exp.exporting} onClick={exp.savePng} className={colBtn}>
+          {exp.exporting ? t("作成中…", "Creating…") : t("画像で保存", "Save image")}
+        </button>
+        <button type="button" disabled={!list.items.length} onClick={exp.share} className={colBtn}>
+          {t("共有URL", "Share URL")}
+        </button>
+        <button type="button" disabled={!list.items.length} onClick={exp.copyCode} className={colBtn}>
+          {t("コードをコピー", "Copy code")}
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            if (!confirm(t(`「${list.name}」を削除しますか？`, `Delete “${list.name}”?`))) return;
+            remove(list.id);
+            onClose();
+          }}
+          className={`${colBtn} col-start-3 text-danger`}
+        >
+          {t("削除", "Delete")}
+        </button>
+      </div>
+      {editing && <ItemSheet listId={list.id} kind={list.kind} target={editing} onChange={setEditing} onClose={() => setEditing(undefined)} />}
+      {exp.image}
+    </div>
+  );
+}
+
+/** PCの右の列: 共有されたリスト（カードをタップすると真ん中に詳細が出る） */
+export function SharedListColumn({ code, onClose }: { code: string; onClose: () => void }) {
+  const idx = usePrintIndex();
+  const create = useLists((s) => s.create);
+  const show = useToast((s) => s.show);
+  const t = useT();
+  const shared = useMemo(() => {
+    try {
+      return decodeList(decodeURIComponentSafe(code), idx);
+    } catch {
+      return undefined;
+    }
+  }, [code, idx]);
+  const exp = useListExport(shared);
+  return (
+    <div className="space-y-3 p-4">
+      <div className="flex items-center gap-2">
+        <button type="button" onClick={onClose} className="neu-sm neu-press rounded-full px-3 py-1.5 text-xs font-extrabold text-muted">
+          {t("← デッキ", "← Deck")}
+        </button>
+        <span className="min-w-0 flex-1 truncate text-sm font-extrabold">{shared ? t(`共有リスト: ${shared.name}`, `Shared list: ${shared.name}`) : t("共有されたリストを読めませんでした", "Couldn't read the shared list")}</span>
+      </div>
+      {shared && (
+        <>
+          {SIDES[shared.kind].map((side) => (
+            <ListSection key={side} list={{ id: "", kind: shared.kind, items: shared.items }} side={side} readOnly narrow />
+          ))}
+          <div className="grid grid-cols-2 gap-2">
+            <button type="button" disabled={exp.exporting} onClick={exp.savePng} className={colBtn}>
+              {exp.exporting ? t("作成中…", "Creating…") : t("画像で保存", "Save image")}
+            </button>
+            <button
+              type="button"
+              className="btn-ok rounded-2xl py-2 text-xs"
+              onClick={() => {
+                const id = create(shared.kind, shared.name, shared.items);
+                show(t("マイリストに保存しました", "Saved to your lists"));
+                navigate(`/tools/list/${id}`);
+              }}
+            >
+              {t("マイリストに保存", "Save to my lists")}
+            </button>
+          </div>
+        </>
+      )}
       {exp.image}
     </div>
   );
