@@ -57,7 +57,7 @@ function ToolsHome() {
       path: "/tools/meta",
       icon: "🏆",
       title: t("大会のデッキ", "Tournament decks"),
-      desc: t("最近の大会で使われているデッキ。アツいデッキタイプ・新しい順・成績順で見られます", "Decks from recent tournaments: trending archetypes, newest lists and best results"),
+      desc: t("最近の大会で使われているデッキ。環境上位・急上昇のデッキタイプや、新しい順・成績順のデッキリストを見られます", "Decks from recent tournaments: top and rising archetypes, newest lists and best results"),
     },
     {
       path: "/tools/lists",
@@ -164,7 +164,7 @@ function MetaPage() {
   const pct = (x: number) => `${(x * 100).toFixed(1)}%`;
   const day = (ms: number) => new Date(ms).toLocaleDateString(lang === "en" ? "en-US" : "ja-JP", { month: "numeric", day: "numeric" });
   const VIEWS: [MetaView, string, string][] = [
-    ["hot", "アツいデッキ", "Trending"],
+    ["hot", "環境上位", "Top decks"],
     ["rising", "急上昇", "Rising"],
     ["recommended", "おすすめ", "Recommended"],
     ["new", "新しい順", "Newest"],
@@ -276,11 +276,12 @@ function usePrintIndex() {
   return useMemo(() => printIndex(data.cards), [data]);
 }
 
-/** リストの共有URL（1ファイル版では、そのファイルの #/list/<コード>） */
-function listUrlOf(l: Pick<CardList, "name" | "kind" | "items">): string {
+/** リストの共有URL。サイトでは /l/<コード>（英語なら /en/l/…）にして、リンクのプレビューにリスト名を出す（server/list-page.ts）。
+ *  1ファイル版では、そのファイルの #/list/<コード> */
+function listUrlOf(l: Pick<CardList, "name" | "kind" | "items">, lang: Lang): string {
   const code = encodeList(l);
   if (isSingleFile || !/^https?:$/.test(location.protocol)) return `${location.href.split("#")[0]}#/list/${code}`;
-  return `${location.origin}/#/list/${code}`;
+  return `${location.origin}${lang === "en" ? "/en" : ""}/l/${code}`;
 }
 
 /** 絵柄（収録）ごとのサムネイル。ふつうの絵柄はカードのサムネイル、絵柄違いはその絵柄の画像。ミラーならタグを付ける */
@@ -812,12 +813,13 @@ const IconList = () => (
 function useListExport(list: Pick<CardList, "name" | "kind" | "items"> | undefined) {
   const show = useToast((s) => s.show);
   const t = useT();
+  const lang = useLang();
   const ref = useRef<HTMLDivElement>(null);
   const [exporting, setExporting] = useState(false);
   const [preview, setPreview] = useState<string>();
   const share = async () => {
     if (!list) return;
-    const url = listUrlOf(list);
+    const url = listUrlOf(list, lang);
     try {
       if (navigator.share) await navigator.share({ title: list.name, url });
       else {
@@ -879,7 +881,7 @@ function ListImage({ list, ref }: { list: Pick<CardList, "name" | "kind" | "item
   const lang = useSettings((s) => s.imageLang);
   const uiLang = useLang();
   const t = useT();
-  const url = listUrlOf(list);
+  const url = listUrlOf(list, uiLang);
   // 長すぎるURLは QR コードに入りきらないので入れない
   const qr = url.length <= 1800 ? qrImage(url) : undefined;
   const panel = { borderRadius: 24, background: "#f3f6fa", border: "2px solid #dbe3ee", padding: 16 };

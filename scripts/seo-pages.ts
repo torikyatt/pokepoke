@@ -5,7 +5,7 @@
 //   dist/sitemap.xml         全ページの一覧（日本語・英語の対応つき）
 //   dist/robots.txt          /api/ は載せない・サイトマップの場所
 //   dist/_redirects          以前の共有リンク（/c/<ID>）を /card/<ID> へ
-//   dist/deck-cards.json     デッキの共有リンクのページ（server/deck-page.ts）で使う、カードの名前
+//   dist/deck-cards.json     デッキ・リストの共有リンクのページ（server/deck-page.ts・list-page.ts）で使う、カードの名前
 // アプリは URL の # 以降で画面を切り替えるので、検索エンジンからはトップページしか見えない。そこで、
 // アプリと同じ index.html に、そのカードの中身（効果・進化ライン・相性のいいカード・収録）を最初から書いたページを置く。
 // 人が開くと、index.html の起動スクリプトが /#/card/<ID> に切り替え、アプリのカード詳細が開く（中身はアプリが描き直す）
@@ -248,7 +248,12 @@ writeFileSync(join(DIST, "robots.txt"), `User-agent: *\nDisallow: /api/\n\nSitem
 // デッキの共有リンク（/d/<共有コード>、server/deck-page.ts）のタイトル・説明に使う、カードの名前・主役らしさ
 //   主役らしさ: メガシンカex 4・ex 3・2進化 2・ほかのポケモン 1・トレーナーズ 0
 const rank = (c: AppCard) => (c.kind !== "pokemon" ? 0 : c.rule === "mega_ex" ? 4 : c.rule === "ex" ? 3 : c.stage === "stage2" ? 2 : 1);
-writeFileSync(join(DIST, "deck-cards.json"), JSON.stringify(Object.fromEntries(data.cards.map((c) => [c.id, [rank(c), name(c, "ja"), name(c, "en")]]))));
+// リストの共有リンク（/l/<共有コード>、server/list-page.ts）は絵柄違いの収録IDでも書くので、収録IDでも引けるようにする
+const cardRows: [string, [number, string, string]][] = data.cards.flatMap((c) => {
+  const row: [number, string, string] = [rank(c), name(c, "ja"), name(c, "en")];
+  return [...new Set([c.id, ...c.prints.map((p) => p.id)])].map((id): [string, [number, string, string]] => [id, row]);
+});
+writeFileSync(join(DIST, "deck-cards.json"), JSON.stringify(Object.fromEntries(cardRows)));
 // 以前の共有リンク（/c/<ID>）は新しいカードページへ
 writeFileSync(join(DIST, "_redirects"), `/c/:id /card/:id 301\n`);
 console.log(`カードページ ${n} 枚（日本語・英語）・カード一覧（/cards・/en/cards）・sitemap.xml（${urls.length} URL）・robots.txt・_redirects → dist/`);

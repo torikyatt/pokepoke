@@ -89,5 +89,5 @@ export function decodeList(code: string, prints: Map<string, unknown>): Pick<Car
 /** 共有URL・まわりに文字のある貼り付けから、リストの共有コードを取り出す */
 export function listCodeOf(text: string): string {
   const t = text.trim();
-  return t.match(/#\/list\/([^\s?#]+)/)?.[1] ?? t.match(/(?:^|\s)(L1~[^\s]+)/)?.[1] ?? t;
+  return t.match(/(?:#\/list|https?:\/\/[^/\s]+(?:\/en)?\/l)\/([^\s?#/]+)/)?.[1] ?? t.match(/(?:^|\s)(L1~[^\s]+)/)?.[1] ?? t;
 }

@@ -59,3 +59,17 @@ describe("ミラー仕様", () => {
     expect(canMirror(promo[0], promo[1])).toBe(false);
   });
 });
+
+describe("リストの共有リンクのページ（server/list-page.ts）", () => {
+  it("共有コードから名前・種類・カードを読む（アプリと同じ形）", async () => {
+    const { decodeListCode } = await import("../server/list-page.ts");
+    const code = encodeList({ name: "交換 ~ したい", kind: "trade", items: [{ print: "b3-081", n: 1, side: "want" }, { print: "a1-002", mirror: true, n: 2, side: "give" }] });
+    expect(decodeListCode(code)).toEqual({ name: "交換 ~ したい", trade: true, parts: [[["b3-081", 1]], [["a1-002", 2]]] });
+    expect(decodeListCode("L1~l~a1-001x3~abc")).toEqual({ name: "abc", trade: false, parts: [[["a1-001", 3]]] });
+    expect(decodeListCode("2~F~a1-001~deck")).toBeUndefined();
+  });
+  it("共有URL（/l/…・/en/l/…）からコードを取り出す", () => {
+    expect(listCodeOf("https://pokepokeindex.com/l/L1~l~a1-001~abc")).toBe("L1~l~a1-001~abc");
+    expect(listCodeOf("https://pokepokeindex.com/en/l/L1~t~a1-001~~x")).toBe("L1~t~a1-001~~x");
+  });
+});
