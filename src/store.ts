@@ -4,7 +4,7 @@ import { create } from "zustand";
 import { createJSONStorage, persist, type StateStorage } from "zustand/middleware";
 import { useDetail } from "./detail.ts";
 import type { EnergyType } from "./types.ts";
-import { MAX_COUNT, sameItem, type CardList, type ListItem, type ListKind } from "./lists.ts";
+import { MAX_COUNT, sameItem, type CardList, type ListItem, type ListKind, type ListSide } from "./lists.ts";
 
 const safeStorage: StateStorage = {
   getItem: (k) => {
@@ -135,6 +135,8 @@ interface ListState {
   add: (id: string, item: Omit<ListItem, "n"> & { n?: number }) => void;
   /** 行を置き換える（絵柄・ミラー・区分を変えたとき、同じ行があればまとめる）。n が 0 なら外す */
   setItem: (id: string, index: number, item: ListItem) => void;
+  /** そのカード（どの絵柄でも）を1枚減らす。ふつうの絵柄・ミラーでないものから先に減らす */
+  removeOne: (id: string, side: ListSide, prints: string[]) => void;
 }
 const touch = (l: CardList, items: ListItem[]): CardList => ({ ...l, items, updatedAt: Date.now() });
 export const useLists = create<ListState>()(
@@ -173,10 +175,21 @@ export const useLists = create<ListState>()(
             return touch(l, rest.map((x, j) => (j === k ? { ...x, n: Math.min(MAX_COUNT, x.n + n) } : x)));
           }),
         })),
+      removeOne: (id, side, prints) => {
+        const l = get().lists.find((x) => x.id === id);
+        if (!l) return;
+        const match = (x: ListItem) => x.side === side && prints.includes(x.print);
+        let i = l.items.findIndex((x) => match(x) && x.print === prints[0] && !x.mirror);
+        if (i < 0) i = l.items.findLastIndex(match);
+        if (i >= 0) get().setItem(id, i, { ...l.items[i], n: l.items[i].n - 1 });
+      },
     }),
     { name: "pokepoke.lists", storage: createJSONStorage(() => safeStorage), version: 1 },
   ),
 );
+
+// リストを編集している間は、カード一覧の長押し・カード詳細の ＋／− をデッキではなくそのリストに向ける（ListBuilderPage が出し入れする）
+export const useEditTarget = create<{ list?: { id: string; side: ListSide } }>()(() => ({}));
 
 // お気に入り（毎回入れる必須級のカードや、いつか使いたいカードを覚えておく）。新しく入れたものが先頭
 interface FavState {

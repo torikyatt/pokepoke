@@ -6,7 +6,8 @@ import { DECK_SIZE } from "../deck.ts";
 import { backDetail, closeDetail, reopenDetail, setCloseAnimator, stepCard, takeScrollAnchor, useDetail } from "../detail.ts";
 import { CardDetail } from "../pages/CardPage.tsx";
 import { ReportErrorSheet } from "./report-error.tsx";
-import { useDecks, useFavorites, useToast } from "../store.ts";
+import { useDecks, useEditTarget, useFavorites, useLists, useToast } from "../store.ts";
+import { countOf, type ListSide } from "../lists.ts";
 import type { AppCard } from "../types.ts";
 import { IconHeart, Thumb } from "./ui.tsx";
 import { cardName, useLang, useT } from "../i18n.ts";
@@ -36,8 +37,46 @@ export function FavToggle({ card }: { card: AppCard }) {
   );
 }
 
-/** 今のデッキの −／＋（カード画像の横に置く。狭くても押しやすい大きさ） */
+/** 今のデッキの −／＋（カード画像の横に置く。狭くても押しやすい大きさ）。リストを編集している間は、そのリストの −／＋ */
 export function DeckButtons({ card }: { card: AppCard }) {
+  const target = useEditTarget((s) => s.list);
+  return target ? <ListButtons card={card} target={target} /> : <DeckOnlyButtons card={card} />;
+}
+
+function ListButtons({ card, target }: { card: AppCard; target: { id: string; side: ListSide } }) {
+  const addToDeck = useAddToDeck(); // リストを編集している間は、リストに足す
+  const list = useLists((s) => s.lists.find((l) => l.id === target.id));
+  const removeOne = useLists((s) => s.removeOne);
+  const t = useT();
+  const n = list ? countOf(list.items, target.side, card) : 0;
+  const total = list?.items.filter((x) => x.side === target.side).reduce((a, x) => a + x.n, 0) ?? 0;
+  return (
+    <div className="space-y-1">
+      <div className="flex items-center gap-1.5">
+        <button
+          type="button"
+          aria-label={t("リストから1枚外す", "Remove one from list")}
+          disabled={!n}
+          onClick={() => removeOne(target.id, target.side, card.prints.map((p) => p.id))}
+          className="neu-sm neu-press flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xl font-extrabold text-muted disabled:opacity-35"
+        >
+          −
+        </button>
+        <button type="button" onClick={() => addToDeck(card)} className="btn-ok flex h-10 min-w-0 flex-1 items-center justify-center gap-0.5 rounded-full px-2 text-xs tracking-normal whitespace-nowrap">
+          <span className="text-lg leading-none">＋</span>
+          {t("リストに追加", "Add to list")}
+        </button>
+      </div>
+      <div className="truncate text-center text-[10px] font-bold text-muted">
+        {t(`${list?.name ?? ""}に `, `${list?.name ?? ""}: `)}
+        <span className={`text-sm tabular-nums ${n ? "text-accent-deep" : "text-ink"}`}>{n}</span>
+        {t(` 枚（合計 ${total} 枚）`, ` (${total} total)`)}
+      </div>
+    </div>
+  );
+}
+
+function DeckOnlyButtons({ card }: { card: AppCard }) {
   const addToDeck = useAddToDeck();
   const deck = useDecks((s) => s.decks.find((d) => d.id === s.currentId) ?? s.decks[0]);
   const removeCard = useDecks((s) => s.removeCard);

@@ -39,6 +39,12 @@ export function canMirror(card: AppCard, print: AppPrint | undefined): boolean {
   return card.rule === "normal" && !!print && /^◊{1,3}$/.test(print.rarity);
 }
 
+/** そのカード（どの絵柄・ミラーでも）がその区分に何枚あるか */
+export function countOf(items: ListItem[], side: ListSide, card: Pick<AppCard, "prints">): number {
+  const prints = new Set(card.prints.map((p) => p.id));
+  return items.reduce((n, x) => n + (x.side === side && prints.has(x.print) ? x.n : 0), 0);
+}
+
 /** 収録ID → [カード, 収録] */
 export function printIndex(cards: AppCard[]): Map<string, [AppCard, AppPrint]> {
   const m = new Map<string, [AppCard, AppPrint]>();

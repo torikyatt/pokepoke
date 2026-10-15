@@ -87,7 +87,8 @@ function Shell() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-  const building = active === "deck" && parseHash(base.deck).parts[2] === "edit";
+  // デッキ・リストの編集中（下のタブを隠し、✓ ボタンで終える）
+  const building = (active === "deck" && parseHash(base.deck).parts[2] === "edit") || (active === "tools" && parseHash(base.tools).parts[3] === "edit");
   // ページの下の余白: 下に浮かぶもの（タブ・「最後に見たカード」・半分開いた詳細）に最後の行が隠れず、スクロールで出せるように
   const docked = useDetail((s) => s.stack.length > 0 && !s.open);
   const half = useDetail((s) => s.open && s.snap === "half");

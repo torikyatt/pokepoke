@@ -5,8 +5,8 @@
 //   #/tools/list/<id>   リストの中身（その場で編集）
 //   #/list/<共有コード>  共有されたリスト
 import { toPng } from "html-to-image";
-import { useMemo, useRef, useState } from "react";
-import { QueryBox, usePoolResults } from "../components/pool.tsx";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { PoolFab, PoolGrid, PoolToolbar, QueryBox, usePoolResults } from "../components/pool.tsx";
 import { Rarity, SetBadge } from "../components/prints.tsx";
 import { DeckRow } from "../components/tournament-decks.tsx";
 import { Chip, Header, Pressable, Sheet, Thumb } from "../components/ui.tsx";
@@ -19,8 +19,10 @@ import { recommendScore } from "../deck-score.ts";
 import { openCard } from "../detail.ts";
 import { cardName, useLang, useT, type Lang } from "../i18n.ts";
 import { canMirror, decodeList, encodeList, listCodeOf, printIndex, SIDES, type CardList, type ListItem, type ListKind, type ListSide } from "../lists.ts";
-import { navigate } from "../router.ts";
-import { useLists, useSettings, useToast } from "../store.ts";
+import { useNav } from "../nav.ts";
+import { PoolScope } from "../pool.ts";
+import { navigate, useRoute } from "../router.ts";
+import { useEditTarget, useLists, useSettings, useToast } from "../store.ts";
 import type { AppCard, AppPrint } from "../types.ts";
 import { ImagePreview } from "./DeckPage.tsx";
 import { useQueryConds } from "./SearchPage.tsx";
@@ -33,7 +35,14 @@ export function ToolRoutes({ parts }: { parts: string[] }) {
     case "lists":
       return <ListsPage />;
     case "list":
-      return parts[2] ? <ListPage id={parts[2]} /> : <ListsPage />;
+      if (!parts[2]) return <ListsPage />;
+      return parts[3] === "edit" ? (
+        <PoolScope.Provider value="builder">
+          <ListBuilderPage id={parts[2]} />
+        </PoolScope.Provider>
+      ) : (
+        <ListPage id={parts[2]} />
+      );
     default:
       return <ToolsHome />;
   }
@@ -449,7 +458,7 @@ function ListPage({ id }: { id: string }) {
   const { rename, remove } = useLists();
   const t = useT();
   const exp = useListExport(list);
-  const [adding, setAdding] = useState<ListSide>();
+  const edit = (side?: ListSide) => navigate(`/tools/list/${id}/edit${side ? `?side=${side}` : ""}`);
   if (!list) return <Header title={t("リストが見つかりません", "List not found")} back={() => navigate("/tools/lists")} />;
   return (
     <div>
@@ -461,6 +470,9 @@ function ListPage({ id }: { id: string }) {
           aria-label={t("リストの名前", "List name")}
           className="neu-in w-full rounded-2xl px-4 py-3 text-base font-extrabold"
         />
+        <button type="button" onClick={() => edit()} className="btn-ok w-full rounded-full py-3 text-sm">
+          {t("カードを追加・編集", "Add & edit cards")}
+        </button>
         <div className="flex flex-wrap gap-2">
           <button type="button" onClick={exp.share} className="neu-sm neu-press rounded-full px-3 py-1.5 text-xs font-extrabold text-accent-deep">
             {t("共有URL", "Share URL")}
@@ -484,11 +496,10 @@ function ListPage({ id }: { id: string }) {
           </button>
         </div>
         {SIDES[list.kind].map((side) => (
-          <ListSection key={side} list={list} side={side} onAdd={() => setAdding(side)} />
+          <ListSection key={side} list={list} side={side} onAdd={() => edit(side)} />
         ))}
         <p className="text-center text-[11px] font-bold text-muted">{t("カードをタップで絵柄・ミラー・枚数を変更", "Tap a card to change its art, mirror or count")}</p>
       </div>
-      {adding && <AddCardsSheet list={list} side={adding} onClose={() => setAdding(undefined)} />}
       {exp.image}
     </div>
   );
@@ -629,73 +640,173 @@ function ItemSheet({ listId, kind, target, onChange, onClose }: { listId: string
   );
 }
 
-/** カードを探して足す（タップで1枚追加）。足すのはふつうの絵柄。絵柄・ミラーは足したあとでカードをタップして変える */
-function AddCardsSheet({ list, side, onClose }: { list: CardList; side: ListSide; onClose: () => void }) {
-  const add = useLists((s) => s.add);
+// リストの中身を変える画面（デッキ編集と同じ形）: 上の枠にリストのカード、下にカード一覧。
+// 一覧のカードは長押しで1枚追加（カード詳細の ＋／− もこのリストに向く）。上の枠はタップで絵柄・ミラー・枚数、長押しで1枚減らす
+const SLOT_VISIBLE = { s: 10, m: 7, l: 5 } as const;
+
+function ListBuilderPage({ id }: { id: string }) {
+  const list = useLists((s) => s.lists.find((l) => l.id === id));
+  const setItem = useLists((s) => s.setItem);
+  const { byId } = useData();
+  const idx = usePrintIndex();
+  const { params } = useRoute();
+  const { slotSize, setSlotSize } = useSettings();
   const show = useToast((s) => s.show);
   const t = useT();
   const lang = useLang();
+  const sides = SIDES[list?.kind ?? "list"];
+  const [side, setSide] = useState<ListSide>(() => (sides.includes(params.get("side") as ListSide) ? (params.get("side") as ListSide) : sides[0]));
+  const [editing, setEditing] = useState<Pick<ListItem, "print" | "mirror" | "side">>();
+  const [searchOpen, setSearchOpen] = useState(false);
   const [input, setInput] = useState("");
   const [q, setQ] = useState("");
   const [excluded, setExcluded] = useState<Set<string>>(new Set());
-  const [shown, setShown] = useState(60);
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const { parsed, conds } = useQueryConds(q, excluded);
   const { hits } = usePoolResults(conds);
+  // この画面を開いている間だけ、カード一覧の長押し・詳細の ＋／− をこのリストに向ける（タブを離れたら戻す）
+  const active = useNav((s) => s.active === "tools");
+  useEffect(() => {
+    if (!active) return;
+    useEditTarget.setState({ list: { id, side } });
+    return () => useEditTarget.setState({ list: undefined });
+  }, [id, side, active]);
+
+  const rows = useMemo(
+    () => (list?.items ?? []).map((it, i) => ({ it, i, card: cardOfPrint(it.print, byId, idx) })).filter((r): r is { it: ListItem; i: number; card: AppCard } => r.it.side === side && !!r.card),
+    [list, side, byId, idx],
+  );
   const counts = useMemo(() => {
     const m = new Map<string, number>();
-    for (const it of list.items) if (it.side === side) m.set(it.print, (m.get(it.print) ?? 0) + it.n);
+    for (const r of rows) m.set(r.card.id, (m.get(r.card.id) ?? 0) + r.it.n);
     return m;
-  }, [list, side]);
+  }, [rows]);
+  if (!list) return <Header title={t("リストが見つかりません", "List not found")} back={() => navigate("/tools/lists")} />;
+  const v = SLOT_VISIBLE[slotSize];
+  const cols = Math.max(v, Math.ceil((rows.length + 1) / 2)); // 2段。足りないところは空き枠
+  const totalOf = (sd: ListSide) => total(list.items.filter((x) => x.side === sd));
+
   return (
-    <Sheet open onClose={onClose} title={t(`${SIDE_LABEL[side][0]}に追加`, `Add to ${SIDE_LABEL[side][1]}`)}>
-      <div className="sticky top-0 z-10 -mx-5 bg-panel px-5 pb-2">
-        <QueryBox
-          value={input}
-          onChange={(v) => {
-            setInput(v);
-            clearTimeout(timer.current);
-            timer.current = setTimeout(() => {
-              setQ(v.trim());
-              setExcluded(new Set());
-              setShown(60);
-            }, 350);
-          }}
-          onSubmit={(v) => {
-            clearTimeout(timer.current);
-            setQ(v.trim());
-            setExcluded(new Set());
-          }}
-          conds={parsed}
-          excluded={excluded}
-          onToggle={(cid) => setExcluded((s) => (s.has(cid) ? new Set([...s].filter((x) => x !== cid)) : new Set([...s, cid])))}
-        />
-        <p className="mt-1 text-center text-[11px] font-bold text-muted">{t("タップで1枚追加", "Tap to add one")}</p>
+    <div className="pb-28">
+      <div className="sticky top-0 z-30 bg-canvas/95 px-3 pt-[max(0.75rem,env(safe-area-inset-top))] pb-3 backdrop-blur">
+        <div className="neu rounded-3xl p-3">
+          <div className="mb-2 flex items-center gap-2">
+            <span className="min-w-0 flex-1 truncate text-sm font-extrabold">{list.name}</span>
+            {sides.length > 1 && (
+              <div className="neu-in flex shrink-0 rounded-full p-0.5 text-[11px] font-bold">
+                {sides.map((sd) => (
+                  <button key={sd} type="button" onClick={() => setSide(sd)} aria-pressed={side === sd} className={`rounded-full px-2.5 py-1 ${side === sd ? "bg-white text-accent shadow" : "text-muted"}`}>
+                    {lang === "en" ? SIDE_LABEL[sd][1] : SIDE_LABEL[sd][0]} {totalOf(sd)}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+          <div className="scrollbar-none -mx-1 overflow-x-auto px-1 pb-1">
+            <div className="grid gap-1.5" style={{ width: `${((cols / v) * 100).toFixed(2)}%`, gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}>
+              {Array.from({ length: cols * 2 }, (_, i) => rows[i]).map((r, i) =>
+                r ? (
+                  <Pressable
+                    key={`${r.it.print}-${r.it.mirror ? 1 : 0}`}
+                    onTap={() => setEditing({ print: r.it.print, mirror: r.it.mirror, side: r.it.side })}
+                    onLongPress={() => {
+                      setItem(list.id, r.i, { ...r.it, n: r.it.n - 1 });
+                      show(t(`「${r.card.nameJa}」を1枚減らしました`, `Removed one ${r.card.nameEn}`));
+                    }}
+                    label={t(`${r.card.nameJa} ${r.it.n}枚（タップで設定・長押しで1枚減らす）`, `${cardName(r.card, lang)} ×${r.it.n} (tap to edit, long-press to remove one)`)}
+                    className="pop-in rounded-[4px] shadow-[1px_2px_3px_rgb(150_165_185/0.5)]"
+                  >
+                    <PrintThumb card={r.card} print={r.it.print} mirror={r.it.mirror} n={r.it.n} compact={slotSize === "s"} />
+                  </Pressable>
+                ) : (
+                  <div key={i} className="neu-in flex aspect-[367/512] items-center justify-center rounded-[4px] text-lg font-light text-[#b8c3d1]">
+                    ＋
+                  </div>
+                ),
+              )}
+            </div>
+          </div>
+          <div className="mt-2 flex items-center justify-end gap-1 text-[11px] font-bold text-muted">
+            {cols > v && <span className="mr-auto">{t("← 横にスクロール →", "← scroll →")}</span>}
+            <span className="mr-1">{t("枠の大きさ", "Slot size")}</span>
+            {(["s", "m", "l"] as const).map((x) => (
+              <button key={x} type="button" aria-pressed={slotSize === x} onClick={() => setSlotSize(x)} className={`h-6 w-7 rounded-full ${slotSize === x ? "bg-accent text-white" : "neu-in"}`}>
+                {lang === "en" ? { s: "S", m: "M", l: "L" }[x] : { s: "小", m: "中", l: "大" }[x]}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="mt-3">
+          <PoolToolbar
+            left={
+              <>
+                <IconList />
+                <span>{t(`${totalOf(side)}枚`, `${totalOf(side)}`)}</span>
+              </>
+            }
+            searchOpen={searchOpen}
+            onSearch={() => setSearchOpen((x) => !x)}
+          />
+        </div>
+        {searchOpen && (
+          <div className="mt-3">
+            <QueryBox
+              autoFocus
+              value={input}
+              onChange={(x) => {
+                setInput(x);
+                clearTimeout(timer.current);
+                timer.current = setTimeout(() => {
+                  setQ(x.trim());
+                  setExcluded(new Set());
+                }, 350);
+              }}
+              onSubmit={(x) => {
+                clearTimeout(timer.current);
+                setQ(x.trim());
+                setExcluded(new Set());
+              }}
+              conds={parsed}
+              excluded={excluded}
+              onToggle={(cid) => setExcluded((st) => (st.has(cid) ? new Set([...st].filter((x) => x !== cid)) : new Set([...st, cid])))}
+            />
+          </div>
+        )}
       </div>
-      <div className="grid grid-cols-4 gap-2 sm:grid-cols-6">
-        {hits.slice(0, shown).map(({ card }) => (
-          <Pressable
-            key={card.id}
-            onTap={() => {
-              add(list.id, { print: card.id, side });
-              show(t(`「${card.nameJa}」を追加（${(counts.get(card.id) ?? 0) + 1}枚）`, `Added ${cardName(card, lang)} (${(counts.get(card.id) ?? 0) + 1})`));
-            }}
-            onLongPress={() => openCard(card.id, hits.map((h) => h.card.id))}
-            label={cardName(card, lang)}
-            className="rounded-[4px]"
-          >
-            <PrintThumb card={card} print={card.id} n={counts.get(card.id)} />
-          </Pressable>
-        ))}
+
+      <div className="px-4">
+        <p className="mb-2 text-center text-[11px] font-bold text-muted">
+          {t("タップで詳細 ・ 長押しで追加 ・ 上の枠はタップで絵柄・ミラー、長押しで1枚減らす", "Tap for details ・ long-press to add ・ tap a slot above for art/mirror, long-press to remove one")}
+        </p>
+        <PoolGrid hits={hits} counts={counts} onTap={(c) => openCard(c.id, hits.map((h) => h.card.id))} />
       </div>
-      {hits.length > shown && (
-        <button type="button" onClick={() => setShown((n) => n + 60)} className="neu-sm neu-press mt-3 w-full rounded-full py-2 text-xs font-extrabold text-muted">
-          {t("もっと見る", "Show more")}
-        </button>
-      )}
-    </Sheet>
+
+      <button
+        type="button"
+        onClick={() => navigate(`/tools/list/${list.id}`, { replace: true })}
+        aria-label={t("編集を終える", "Done editing")}
+        title={t("編集を終える", "Done editing")}
+        className="btn-ok fixed left-4 z-40 flex h-14 w-14 items-center justify-center rounded-full"
+        style={{ bottom: "max(1.25rem, env(safe-area-inset-bottom))" }}
+      >
+        <svg viewBox="0 0 24 24" className="h-8 w-8 fill-none stroke-white stroke-[3]" aria-hidden>
+          <path d="m5 12.5 4.5 4.5L19 7.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+      <PoolFab bottom="bottom-5" />
+      {editing && <ItemSheet listId={list.id} kind={list.kind} target={editing} onChange={setEditing} onClose={() => setEditing(undefined)} />}
+    </div>
   );
 }
+
+const IconList = () => (
+  <svg viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current stroke-[2.2]" aria-hidden>
+    <path d="M9 6h11M9 12h11M9 18h11" strokeLinecap="round" />
+    <circle cx="4.5" cy="6" r="1.2" />
+    <circle cx="4.5" cy="12" r="1.2" />
+    <circle cx="4.5" cy="18" r="1.2" />
+  </svg>
+);
 
 /** リストを共有URL・共有コード・画像で書き出す */
 function useListExport(list: Pick<CardList, "name" | "kind" | "items"> | undefined) {

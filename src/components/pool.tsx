@@ -6,7 +6,8 @@ import { SCORED_KINDS, type Cond, type Hit } from "../search/engine.ts";
 import type { AppCard, CardGroup, CardKind, EnergyType, Rule, Stage } from "../types.ts";
 import { cardName, effectName, groupName, kindName, setName, stageName, tagName, useLang, useT } from "../i18n.ts";
 import { openCard } from "../detail.ts";
-import { useDecks, useFavorites, useViewed, VIEWED_MAX } from "../store.ts";
+import { useDecks, useEditTarget, useFavorites, useLists, useViewed, VIEWED_MAX } from "../store.ts";
+import { countOf } from "../lists.ts";
 import { Chip, EnergyIcon, IconHeart, IconHistory, IconSearch, IconSort, PoolCard, Pressable, Sheet, Thumb } from "./ui.tsx";
 
 const TYPES: EnergyType[] = ["grass", "fire", "water", "lightning", "psychic", "fighting", "darkness", "metal", "dragon", "colorless"];
@@ -113,8 +114,11 @@ const IconCardsSmall = () => (
   </svg>
 );
 
-/** お気に入りの中で、そのままデッキに出し入れする小さな −／＋ */
+/** お気に入りの中で、そのままデッキに出し入れする小さな −／＋（リストを編集している間は、そのリスト） */
 function QuickAdd({ card }: { card: AppCard }) {
+  const target = useEditTarget((s) => s.list);
+  const removeOne = useLists((s) => s.removeOne);
+  const listCount = useLists((s) => (target ? countOf(s.lists.find((l) => l.id === target.id)?.items ?? [], target.side, card) : 0));
   const addToDeck = useAddToDeck();
   const deckId = useDecks((s) => s.currentId ?? s.decks[0]?.id);
   const count = useDecks((s) => s.decks.find((d) => d.id === deckId)?.cards.filter((id) => id === card.id).length ?? 0);
@@ -125,10 +129,16 @@ function QuickAdd({ card }: { card: AppCard }) {
   const b = "flex h-7 flex-1 items-center justify-center rounded-full text-base font-extrabold leading-none disabled:opacity-35";
   return (
     <div className="mt-1 flex items-center gap-1">
-      <button type="button" aria-label={t(`${nm}を1枚外す`, `Remove one ${nm}`)} disabled={!count} onClick={() => deckId && removeCard(deckId, card.id)} className={`neu-sm neu-press text-muted ${b}`}>
+      <button
+        type="button"
+        aria-label={t(`${nm}を1枚外す`, `Remove one ${nm}`)}
+        disabled={target ? !listCount : !count}
+        onClick={() => (target ? removeOne(target.id, target.side, card.prints.map((p) => p.id)) : deckId && removeCard(deckId, card.id))}
+        className={`neu-sm neu-press text-muted ${b}`}
+      >
         −
       </button>
-      <button type="button" aria-label={t(`${nm}をデッキに追加`, `Add ${nm} to deck`)} onClick={() => addToDeck(card)} className={`btn-ok ${b}`}>
+      <button type="button" aria-label={target ? t(`${nm}をリストに追加`, `Add ${nm} to list`) : t(`${nm}をデッキに追加`, `Add ${nm} to deck`)} onClick={() => addToDeck(card)} className={`btn-ok ${b}`}>
         ＋
       </button>
     </div>
