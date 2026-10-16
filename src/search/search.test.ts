@@ -3,7 +3,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { createEngine, effectsOf } from "./engine.ts";
+import { createEngine, effectsOf, enKey } from "./engine.ts";
 import { createSynergy } from "../synergy.ts";
 import { normalize } from "./normalize.ts";
 import type { AppData } from "../types.ts";
@@ -605,4 +605,51 @@ describe("英語圏の対戦用語・略語・あだ名", () => {
     expect(top("aggron")[0]).toBe("Aggron");
     expect(top("accelgor")[0]).toBe("Accelgor");
   });
+});
+
+describe("辞書の言葉を含むカード名（「フィールド」→ フィールドブロアー）", () => {
+  const ids = (q: string) => engine.search(q, Infinity).map((h) => h.card.nameJa);
+  it("辞書の意味に加えて、その言葉を名前に含むカードを先頭に出す", () => {
+    const r = ids("フィールド");
+    expect(r[0]).toBe("フィールドブロアー");
+    expect(r).toContain("トレーニングエリア"); // スタジアムも出る
+    expect(engine.search("field", 1)[0].card.nameEn).toBe("Field Blower");
+    expect(ids("ギギギア")[0]).toBe("ギギギアル");
+    expect(ids("ハリテ")).toContain("ハリテヤマ");
+    expect(ids("いにしえの闘技")[0]).toBe("いにしえの闘技場");
+  });
+  it("辞書の言葉1つで探すと、その言葉を名前に含むカードがすべて出る（日本語・英語の辞書のすべての言葉）", () => {
+    const bad: string[] = [];
+    // 日本語は、伸ばす音・小さい字も区別して比べる（「ツール」はツルの名前ではない）
+    const strict = (x: string) => x.normalize("NFKC").toLowerCase().replace(/[ァ-ヶ]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0x60)).replace(/\s+/g, "");
+    const cardNames = data.cards.map((c) => ({ c, ja: strict(c.nameJa), en: enKey(c.nameEn) }));
+    for (const w of new Set([...data.lexicon, ...(data.lexiconEn ?? [])].map((e) => e.expr))) {
+      const ja = strict(w);
+      const en = enKey(w).trim();
+      const isEn = /^[a-z0-9 ]+$/.test(en);
+      if (isEn ? en.length < 3 : ja.length < 2) continue;
+      const re = new RegExp(`(?<![a-z0-9])${en.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`);
+      const named = cardNames.filter((x) => (isEn ? re.test(x.en) : x.ja.includes(ja))).map((x) => x.c);
+      const names = new Set(named.map((c) => c.nameEn));
+      if (!names.size || names.size > 60) continue;
+      const hits = new Set(engine.search(w, Infinity).map((h) => h.card.id));
+      if (named.some((c) => !hits.has(c.id))) bad.push(w);
+    }
+    expect(bad).toEqual([]);
+  }, 120000);
+  it("カード名を頭から打っている途中（3文字〜）でも、そのカードが出る", () => {
+    const bad: string[] = [];
+    const check = (names: string[], min: number, key: "nameJa" | "nameEn") => {
+      for (const name of names) {
+        const chars = [...name];
+        for (let k = min; k < chars.length; k++) {
+          const q = chars.slice(0, k).join("");
+          if (!engine.search(q, Infinity).some((h) => h.card[key] === name)) bad.push(`${q} → ${name}`);
+        }
+      }
+    };
+    check([...new Set(data.cards.map((c) => c.nameJa))], 3, "nameJa");
+    check([...new Set(data.cards.map((c) => c.nameEn))].filter((_, i) => i % 3 === 0), 4, "nameEn");
+    expect(bad).toEqual([]);
+  }, 120000);
 });

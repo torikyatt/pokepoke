@@ -29,7 +29,7 @@ export type Cond = { id: string; label: string; en: string; weight?: number; wor
   | { kind: "hp"; op: Op; n: number }
   | { kind: "retreat"; op: Op; n: number }
   | { kind: "weakness"; type: EnergyType }
-  | { kind: "name"; name: string; ids?: string[]; pin?: boolean } // ids: ローマ字で探したときの、当たったカード。pin: タイプと一緒に出し、先頭に置く名前
+  | { kind: "name"; name: string; ids?: string[]; pin?: boolean } // ids: ローマ字で探したときの、当たったカード。pin: ほかの条件と一緒に出し、先頭に置く名前（ほかの条件で絞らない）
   | { kind: "text"; term: string }
   | { kind: "deck"; archs: string[] } // 大会のデッキタイプに入っているカード
   | { kind: "partner"; cards: string[]; deck?: boolean } // そのカードと相性のいいカード。deck: 「〇〇デッキ」（そのカードと進化ラインを先頭に）
@@ -251,6 +251,9 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
   }
   const partnerNames = [...cardsByName.keys()].filter((n) => n.length >= 2).sort((a, b) => b.length - a.length);
   const cardNameKeys = [...cardsByName.keys()];
+  /** 名前を比べるときの厳しめの形: カタカナをひらがなにするだけ（伸ばす音・小さい字はそのまま） */
+  const strictKey = (s: string) => s.normalize("NFKC").toLowerCase().replace(/[ァ-ヶ]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0x60)).replace(/\s+/g, "");
+  const strictNames = new Map(data.cards.map((c) => [c.id, strictKey(c.nameJa)]));
   /** 表示名: 姿が違うカードをまとめて指すときは、かっこ・姿の言葉を外した名前 */
   //   違うカードをいくつか指すときは「カイリュー＆タケルライコ」
   const nameJaOf = (cs: AppCard[]) =>
@@ -544,7 +547,9 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       // カード名を読んだ後で広げるので、広げた psychic がサポート「サイキッカー」（Psychic）になることはない。
       // 「p」だけのときは、名前を打っている途中かもしれないのでそのまま
       q = q.replace(/(\d)([grwlpfdmc])(?![a-z0-9])/g, "$1 $2");
-      if (/\S\s+\S/.test(q.trim())) q = q.replace(/(?<![a-z0-9])([grwlpfdmc])(?![a-z0-9])/g, (_, l: string) => TYPE_ABBR_EN[l]);
+      // 名前を打っている途中（「team r」→ Team Rocket's …）のときは広げない
+      const typingName = enNameList.some((n) => n.startsWith(q.trim()) || n.includes(` ${q.trim()}`));
+      if (/\S\s+\S/.test(q.trim()) && !typingName) q = q.replace(/(?<![a-z0-9])([grwlpfdmc])(?![a-z0-9])/g, (_, l: string) => TYPE_ABBR_EN[l]);
       // 数値
       // 「highest hp」「max hp」「most damage」→ その数字の順に並べる
       take(new RegExp(`(?<![a-z])(?:highest|most|max(?:imum)?|biggest|largest|top)\\s*hp${END}|(?<![a-z])hp\\s*(?:max(?:imum)?|ranking)${END}|(?<![a-z])(?:sort(?:ed)?\\s+by|order\\s+by)\\s+hp${END}`, "g"), () => add(sortCond("hp", true)));
@@ -995,6 +1000,29 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
         for (const n of out.filter((c): c is Extract<Cond, { kind: "name" }> => c.kind === "name" && !c.ids))
           if (arch.archs.some((a) => archById.get(a)?.cards.some((x) => haystack.get(x.id)?.name.includes(n.name)))) out.splice(out.indexOf(n), 1);
     }
+    // 辞書の言葉そのものがカード名の一部（「フィールド」→ フィールドブロアー、「field」→ Field Blower）:
+    // 言葉1つだけで探したとき、辞書の意味（スタジアム）だけでなく、その言葉を名前に含むカードも先頭に出す（名前のカードはほかの条件で絞らない）
+    //   打ちかけの名前の一部が辞書・ワザ名として読まれたとき（「ギギギア」の「ギア」→ グッズ、「ハリテ」→ ワザ「はりて」、「いにしえの闘技」の「闘技」）も同じ。
+    //   言葉の一部だけで作った名前の条件（「名前に『いにしえの』」）は、まるごとの名前に置き換える
+    if (!out.some((c) => c.kind === "deck" || c.kind === "partner")) {
+      // 日本語の名前は、伸ばす音・小さい字も区別して比べる（「ドロー」をドロバンコの「ドロ」に当てない、「エネ」をジェネレーターに当てない）
+      const ja = normalize(query).replace(/ /g, "");
+      const sj = strictKey(query);
+      const en = enKey(query).trim();
+      const single = !/\s/.test(query.trim());
+      const reEn = en.length >= 3 && /^[a-z0-9 ]+$/.test(en) ? new RegExp(`(?<![a-z0-9])${esc(en)}`) : undefined;
+      const useJa = single && [...sj].length >= 2 && !/^[a-z0-9]+$/.test(sj);
+      const named = data.cards.filter((c) => (useJa && strictNames.get(c.id)!.includes(sj)) || (reEn && reEn.test(haystack.get(c.id)!.nameEn)));
+      const names = new Set(named.map((c) => c.nameEn));
+      const w = useJa && named.some((c) => strictNames.get(c.id)!.includes(sj)) ? ja : en;
+      const plain = (c: Cond): c is Extract<Cond, { kind: "name" }> => c.kind === "name" && !c.ids && !c.pin;
+      const same = out.find((c): c is Extract<Cond, { kind: "name" }> => plain(c) && c.name === w);
+      if (names.size && names.size <= 60 && same && out.length > 1) same.pin = true; // まるごとの名前とほかの条件（「ギギギア」→ 名前＋グッズ）は、名前のカードを先頭に
+      else if (names.size && names.size <= 60 && !out.some((c) => plain(c) && (c.name === w || c.name.includes(w)))) {
+        for (const c of out.filter((c): c is Extract<Cond, { kind: "name" }> => plain(c) && w.includes(c.name))) out.splice(out.indexOf(c), 1);
+        out.push({ id: `name:${w}`, kind: "name", name: w, ids: named.map((c) => c.id), pin: true, label: `名前に「${useJa ? query.trim() : w}」`, en: `Name contains "${w}"`, weight: 3 });
+      }
+    }
     const unread = [...new Set([...out.flatMap((c) => (c.kind === "text" && !c.read ? [c.term] : [])), ...dropped])].filter((w) => !exactNames.has(w));
     return { conds: out, unread };
   }
@@ -1010,8 +1038,10 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     const weak = of("weakness");
     const soft = conds.filter((c) => c.kind === "tag" || c.kind === "variable");
     const texts = of("text"), nameConds = of("name");
-    // タイプと一緒に出す名前（pin）は、当たらなくても除外しない。タイプの条件を外したときは、ふつうの名前と同じ
-    const needNames = nameConds.filter((n) => !n.pin || !types.length);
+    // ほかの条件と一緒に出す名前（pin）は、当たらなくても除外しない。当たったカードはほかの条件で絞らず、先頭に置く。
+    // ほかの条件を外したときは、ふつうの名前と同じ
+    const others = conds.filter((c) => !(c.kind === "name" && c.pin));
+    const needNames = nameConds.filter((n) => !n.pin || !others.length);
     const nameHit = (card: AppCard, h: { name: string; nameEn: string }, n: Extract<Cond, { kind: "name" }>) =>
       n.ids ? n.ids.includes(card.id) : h.name.includes(n.name) || h.nameEn.includes(n.name);
     const decks = of("deck"), partnerConds = of("partner"), metaCond = of("meta")[0];
@@ -1040,34 +1070,36 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
         return true;
       };
       // ハード条件（同じ種類の条件どうしは OR）
-      const pinned = nameConds.some((n) => n.pin && nameHit(card, h, n));
-      if (!pinned && !hard(types, (t) => card.type === t.type || card.typeRefs.includes(t.type))) continue;
+      const pinned = others.length > 0 && nameConds.some((n) => n.pin && nameHit(card, h, n));
       // カードの種類（サポート・グッズ…）は、ほかのカードの文にもよく出てくるので、文では当てない
       // 「グッズ」で探したときは、ポケモンのどうぐ（グッズとは別の種類）も、グッズの後ろに並べて出す（探しているものに近いので）
       const toolAsItem = card.kind === "tool" && kinds.some((k) => k.value === "item") && !kinds.some((k) => k.value === "tool");
-      if (kinds.length && !toolAsItem && !kinds.some((k) => (k.value === "trainer" ? card.kind !== "pokemon" : card.kind === k.value))) continue;
-      if (!hard(stages, (s) => (s.value === "evolved" ? card.stage === "stage1" || card.stage === "stage2" : card.stage === s.value))) continue;
-      if (!hard(rules, (r) => ruleOk(card, r.value))) continue;
-      if (!hard(groups, (g) => card.groups.includes(g.value))) continue;
-      if (weak.length && !weak.some((w) => card.weakness === w.type)) continue;
-      if (!nums.every((c) => cmp(c.kind === "hp" ? card.hp : card.retreat, c.op, c.n))) continue;
-      if (slot === "ability" && !card.ability) continue;
       // 「ワザ」はポケモンのワザ。ただし「〜どうぐ」「〜グッズ」のようにトレーナーズを指定したときは、その効果を見る
       const trainerAsked = kinds.length > 0 && kinds.every((k) => k.value !== "pokemon");
-      if (slot === "attack" && !card.attacks.length && !trainerAsked) continue;
       const okAttacks = atkConds.length ? card.attacks.filter((a) => atkConds.every((c) => attackOk(a, c))) : card.attacks;
-      if (atkConds.length && !okAttacks.length) continue;
-      // 実際の使われ方（デッキタイプ・相性・採用率）もハード条件。満たしたら点を足す
-      if (decks.length && !deckRate.has(card.id)) continue;
-      if (partnerMaps.some((p) => !p.map.has(card.id))) continue;
-      if (metaCond && (usage[card.id] ?? 0) < 0.01) continue;
       // 「HP最大」「火力最大」: その数字があるものだけを、大きい（小さい）順に
       const sortVal = (s: Extract<Cond, { kind: "sort" }>) => (s.by === "hp" ? card.hp : card.maxDamage || undefined);
-      if (sortBy.some((s) => sortVal(s) === undefined)) continue;
-      let useScore = 0;
-      for (const s of sortBy) useScore += s.desc ? sortVal(s)! / 100 : (400 - sortVal(s)!) / 100;
-      if (decks.length) useScore += 4 * deckRate.get(card.id)!;
-      for (const p of partnerMaps) useScore += p.cond.deck ? p.map.get(card.id)! : Math.min(4, p.map.get(card.id)!); // 「〇〇デッキ」は、その並び（主役が先頭）
+      if (!pinned) {
+        if (!hard(types, (t) => card.type === t.type || card.typeRefs.includes(t.type))) continue;
+        if (kinds.length && !toolAsItem && !kinds.some((k) => (k.value === "trainer" ? card.kind !== "pokemon" : card.kind === k.value))) continue;
+        if (!hard(stages, (s) => (s.value === "evolved" ? card.stage === "stage1" || card.stage === "stage2" : card.stage === s.value))) continue;
+        if (!hard(rules, (r) => ruleOk(card, r.value))) continue;
+        if (!hard(groups, (g) => card.groups.includes(g.value))) continue;
+        if (weak.length && !weak.some((w) => card.weakness === w.type)) continue;
+        if (!nums.every((c) => cmp(c.kind === "hp" ? card.hp : card.retreat, c.op, c.n))) continue;
+        if (slot === "ability" && !card.ability) continue;
+        if (slot === "attack" && !card.attacks.length && !trainerAsked) continue;
+        if (atkConds.length && !okAttacks.length) continue;
+        // 実際の使われ方（デッキタイプ・相性・採用率）もハード条件。満たしたら点を足す
+        if (decks.length && !deckRate.has(card.id)) continue;
+        if (partnerMaps.some((p) => !p.map.has(card.id))) continue;
+        if (metaCond && (usage[card.id] ?? 0) < 0.01) continue;
+        if (sortBy.some((s) => sortVal(s) === undefined)) continue;
+      }
+      let useScore = pinned ? 10 : 0; // 名前で先頭に置くカード
+      for (const s of sortBy) useScore += s.desc ? (sortVal(s) ?? 0) / 100 : (400 - (sortVal(s) ?? 400)) / 100;
+      if (decks.length) useScore += 4 * (deckRate.get(card.id) ?? 0);
+      for (const p of partnerMaps) useScore += p.cond.deck ? (p.map.get(card.id) ?? 0) : Math.min(4, p.map.get(card.id) ?? 0); // 「〇〇デッキ」は、その並び（主役が先頭）
       if (metaCond) useScore += Math.min(4, 8 * (usage[card.id] ?? 0));
 
       // ソフト条件: ワザ・特性ごとに数え、同じワザ内でそろうと加点
@@ -1107,7 +1139,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       }
       // 効果で探したとき、同じくらい当てはまるなら大会でよく使われている（採用率1%以上の）カードを少し上に
       if (best.size && (usage[card.id] ?? 0) >= 0.01) score += Math.min(0.1, usage[card.id]);
-      if (soft.length && !matched.size && !needNames.length && !texts.length) continue;
+      if (!pinned && soft.length && !matched.size && !needNames.length && !texts.length) continue;
 
       for (const n of nameConds) {
         if (nameHit(card, h, n)) {
