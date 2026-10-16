@@ -7,7 +7,7 @@
 import { toPng } from "html-to-image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { PoolFab, PoolGrid, PoolToolbar, QueryBox, usePoolResults } from "../components/pool.tsx";
-import { Rarity, rarityLabel, SetBadge } from "../components/prints.tsx";
+import { rarityLabel, setColor } from "../components/prints.tsx";
 import { rarityIcons } from "../icons.ts";
 import { DeckRow } from "../components/tournament-decks.tsx";
 import { Chip, Header, Pressable, Sheet, Thumb } from "../components/ui.tsx";
@@ -366,12 +366,24 @@ function MirrorTag({ label, compact }: { label: string; compact?: boolean }) {
 }
 
 /** 絵柄の名前（弾・番号・レアリティ） */
+//   狭い枠（絵柄を選ぶところ）でも重ならないよう、1段目に弾・番号、2段目にレアリティを小さく出す
 function PrintLabel({ p, lang }: { p: AppPrint; lang: Lang }) {
+  const { data } = useData();
+  const icons = rarityIcons(p.rarity);
+  const set = p.set.startsWith("p") ? `P-${p.set.slice(1).toUpperCase()}` : p.set.toUpperCase();
   return (
-    <span className="inline-flex items-center gap-1">
-      <SetBadge set={p.set} />
-      <span className="text-[11px] font-bold text-muted">#{Number(p.id.split("-").pop())}</span>
-      <Rarity r={p.rarity} lang={lang} />
+    <span className="flex w-full min-w-0 flex-col items-center gap-0.5">
+      <span className="flex max-w-full items-center gap-0.5">
+        <span className="shrink-0 rounded px-1 text-[9px] leading-[14px] font-extrabold text-white" style={{ background: setColor(data.sets, p.set) }}>
+          {set}
+        </span>
+        <span className="truncate text-[10px] font-bold text-muted">#{Number(p.id.split("-").pop())}</span>
+      </span>
+      <span role="img" aria-label={rarityLabel(p.rarity, lang)} title={rarityLabel(p.rarity, lang)} className="flex h-3.5 items-center gap-px">
+        {icons
+          ? icons.map((src, i) => <img key={i} src={src} alt="" draggable={false} className={`shrink-0 select-none ${p.rarity === "Promo" ? "h-3 w-auto" : "h-3 w-3"}`} />)
+          : <span className="text-[9px] font-bold text-muted">{rarityLabel(p.rarity, lang)}</span>}
+      </span>
     </span>
   );
 }
@@ -663,7 +675,7 @@ function ItemSheet({ listId, kind, target, onChange, onClose }: { listId: string
           <div className="mb-2 text-xs font-extrabold text-muted">{t("絵柄", "Art")}</div>
           <div className="grid grid-cols-4 gap-2 sm:grid-cols-6">
             {card.prints.map((p) => (
-              <button key={p.id} type="button" onClick={() => update({ print: p.id })} className={`flex flex-col items-center gap-1 rounded-lg p-1 ${p.id === it.print ? "bg-accent/15 ring-2 ring-accent" : ""}`}>
+              <button key={p.id} type="button" onClick={() => update({ print: p.id })} className={`flex min-w-0 flex-col items-center gap-1 rounded-lg p-1 ${p.id === it.print ? "bg-accent/15 ring-2 ring-accent" : ""}`}>
                 <PrintThumb card={card} print={p.id} />
                 <PrintLabel p={p} lang={lang} />
               </button>
