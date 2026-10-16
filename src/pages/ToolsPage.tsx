@@ -7,7 +7,8 @@
 import { toPng } from "html-to-image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { PoolFab, PoolGrid, PoolToolbar, QueryBox, usePoolResults } from "../components/pool.tsx";
-import { Rarity, SetBadge } from "../components/prints.tsx";
+import { Rarity, rarityLabel, SetBadge } from "../components/prints.tsx";
+import { rarityIcons } from "../icons.ts";
 import { DeckRow } from "../components/tournament-decks.tsx";
 import { Chip, Header, Pressable, Sheet, Thumb } from "../components/ui.tsx";
 import { useData } from "../context.tsx";
@@ -284,14 +285,18 @@ function listUrlOf(l: Pick<CardList, "name" | "kind" | "items">, lang: Lang): st
   return `${location.origin}${lang === "en" ? "/en" : ""}/l/${code}`;
 }
 
-/** 絵柄（収録）ごとのサムネイル。ふつうの絵柄はカードのサムネイル、絵柄違いはその絵柄の画像。ミラーならタグを付ける */
-function PrintThumb({ card, print, mirror, n, className = "", compact }: { card: AppCard; print: string; mirror?: boolean; n?: number; className?: string; compact?: boolean }) {
+/**
+ * 絵柄（収録）ごとのサムネイル。ふつうの絵柄はカードのサムネイル、絵柄違いはその絵柄の画像。ミラーならタグを付ける。
+ * rarity: カードの下にレアリティ（◆・★…）を出す（トレードは同じレアリティどうしでしかできないので、トレード用リストで出す）
+ */
+function PrintThumb({ card, print, mirror, n, className = "", compact, rarity }: { card: AppCard; print: string; mirror?: boolean; n?: number; className?: string; compact?: boolean; rarity?: boolean }) {
   const lang = useSettings((s) => s.imageLang);
   const uiLang = useLang();
   const t = useT();
   const p = card.prints.find((x) => x.id === print);
-  return (
-    <span className={`relative block ${className}`}>
+  const icons = rarity && p ? rarityIcons(p.rarity) : undefined;
+  const thumb = (
+    <span className={`relative block ${rarity ? "" : className}`}>
       {!p || print === card.id ? (
         <Thumb card={card} className="rounded-[4px]" />
       ) : (
@@ -313,6 +318,17 @@ function PrintThumb({ card, print, mirror, n, className = "", compact }: { card:
       )}
       {mirror && <MirrorTag label={t("ミラー", "Mirror")} compact={compact} />}
       {n !== undefined && n > 1 && <span className="absolute right-0 bottom-0 rounded-tl-[5px] rounded-br-[4px] bg-badge px-1 text-[10px] leading-tight font-extrabold text-white">×{n}</span>}
+    </span>
+  );
+  if (!rarity) return thumb;
+  return (
+    <span className={`block ${className}`}>
+      {thumb}
+      <span role="img" aria-label={p ? rarityLabel(p.rarity, uiLang) : ""} title={p ? rarityLabel(p.rarity, uiLang) : ""} className="mt-0.5 flex h-3 items-center justify-center gap-px overflow-hidden">
+        {icons
+          ? icons.map((src, i) => <img key={i} src={src} alt="" draggable={false} className={`shrink-0 select-none ${p?.rarity === "Promo" ? (compact ? "h-2 w-auto" : "h-2.5 w-auto") : compact ? "h-1.5 w-1.5" : "h-2.5 w-2.5"}`} />)
+          : p && <span className="text-[8px] leading-none font-bold text-muted">{rarityLabel(p.rarity, uiLang)}</span>}
+      </span>
     </span>
   );
 }
@@ -527,7 +543,7 @@ function ListSection({ list, side, onAdd, readOnly, narrow }: { list: Pick<CardL
             label={`${cardName(card!, lang)} ×${it.n}`}
             className="rounded-[4px]"
           >
-            <PrintThumb card={card!} print={it.print} mirror={it.mirror} n={it.n} />
+            <PrintThumb card={card!} print={it.print} mirror={it.mirror} n={it.n} rarity={list.kind === "trade"} />
           </Pressable>
         ))}
         {onAdd && (
@@ -582,7 +598,7 @@ function ItemSheet({ listId, kind, target, onChange, onClose }: { listId: string
     >
       <div className="flex gap-4">
         <div className="w-28 shrink-0">
-          <PrintThumb card={card} print={it.print} mirror={it.mirror} />
+          <PrintThumb card={card} print={it.print} mirror={it.mirror} rarity={kind === "trade"} />
         </div>
         <div className="min-w-0 flex-1 space-y-3">
           <div>
@@ -717,7 +733,7 @@ function ListBuilderPage({ id }: { id: string }) {
                     label={t(`${r.card.nameJa} ${r.it.n}枚（タップで設定・長押しで1枚減らす）`, `${cardName(r.card, lang)} ×${r.it.n} (tap to edit, long-press to remove one)`)}
                     className="pop-in rounded-[4px] shadow-[1px_2px_3px_rgb(150_165_185/0.5)]"
                   >
-                    <PrintThumb card={r.card} print={r.it.print} mirror={r.it.mirror} n={r.it.n} compact={slotSize === "s"} />
+                    <PrintThumb card={r.card} print={r.it.print} mirror={r.it.mirror} n={r.it.n} compact={slotSize === "s"} rarity={list.kind === "trade"} />
                   </Pressable>
                 ) : (
                   <div key={i} className="neu-in flex aspect-[367/512] items-center justify-center rounded-[4px] text-lg font-light text-[#b8c3d1]">
@@ -908,7 +924,8 @@ function ListImage({ list, ref }: { list: Pick<CardList, "name" | "kind" | "item
             {rows.length ? (
               <div style={{ display: "grid", gridTemplateColumns: "repeat(8, 1fr)", gap: 10 }}>
                 {rows.map(({ it, card }, i) => (
-                  <div key={i} style={{ position: "relative" }}>
+                  <div key={i}>
+                  <div style={{ position: "relative" }}>
                     <img src={src(card!, it.print)} alt={cardName(card!, uiLang)} style={{ width: "100%", aspectRatio: "367/512", borderRadius: 6, objectFit: "cover", display: "block" }} />
                     {it.mirror && (
                       <span style={{ position: "absolute", top: "6%", left: "50%", transform: "translateX(-50%)", borderRadius: 999, padding: "2px 8px", fontSize: 12, fontWeight: 800, color: "#fff", whiteSpace: "nowrap", background: "linear-gradient(120deg,#7dd3fc,#c084fc 45%,#f9a8d4 70%,#fde68a)" }}>
@@ -916,6 +933,9 @@ function ListImage({ list, ref }: { list: Pick<CardList, "name" | "kind" | "item
                       </span>
                     )}
                     {it.n > 1 && <span style={{ position: "absolute", right: 0, bottom: 0, borderRadius: "8px 0 6px 0", background: "#3d4757", color: "#fff", fontSize: 15, fontWeight: 800, padding: "1px 7px" }}>×{it.n}</span>}
+                  </div>
+                  {/* トレードは同じレアリティどうしでしかできないので、レアリティを出す */}
+                  {list.kind === "trade" && <ImageRarity r={card!.prints.find((p) => p.id === it.print)?.rarity} lang={uiLang} />}
                   </div>
                 ))}
               </div>
@@ -932,6 +952,19 @@ function ListImage({ list, ref }: { list: Pick<CardList, "name" | "kind" | "item
           POKÉPOKE IN<span style={{ color: "#22998b" }}>DECKS</span>
         </div>
       </div>
+    </div>
+  );
+}
+
+/** 画像に書き出すときのレアリティ（アイコンを並べる。アイコンが無いものは文字） */
+function ImageRarity({ r, lang }: { r: string | undefined; lang: Lang }) {
+  if (!r) return null;
+  const icons = rarityIcons(r);
+  return (
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 2, height: 22, marginTop: 4 }}>
+      {icons
+        ? icons.map((src, i) => <img key={i} src={src} alt="" style={{ height: 18, width: r === "Promo" ? "auto" : 18, display: "block" }} />)
+        : <span style={{ fontSize: 13, fontWeight: 800, color: "#8794a7" }}>{rarityLabel(r, lang)}</span>}
     </div>
   );
 }
@@ -1071,7 +1104,7 @@ export function ListColumn({ id, onClose }: { id: string; onClose: () => void })
             label={t(`${r.card.nameJa} ${r.it.n}枚（タップで設定・長押しで1枚減らす）`, `${cardName(r.card, lang)} ×${r.it.n} (tap to edit, long-press to remove one)`)}
             className="pop-in rounded-[4px] shadow-[1px_2px_3px_rgb(150_165_185/0.5)]"
           >
-            <PrintThumb card={r.card} print={r.it.print} mirror={r.it.mirror} n={r.it.n} />
+            <PrintThumb card={r.card} print={r.it.print} mirror={r.it.mirror} n={r.it.n} rarity={list.kind === "trade"} />
           </Pressable>
         ))}
         {Array.from({ length: Math.max(5 - (rows.length % 5 || 5), rows.length ? 0 : 5) }, (_, i) => (
