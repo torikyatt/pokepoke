@@ -53,7 +53,6 @@ export function Desktop() {
   const listCounts = useListCounts(listId);
   const counts = listId && listCounts ? listCounts : deckCounts;
   const closeModal = () => navigate(base.search.replace(/^#/, ""));
-  const beta = useSettings((s) => s.beta);
   const t = useT();
 
   return (
@@ -64,11 +63,9 @@ export function Desktop() {
         </button>
         <span className="text-xs font-bold text-muted">{t("ふだんの言葉でカードを探す ・ 「/」で検索欄へ", "Find cards in plain words ・ press “/” to search")}</span>
         <div className="flex-1" />
-        {beta && (
-          <button type="button" onClick={() => navigate("/tools")} className="neu-sm neu-press rounded-full px-4 py-1.5 text-xs font-extrabold text-muted">
-            {t("ツール", "Tools")}
-          </button>
-        )}
+        <button type="button" onClick={() => navigate("/tools")} className="neu-sm neu-press rounded-full px-4 py-1.5 text-xs font-extrabold text-muted">
+          {t("ツール", "Tools")}
+        </button>
         <button type="button" onClick={() => navigate("/settings")} className="neu-sm neu-press rounded-full px-4 py-1.5 text-xs font-extrabold text-muted">
           {t("設定", "Settings")}
         </button>

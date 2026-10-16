@@ -151,7 +151,6 @@ export function Toast() {
 
 export function BottomNav() {
   const { active: tab, goTab } = useNav();
-  const beta = useSettings((s) => s.beta);
   const t = useT();
   const item = (key: Tab, label: string, _path: string, icon: ReactNode) => (
     <button type="button" onClick={() => goTab(key)} aria-current={tab === key ? "page" : undefined} className={`flex flex-1 flex-col items-center gap-0.5 py-2 text-[11px] font-bold ${tab === key ? "text-accent" : "text-muted"}`}>
@@ -164,8 +163,7 @@ export function BottomNav() {
       <div className="mx-auto flex max-w-3xl">
         {item("search", t("カード", "Cards"), "/", <IconSearch />)}
         {item("deck", t("デッキ", "Decks"), "/deck", <IconDeck />)}
-        {/* ツールは beta機能（設定でオン）。共有されたリストを開いたときは、オフでも出す */}
-        {(beta || tab === "tools") && item("tools", t("ツール", "Tools"), "/tools", <IconTools />)}
+        {item("tools", t("ツール", "Tools"), "/tools", <IconTools />)}
         {item("settings", t("設定", "Settings"), "/settings", <IconGear />)}
       </div>
     </nav>

@@ -44,7 +44,7 @@ const SOURCES: { name: string; url: string; ja: string; en: string }[] = [
 
 export function SettingsPage({ embedded }: { embedded?: boolean }) {
   const { data } = useData();
-  const { lang, setLang, imageLang, setImageLang, beta, setBeta } = useSettings();
+  const { lang, setLang, imageLang, setImageLang } = useSettings();
   const t = useT();
   const [contact, setContact] = useState(false);
   return (
@@ -83,24 +83,6 @@ export function SettingsPage({ embedded }: { embedded?: boolean }) {
           <p className="text-xs text-muted">
             {t("表示言語を変えると、画像も同じ言語になります（ここで別にもできます）。日本語の画像が無いカードは英語で表示します。", "Changing the language also switches images (you can override it here). Cards without a Japanese image are shown in English.")}
             {isSingleFile && t("オフライン版で英語を選ぶと、ネットにつながっているときだけ英語の画像を読み込みます。", " In the offline version, English images load only when you're online.")}
-          </p>
-        </section>
-
-        <section className="neu space-y-2 rounded-3xl p-4">
-          <h2 className="font-extrabold">{t("beta機能", "Beta features")}</h2>
-          <div className="flex gap-2">
-            <Chip active={!beta} onClick={() => setBeta(false)}>
-              {t("オフ", "Off")}
-            </Chip>
-            <Chip active={beta} onClick={() => setBeta(true)}>
-              {t("オン", "On")}
-            </Chip>
-          </div>
-          <p className="text-xs text-muted">
-            {t(
-              "開発中の機能を試せます。オンにすると、下に「ツール」タブが出ます（大会で使われたデッキの情報・カードのリスト／トレード用リスト）。",
-              "Try features still in development. Turning this on adds a “Tools” tab (tournament deck info, card lists and trade lists).",
-            )}
           </p>
         </section>
 

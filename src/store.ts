@@ -99,8 +99,6 @@ interface SettingsState {
   setDeckView: (v: "grid" | "list") => void;
   slotSize: "s" | "m" | "l"; // デッキ編集画面の上の枠の大きさ
   setSlotSize: (v: "s" | "m" | "l") => void;
-  beta: boolean; // beta機能（ツールタブ）を出す
-  setBeta: (v: boolean) => void;
 }
 const defaultLang = (): "ja" | "en" =>
   typeof navigator === "undefined" || /bot|crawl|spider|slurp|google|bing|yandex|baidu|lighthouse/i.test(navigator.userAgent) || /^ja\b/i.test(navigator.language ?? "ja") ? "ja" : "en";
@@ -118,8 +116,6 @@ export const useSettings = create<SettingsState>()(
       setDeckView: (deckView) => set({ deckView }),
       slotSize: "s",
       setSlotSize: (slotSize) => set({ slotSize }),
-      beta: false,
-      setBeta: (beta) => set({ beta }),
     }),
     { name: "pokepoke.settings", storage: createJSONStorage(() => safeStorage), version: 1 },
   ),

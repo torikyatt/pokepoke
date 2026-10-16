@@ -1,4 +1,4 @@
-// ツールタブ（beta機能。設定でオンにすると下のタブに出る）。いろいろな追加機能をここに足していく
+// ツールタブ（下のタブの「ツール」。PCはヘッダーの「ツール」）。いろいろな追加機能をここに足していく
 //   #/tools             ツールの一覧
 //   #/tools/meta        大会で使われたデッキ（最近のアツいデッキ・新しい順・おすすめ・成績順）
 //   #/tools/lists       リストの一覧
@@ -69,7 +69,7 @@ function ToolsHome() {
   ];
   return (
     <div>
-      <Header title={t("ツール", "Tools")} right={<span className="rounded-full bg-[#ffe9c7] px-2 py-0.5 text-[10px] font-extrabold text-[#8a5c0c]">beta</span>} />
+      <Header title={t("ツール", "Tools")} />
       <div className="mx-auto max-w-3xl space-y-3 px-4 py-3">
         {tools.map((x) => (
           <button key={x.path} type="button" onClick={() => navigate(x.path)} className="neu neu-press flex w-full items-center gap-3 rounded-2xl p-4 text-left">
@@ -85,7 +85,6 @@ function ToolsHome() {
             </span>
           </button>
         ))}
-        <p className="px-1 text-[11px] font-medium text-muted">{t("ツールは開発中のbeta機能です。設定の「beta機能」をオフにすると、このタブは消えます。", "Tools are beta features. Turn off “Beta features” in Settings to hide this tab.")}</p>
       </div>
     </div>
   );
