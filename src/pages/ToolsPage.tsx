@@ -105,7 +105,12 @@ interface ArchStat {
   share: number; // 直近の使用率
   prevShare: number;
   top8: number; // 直近の大会で8位以内に入った数
+  games: number; // 直近の対戦数（勝ち・負け・引き分け）
+  winRate: number; // 直近の勝率（引き分けは半分の勝ち）。勝ち越し・五分のデッキだけのデータなので、どれも50%以上の相対的な値
 }
+
+/** 勝率のバーの基準: 対戦数がこれ未満のデッキタイプは、たまたま勝率が高く出やすいので満タンの基準にしない（バーは薄く出す） */
+const MIN_GAMES = 100;
 
 /** 大会のデッキから、デッキタイプごとの直近の使用率と、その前の期間からの増減を数える */
 function archStats(decks: TournamentDeck[], newest: number): { stats: ArchStat[]; from: number; to: number } {
@@ -115,11 +120,14 @@ function archStats(decks: TournamentDeck[], newest: number): { stats: ArchStat[]
   for (const d of decks) {
     const at = Date.parse(d.date);
     if (at <= prevFrom) continue;
-    const s = m.get(d.archId) ?? m.set(d.archId, { id: d.archId, name: d.arch, nameEn: d.archEn, recent: 0, prev: 0, share: 0, prevShare: 0, top8: 0 }).get(d.archId)!;
+    const s = m.get(d.archId) ?? m.set(d.archId, { id: d.archId, name: d.arch, nameEn: d.archEn, recent: 0, prev: 0, share: 0, prevShare: 0, top8: 0, games: 0, winRate: 0 }).get(d.archId)!;
     if (at > from) {
       s.recent += d.dup;
       total += d.dup;
       if (d.place && d.place <= 8) s.top8++;
+      // 同じ構成をまとめたデッキは、残した成績を構成の数だけ数える
+      s.games += (d.wins + d.losses + d.ties) * d.dup;
+      s.winRate += (d.wins + 0.5 * d.ties) * d.dup;
     } else {
       s.prev += d.dup;
       prevTotal += d.dup;
@@ -128,6 +136,7 @@ function archStats(decks: TournamentDeck[], newest: number): { stats: ArchStat[]
   for (const s of m.values()) {
     s.share = total ? s.recent / total : 0;
     s.prevShare = prevTotal ? s.prev / prevTotal : 0;
+    s.winRate = s.games ? s.winRate / s.games : 0;
   }
   return { stats: [...m.values()].filter((s) => s.recent > 0), from, to: newest };
 }
@@ -161,6 +170,9 @@ function MetaPage() {
     return all.sort((a, b) => score.get(b)! - score.get(a)! || b.date.localeCompare(a.date));
   }, [index, view, arch]);
   const archName = (s: Pick<ArchStat, "name" | "nameEn">) => (lang === "en" ? s.nameEn : s.name);
+  // 勝率のバー: 対戦数が十分なデッキタイプの中でいちばん高い勝率を満タン、50%（このデータでいちばん低い勝率）を空にする
+  const bestWin = Math.max(0.51, ...stats.filter((s) => s.games >= MIN_GAMES).map((s) => s.winRate));
+  const winBar = (s: ArchStat) => Math.min(100, Math.max(3, ((s.winRate - 0.5) / (bestWin - 0.5)) * 100));
   const pct = (x: number) => `${(x * 100).toFixed(1)}%`;
   const day = (ms: number) => new Date(ms).toLocaleDateString(lang === "en" ? "en-US" : "ja-JP", { month: "numeric", day: "numeric" });
   const VIEWS: [MetaView, string, string][] = [
@@ -192,8 +204,8 @@ function MetaPage() {
           <>
             <p className="text-[11px] font-bold text-muted">
               {t(
-                `直近2週間（${day(from + DAY)}〜${day(to)}）の大会で使われたデッキタイプ。矢印はその前の2週間との差です。`,
-                `Archetypes played in the last 2 weeks (${day(from + DAY)}–${day(to)}). Arrows compare with the 2 weeks before.`,
+                `直近2週間（${day(from + DAY)}〜${day(to)}）の大会で使われたデッキタイプ。バーは勝率で、対戦数${MIN_GAMES}戦以上の中でいちばん高い勝率（${pct(bestWin)}）を満タンにしています。右の矢印は使用率の、その前の2週間との差です。`,
+                `Archetypes played in the last 2 weeks (${day(from + DAY)}–${day(to)}). Bars show win rate, full = the best among archetypes with ${MIN_GAMES}+ games (${pct(bestWin)}). Arrows show the change in play rate vs. the 2 weeks before.`,
               )}
             </p>
             {ranked.map((s, i) => {
@@ -220,11 +232,13 @@ function MetaPage() {
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="line-clamp-2 text-sm leading-snug font-extrabold">{archName(s)}</span>
-                    <span className="mt-1 block h-1.5 overflow-hidden rounded-full bg-line">
-                      <span className="block h-full rounded-full bg-accent" style={{ width: `${Math.min(100, (s.share / Math.max(ranked[0]?.share ?? 1, 0.0001)) * 100)}%` }} />
+                    <span className="mt-1 block h-1.5 overflow-hidden rounded-full bg-line" title={t("勝率（対戦数が十分なデッキタイプでいちばん高い勝率が満タン）", "Win rate (full = best among archetypes with enough games)")}>
+                      <span className={`block h-full rounded-full ${s.games >= MIN_GAMES ? "bg-accent" : "bg-accent/35"}`} style={{ width: `${winBar(s)}%` }} />
                     </span>
                     <span className="mt-1 flex flex-wrap gap-x-2 text-[10px] font-bold text-muted">
+                      <span className="text-accent-deep">{t(`勝率 ${pct(s.winRate)}`, `Win ${pct(s.winRate)}`)}</span>
                       <span>{t(`使用率 ${pct(s.share)}`, `${pct(s.share)} of decks`)}</span>
+                      {s.games < MIN_GAMES && <span>{t(`${s.games}戦・参考`, `${s.games} games, low sample`)}</span>}
                       {s.top8 > 0 && <span>{t(`8位以内 ${s.top8}回`, `Top 8 ×${s.top8}`)}</span>}
                     </span>
                   </span>
@@ -234,7 +248,12 @@ function MetaPage() {
                 </button>
               );
             })}
-            <p className="text-[10px] font-medium text-muted">{t(`Limitless TCG の大会結果（勝ち越し・五分のデッキ。${index.fetchedAt.slice(0, 10)} 取得）`, `Tournament results from Limitless TCG (even or winning records, fetched ${index.fetchedAt.slice(0, 10)})`)}</p>
+            <p className="text-[10px] font-medium text-muted">
+              {t(
+                `Limitless TCG の大会結果（${index.fetchedAt.slice(0, 10)} 取得）。勝ち越し・五分のデッキだけのデータなので、勝率はどれも50%以上で、デッキタイプどうしを比べるための目安です。`,
+                `Tournament results from Limitless TCG (fetched ${index.fetchedAt.slice(0, 10)}). Only even or winning records are included, so win rates are all 50%+ and are for comparing archetypes.`,
+              )}
+            </p>
           </>
         ) : (
           <>
