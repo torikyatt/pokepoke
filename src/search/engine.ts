@@ -34,6 +34,7 @@ export type Cond = { id: string; label: string; en: string; weight?: number; wor
   | { kind: "deck"; archs: string[] } // 大会のデッキタイプに入っているカード
   | { kind: "partner"; cards: string[]; deck?: boolean } // そのカードと相性のいいカード。deck: 「〇〇デッキ」（そのカードと進化ラインを先頭に）
   | { kind: "meta" } // 大会でよく使われるカード
+  | { kind: "latest" } // 最新のカード: 実装予定のカードがあればそれ、無ければ最新パックのカード
   | { kind: "sort"; by: "hp" | "damage"; desc: boolean } // 「HP最大」「火力がいちばん高い」: その数字の順に並べる
 );
 
@@ -334,6 +335,16 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     return m;
   };
   const usage = data.meta?.usage ?? {};
+  // 最新のカード: 実装予定のカード（data/upcoming.yaml）があればそれ。無ければ、いちばん新しいパック（プロモ以外）に入っているカード
+  const latest = (() => {
+    const up = data.cards.filter((c) => c.upcoming);
+    if (up.length) return { ids: new Set(up.map((c) => c.id)), label: "実装予定のカード", en: "Upcoming cards" };
+    const used = new Set(data.cards.flatMap((c) => c.prints.map((p) => p.set)));
+    const set = data.sets.filter((s) => s.released && used.has(s.code) && !/^p/.test(s.code)).sort((a, b) => b.released.localeCompare(a.released))[0];
+    if (!set) return { ids: new Set<string>(), label: "最新のカード", en: "Newest cards" };
+    return { ids: new Set(data.cards.filter((c) => c.prints.some((p) => p.set === set.code)).map((c) => c.id)), label: `最新パック「${set.nameJa || set.name}」`, en: `Newest set: ${set.name}` };
+  })();
+  const LATEST: Cond = { id: "latest", kind: "latest", label: latest.label, en: latest.en, weight: 1 };
   /** 大会のデッキタイプに無いカードの「〇〇デッキ」。大会のおすすめ上位のデッキがあればそれで、無ければ進化ラインと相性のいいカードで */
   const deckOfCond = (cs: AppCard[]): Cond => {
     const ids = cs.map((c) => c.id);
@@ -536,6 +547,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
           });
         }
       }
+      take(new RegExp(`(?<![a-z])(?:(?:newest|latest|new|upcoming|unreleased)\\s+(?:cards?|sets?|packs?|expansions?)|upcoming|unreleased)${END}`, "g"), () => add(LATEST));
       if (data.meta) take(new RegExp(`(?<![a-z])(?:meta|popular|tournaments?|competitive|top\\s+decks?|most\\s+used|commonly\\s+used|staples?|tier\\s*(?:1|one)|top\\s+tier|bdif)${END}`, "g"), () => add(META));
       // カード名
       for (const n of enNameList) {
@@ -677,6 +689,8 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       }
     }
     //   「大会でよく使われる」「環境で人気」「採用率が高い」 → 大会での採用率
+    //   「最新のカード」「新カード」「実装予定のカード」「新弾」 → 最新のカード
+    take(/(?:最新|さいしん|新(?:しい)?|あたらしい)(?:の)?(?:かど|ぱつく|弾|だん)|新弾|(?:実装予定|じつそうよてい|未実装|みじつそう)(?:の)?(?:かど)?/g, () => add(LATEST));
     if (data.meta) {
       take(/(?:大会|環境|めたげむ)(?:で|に|の)?(?:よく)?(?:使われ(?:る|て(?:いる|る)?)|つかわれ(?:る|て(?:いる|る)?)|採用され(?:る|て(?:いる|る)?)|入(?:る|つて(?:いる|る)?)|はい(?:る|つて(?:いる|る)?)|人気|にんき|流行|はやり|定番|ていばん)?|(?:採用率|使用率)(?:が|の)?(?:高い|たかい)?/g, () => {
         add(META);
@@ -1046,7 +1060,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     const needNames = nameConds.filter((n) => !n.pin || !others.length);
     const nameHit = (card: AppCard, h: { name: string; nameEn: string }, n: Extract<Cond, { kind: "name" }>) =>
       n.ids ? n.ids.includes(card.id) : h.name.includes(n.name) || h.nameEn.includes(n.name);
-    const decks = of("deck"), partnerConds = of("partner"), metaCond = of("meta")[0];
+    const decks = of("deck"), partnerConds = of("partner"), metaCond = of("meta")[0], latestCond = of("latest")[0];
     const sortBy = of("sort");
     // デッキタイプ: カードごとの、そのデッキへの採用率（いちばん高いもの）
     const deckRate = new Map<string, number>();
@@ -1097,6 +1111,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
         if (decks.length && !deckRate.has(card.id)) continue;
         if (partnerMaps.some((p) => !p.map.has(card.id))) continue;
         if (metaCond && (usage[card.id] ?? 0) < 0.01) continue;
+        if (latestCond && !latest.ids.has(card.id)) continue;
         if (sortBy.some((s) => sortVal(s) === undefined)) continue;
       }
       let useScore = pinned ? 10 : 0; // 名前で先頭に置くカード

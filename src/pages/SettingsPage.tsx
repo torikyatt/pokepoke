@@ -106,6 +106,10 @@ export function SettingsPage({ embedded }: { embedded?: boolean }) {
               )}
             {data.combos && t(` ・ 定番の組み合わせ ${data.combos.length} 件`, ` ・ ${data.combos.length} known combos`)}
           </p>
+          {/* パック別のカード一覧（文字だけのページ）。ふつうのリンクにして、検索エンジンも全カードのページへたどれるように */}
+          <a href={lang === "en" ? "/en/cards" : "/cards"} className="block w-fit pt-1 text-xs font-bold text-accent-deep underline">
+            {t("パック別のカード一覧", "All cards by set")}
+          </a>
           {import.meta.env.DEV && (
             <button type="button" className="font-bold text-accent-deep underline" onClick={() => navigate("/review")}>
               レビューページ（開発用）

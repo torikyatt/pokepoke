@@ -44,6 +44,11 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
   // 検索の例: 開くたび・検索欄を空に戻すたびに選び直す
   const examples = useMemo(() => pickExamples(lang), [lang, !q]);
   const toList = useEditTarget((s) => !!s.list); // PCでリストを開いている間は、長押しでそのリストに足す
+  const latest = useMemo(() => {
+    const lq = lang === "en" ? "newest cards" : "最新のカード";
+    const c = engine.explain(lq).conds.find((x) => x.kind === "latest");
+    return { q: lq, label: c ? (lang === "en" ? c.en : c.label) : "", n: c ? engine.search(lq, Infinity).length : 0 };
+  }, [engine, lang]);
   const labelOf = useMemo(() => new Map(parsed.map((c) => [c.id, lang === "en" ? c.en : c.label])), [parsed, lang]);
 
   const go = (patch: { q?: string; x?: string[] }, replace = true) =>
@@ -95,10 +100,14 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
                 </Chip>
               ))}
             </div>
-            {/* パック別のカード一覧（文字だけのページ）。検索エンジンがここから全カードのページへたどれるよう、ふつうのリンクにする */}
-            <a href={lang === "en" ? "/en/cards" : "/cards"} className="text-xs font-bold text-accent-deep underline">
-              {t("パック別のカード一覧", "All cards by set")}
-            </a>
+            {/* 最新のカード: 実装予定のカードがあればそれ、無ければ最新パックのカードに絞り込む（パック別のカード一覧は設定へ） */}
+            {latest.n > 0 && (
+              <button type="button" onClick={() => go({ q: latest.q }, false)} className="neu-sm neu-press flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-extrabold text-accent-deep">
+                <span className="rounded-full bg-[#e8553d] px-1.5 text-[10px] leading-relaxed text-white">NEW</span>
+                {latest.label}
+                <span className="text-muted">{t(`${latest.n}枚`, `${latest.n}`)}</span>
+              </button>
+            )}
           </div>
         )}
         {q && !favOnly && hits.length === 0 && <p className="py-8 text-center text-sm font-bold text-muted">{t("見つかりませんでした。条件をタップして外すか、絞り込みをゆるめてください。", "Nothing found. Tap a condition to remove it, or loosen the filters.")}</p>}

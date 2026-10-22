@@ -695,3 +695,21 @@ describe("効果も入れた最大ダメージ（並べ替え・条件の絞り�
     if (dragonite) expect(top).toContain(dragonite.id);
   });
 });
+
+describe("最新のカード", () => {
+  it("実装予定のカードがあればそれだけ、無ければ最新パックのカード", () => {
+    const up = data.cards.filter((c) => c.upcoming);
+    if (up.length) expect(new Set(ids("最新のカード", 999))).toEqual(new Set(up.map((c) => c.id)));
+    // 実装予定のカードを除いたデータ（全部実装されたあと）: いちばん新しいパック（プロモ以外）のカード
+    const released = { ...data, cards: data.cards.filter((c) => !c.upcoming) };
+    const e = createEngine(released, {});
+    const newest = released.sets.filter((s) => s.released && !/^p/.test(s.code) && released.cards.some((c) => c.prints.some((p) => p.set === s.code))).sort((a, b) => b.released.localeCompare(a.released))[0];
+    const hits = e.search("新カード", 999);
+    expect(e.explain("新カード").conds.map((c) => c.label)).toEqual([`最新パック「${newest.nameJa || newest.name}」`]);
+    expect(hits.length).toBe(released.cards.filter((c) => c.prints.some((p) => p.set === newest.code)).length);
+  });
+  it("ほかの条件と組み合わせられる・英語でも", () => {
+    expect(engine.explain("新弾の炎ポケモン").conds.map((c) => c.id)).toEqual(expect.arrayContaining(["latest", "type:fire"]));
+    expect(engine.explain("newest cards").conds.map((c) => c.id)).toEqual(["latest"]);
+  });
+});
