@@ -147,6 +147,7 @@ function effect(e: Effect, slot: Slot, t: string[] | undefined): AppEffect {
   if (e.textEn) out.textEn = e.textEn;
   if (e.jaSource === "machine") out.machine = true;
   if (e.unknown) out.unknown = true;
+  if (e.tentative) out.tentative = true;
   return out;
 }
 

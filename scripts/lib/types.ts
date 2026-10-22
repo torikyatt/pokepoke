@@ -13,6 +13,7 @@ export interface Effect {
   textJa?: string;
   jaSource?: "official" | "machine"; // official = Game8、machine = LLM仮訳
   unknown?: true; // まだ公開されていない（実装前のカード。名前・効果文が無い）
+  tentative?: true; // 効果文が推測（実装前のカードで、粗い先行画像から読み取ったもの）
   tags: string[];
 }
 

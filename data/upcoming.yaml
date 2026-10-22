@@ -253,7 +253,8 @@ cards:
       - { cost: PP, damage: 60×, nameJa: サイコブラスター, nameEn: Psychic Blaster, textJa: このポケモンについている超エネルギーの数ぶんコインを投げ、オモテの数×60ダメージ。, textEn: "Flip a coin for each [P] Energy attached to this Pokémon. This attack does 60 damage for each heads." }
 
   # ---- はじまりのパートナー（スペシャルパック）----
-  # 効果文はまだ未公開（unknown: true のワザは、名前・コスト・ダメージだけ分かっている）。英語のワザ名は Game8・pokemon-zone の先行画像から
+  # 英語のワザ名は Game8・pokemon-zone の先行画像から。効果文は pokemon-zone が粗い画像から読み取った推測（tentative: true。画面に「推測」と出す）。
+  # 日本語の効果文は、同じ英文の既存カードの公式訳（translate.ts が埋める）
   - id: up-15
     set: sp1
     rarity: ☆
@@ -267,7 +268,7 @@ cards:
     weakness: fire
     retreat: 2
     attacks:
-      - { cost: GC, damage: 30, nameJa: やどりぎのタネ, nameEn: Leech Seed, unknown: true }
+      - { cost: GC, damage: 30, nameJa: やどりぎのタネ, nameEn: Leech Seed, textEn: "Heal 10 damage from this Pokémon.", tentative: true }
 
   - id: up-16
     set: sp1
@@ -282,7 +283,7 @@ cards:
     weakness: water
     retreat: 1
     attacks:
-      - { cost: RC, damage: 50, nameJa: ひのこ, nameEn: Ember, unknown: true }
+      - { cost: RC, damage: 50, nameJa: ひのこ, nameEn: Ember, textEn: "Discard a [R] Energy from this Pokémon.", tentative: true }
 
   - id: up-17
     set: sp1
@@ -297,7 +298,7 @@ cards:
     weakness: lightning
     retreat: 1
     attacks:
-      - { cost: W, damage: 10, nameJa: あわ, nameEn: Bubble, unknown: true }
+      - { cost: W, damage: 10, nameJa: あわ, nameEn: Bubble, textEn: "Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed.", tentative: true }
 
   - id: up-18
     set: sp1
@@ -342,4 +343,4 @@ cards:
     weakness: water
     retreat: 2
     attacks:
-      - { cost: RC, damage: 50, nameJa: かえんほうしゃ, nameEn: Flamethrower, unknown: true }
+      - { cost: RC, damage: 50, nameJa: かえんほうしゃ, nameEn: Flamethrower, textEn: "Discard a [R] Energy from this Pokémon.", tentative: true }

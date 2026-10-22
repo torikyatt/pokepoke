@@ -11,7 +11,7 @@ const COST: Record<string, EnergyType> = {
   F: "fighting", D: "darkness", M: "metal", N: "dragon", C: "colorless",
 };
 
-interface YEffect { nameJa?: string; nameEn?: string; textJa?: string; textEn?: string; unknown?: boolean }
+interface YEffect { nameJa?: string; nameEn?: string; textJa?: string; textEn?: string; unknown?: boolean; tentative?: boolean }
 interface YAttack extends YEffect { cost: string; damage?: number | string }
 interface YCard {
   id: string; set: string; rarity: string; image?: string; source?: string;
@@ -39,6 +39,7 @@ const arrived = (date: string | undefined, x: YCard) =>
 
 const effect = (e: YEffect, machine: boolean) => ({
   ...(e.unknown ? { unknown: true as const } : {}),
+  ...(e.tentative ? { tentative: true as const } : {}),
   ...(e.nameEn ? { nameEn: e.nameEn } : {}),
   ...(e.nameJa ? { nameJa: e.nameJa } : {}),
   textEn: e.textEn ?? "",

@@ -130311,10 +130311,11 @@
   "retreat": 2,
   "attacks": [
    {
-    "unknown": true,
+    "tentative": true,
     "nameEn": "Leech Seed",
     "nameJa": "やどりぎのタネ",
-    "textEn": "",
+    "textEn": "Heal 10 damage from this Pokémon.",
+    "jaSource": "official",
     "tags": [],
     "cost": {
      "grass": 1,
@@ -130324,7 +130325,7 @@
     "costTyped": 1,
     "damage": 30,
     "damageVariable": false,
-    "jaSource": "official"
+    "textJa": "このポケモンのHPを10回復。"
    }
   ],
   "prints": [
@@ -130363,10 +130364,11 @@
   "retreat": 1,
   "attacks": [
    {
-    "unknown": true,
+    "tentative": true,
     "nameEn": "Ember",
     "nameJa": "ひのこ",
-    "textEn": "",
+    "textEn": "Discard a [R] Energy from this Pokémon.",
+    "jaSource": "official",
     "tags": [],
     "cost": {
      "fire": 1,
@@ -130376,7 +130378,7 @@
     "costTyped": 1,
     "damage": 50,
     "damageVariable": false,
-    "jaSource": "official"
+    "textJa": "このポケモンから炎エネルギーを1個トラッシュ。"
    }
   ],
   "prints": [
@@ -130413,10 +130415,11 @@
   "retreat": 1,
   "attacks": [
    {
-    "unknown": true,
+    "tentative": true,
     "nameEn": "Bubble",
     "nameJa": "あわ",
-    "textEn": "",
+    "textEn": "Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed.",
+    "jaSource": "official",
     "tags": [],
     "cost": {
      "water": 1
@@ -130425,7 +130428,7 @@
     "costTyped": 1,
     "damage": 10,
     "damageVariable": false,
-    "jaSource": "official"
+    "textJa": "コインを1回投げオモテなら、相手のバトルポケモンをマヒにする。"
    }
   ],
   "prints": [
@@ -130557,10 +130560,11 @@
   "retreat": 2,
   "attacks": [
    {
-    "unknown": true,
+    "tentative": true,
     "nameEn": "Flamethrower",
     "nameJa": "かえんほうしゃ",
-    "textEn": "",
+    "textEn": "Discard a [R] Energy from this Pokémon.",
+    "jaSource": "official",
     "tags": [],
     "cost": {
      "fire": 1,
@@ -130570,7 +130574,7 @@
     "costTyped": 1,
     "damage": 50,
     "damageVariable": false,
-    "jaSource": "official"
+    "textJa": "このポケモンから炎エネルギーを1個トラッシュ。"
    }
   ],
   "prints": [

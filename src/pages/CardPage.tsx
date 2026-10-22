@@ -311,6 +311,7 @@ function EffectBlock({ e, label, tagChip, lang }: { e: AppEffect; label: string;
       {main && <p className="mt-2 text-sm leading-relaxed font-medium">{main}</p>}
       {/* 実装前のカードで、名前は分かっているが効果がまだ公開されていないワザ */}
       {e.unknown && name && <p className="mt-2 text-xs font-bold text-muted">{t("効果は未公開", "Effect TBA")}</p>}
+      {e.tentative && <p className="mt-1 text-[11px] font-bold text-[#9a6b12]">{t("※ 先行画像から読み取った推測です（未確定）", "* Read from a blurry preview image (unconfirmed)")}</p>}
       {(otherText || otherName) && (
         <details className="mt-1.5 text-xs text-muted">
           <summary className="cursor-pointer font-bold select-none">{t("英語原文", "Japanese text")}</summary>
