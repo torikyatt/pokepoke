@@ -309,12 +309,6 @@ function EffectBlock({ e, label, tagChip, lang }: { e: AppEffect; label: string;
         {dmg && <span className="text-xl font-extrabold tabular-nums">{dmg}</span>}
       </div>
       {main && <p className="mt-2 text-sm leading-relaxed font-medium">{main}</p>}
-      {/* 効果で増える分・効果で与えるダメージを入れた最大（上限の無いものは、エネ5個・オモテ4回などで数えた目安） */}
-      {atk?.maxDamage !== undefined && atk.maxDamage > (atk.damage ?? 0) && (
-        <p className="mt-1 text-[11px] font-bold text-muted" title={atk.uncapped ? t("エネ5個・オモテ4回・トラッシュ8枚などで数えた目安", "Estimated with e.g. 5 Energy, 4 heads or 8 cards") : undefined}>
-          {atk.uncapped ? t(`最大 ${atk.maxDamage}〜（上限なし）`, `Up to ${atk.maxDamage}+ (no cap)`) : t(`最大 ${atk.maxDamage}ダメージ`, `Up to ${atk.maxDamage} damage`)}
-        </p>
-      )}
       {(otherText || otherName) && (
         <details className="mt-1.5 text-xs text-muted">
           <summary className="cursor-pointer font-bold select-none">{t("英語原文", "Japanese text")}</summary>

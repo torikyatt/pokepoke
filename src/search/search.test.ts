@@ -238,7 +238,7 @@ describe("その他の検索", () => {
       expect(h.card.hp).toBeGreaterThanOrEqual(150);
       expect(h.card.type).toBe("water");
     }
-    for (const h of engine.search("120ダメ以上のワザ")) expect(h.card.attacks.some((a) => (a.maxDamage ?? a.damage ?? 0) >= 120)).toBe(true);
+    for (const h of engine.search("120ダメ以上のワザ")) expect(h.card.attacks.some((a) => (a.damage ?? 0) >= 120)).toBe(true);
   });
   it("他TCGの言葉（墓地・ハンデス）", () => {
     expect(engine.parse("墓地からエネをつける").some((c) => c.kind === "tag" && c.tag === "energy.accel.trash")).toBe(true);
@@ -532,7 +532,7 @@ describe("検索レポート（10/9）から", () => {
     const fire = engine.search("HPが最大の炎ポケモン", Infinity);
     expect(fire.slice(0, 5).every((h) => h.card.type === "fire")).toBe(true);
     for (const q of ["火力最大", "一番強いワザ", "strongest attack"])
-      expect(engine.search(q, 1)[0].card.maxDamage, q).toBe(Math.max(...data.cards.map((c) => c.maxDamage)));
+      expect(engine.search(q, 1)[0].card.sortDamage, q).toBe(Math.max(...data.cards.map((c) => c.sortDamage)));
   });
   it("打ちまちがい・ひらがな・あだ名", () => {
     expect(engine.parse("次の晩技が使えない").map((c) => c.id)).toContain("tag:drawback.cant_attack");
@@ -676,16 +676,16 @@ describe("実装前のカード・デュアルタイプ", () => {
   });
 });
 
-describe("効果も入れた最大ダメージ", () => {
+describe("効果も入れた最大ダメージ（並べ替えだけに使う）", () => {
   const byId = new Map(data.cards.map((c) => [c.id, c]));
-  const max = (id: string) => byId.get(id)!.maxDamage;
-  it("効果文で与えるダメージ・ランダムに選ばれた回数・コインの回数・条件付きの追加", () => {
-    expect(max("b3-023")).toBe(160); // メガバクーダex: ランダムに選ばれたポケモンに160
-    expect(byId.get("a1a-003")!.maxUncapped).toBe(true); // セレビィex: エネの数ぶんコイン（上限なし）
-    expect(max("a1a-003")).toBeGreaterThanOrEqual(250);
-    expect(max("a1-056")).toBe(160); // カメックスex: 100 + 追加60
+  const sd = (id: string) => byId.get(id)!.sortDamage;
+  it("効果文で与えるダメージ・コインの回数・条件付きの追加・上限の無いもの", () => {
+    expect(sd("b3-023")).toBe(160); // メガバクーダex: ランダムに選ばれたポケモンに160
+    expect(byId.get("b3-023")!.maxDamage).toBe(0); // 画面・絞り込みの「最大ダメージ」はワザの数字のまま
+    expect(sd("a1a-003")).toBeGreaterThan(250); // セレビィex: エネの数ぶんコイン（上限なし。同じ数なら上に）
+    expect(sd("a1-056")).toBe(160); // カメックスex: 100 + 追加60
     const ironMoth = data.cards.find((c) => c.attacks.some((a) => /If all of them are heads, this attack does 120 more/.test(a.textEn ?? "")))!;
-    expect(ironMoth.maxDamage).toBe(130); // オモテの数で分かれる追加は、どれか1つ（足さない）
+    expect(ironMoth.sortDamage).toBe(130); // オモテの数で分かれる追加は、どれか1つ（足さない）
   });
   it("「ダメージの高い順」は効果のダメージでも並ぶ", () => {
     const top = engine.search("ダメージの高い順", 40).map((h) => h.card.id);

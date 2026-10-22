@@ -26,8 +26,6 @@ export interface AppAttack extends AppEffect {
   costTotal: number;
   costTyped: number;
   damage?: number;
-  maxDamage?: number; // 効果も入れた最大ダメージ（damage と違うときだけ。scripts/lib/damage.ts）
-  uncapped?: true; // 上限の無いダメージ（maxDamage はふつうに起こりうる数で数えたもの）
   damageVariable: boolean;
 }
 
@@ -74,8 +72,8 @@ export interface AppCard {
   released: string; // 最初の収録の発売日
   rarities: string[]; // 収録されているレアリティ（◊ ◊◊ … ☆ … Crown Rare, Promo）
   sets: string[]; // 収録パック（PocketDecks のセットコード）
-  maxDamage: number; // ワザの最大ダメージ。効果で増える分・効果で与えるダメージも入れる（ワザが無ければ 0）
-  maxUncapped?: true; // その最大ダメージに上限が無い（エネの数・ウラが出るまで など）
+  maxDamage: number; // ワザの最大ダメージ（ワザが無ければ 0）
+  sortDamage: number; // 「ダメージの高い順」の並び用: 効果で増える分・効果で与えるダメージも入れた最大（scripts/lib/damage.ts）。画面には出さない
   minCost?: number; // いちばん軽いワザのエネ数 // 高解像度画像（オンライン時）
   tags: string[]; // 全効果のタグの和集合
   refs: string[]; // 効果文が名前で指しているカードID
