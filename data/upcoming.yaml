@@ -19,6 +19,12 @@ sets:
     nameJa: プロモC
     source: https://www.pokemon-zone.com/spoilers/promo-c-mega-mewtwo-y-ex/
 
+  # スペシャルパック「はじまりのパートナー」（9つの地方の御三家の☆。1週間に1回開けられる。実装日は未定）
+  - code: sp1
+    nameEn: Promo SP1
+    nameJa: はじまりのパートナー
+    source: https://game8.jp/pokemon-tcg-pocket/833615
+
 cards:
   - id: up-01
     set: c1
@@ -245,3 +251,95 @@ cards:
     machine: true
     attacks:
       - { cost: PP, damage: 60×, nameJa: サイコブラスター, nameEn: Psychic Blaster, textJa: このポケモンについている超エネルギーの数ぶんコインを投げ、オモテの数×60ダメージ。, textEn: "Flip a coin for each [P] Energy attached to this Pokémon. This attack does 60 damage for each heads." }
+
+  # ---- はじまりのパートナー（スペシャルパック）----
+  # 効果文はまだ未公開（unknown: true のワザは、名前・コスト・ダメージだけ分かっている）。英語のワザ名は Game8・pokemon-zone の先行画像から
+  - id: up-15
+    set: sp1
+    rarity: ☆
+    image: https://img.game8.jp/13113710/402a2d2cb309c1dbf12e7fd88075c1c4.webp/show
+    nameEn: Bulbasaur
+    nameJa: フシギダネ
+    type: [grass]
+    stage: basic
+    rule: normal
+    hp: 70
+    weakness: fire
+    retreat: 2
+    attacks:
+      - { cost: GC, damage: 30, nameJa: やどりぎのタネ, nameEn: Leech Seed, unknown: true }
+
+  - id: up-16
+    set: sp1
+    rarity: ☆
+    image: https://img.game8.jp/13113711/b56d651f962299a6570533850f172883.webp/show
+    nameEn: Charmander
+    nameJa: ヒトカゲ
+    type: [fire]
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: water
+    retreat: 1
+    attacks:
+      - { cost: RC, damage: 50, nameJa: ひのこ, nameEn: Ember, unknown: true }
+
+  - id: up-17
+    set: sp1
+    rarity: ☆
+    image: https://img.game8.jp/13113712/2416660b7c44756d3773a2141a480c15.webp/show
+    nameEn: Squirtle
+    nameJa: ゼニガメ
+    type: [water]
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: lightning
+    retreat: 1
+    attacks:
+      - { cost: W, damage: 10, nameJa: あわ, nameEn: Bubble, unknown: true }
+
+  - id: up-18
+    set: sp1
+    rarity: ☆
+    image: https://img.game8.jp/13113713/3333aed3a836b49ab6557d72bfa8047f.webp/show
+    nameEn: Chikorita
+    nameJa: チコリータ
+    type: [grass]
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: fire
+    retreat: 1
+    attacks:
+      - { cost: GC, damage: 40, nameJa: はっぱカッター, nameEn: Razor Leaf }
+
+  - id: up-19
+    set: sp1
+    rarity: ☆
+    image: https://img.game8.jp/13113715/f22eb7f293b90e6fbe80f01b4dbc6d7b.webp/show
+    nameEn: Piplup
+    nameJa: ポッチャマ
+    type: [water]
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: lightning
+    retreat: 1
+    attacks:
+      - { cost: W, damage: 20, nameJa: つつく, nameEn: Peck } # ワザ名は Game8 の画像から（効果なし）
+
+  - id: up-20
+    set: sp1
+    rarity: ☆
+    image: https://img.game8.jp/13113714/459b5dbc62419b46546af540fd39dc07.webp/show
+    nameEn: Fuecoco
+    nameJa: ホゲータ
+    type: [fire]
+    stage: basic
+    rule: normal
+    hp: 70
+    weakness: water
+    retreat: 2
+    attacks:
+      - { cost: RC, damage: 50, nameJa: かえんほうしゃ, nameEn: Flamethrower, unknown: true }

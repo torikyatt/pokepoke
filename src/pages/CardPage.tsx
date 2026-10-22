@@ -309,6 +309,8 @@ function EffectBlock({ e, label, tagChip, lang }: { e: AppEffect; label: string;
         {dmg && <span className="text-xl font-extrabold tabular-nums">{dmg}</span>}
       </div>
       {main && <p className="mt-2 text-sm leading-relaxed font-medium">{main}</p>}
+      {/* 実装前のカードで、名前は分かっているが効果がまだ公開されていないワザ */}
+      {e.unknown && name && <p className="mt-2 text-xs font-bold text-muted">{t("効果は未公開", "Effect TBA")}</p>}
       {(otherText || otherName) && (
         <details className="mt-1.5 text-xs text-muted">
           <summary className="cursor-pointer font-bold select-none">{t("英語原文", "Japanese text")}</summary>

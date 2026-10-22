@@ -24,9 +24,18 @@ const y = loadYaml(readFileSync(join(DATA, "upcoming.yaml"), "utf8")) as { sets:
 
 const cards: Card[] = JSON.parse(readFileSync(join(DATA, "cards.json"), "utf8")).filter((c: Card) => !c.upcoming);
 const released = (c: Card) => c.prints.map((p) => p.released ?? "").filter(Boolean);
-// 実装済みになったか: パックは「予定日以降のプリントが元データにある」、日付の無いものは「同じ英語名のカードがある」
-const arrived = (date: string | undefined, nameEn: string) =>
-  date ? cards.some((c) => released(c).some((d) => d >= date)) : cards.some((c) => c.nameEn === nameEn);
+// 実装済みになったか: パックは「予定日以降のプリントが元データにある」。
+// 日付の無いもの（プロモ・スペシャルパック）は「名前・HP・ワザのコストとダメージが同じカードが元データにある」
+// （フシギダネのように同じ名前の別のカードが前からあるので、名前だけでは決めない）
+const atkKey = (cost: string, damage: number | string | undefined, name?: string) => `${name ?? "?"}:${[...cost].sort().join("")}:${String(damage ?? "").replace(/[+×]/, "")}`;
+const CODE: Record<string, string> = Object.fromEntries(Object.entries(COST).map(([k, v]) => [v, k]));
+// ワザ名が分かっていないもの（?）は、名前を比べない
+const realKey = (c: Card, x: YCard) =>
+  c.attacks.map((a, i) => atkKey(Object.entries(a.cost).flatMap(([t, n]) => Array(n).fill(CODE[t])).join(""), a.damage, x.attacks[i]?.nameEn ? a.nameEn : undefined)).join("|");
+const arrived = (date: string | undefined, x: YCard) =>
+  date
+    ? cards.some((c) => released(c).some((d) => d >= date))
+    : cards.some((c) => c.nameEn === x.nameEn && c.hp === x.hp && realKey(c, x) === x.attacks.map((a) => atkKey(a.cost, a.damage, a.nameEn)).join("|"));
 
 const effect = (e: YEffect, machine: boolean) => ({
   ...(e.unknown ? { unknown: true as const } : {}),
@@ -54,7 +63,7 @@ const added: Card[] = [];
 const skipped: string[] = [];
 for (const x of y.cards) {
   const set = y.sets.find((s) => s.code === x.set);
-  if (arrived(set?.date, x.nameEn)) {
+  if (arrived(set?.date, x)) {
     skipped.push(x.nameEn);
     continue;
   }

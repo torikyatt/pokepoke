@@ -5,7 +5,8 @@
   "kind": "pokemon",
   "evolvesFrom": [
    "pa-023",
-   "b1a-001"
+   "b1a-001",
+   "up-15"
   ],
   "evolvesTo": [
    "pa-018",
@@ -1603,7 +1604,8 @@
    "pa-032",
    "a2b-008",
    "b1a-011",
-   "b2b-007"
+   "b2b-007",
+   "up-16"
   ],
   "evolvesTo": [
    "a1-035",
@@ -2668,7 +2670,8 @@
   "kind": "pokemon",
   "evolvesFrom": [
    "pa-033",
-   "b1a-017"
+   "b1a-017",
+   "up-17"
   ],
   "evolvesTo": [
    "pa-029",
@@ -16934,7 +16937,8 @@
   "evolvesFrom": [
    "pa-034",
    "b2b-018",
-   "b3b-019"
+   "b3b-019",
+   "up-19"
   ],
   "evolvesTo": [
    "a2-037",
@@ -27636,7 +27640,8 @@
    "pa-032",
    "a2b-008",
    "b1a-011",
-   "b2b-007"
+   "b2b-007",
+   "up-16"
   ],
   "evolvesTo": [
    "a1-035",
@@ -46492,7 +46497,8 @@
   "nameEn": "Bayleef",
   "kind": "pokemon",
   "evolvesFrom": [
-   "a4-008"
+   "a4-008",
+   "up-18"
   ],
   "evolvesTo": [
    "a4-010"
@@ -69308,7 +69314,8 @@
   "kind": "pokemon",
   "evolvesFrom": [
    "pa-023",
-   "b1a-001"
+   "b1a-001",
+   "up-15"
   ],
   "evolvesTo": [
    "pa-018",
@@ -70208,7 +70215,8 @@
   "kind": "pokemon",
   "evolvesFrom": [
    "pa-033",
-   "b1a-017"
+   "b1a-017",
+   "up-17"
   ],
   "evolvesTo": [
    "pa-029",
@@ -81942,7 +81950,8 @@
   "nameEn": "Crocalor",
   "kind": "pokemon",
   "evolvesFrom": [
-   "b2a-016"
+   "b2a-016",
+   "up-20"
   ],
   "evolvesTo": [
    "b2a-018"
@@ -86003,7 +86012,8 @@
    "pa-032",
    "a2b-008",
    "b1a-011",
-   "b2b-007"
+   "b2b-007",
+   "up-16"
   ],
   "evolvesTo": [
    "a1-035",
@@ -86657,7 +86667,8 @@
   "evolvesFrom": [
    "pa-034",
    "b2b-018",
-   "b3b-019"
+   "b3b-019",
+   "up-19"
   ],
   "evolvesTo": [
    "a2-037",
@@ -125033,7 +125044,8 @@
    "pa-032",
    "a2b-008",
    "b1a-011",
-   "b2b-007"
+   "b2b-007",
+   "up-16"
   ],
   "evolvesTo": [
    "a1-035",
@@ -130277,6 +130289,302 @@
     "weakness",
     "retreat"
    ]
+  }
+ },
+ {
+  "id": "up-15",
+  "nameEn": "Bulbasaur",
+  "nameJa": "フシギダネ",
+  "kind": "pokemon",
+  "type": "grass",
+  "stage": "basic",
+  "evolvesFrom": [],
+  "evolvesTo": [
+   "a1-002",
+   "b1a-002"
+  ],
+  "rule": "normal",
+  "groups": [],
+  "points": 1,
+  "hp": 70,
+  "weakness": "fire",
+  "retreat": 2,
+  "attacks": [
+   {
+    "unknown": true,
+    "nameEn": "Leech Seed",
+    "nameJa": "やどりぎのタネ",
+    "textEn": "",
+    "tags": [],
+    "cost": {
+     "grass": 1,
+     "colorless": 1
+    },
+    "costTotal": 2,
+    "costTyped": 1,
+    "damage": 30,
+    "damageVariable": false,
+    "jaSource": "official"
+   }
+  ],
+  "prints": [
+   {
+    "id": "up-15",
+    "set": "sp1",
+    "setName": "Promo SP1",
+    "rarity": "☆",
+    "image": "https://img.game8.jp/13113710/402a2d2cb309c1dbf12e7fd88075c1c4.webp/show"
+   }
+  ],
+  "tags": [],
+  "upcoming": {
+   "source": "https://game8.jp/pokemon-tcg-pocket/833615"
+  }
+ },
+ {
+  "id": "up-16",
+  "nameEn": "Charmander",
+  "nameJa": "ヒトカゲ",
+  "kind": "pokemon",
+  "type": "fire",
+  "stage": "basic",
+  "evolvesFrom": [],
+  "evolvesTo": [
+   "a1-034",
+   "a2b-009",
+   "b2b-008",
+   "pb-020"
+  ],
+  "rule": "normal",
+  "groups": [],
+  "points": 1,
+  "hp": 60,
+  "weakness": "water",
+  "retreat": 1,
+  "attacks": [
+   {
+    "unknown": true,
+    "nameEn": "Ember",
+    "nameJa": "ひのこ",
+    "textEn": "",
+    "tags": [],
+    "cost": {
+     "fire": 1,
+     "colorless": 1
+    },
+    "costTotal": 2,
+    "costTyped": 1,
+    "damage": 50,
+    "damageVariable": false,
+    "jaSource": "official"
+   }
+  ],
+  "prints": [
+   {
+    "id": "up-16",
+    "set": "sp1",
+    "setName": "Promo SP1",
+    "rarity": "☆",
+    "image": "https://img.game8.jp/13113711/b56d651f962299a6570533850f172883.webp/show"
+   }
+  ],
+  "tags": [],
+  "upcoming": {
+   "source": "https://game8.jp/pokemon-tcg-pocket/833615"
+  }
+ },
+ {
+  "id": "up-17",
+  "nameEn": "Squirtle",
+  "nameJa": "ゼニガメ",
+  "kind": "pokemon",
+  "type": "water",
+  "stage": "basic",
+  "evolvesFrom": [],
+  "evolvesTo": [
+   "a1-054",
+   "b1a-018"
+  ],
+  "rule": "normal",
+  "groups": [],
+  "points": 1,
+  "hp": 60,
+  "weakness": "lightning",
+  "retreat": 1,
+  "attacks": [
+   {
+    "unknown": true,
+    "nameEn": "Bubble",
+    "nameJa": "あわ",
+    "textEn": "",
+    "tags": [],
+    "cost": {
+     "water": 1
+    },
+    "costTotal": 1,
+    "costTyped": 1,
+    "damage": 10,
+    "damageVariable": false,
+    "jaSource": "official"
+   }
+  ],
+  "prints": [
+   {
+    "id": "up-17",
+    "set": "sp1",
+    "setName": "Promo SP1",
+    "rarity": "☆",
+    "image": "https://img.game8.jp/13113712/2416660b7c44756d3773a2141a480c15.webp/show"
+   }
+  ],
+  "tags": [],
+  "upcoming": {
+   "source": "https://game8.jp/pokemon-tcg-pocket/833615"
+  }
+ },
+ {
+  "id": "up-18",
+  "nameEn": "Chikorita",
+  "nameJa": "チコリータ",
+  "kind": "pokemon",
+  "type": "grass",
+  "stage": "basic",
+  "evolvesFrom": [],
+  "evolvesTo": [
+   "a4-009"
+  ],
+  "rule": "normal",
+  "groups": [],
+  "points": 1,
+  "hp": 60,
+  "weakness": "fire",
+  "retreat": 1,
+  "attacks": [
+   {
+    "nameEn": "Razor Leaf",
+    "nameJa": "はっぱカッター",
+    "textEn": "",
+    "jaSource": "official",
+    "tags": [],
+    "cost": {
+     "grass": 1,
+     "colorless": 1
+    },
+    "costTotal": 2,
+    "costTyped": 1,
+    "damage": 40,
+    "damageVariable": false
+   }
+  ],
+  "prints": [
+   {
+    "id": "up-18",
+    "set": "sp1",
+    "setName": "Promo SP1",
+    "rarity": "☆",
+    "image": "https://img.game8.jp/13113713/3333aed3a836b49ab6557d72bfa8047f.webp/show"
+   }
+  ],
+  "tags": [],
+  "upcoming": {
+   "source": "https://game8.jp/pokemon-tcg-pocket/833615"
+  }
+ },
+ {
+  "id": "up-19",
+  "nameEn": "Piplup",
+  "nameJa": "ポッチャマ",
+  "kind": "pokemon",
+  "type": "water",
+  "stage": "basic",
+  "evolvesFrom": [],
+  "evolvesTo": [
+   "a2-036",
+   "b2b-019"
+  ],
+  "rule": "normal",
+  "groups": [],
+  "points": 1,
+  "hp": 60,
+  "weakness": "lightning",
+  "retreat": 1,
+  "attacks": [
+   {
+    "nameEn": "Peck",
+    "nameJa": "つつく",
+    "textEn": "",
+    "jaSource": "official",
+    "tags": [],
+    "cost": {
+     "water": 1
+    },
+    "costTotal": 1,
+    "costTyped": 1,
+    "damage": 20,
+    "damageVariable": false
+   }
+  ],
+  "prints": [
+   {
+    "id": "up-19",
+    "set": "sp1",
+    "setName": "Promo SP1",
+    "rarity": "☆",
+    "image": "https://img.game8.jp/13113715/f22eb7f293b90e6fbe80f01b4dbc6d7b.webp/show"
+   }
+  ],
+  "tags": [],
+  "upcoming": {
+   "source": "https://game8.jp/pokemon-tcg-pocket/833615"
+  }
+ },
+ {
+  "id": "up-20",
+  "nameEn": "Fuecoco",
+  "nameJa": "ホゲータ",
+  "kind": "pokemon",
+  "type": "fire",
+  "stage": "basic",
+  "evolvesFrom": [],
+  "evolvesTo": [
+   "b2a-017"
+  ],
+  "rule": "normal",
+  "groups": [],
+  "points": 1,
+  "hp": 70,
+  "weakness": "water",
+  "retreat": 2,
+  "attacks": [
+   {
+    "unknown": true,
+    "nameEn": "Flamethrower",
+    "nameJa": "かえんほうしゃ",
+    "textEn": "",
+    "tags": [],
+    "cost": {
+     "fire": 1,
+     "colorless": 1
+    },
+    "costTotal": 2,
+    "costTyped": 1,
+    "damage": 50,
+    "damageVariable": false,
+    "jaSource": "official"
+   }
+  ],
+  "prints": [
+   {
+    "id": "up-20",
+    "set": "sp1",
+    "setName": "Promo SP1",
+    "rarity": "☆",
+    "image": "https://img.game8.jp/13113714/459b5dbc62419b46546af540fd39dc07.webp/show"
+   }
+  ],
+  "tags": [],
+  "upcoming": {
+   "source": "https://game8.jp/pokemon-tcg-pocket/833615"
   }
  }
 ]
