@@ -54,7 +54,7 @@ export function activeCount(f: Filters): number {
 const has = <T>(list: T[], v: T | undefined) => !list.length || (v !== undefined && list.includes(v));
 
 export function matchFilters(c: AppCard, f: Filters): boolean {
-  if (f.types.length && !f.types.some((t) => c.type === t || c.typeRefs.includes(t))) return false;
+  if (f.types.length && !f.types.some((t) => c.type === t || c.type2 === t || c.typeRefs.includes(t))) return false;
   if (!has(f.kinds, c.kind)) return false;
   if (f.stages.length && !has(f.stages, c.stage)) return false;
   if (f.rules.length && (c.kind !== "pokemon" || !f.rules.includes(c.rule))) return false;

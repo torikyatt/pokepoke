@@ -14,7 +14,7 @@ import { PrintLine } from "../components/prints.tsx";
 import { PrintGallery } from "../components/print-gallery.tsx";
 import { CardDecks } from "../components/tournament-decks.tsx";
 import { navigate, searchPath } from "../router.ts";
-import type { AppAttack, AppCard, AppEffect } from "../types.ts";
+import { typesOf, type AppAttack, type AppCard, type AppEffect } from "../types.ts";
 import { cardName, effectName, groupName, kindName, ruleName, stageName, typeName, useLang, useT, type Lang } from "../i18n.ts";
 
 /** カード詳細の中身（スマホは下からのシート、PCは真ん中の列に入れる） */
@@ -39,6 +39,8 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
   const t = useT();
   const lang = useLang();
   if (!card) return <p className="p-6 text-center text-sm font-bold text-muted">{t("カードが見つかりません", "Card not found")}</p>;
+  // 実装前のカードで、まだ公開されていない項目
+  const unknown = (k: "hp" | "weakness" | "retreat") => (card.upcoming?.unknown?.includes(k) ? <span className="text-muted">{t("未公開", "TBA")}</span> : undefined);
 
   // 定番の組み合わせ: このカードと組む相手が同じものは、記事が違っても1つにまとめる（出典は全部並べる）。
   // 説明は表示言語と同じ言語の記事のものを優先する
@@ -87,22 +89,22 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
               {fav}
             </div>
             <div className="flex flex-wrap items-center gap-1">
-              {card.type && <EnergyIcon type={card.type} />}
+              {typesOf(card).map((ty) => <EnergyIcon key={ty} type={ty} />)}
               <Chip active>{card.kind === "pokemon" ? (card.stage ? stageName(card.stage, lang) : kindName("pokemon", lang)) : kindName(card.kind, lang)}</Chip>
               {card.rule !== "normal" && <Chip tone="text">{ruleName(card.rule, lang)}</Chip>}
               {card.groups.map((g) => (
                 <Chip key={g}>{groupName(g, lang)}</Chip>
               ))}
             </div>
-            {actions}
+            {card.upcoming ? <UpcomingNote card={card} /> : actions}
             {card.kind === "pokemon" && (
               <dl className="neu-in grid grid-cols-[auto_1fr] gap-x-2.5 gap-y-1 rounded-2xl px-3 py-2 text-xs font-bold [&_dt]:whitespace-nowrap">
                 <dt className="text-muted">HP</dt>
-                <dd className="font-bold">{card.hp}</dd>
+                <dd className="font-bold">{unknown("hp") ?? card.hp}</dd>
                 <dt className="text-muted">{t("弱点", "Weakness")}</dt>
-                <dd>{card.weakness ? <span className="inline-flex items-center gap-1"><EnergyIcon type={card.weakness} size="sm" />+20</span> : t("なし", "None")}</dd>
+                <dd>{unknown("weakness") ?? (card.weakness ? <span className="inline-flex items-center gap-1"><EnergyIcon type={card.weakness} size="sm" />+20</span> : t("なし", "None"))}</dd>
                 <dt className="text-muted">{t("にげる", "Retreat")}</dt>
-                <dd>{card.retreat ? <Cost cost={{ colorless: card.retreat }} /> : "0"}</dd>
+                <dd>{unknown("retreat") ?? (card.retreat ? <Cost cost={{ colorless: card.retreat }} /> : "0")}</dd>
                 {card.points !== undefined && (
                   <>
                     <dt className="text-muted">{t("きぜつ時", "If KO'd")}</dt>
@@ -291,6 +293,8 @@ function EffectBlock({ e, label, tagChip, lang }: { e: AppEffect; label: string;
   const otherText = lang === "en" ? e.textJa : e.textEn;
   const atk = e.slot === "attack" ? (e as AppAttack) : undefined;
   const ability = e.slot === "ability";
+  // 実装前のカードで、まだ公開されていないワザ・特性（コスト・ダメージだけ分かっていることもある）
+  const hidden = e.unknown ? <span className="text-muted">{t("（未公開）", "(TBA)")}</span> : undefined;
   const dmg = atk?.damage !== undefined ? `${atk.damage}${atk.damageVariable ? (/for each/i.test(atk.textEn ?? "") ? "×" : "+") : ""}` : atk?.damageVariable ? "?" : "";
   return (
     <div className="neu rounded-2xl p-3.5">
@@ -299,7 +303,7 @@ function EffectBlock({ e, label, tagChip, lang }: { e: AppEffect; label: string;
         <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold text-white ${ability ? "bg-[#c4302b]" : "bg-badge"}`}>{label}</span>
         {atk && <Cost cost={atk.cost} />}
         <span className={`min-w-0 flex-1 truncate font-extrabold ${ability ? "text-[#c4302b]" : ""}`}>
-          {name}
+          {name || hidden}
           {lang === "ja" && e.machine && <MachineBadge />}
         </span>
         {dmg && <span className="text-xl font-extrabold tabular-nums">{dmg}</span>}
@@ -320,5 +324,27 @@ function EffectBlock({ e, label, tagChip, lang }: { e: AppEffect; label: string;
 
 export function CardTypeLabel({ card }: { card: AppCard }) {
   const lang = useLang();
-  return <span>{card.type ? typeName(card.type, lang) : kindName(card.kind, lang)}</span>;
+  return <span>{card.type ? typesOf(card).map((ty) => typeName(ty, lang)).join(lang === "en" ? "/" : "・") : kindName(card.kind, lang)}</span>;
+}
+
+/** 実装前のカードの説明（デッキの −／＋ の代わりに出す） */
+function UpcomingNote({ card }: { card: AppCard }) {
+  const t = useT();
+  const lang = useLang();
+  const u = card.upcoming!;
+  // 日付だけの文字列は new Date() だと UTC 扱いになり、時差で前日にずれるので、そのまま組み立てる
+  const [y, m, d] = (u.date ?? "").split("-").map(Number);
+  const when = u.date ? (lang === "en" ? new Date(y, m - 1, d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : `${y}年${m}月${d}日`) : t("時期未定", "date TBA");
+  return (
+    <div className="rounded-2xl bg-[#fdf1d8] px-3 py-2 text-[11px] leading-relaxed font-bold text-[#7a5410]">
+      <div className="text-xs font-extrabold">{t(`実装予定のカード（${when}）`, `Upcoming card (${when})`)}</div>
+      {t(
+        "先行公開の情報をもとに載せています。実装されるまで、デッキ・リストには入れられません。",
+        "Based on pre-release info; English text is our own translation. It can't be added to decks or lists until release.",
+      )}{" "}
+      <a className="underline" href={u.source} target="_blank" rel="noreferrer">
+        {t("情報元", "Source")}
+      </a>
+    </div>
+  );
 }

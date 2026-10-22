@@ -20,6 +20,15 @@ const ROOT = join(import.meta.dirname, "..");
 const DIST = join(ROOT, "dist");
 const SITE = (process.env.SITE_URL ?? "https://pokepokeindex.com").replace(/\/+$/, "");
 const data: AppData = JSON.parse(readFileSync(join(ROOT, "src/data/app-data.json"), "utf8"));
+// 実装前のカード（仮のID）はページを作らない。実装されるとIDが変わるため
+{
+  const gone = new Set(data.cards.filter((c) => c.upcoming).map((c) => c.id));
+  data.cards = data.cards.filter((c) => !gone.has(c.id));
+  for (const c of data.cards) {
+    c.evolvesFrom = c.evolvesFrom.filter((id) => !gone.has(id));
+    c.evolvesTo = c.evolvesTo.filter((id) => !gone.has(id));
+  }
+}
 const synergy = createSynergy(data);
 const template = readFileSync(join(DIST, "index.html"), "utf8");
 const setNameJa = new Map(data.sets.map((s) => [s.code, s.nameJa || s.name]));

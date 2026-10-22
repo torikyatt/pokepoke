@@ -11,7 +11,8 @@ import type { Card, Effect } from "./lib/types.ts";
 
 const DATA = join(import.meta.dirname, "../data");
 const cards: Card[] = JSON.parse(readFileSync(join(DATA, "cards.json"), "utf8"));
-const translations: Record<string, { en: string; ja: string }> = existsSync(join(DATA, "translations.json"))
+// official: true は、Game8 にまだ無いが公式の日本語が分かっているもの（ゲーム内・公式発表で確かめた）
+const translations: Record<string, { en: string; ja: string; official?: true }> = existsSync(join(DATA, "translations.json"))
   ? JSON.parse(readFileSync(join(DATA, "translations.json"), "utf8"))
   : {};
 export const hashOf = (en: string) => createHash("sha1").update(en.normalize("NFKC").replace(/\s+/g, " ").trim()).digest("hex").slice(0, 12);
@@ -44,6 +45,10 @@ function fill(en: string, kind: "name" | "text", where: string): { ja?: string; 
     return { ja: o, source: "official" };
   }
   const t = translations[hashOf(en)];
+  if (t?.official) {
+    reused++;
+    return { ja: t.ja, source: "official" };
+  }
   if (t) {
     machine++;
     return { ja: t.ja, source: "machine" };

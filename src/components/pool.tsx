@@ -3,7 +3,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode }
 import { useAddToDeck, useData } from "../context.tsx";
 import { activeCount, EMPTY_FILTERS, matchFilters, RARITIES, SORTS, sortHits, usePool, type Filters, type SortKey } from "../pool.ts";
 import { SCORED_KINDS, type Cond, type Hit } from "../search/engine.ts";
-import type { AppCard, CardGroup, CardKind, EnergyType, Rule, Stage } from "../types.ts";
+import { typesOf, type AppCard, type CardGroup, type CardKind, type EnergyType, type Rule, type Stage } from "../types.ts";
 import { cardName, effectName, groupName, kindName, setName, stageName, tagName, useLang, useT } from "../i18n.ts";
 import { openCard } from "../detail.ts";
 import { useDecks, useEditTarget, useFavorites, useLists, useViewed, VIEWED_MAX } from "../store.ts";
@@ -353,7 +353,7 @@ function ViewedSheet({ open, onClose, closeOnOpen }: { open: boolean; onClose: (
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-1.5">
-                    {c.type && <EnergyIcon type={c.type} size="sm" />}
+                    {typesOf(c).map((t) => <EnergyIcon key={t} type={t} size="sm" />)}
                     <span className="min-w-0 truncate text-sm font-extrabold">{cardName(c, lang)}</span>
                   </div>
                   <div className="mt-0.5 truncate text-[11px] font-bold text-muted">

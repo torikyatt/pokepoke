@@ -30,7 +30,7 @@ for (const c of cards) {
     if (c.stage !== "basic" && !c.evolvesFrom.length) errors.push(`${at}: 進化元が見つからない (${c.evolvesFromName})`);
     if (!nameJaOf(c)) warns.push(`${at}: 日本語名なし`);
     for (const a of c.attacks) {
-      if (a.damage === undefined && !a.textEn) warns.push(`${at}: ワザ「${a.nameEn}」にダメージも効果もない`);
+      if (a.damage === undefined && !a.textEn && !a.unknown) warns.push(`${at}: ワザ「${a.nameEn}」にダメージも効果もない`);
     }
   } else if (!c.text?.textEn) {
     errors.push(`${at}: トレーナーズの効果文なし`);
@@ -40,7 +40,7 @@ for (const c of cards) {
   }
   if (withJa) {
     for (const [label, e] of [["特性", c.ability], ...c.attacks.map((a) => ["ワザ", a] as const), ["効果", c.text]] as const) {
-      if (!e) continue;
+      if (!e || e.unknown) continue;
       if (e.jaSource && !e.nameJa && label !== "効果") errors.push(`${at}: ${label}「${e.nameEn}」に日本語の名前がない`);
       if (e.jaSource && e.textEn && !e.textJa) warns.push(`${at}: ${label}「${e.nameEn ?? ""}」の日本語の効果文がない`);
     }

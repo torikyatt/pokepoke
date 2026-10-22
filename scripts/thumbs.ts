@@ -6,6 +6,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import sharp from "sharp";
 import { jaImageIndex } from "./lib/game8.ts";
+import { jaImageFile } from "./lib/ja-images.ts";
 import { orderedPrints } from "./lib/prints.ts";
 import type { Card } from "./lib/types.ts";
 
@@ -23,6 +24,14 @@ const UA = "pokepoke-personal/0.1 (personal, non-commercial deck builder; max 1 
 const src = new Map<string, string[]>();
 const jaOf = ja ? jaImageIndex(join(ROOT, "data")) : undefined;
 for (const c of cards) {
+  // 実装前のカードは、先に images-ja が置いた画像（無ければ手で置いた画像）から作る。英語版も同じ画像
+  if (c.upcoming) {
+    const p = c.prints[0];
+    const manual = join(ROOT, "public/cards-ja/manual", `${p.id}.webp`);
+    const file = existsSync(manual) ? manual : p.image ? join(ROOT, "public", jaImageFile(p.image)) : undefined;
+    if (file && existsSync(file)) src.set(c.id, [file]);
+    continue;
+  }
   if (!jaOf) src.set(c.id, orderedPrints(c.prints).map((p) => p.image));
   else {
     const url = jaOf(c);
@@ -51,9 +60,14 @@ async function one(c: Card) {
     if (wait > 0) await new Promise((r) => setTimeout(r, wait));
     last = Date.now();
     try {
-      const res = await fetch(url, { headers: { "User-Agent": UA } });
-      if (!res.ok) throw new Error(`${res.status}`);
-      const out = await sharp(Buffer.from(await res.arrayBuffer())).resize({ width: WIDTH }).webp({ quality: 74 }).toBuffer();
+      let buf: Buffer;
+      if (url.startsWith("/")) buf = readFileSync(url);
+      else {
+        const res = await fetch(url, { headers: { "User-Agent": UA } });
+        if (!res.ok) throw new Error(`${res.status}`);
+        buf = Buffer.from(await res.arrayBuffer());
+      }
+      const out = await sharp(buf).resize({ width: WIDTH }).webp({ quality: 74 }).toBuffer();
       writeFileSync(join(OUT, `${c.id}.webp`), out);
       manifest[c.id] = url;
       return;

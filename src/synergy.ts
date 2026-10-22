@@ -7,7 +7,7 @@
 //   ・攻略記事で紹介されている定番の組み合わせ（data/combos.yaml）
 //   ・大会で勝ち越したデッキに一緒に入っていることが多い組（data/meta/meta.json。どのデッキにも入る定番どうしは除いてある）
 import type { AppArchetype, AppCard, AppCombo, AppData, EnergyType, HelpTarget, Selector } from "./types.ts";
-import { STAGE_JA, TYPE_EN, TYPE_JA } from "./types.ts";
+import { STAGE_JA, TYPE_EN, TYPE_JA, typesOf } from "./types.ts";
 import { namedTypes } from "./card-text.ts";
 
 // 供給の種類ごとの説明（相手のカードが「供給する側」「要求する側」のときのラベル）
@@ -119,7 +119,7 @@ export function createSynergy(data: AppData) {
   const namedCache = new Map<string, EnergyType[]>();
   const named = (c: AppCard) => namedCache.get(c.id) ?? namedCache.set(c.id, namedTypes(c)).get(c.id)!;
   const ownTypes = (c: AppCard): EnergyType[] | undefined =>
-    c.kind !== "pokemon" || !c.type || c.type === "colorless" ? undefined : [c.type, ...costTypes(c)];
+    c.kind !== "pokemon" || !c.type || c.type === "colorless" ? undefined : [...typesOf(c), ...costTypes(c)];
   // 「場に〇〇がいるときにしか使えない」カード（スイレン・ネズなど）は、名指しの相手以外とは効果から結ばない
   const onlyWith = (a: AppCard, b: AppCard) =>
     a.tags.includes("cond.bench.specific") && a.tags.includes("drawback.condition") && a.refs.length > 0 && !a.refs.some((id) => id === b.id || byId.get(id)?.nameEn === b.nameEn);
@@ -156,7 +156,7 @@ export function createSynergy(data: AppData) {
       const names = new Set(sel.ids.map(nameOf));
       if (!sel.ids.includes(receiver.id) && !names.has(receiver.nameEn)) return false;
     }
-    if (sel.types?.length && !(receiver.type && sel.types.includes(receiver.type))) return false;
+    if (sel.types?.length && !typesOf(receiver).some((t) => sel.types!.includes(t))) return false;
     if (sel.stages?.length && !(receiver.stage && sel.stages.includes(receiver.stage))) return false;
     if (sel.groups?.length && !sel.groups.some((g) => receiver.groups.includes(g))) return false;
     if (sel.kinds?.length && !sel.kinds.includes(receiver.kind === "pokemon" ? "pokemon" : "trainer")) return false;
@@ -309,7 +309,8 @@ export function createSynergy(data: AppData) {
     // 進化ラインのカード（進化元・進化先・同じ名前）は「進化ライン」に出すので、相性のいいカードには出さない
     const line = x.kind === "pokemon" || x.kind === "fossil" ? lineNames(x) : new Set([x.nameEn]);
     const push = (card: AppCard, score: number, reason: string, reasonEn: string) => {
-      if (card.id === x.id || line.has(card.nameEn)) return;
+      // 実装前のカードは、ふつうのカードの相手には出さない（まだデッキに入れられない）
+      if (card.id === x.id || line.has(card.nameEn) || (card.upcoming && !x.upcoming)) return;
       const p = out.get(card.id) ?? out.set(card.id, { card, score: 0, reasons: [], reasonsEn: [] }).get(card.id)!;
       p.score += score;
       // 「定番コンボ（…）」は記事ごとに出さず、1つだけ
@@ -482,7 +483,7 @@ export function createSynergy(data: AppData) {
 
     // 同じタイプ・名指しタイプのものを少し優先
     const affinity = new Set([x.type, ...x.typeRefs, ...x.accelTypes].filter(Boolean));
-    for (const p of out.values()) if (p.card.type && affinity.has(p.card.type)) p.score += 0.5;
+    for (const p of out.values()) if (typesOf(p.card).some((t) => affinity.has(t))) p.score += 0.5;
     // 同名でも効果が違えば別のカードなので、まとめずに並べる
     // 「どちらも〇〇と相性がいい」は、〇〇が一覧（上位 limit 件）に出ているときだけ。名前もその中から選ぶ
     const sorted = () => [...out.values()].sort((a, b) => b.score - a.score || a.card.order - b.card.order);

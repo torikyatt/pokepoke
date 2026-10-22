@@ -11,7 +11,8 @@
    "pa-018",
    "a1-004",
    "b1a-003",
-   "b1a-004"
+   "b1a-004",
+   "up-09"
   ],
   "rule": "normal",
   "groups": [],
@@ -1610,7 +1611,8 @@
    "a2b-010",
    "b1a-013",
    "b1a-014",
-   "b2b-009"
+   "b2b-009",
+   "up-10"
   ],
   "rule": "normal",
   "groups": [],
@@ -2672,7 +2674,8 @@
    "pa-029",
    "a1-056",
    "b1a-019",
-   "b1a-020"
+   "b1a-020",
+   "up-11"
   ],
   "rule": "normal",
   "groups": [],
@@ -4563,7 +4566,8 @@
   ],
   "evolvesTo": [
    "pa-019",
-   "b1-073"
+   "b1-073",
+   "up-02"
   ],
   "rule": "normal",
   "groups": [],
@@ -9723,7 +9727,8 @@
    "a1-185",
    "a3b-053",
    "b2b-053",
-   "b4-118"
+   "b4-118",
+   "up-03"
   ],
   "rule": "normal",
   "groups": [],
@@ -25149,7 +25154,8 @@
   ],
   "evolvesTo": [
    "a2a-041",
-   "a4-119"
+   "a4-119",
+   "up-04"
   ],
   "rule": "normal",
   "groups": [],
@@ -27638,7 +27644,8 @@
    "a2b-010",
    "b1a-013",
    "b1a-014",
-   "b2b-009"
+   "b2b-009",
+   "up-10"
   ],
   "rule": "normal",
   "groups": [],
@@ -35118,7 +35125,8 @@
   "kind": "pokemon",
   "evolvesFrom": [],
   "evolvesTo": [
-   "a3-079"
+   "a3-079",
+   "up-12"
   ],
   "rule": "normal",
   "groups": [],
@@ -45154,7 +45162,8 @@
    "a1-185",
    "a3b-053",
    "b2b-053",
-   "b4-118"
+   "b4-118",
+   "up-03"
   ],
   "rule": "normal",
   "groups": [],
@@ -51649,7 +51658,8 @@
   ],
   "evolvesTo": [
    "a2a-041",
-   "a4-119"
+   "a4-119",
+   "up-04"
   ],
   "rule": "normal",
   "groups": [],
@@ -61455,7 +61465,8 @@
   ],
   "evolvesTo": [
    "pa-019",
-   "b1-073"
+   "b1-073",
+   "up-02"
   ],
   "rule": "normal",
   "groups": [],
@@ -69303,7 +69314,8 @@
    "pa-018",
    "a1-004",
    "b1a-003",
-   "b1a-004"
+   "b1a-004",
+   "up-09"
   ],
   "rule": "normal",
   "groups": [],
@@ -70202,7 +70214,8 @@
    "pa-029",
    "a1-056",
    "b1a-019",
-   "b1a-020"
+   "b1a-020",
+   "up-11"
   ],
   "rule": "normal",
   "groups": [],
@@ -74099,7 +74112,8 @@
   "kind": "pokemon",
   "evolvesFrom": [],
   "evolvesTo": [
-   "b2-025"
+   "b2-025",
+   "up-13"
   ],
   "rule": "normal",
   "groups": [],
@@ -85997,7 +86011,8 @@
    "a2b-010",
    "b1a-013",
    "b1a-014",
-   "b2b-009"
+   "b2b-009",
+   "up-10"
   ],
   "rule": "normal",
   "groups": [],
@@ -88565,7 +88580,8 @@
    "a1-185",
    "a3b-053",
    "b2b-053",
-   "b4-118"
+   "b4-118",
+   "up-03"
   ],
   "rule": "normal",
   "groups": [],
@@ -111118,7 +111134,8 @@
    "a1-185",
    "a3b-053",
    "b2b-053",
-   "b4-118"
+   "b4-118",
+   "up-03"
   ],
   "rule": "normal",
   "groups": [],
@@ -121974,7 +121991,8 @@
    "a1-185",
    "a3b-053",
    "b2b-053",
-   "b4-118"
+   "b4-118",
+   "up-03"
   ],
   "rule": "normal",
   "groups": [],
@@ -125023,7 +125041,8 @@
    "a2b-010",
    "b1a-013",
    "b1a-014",
-   "b2b-009"
+   "b2b-009",
+   "up-10"
   ],
   "rule": "normal",
   "groups": [],
@@ -125588,7 +125607,8 @@
   "nameEn": "Cinderace",
   "kind": "pokemon",
   "evolvesFrom": [
-   "b2-025"
+   "b2-025",
+   "up-13"
   ],
   "evolvesTo": [],
   "rule": "normal",
@@ -129452,7 +129472,7 @@
     "damageVariable": false,
     "nameJa": "フォーリングエッジ",
     "textJa": "このポケモンからエネルギーをランダムに2個トラッシュ",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -129473,5 +129493,790 @@
   "hp": 220,
   "retreat": 2,
   "nameJa": "メガガブリアスex"
+ },
+ {
+  "id": "up-01",
+  "nameEn": "Mega Mewtwo X ex",
+  "nameJa": "メガミュウツーXex",
+  "kind": "pokemon",
+  "type": "psychic",
+  "type2": "fighting",
+  "stage": "basic",
+  "evolvesFrom": [],
+  "evolvesTo": [],
+  "rule": "mega_ex",
+  "groups": [],
+  "points": 3,
+  "hp": 180,
+  "weakness": "darkness",
+  "retreat": 2,
+  "attacks": [
+   {
+    "nameEn": "Dual Impact",
+    "nameJa": "デュアルインパクト",
+    "textEn": "If a Stadium is in play, this attack does 40 more damage.",
+    "textJa": "場にスタジアムが出ているなら、40ダメージ追加。",
+    "jaSource": "official",
+    "tags": [],
+    "cost": {
+     "psychic": 2,
+     "colorless": 1
+    },
+    "costTotal": 3,
+    "costTyped": 2,
+    "damage": 100,
+    "damageVariable": true
+   }
+  ],
+  "prints": [
+   {
+    "id": "up-01",
+    "set": "c1",
+    "setName": "Dual Fusion",
+    "rarity": "◊◊◊◊",
+    "image": "https://img.game8.jp/12922926/689e96571dcf6eaa9e40f1ae881da1e0.webp/show",
+    "released": "2026-10-29"
+   }
+  ],
+  "tags": [],
+  "upcoming": {
+   "date": "2026-10-29",
+   "source": "https://game8.jp/pokemon-tcg-pocket/833551"
+  }
+ },
+ {
+  "id": "up-02",
+  "nameEn": "Mega Greninja ex",
+  "nameJa": "メガゲッコウガex",
+  "kind": "pokemon",
+  "type": "water",
+  "type2": "darkness",
+  "stage": "stage2",
+  "evolvesFromName": "Frogadier",
+  "evolvesFrom": [
+   "a1-088",
+   "b1-072"
+  ],
+  "evolvesTo": [],
+  "rule": "mega_ex",
+  "groups": [],
+  "points": 3,
+  "hp": 200,
+  "weakness": "lightning",
+  "retreat": 0,
+  "attacks": [
+   {
+    "nameEn": "Splash Dark",
+    "nameJa": "スプラッシュダーク",
+    "textEn": "During your opponent's next turn, the Defending Pokémon can't retreat.",
+    "textJa": "次の相手の番、このワザを受けたポケモンはにげるができない。",
+    "jaSource": "official",
+    "tags": [],
+    "cost": {
+     "water": 2
+    },
+    "costTotal": 2,
+    "costTyped": 2,
+    "damage": 100,
+    "damageVariable": false
+   }
+  ],
+  "prints": [
+   {
+    "id": "up-02",
+    "set": "c1",
+    "setName": "Dual Fusion",
+    "rarity": "◊◊◊◊",
+    "image": "https://img.game8.jp/13113526/e068da7d3b77b97e1e6d75520d5fbe9d.webp/show",
+    "released": "2026-10-29"
+   }
+  ],
+  "tags": [],
+  "upcoming": {
+   "date": "2026-10-29",
+   "source": "https://game8.jp/pokemon-tcg-pocket/833551"
+  }
+ },
+ {
+  "id": "up-03",
+  "nameEn": "Mega Dragonite ex",
+  "nameJa": "メガカイリューex",
+  "kind": "pokemon",
+  "type": "dragon",
+  "stage": "stage2",
+  "evolvesFromName": "Dragonair",
+  "evolvesFrom": [
+   "a1-184",
+   "a3b-052",
+   "b2b-052",
+   "b4-117",
+   "pa-088"
+  ],
+  "evolvesTo": [],
+  "rule": "mega_ex",
+  "groups": [],
+  "points": 3,
+  "hp": 240,
+  "retreat": 4,
+  "attacks": [
+   {
+    "nameEn": "Draconic Meteor",
+    "nameJa": "ドラゴニックメテオ",
+    "textEn": "1 of your opponent's Pokémon is chosen at random. Do 250 damage to it.",
+    "textJa": "相手のポケモンがランダムに1回選ばれ、選ばれたポケモンに、250ダメージ。",
+    "jaSource": "official",
+    "tags": [],
+    "cost": {
+     "water": 1,
+     "lightning": 1,
+     "colorless": 3
+    },
+    "costTotal": 5,
+    "costTyped": 2,
+    "damageVariable": false
+   }
+  ],
+  "prints": [
+   {
+    "id": "up-03",
+    "set": "c1",
+    "setName": "Dual Fusion",
+    "rarity": "◊◊◊◊",
+    "image": "https://img.game8.jp/13113524/bfd407fbb73a6b093f9440cd16a20e97.webp/show",
+    "released": "2026-10-29"
+   }
+  ],
+  "tags": [],
+  "upcoming": {
+   "date": "2026-10-29",
+   "source": "https://game8.jp/pokemon-tcg-pocket/833551"
+  }
+ },
+ {
+  "id": "up-04",
+  "nameEn": "Mega Tyranitar ex",
+  "nameJa": "メガバンギラスex",
+  "kind": "pokemon",
+  "type": "darkness",
+  "stage": "stage2",
+  "evolvesFromName": "Pupitar",
+  "evolvesFrom": [
+   "a2a-040",
+   "a4-104"
+  ],
+  "evolvesTo": [],
+  "rule": "mega_ex",
+  "groups": [],
+  "points": 3,
+  "hp": 240,
+  "weakness": "grass",
+  "retreat": 4,
+  "attacks": [
+   {
+    "unknown": true,
+    "textEn": "",
+    "tags": [],
+    "cost": {
+     "darkness": 2,
+     "colorless": 2
+    },
+    "costTotal": 4,
+    "costTyped": 2,
+    "damageVariable": false,
+    "jaSource": "official"
+   }
+  ],
+  "prints": [
+   {
+    "id": "up-04",
+    "set": "c1",
+    "setName": "Dual Fusion",
+    "rarity": "◊◊◊◊",
+    "image": "https://img.game8.jp/13113899/d8c987292cf6aa015fa5af87d1714458.webp/show",
+    "released": "2026-10-29"
+   }
+  ],
+  "tags": [],
+  "upcoming": {
+   "date": "2026-10-29",
+   "source": "https://game8.jp/pokemon-tcg-pocket/833551"
+  }
+ },
+ {
+  "id": "up-05",
+  "nameEn": "Mew ex",
+  "nameJa": "ミュウex",
+  "kind": "pokemon",
+  "type": "psychic",
+  "stage": "basic",
+  "evolvesFrom": [],
+  "evolvesTo": [],
+  "rule": "ex",
+  "groups": [],
+  "points": 2,
+  "hp": 130,
+  "weakness": "darkness",
+  "retreat": 1,
+  "attacks": [
+   {
+    "nameEn": "Secret Guidance",
+    "nameJa": "ひみつのみちびき",
+    "textEn": "Flip 3 coins. Take an amount of [P] Energy from your Energy Zone equal to the number of heads and attach it to your Benched [P] Pokémon in any way you like.",
+    "textJa": "コインを3回投げ、オモテの数ぶんの超エネルギーを自分のエネルギーゾーンから出し、ベンチの超ポケモンに好きなようにつける。",
+    "jaSource": "official",
+    "tags": [],
+    "cost": {
+     "psychic": 1
+    },
+    "costTotal": 1,
+    "costTyped": 1,
+    "damageVariable": false
+   },
+   {
+    "nameEn": "Psyburn",
+    "nameJa": "サイコバーン",
+    "textEn": "",
+    "jaSource": "official",
+    "tags": [],
+    "cost": {
+     "psychic": 1,
+     "colorless": 1
+    },
+    "costTotal": 2,
+    "costTyped": 1,
+    "damage": 60,
+    "damageVariable": false
+   }
+  ],
+  "prints": [
+   {
+    "id": "up-05",
+    "set": "c1",
+    "setName": "Dual Fusion",
+    "rarity": "◊◊◊◊",
+    "image": "https://img.game8.jp/13113525/a852bad97f4d171d5b2b98c6ae5d2a85.webp/show",
+    "released": "2026-10-29"
+   }
+  ],
+  "tags": [],
+  "upcoming": {
+   "date": "2026-10-29",
+   "source": "https://game8.jp/pokemon-tcg-pocket/833551"
+  }
+ },
+ {
+  "id": "up-06",
+  "nameEn": "Pikachu ex",
+  "nameJa": "ピカチュウex",
+  "kind": "pokemon",
+  "type": "lightning",
+  "stage": "basic",
+  "evolvesFrom": [],
+  "evolvesTo": [],
+  "rule": "ex",
+  "groups": [],
+  "points": 2,
+  "hp": 120,
+  "weakness": "fighting",
+  "retreat": 1,
+  "attacks": [
+   {
+    "nameEn": "Pika Punch",
+    "nameJa": "ピカパンチ",
+    "textEn": "",
+    "jaSource": "official",
+    "tags": [],
+    "cost": {
+     "lightning": 1
+    },
+    "costTotal": 1,
+    "costTyped": 1,
+    "damage": 30,
+    "damageVariable": false
+   },
+   {
+    "nameEn": "Lightning Tail",
+    "nameJa": "いなずまテール",
+    "textEn": "Discard 2 [L] Energy from this Pokémon.",
+    "textJa": "このポケモンから雷エネルギーを2個トラッシュ。",
+    "jaSource": "official",
+    "tags": [],
+    "cost": {
+     "lightning": 2,
+     "colorless": 1
+    },
+    "costTotal": 3,
+    "costTyped": 2,
+    "damage": 130,
+    "damageVariable": false
+   }
+  ],
+  "prints": [
+   {
+    "id": "up-06",
+    "set": "c1",
+    "setName": "Dual Fusion",
+    "rarity": "◊◊◊◊",
+    "image": "https://img.game8.jp/13113527/7b79df7f0e8faa29d7d615eb8b864854.webp/show",
+    "released": "2026-10-29"
+   }
+  ],
+  "tags": [],
+  "upcoming": {
+   "date": "2026-10-29",
+   "source": "https://game8.jp/pokemon-tcg-pocket/833551"
+  }
+ },
+ {
+  "id": "up-07",
+  "nameEn": "Piplup ex",
+  "nameJa": "ポッチャマex",
+  "kind": "pokemon",
+  "type": "water",
+  "stage": "basic",
+  "evolvesFrom": [],
+  "evolvesTo": [],
+  "rule": "ex",
+  "groups": [],
+  "points": 2,
+  "hp": 120,
+  "weakness": "lightning",
+  "retreat": 1,
+  "attacks": [
+   {
+    "nameEn": "Playful Bubble",
+    "nameJa": "わんぱくバブル",
+    "textEn": "Take a [W] Energy from your Energy Zone and attach it to 1 of your Benched Pokémon.",
+    "textJa": "自分のエネルギーゾーンから水エネルギーを1個出し、ベンチポケモンにつける。",
+    "jaSource": "official",
+    "tags": [],
+    "cost": {
+     "water": 1
+    },
+    "costTotal": 1,
+    "costTyped": 1,
+    "damage": 40,
+    "damageVariable": false
+   }
+  ],
+  "prints": [
+   {
+    "id": "up-07",
+    "set": "c1",
+    "setName": "Dual Fusion",
+    "rarity": "◊◊◊◊",
+    "image": "https://img.game8.jp/12923014/b98c9fd9f65b5d683ab002f05ec51af4.webp/show",
+    "released": "2026-10-29"
+   }
+  ],
+  "tags": [],
+  "upcoming": {
+   "date": "2026-10-29",
+   "source": "https://game8.jp/pokemon-tcg-pocket/833551"
+  }
+ },
+ {
+  "id": "up-08",
+  "nameEn": "Fuecoco ex",
+  "nameJa": "ホゲータex",
+  "kind": "pokemon",
+  "type": "fire",
+  "stage": "basic",
+  "evolvesFrom": [],
+  "evolvesTo": [],
+  "rule": "ex",
+  "groups": [],
+  "points": 2,
+  "hp": 130,
+  "weakness": "water",
+  "retreat": 2,
+  "attacks": [
+   {
+    "nameEn": "Bite",
+    "nameJa": "かみつく",
+    "textEn": "",
+    "jaSource": "official",
+    "tags": [],
+    "cost": {
+     "fire": 1
+    },
+    "costTotal": 1,
+    "costTyped": 1,
+    "damage": 30,
+    "damageVariable": false
+   },
+   {
+    "nameEn": "Furious Fire",
+    "nameJa": "げきおこファイヤー",
+    "textEn": "If this Pokémon has damage on it, this attack does 70 more damage.",
+    "textJa": "このポケモンがダメージを受けているなら、70ダメージ追加。",
+    "jaSource": "official",
+    "tags": [],
+    "cost": {
+     "fire": 1,
+     "colorless": 1
+    },
+    "costTotal": 2,
+    "costTyped": 1,
+    "damage": 50,
+    "damageVariable": true
+   }
+  ],
+  "prints": [
+   {
+    "id": "up-08",
+    "set": "c1",
+    "setName": "Dual Fusion",
+    "rarity": "◊◊◊◊",
+    "image": "https://img.game8.jp/12923032/7ac06d023af3fbf47ccc0d6378489d6b.webp/show",
+    "released": "2026-10-29"
+   }
+  ],
+  "tags": [],
+  "upcoming": {
+   "date": "2026-10-29",
+   "source": "https://game8.jp/pokemon-tcg-pocket/833551"
+  }
+ },
+ {
+  "id": "up-09",
+  "nameEn": "Venusaur",
+  "nameJa": "フシギバナ",
+  "kind": "pokemon",
+  "type": "grass",
+  "stage": "stage2",
+  "evolvesFromName": "Ivysaur",
+  "evolvesFrom": [
+   "a1-002",
+   "b1a-002"
+  ],
+  "evolvesTo": [],
+  "rule": "normal",
+  "groups": [],
+  "points": 1,
+  "hp": 150,
+  "weakness": "fire",
+  "retreat": 3,
+  "ability": {
+   "nameEn": "Sunny Heal",
+   "nameJa": "サニーヒール",
+   "textEn": "Once during your turn, you may heal 30 damage from your Active Pokémon.",
+   "textJa": "自分の番に1回使える。自分のバトルポケモンのHPを30回復。",
+   "jaSource": "official",
+   "tags": []
+  },
+  "attacks": [
+   {
+    "nameEn": "Solar Beam",
+    "nameJa": "ソーラービーム",
+    "textEn": "",
+    "jaSource": "official",
+    "tags": [],
+    "cost": {
+     "grass": 1,
+     "colorless": 3
+    },
+    "costTotal": 4,
+    "costTyped": 1,
+    "damage": 90,
+    "damageVariable": false
+   }
+  ],
+  "prints": [
+   {
+    "id": "up-09",
+    "set": "c1",
+    "setName": "Dual Fusion",
+    "rarity": "☆",
+    "image": "https://img.game8.jp/13113530/ebcd921e0309306ca1786f9cfc9eea76.webp/show",
+    "released": "2026-10-29"
+   }
+  ],
+  "tags": [],
+  "upcoming": {
+   "date": "2026-10-29",
+   "source": "https://game8.jp/pokemon-tcg-pocket/833551"
+  }
+ },
+ {
+  "id": "up-10",
+  "nameEn": "Charizard",
+  "nameJa": "リザードン",
+  "kind": "pokemon",
+  "type": "fire",
+  "stage": "stage2",
+  "evolvesFromName": "Charmeleon",
+  "evolvesFrom": [
+   "a1-034",
+   "a2b-009",
+   "b2b-008",
+   "pb-020"
+  ],
+  "evolvesTo": [],
+  "rule": "normal",
+  "groups": [],
+  "points": 1,
+  "hp": 150,
+  "weakness": "water",
+  "retreat": 3,
+  "ability": {
+   "nameEn": "Flame Aura",
+   "nameJa": "フレイムオーラ",
+   "textEn": "Whenever you attach a [R] Energy from your Energy Zone to this Pokémon, do 30 damage to your opponent's Active Pokémon.",
+   "textJa": "自分のエネルギーゾーンからこのポケモンに炎エネルギーをつけるたび、相手のバトルポケモンに30ダメージ。",
+   "jaSource": "official",
+   "tags": []
+  },
+  "attacks": [
+   {
+    "nameEn": "Fire Wing",
+    "nameJa": "ほのおのつばさ",
+    "textEn": "",
+    "jaSource": "official",
+    "tags": [],
+    "cost": {
+     "fire": 2,
+     "colorless": 1
+    },
+    "costTotal": 3,
+    "costTyped": 2,
+    "damage": 90,
+    "damageVariable": false
+   }
+  ],
+  "prints": [
+   {
+    "id": "up-10",
+    "set": "c1",
+    "setName": "Dual Fusion",
+    "rarity": "☆",
+    "image": "https://img.game8.jp/13113529/b22f2b4917260c2f0999dca20c539a87.webp/show",
+    "released": "2026-10-29"
+   }
+  ],
+  "tags": [],
+  "upcoming": {
+   "date": "2026-10-29",
+   "source": "https://game8.jp/pokemon-tcg-pocket/833551"
+  }
+ },
+ {
+  "id": "up-11",
+  "nameEn": "Blastoise",
+  "nameJa": "カメックス",
+  "kind": "pokemon",
+  "type": "water",
+  "stage": "stage2",
+  "evolvesFromName": "Wartortle",
+  "evolvesFrom": [
+   "a1-054",
+   "b1a-018"
+  ],
+  "evolvesTo": [],
+  "rule": "normal",
+  "groups": [],
+  "points": 1,
+  "hp": 150,
+  "weakness": "lightning",
+  "retreat": 4,
+  "ability": {
+   "nameEn": "Aqua Charge",
+   "nameJa": "アクアチャージ",
+   "textEn": "Once during your turn, you may take a [W] Energy from your Energy Zone and attach it to this Pokémon.",
+   "textJa": "自分の番に1回使える。自分のエネルギーゾーンから水エネルギーを1個出し、このポケモンにつける。",
+   "jaSource": "official",
+   "tags": []
+  },
+  "attacks": [
+   {
+    "nameEn": "Surf",
+    "nameJa": "なみのり",
+    "textEn": "",
+    "jaSource": "official",
+    "tags": [],
+    "cost": {
+     "water": 3
+    },
+    "costTotal": 3,
+    "costTyped": 3,
+    "damage": 100,
+    "damageVariable": false
+   }
+  ],
+  "prints": [
+   {
+    "id": "up-11",
+    "set": "c1",
+    "setName": "Dual Fusion",
+    "rarity": "☆",
+    "image": "https://img.game8.jp/13113528/3b2824f4c00918427a57e99f81393985.webp/show",
+    "released": "2026-10-29"
+   }
+  ],
+  "tags": [],
+  "upcoming": {
+   "date": "2026-10-29",
+   "source": "https://game8.jp/pokemon-tcg-pocket/833551"
+  }
+ },
+ {
+  "id": "up-12",
+  "nameEn": "Ribombee",
+  "nameJa": "アブリボン",
+  "kind": "pokemon",
+  "type": "grass",
+  "stage": "stage1",
+  "evolvesFromName": "Cutiefly",
+  "evolvesFrom": [
+   "a3-078"
+  ],
+  "evolvesTo": [],
+  "rule": "normal",
+  "groups": [],
+  "points": 1,
+  "hp": 70,
+  "weakness": "fire",
+  "retreat": 1,
+  "ability": {
+   "unknown": true,
+   "textEn": "",
+   "tags": [],
+   "jaSource": "official"
+  },
+  "attacks": [
+   {
+    "unknown": true,
+    "textEn": "",
+    "tags": [],
+    "cost": {
+     "grass": 1
+    },
+    "costTotal": 1,
+    "costTyped": 1,
+    "damage": 40,
+    "damageVariable": false,
+    "jaSource": "official"
+   }
+  ],
+  "prints": [
+   {
+    "id": "up-12",
+    "set": "c1",
+    "setName": "Dual Fusion",
+    "rarity": "◊◊◊",
+    "image": "https://img.game8.jp/13113898/1912af26ca20da528f705834c0abf265.webp/show",
+    "released": "2026-10-29"
+   }
+  ],
+  "tags": [],
+  "upcoming": {
+   "date": "2026-10-29",
+   "source": "https://game8.jp/pokemon-tcg-pocket/833551"
+  }
+ },
+ {
+  "id": "up-13",
+  "nameEn": "Raboot",
+  "nameJa": "ラビフット",
+  "kind": "pokemon",
+  "type": "fire",
+  "stage": "stage1",
+  "evolvesFromName": "Scorbunny",
+  "evolvesFrom": [
+   "b2-024"
+  ],
+  "evolvesTo": [
+   "pb-031"
+  ],
+  "rule": "normal",
+  "groups": [],
+  "points": 1,
+  "hp": 70,
+  "weakness": "water",
+  "retreat": 1,
+  "ability": {
+   "unknown": true,
+   "textEn": "",
+   "tags": [],
+   "jaSource": "official"
+  },
+  "attacks": [
+   {
+    "unknown": true,
+    "textEn": "",
+    "tags": [],
+    "cost": {
+     "colorless": 1
+    },
+    "costTotal": 1,
+    "costTyped": 0,
+    "damage": 30,
+    "damageVariable": false,
+    "jaSource": "official"
+   }
+  ],
+  "prints": [
+   {
+    "id": "up-13",
+    "set": "c1",
+    "setName": "Dual Fusion",
+    "rarity": "◊◊",
+    "image": "https://img.game8.jp/13113900/ed2048ad5a7c86c8b4d75a892ae15282.webp/show",
+    "released": "2026-10-29"
+   }
+  ],
+  "tags": [],
+  "upcoming": {
+   "date": "2026-10-29",
+   "source": "https://game8.jp/pokemon-tcg-pocket/833551"
+  }
+ },
+ {
+  "id": "up-14",
+  "nameEn": "Mega Mewtwo Y ex",
+  "nameJa": "メガミュウツーYex",
+  "kind": "pokemon",
+  "type": "psychic",
+  "stage": "basic",
+  "evolvesFrom": [],
+  "evolvesTo": [],
+  "rule": "mega_ex",
+  "groups": [],
+  "points": 3,
+  "hp": 170,
+  "attacks": [
+   {
+    "nameEn": "Psychic Blaster",
+    "nameJa": "サイコブラスター",
+    "textEn": "Flip a coin for each [P] Energy attached to this Pokémon. This attack does 60 damage for each heads.",
+    "textJa": "このポケモンについている超エネルギーの数ぶんコインを投げ、オモテの数×60ダメージ。",
+    "jaSource": "machine",
+    "tags": [],
+    "cost": {
+     "psychic": 2
+    },
+    "costTotal": 2,
+    "costTyped": 2,
+    "damage": 60,
+    "damageVariable": true
+   }
+  ],
+  "prints": [
+   {
+    "id": "up-14",
+    "set": "pb",
+    "setName": "Promo-B",
+    "rarity": "Promo",
+    "image": ""
+   }
+  ],
+  "tags": [],
+  "upcoming": {
+   "source": "https://game8.jp/pokemon-tcg-pocket/833551",
+   "unknown": [
+    "weakness",
+    "retreat"
+   ]
+  }
  }
 ]

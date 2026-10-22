@@ -36,5 +36,16 @@ export const setName = (s: AppSet | undefined, lang: Lang, fallback = "") => (s 
 /** 日付（言語に合わせた書き方） */
 export const dateStr = (d: Date | string | number, lang: Lang) => new Date(d).toLocaleDateString(lang === "en" ? "en-US" : "ja-JP");
 
+/** 実装前のカードの印（「10/29〜」。日付が未定なら「近日」） */
+export function upcomingLabel(card: Pick<AppCard, "upcoming">, lang: Lang): string {
+  const d = card.upcoming?.date;
+  if (!d) return lang === "en" ? "Soon" : "近日";
+  const [, m, day] = d.split("-").map(Number);
+  return lang === "en" ? `${m}/${day}` : `${m}/${day}〜`;
+}
+/** 実装前のカードはデッキ・リストに入れられない */
+export const upcomingMsg = (card: AppCard) =>
+  tr(`「${card.nameJa}」はまだ実装前のため、デッキ・リストに入れられません`, `${card.nameEn} isn't released yet, so it can't be added to decks or lists`);
+
 /** サイトのタイトル（タブ・共有） */
 export const siteTitle = (lang: Lang) => (lang === "en" ? "POKÉPOKE INDECKS – Pokémon TCG Pocket Card Search & Deck Builder" : "POKÉPOKE INDECKS｜ポケポケのカード図鑑");

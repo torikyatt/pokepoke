@@ -1,0 +1,242 @@
+# まだ実装されていないが、先行公開で情報が出ているカード（手で書く）。scripts/upcoming.ts が data/cards.json に足す。
+#   ・日本語は先行公開の情報（Game8 の収録カード一覧が載せている公式画像の文字）。英語は既存カードの公式の言い回しに合わせた仮の訳
+#   ・まだ公開されていないところは書かない（ワザ・特性は unknown: true、弱点・にげる などは unknown に並べる）
+#   ・元データ（PocketDecks）に実装予定日以降のプリントが出たら、そのパックのカードは自動で外れる（本物のデータに置き換わる）
+#     日付の無いもの（プロモなど）は、同じ英語名のカードが元データに出たら外れる
+#   ・カードIDは仮（up-<番号>）。デッキ・リストには入れられない（実装されるとIDが変わるため）
+# エネルギー: G 草 / R 炎 / W 水 / L 雷 / P 超 / F 闘 / D 悪 / M 鋼 / N ドラゴン / C 無色
+# ダメージ: 「100+」「60×」のように書くと、変動するダメージ
+
+sets:
+  - code: c1
+    nameEn: Dual Fusion
+    nameJa: デュアルフュージョン
+    date: 2026-10-29
+    source: https://game8.jp/pokemon-tcg-pocket/833551
+
+cards:
+  - id: up-01
+    set: c1
+    rarity: ◊◊◊◊
+    image: https://img.game8.jp/12922926/689e96571dcf6eaa9e40f1ae881da1e0.webp/show
+    nameEn: Mega Mewtwo X ex
+    nameJa: メガミュウツーXex
+    type: [psychic, fighting]
+    stage: basic
+    rule: mega_ex
+    hp: 180
+    weakness: darkness
+    retreat: 2
+    attacks:
+      - { cost: PPC, damage: 100+, nameJa: デュアルインパクト, nameEn: Dual Impact, textJa: 場にスタジアムが出ているなら、40ダメージ追加。, textEn: "If a Stadium is in play, this attack does 40 more damage." }
+
+  - id: up-02
+    set: c1
+    rarity: ◊◊◊◊
+    image: https://img.game8.jp/13113526/e068da7d3b77b97e1e6d75520d5fbe9d.webp/show
+    nameEn: Mega Greninja ex
+    nameJa: メガゲッコウガex
+    type: [water, darkness]
+    stage: stage2
+    evolvesFrom: Frogadier
+    rule: mega_ex
+    hp: 200
+    weakness: lightning
+    retreat: 0 # カード画像の「にげる」にエネルギーのマークが無い
+    attacks:
+      - { cost: WW, damage: 100, nameJa: スプラッシュダーク, nameEn: Splash Dark, textJa: 次の相手の番、このワザを受けたポケモンはにげるができない。, textEn: "During your opponent's next turn, the Defending Pokémon can't retreat." }
+
+  - id: up-03
+    set: c1
+    rarity: ◊◊◊◊
+    image: https://img.game8.jp/13113524/bfd407fbb73a6b093f9440cd16a20e97.webp/show
+    nameEn: Mega Dragonite ex
+    nameJa: メガカイリューex
+    type: [dragon]
+    stage: stage2
+    evolvesFrom: Dragonair
+    rule: mega_ex
+    hp: 240
+    retreat: 4
+    attacks:
+      - { cost: WLCCC, nameJa: ドラゴニックメテオ, nameEn: Draconic Meteor, textJa: 相手のポケモンがランダムに1回選ばれ、選ばれたポケモンに、250ダメージ。, textEn: "1 of your opponent's Pokémon is chosen at random. Do 250 damage to it." }
+
+  - id: up-04
+    set: c1
+    rarity: ◊◊◊◊
+    image: https://img.game8.jp/13113899/d8c987292cf6aa015fa5af87d1714458.webp/show
+    nameEn: Mega Tyranitar ex
+    nameJa: メガバンギラスex
+    type: [darkness]
+    stage: stage2
+    evolvesFrom: Pupitar
+    rule: mega_ex
+    hp: 240
+    weakness: grass
+    retreat: 4
+    attacks:
+      - { cost: DDCC, unknown: true }
+
+  - id: up-05
+    set: c1
+    rarity: ◊◊◊◊
+    image: https://img.game8.jp/13113525/a852bad97f4d171d5b2b98c6ae5d2a85.webp/show
+    nameEn: Mew ex
+    nameJa: ミュウex
+    type: [psychic]
+    stage: basic
+    rule: ex
+    hp: 130
+    weakness: darkness
+    retreat: 1
+    attacks:
+      - { cost: P, nameJa: ひみつのみちびき, nameEn: Secret Guidance, textJa: コインを3回投げ、オモテの数ぶんの超エネルギーを自分のエネルギーゾーンから出し、ベンチの超ポケモンに好きなようにつける。, textEn: "Flip 3 coins. Take an amount of [P] Energy from your Energy Zone equal to the number of heads and attach it to your Benched [P] Pokémon in any way you like." }
+      - { cost: PC, damage: 60, nameJa: サイコバーン, nameEn: Psyburn }
+
+  - id: up-06
+    set: c1
+    rarity: ◊◊◊◊
+    image: https://img.game8.jp/13113527/7b79df7f0e8faa29d7d615eb8b864854.webp/show
+    nameEn: Pikachu ex
+    nameJa: ピカチュウex
+    type: [lightning]
+    stage: basic
+    rule: ex
+    hp: 120
+    weakness: fighting
+    retreat: 1
+    attacks:
+      - { cost: L, damage: 30, nameJa: ピカパンチ, nameEn: Pika Punch }
+      - { cost: LLC, damage: 130, nameJa: いなずまテール, nameEn: Lightning Tail, textJa: このポケモンから雷エネルギーを2個トラッシュ。, textEn: "Discard 2 [L] Energy from this Pokémon." }
+
+  - id: up-07
+    set: c1
+    rarity: ◊◊◊◊
+    image: https://img.game8.jp/12923014/b98c9fd9f65b5d683ab002f05ec51af4.webp/show
+    nameEn: Piplup ex
+    nameJa: ポッチャマex
+    type: [water]
+    stage: basic
+    rule: ex
+    hp: 120
+    weakness: lightning
+    retreat: 1
+    attacks:
+      - { cost: W, damage: 40, nameJa: わんぱくバブル, nameEn: Playful Bubble, textJa: 自分のエネルギーゾーンから水エネルギーを1個出し、ベンチポケモンにつける。, textEn: "Take a [W] Energy from your Energy Zone and attach it to 1 of your Benched Pokémon." }
+
+  - id: up-08
+    set: c1
+    rarity: ◊◊◊◊
+    image: https://img.game8.jp/12923032/7ac06d023af3fbf47ccc0d6378489d6b.webp/show
+    nameEn: Fuecoco ex
+    nameJa: ホゲータex
+    type: [fire]
+    stage: basic
+    rule: ex
+    hp: 130
+    weakness: water
+    retreat: 2
+    attacks:
+      - { cost: R, damage: 30, nameJa: かみつく, nameEn: Bite }
+      - { cost: RC, damage: 50+, nameJa: げきおこファイヤー, nameEn: Furious Fire, textJa: このポケモンがダメージを受けているなら、70ダメージ追加。, textEn: "If this Pokémon has damage on it, this attack does 70 more damage." }
+
+  - id: up-09
+    set: c1
+    rarity: ☆
+    image: https://img.game8.jp/13113530/ebcd921e0309306ca1786f9cfc9eea76.webp/show
+    nameEn: Venusaur
+    nameJa: フシギバナ
+    type: [grass]
+    stage: stage2
+    evolvesFrom: Ivysaur
+    rule: normal
+    hp: 150
+    weakness: fire
+    retreat: 3
+    ability: { nameJa: サニーヒール, nameEn: Sunny Heal, textJa: 自分の番に1回使える。自分のバトルポケモンのHPを30回復。, textEn: "Once during your turn, you may heal 30 damage from your Active Pokémon." }
+    attacks:
+      - { cost: GCCC, damage: 90, nameJa: ソーラービーム, nameEn: Solar Beam }
+
+  - id: up-10
+    set: c1
+    rarity: ☆
+    image: https://img.game8.jp/13113529/b22f2b4917260c2f0999dca20c539a87.webp/show
+    nameEn: Charizard
+    nameJa: リザードン
+    type: [fire]
+    stage: stage2
+    evolvesFrom: Charmeleon
+    rule: normal
+    hp: 150
+    weakness: water
+    retreat: 3
+    ability: { nameJa: フレイムオーラ, nameEn: Flame Aura, textJa: 自分のエネルギーゾーンからこのポケモンに炎エネルギーをつけるたび、相手のバトルポケモンに30ダメージ。, textEn: "Whenever you attach a [R] Energy from your Energy Zone to this Pokémon, do 30 damage to your opponent's Active Pokémon." }
+    attacks:
+      - { cost: RRC, damage: 90, nameJa: ほのおのつばさ, nameEn: Fire Wing }
+
+  - id: up-11
+    set: c1
+    rarity: ☆
+    image: https://img.game8.jp/13113528/3b2824f4c00918427a57e99f81393985.webp/show
+    nameEn: Blastoise
+    nameJa: カメックス
+    type: [water]
+    stage: stage2
+    evolvesFrom: Wartortle
+    rule: normal
+    hp: 150
+    weakness: lightning
+    retreat: 4
+    ability: { nameJa: アクアチャージ, nameEn: Aqua Charge, textJa: 自分の番に1回使える。自分のエネルギーゾーンから水エネルギーを1個出し、このポケモンにつける。, textEn: "Once during your turn, you may take a [W] Energy from your Energy Zone and attach it to this Pokémon." }
+    attacks:
+      - { cost: WWW, damage: 100, nameJa: なみのり, nameEn: Surf }
+
+  - id: up-12
+    set: c1
+    rarity: ◊◊◊
+    image: https://img.game8.jp/13113898/1912af26ca20da528f705834c0abf265.webp/show
+    nameEn: Ribombee
+    nameJa: アブリボン
+    type: [grass]
+    stage: stage1
+    evolvesFrom: Cutiefly
+    rule: normal
+    hp: 70
+    weakness: fire
+    retreat: 1
+    ability: { unknown: true }
+    attacks:
+      - { cost: G, damage: 40, unknown: true }
+
+  - id: up-13
+    set: c1
+    rarity: ◊◊
+    image: https://img.game8.jp/13113900/ed2048ad5a7c86c8b4d75a892ae15282.webp/show
+    nameEn: Raboot
+    nameJa: ラビフット
+    type: [fire]
+    stage: stage1
+    evolvesFrom: Scorbunny
+    rule: normal
+    hp: 70
+    weakness: water
+    retreat: 1
+    ability: { unknown: true }
+    attacks:
+      - { cost: C, damage: 30, unknown: true }
+
+  # プロモ（入手方法・時期は未発表）。日本語の文は英語の先行情報からの仮訳
+  - id: up-14
+    set: pb
+    rarity: Promo
+    source: https://game8.jp/pokemon-tcg-pocket/833551
+    nameEn: Mega Mewtwo Y ex
+    nameJa: メガミュウツーYex
+    type: [psychic]
+    stage: basic
+    rule: mega_ex
+    hp: 170
+    unknown: [weakness, retreat]
+    machine: true
+    attacks:
+      - { cost: PP, damage: 60×, nameJa: サイコブラスター, nameEn: Psychic Blaster, textJa: このポケモンについている超エネルギーの数ぶんコインを投げ、オモテの数×60ダメージ。, textEn: "Flip a coin for each [P] Energy attached to this Pokémon. This attack does 60 damage for each heads." }

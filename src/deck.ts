@@ -1,7 +1,7 @@
 // デッキの検証・書き出し・共有URL
 import type { Deck } from "./store.ts";
-import type { AppCard, EnergyType } from "./types.ts";
-import { cardName, getLang, tr } from "./i18n.ts";
+import { typesOf, type AppCard, type EnergyType } from "./types.ts";
+import { cardName, getLang, tr, upcomingMsg } from "./i18n.ts";
 
 export const DECK_SIZE = 20;
 export const MAX_SAME_NAME = 2;
@@ -32,6 +32,7 @@ export function checkDeck(deck: Pick<Deck, "cards" | "energy">, byId: Map<string
 
 /** 追加できるか（20枚・同名2枚の上限） */
 export function canAdd(deck: Pick<Deck, "cards">, card: AppCard, byId: Map<string, AppCard>): string | undefined {
+  if (card.upcoming) return upcomingMsg(card);
   if (deck.cards.length >= DECK_SIZE) return tr(`デッキは${DECK_SIZE}枚まで`, `A deck holds up to ${DECK_SIZE} cards`);
   const same = deck.cards.filter((id) => byId.get(id)?.nameEn === card.nameEn).length;
   if (same >= MAX_SAME_NAME) return tr(`「${card.nameJa}」はもう${MAX_SAME_NAME}枚入っています`, `Already ${MAX_SAME_NAME} copies of ${card.nameEn}`);
@@ -45,7 +46,7 @@ export function guessEnergy(deck: Pick<Deck, "cards">, byId: Map<string, AppCard
     if (!c || c.kind !== "pokemon") continue;
     for (const a of c.attacks) for (const [t, k] of Object.entries(a.cost)) if (t !== "colorless") n.set(t as EnergyType, (n.get(t as EnergyType) ?? 0) + (k ?? 0));
     // 無色コストのワザしかないときは、ポケモンのタイプで数える
-    if (c.type && c.type !== "colorless" && c.type !== "dragon") n.set(c.type, (n.get(c.type) ?? 0) + 0.1);
+    for (const t of typesOf(c)) if (t !== "colorless" && t !== "dragon") n.set(t, (n.get(t) ?? 0) + 0.1);
   }
   return [...n].sort((a, b) => b[1] - a[1]).slice(0, MAX_ENERGY).map(([t]) => t);
 }

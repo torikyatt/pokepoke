@@ -1080,7 +1080,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       // 「HP最大」「火力最大」: その数字があるものだけを、大きい（小さい）順に
       const sortVal = (s: Extract<Cond, { kind: "sort" }>) => (s.by === "hp" ? card.hp : card.maxDamage || undefined);
       if (!pinned) {
-        if (!hard(types, (t) => card.type === t.type || card.typeRefs.includes(t.type))) continue;
+        if (!hard(types, (t) => card.type === t.type || card.type2 === t.type || card.typeRefs.includes(t.type))) continue;
         if (kinds.length && !toolAsItem && !kinds.some((k) => (k.value === "trainer" ? card.kind !== "pokemon" : card.kind === k.value))) continue;
         if (!hard(stages, (s) => (s.value === "evolved" ? card.stage === "stage1" || card.stage === "stage2" : card.stage === s.value))) continue;
         if (!hard(rules, (r) => ruleOk(card, r.value))) continue;

@@ -4,7 +4,7 @@ import type { Engine } from "./search/engine.ts";
 import { useDecks, useEditTarget, useLists, useToast } from "./store.ts";
 import type { createSynergy } from "./synergy.ts";
 import type { AppCard, AppData } from "./types.ts";
-import { tr } from "./i18n.ts";
+import { tr, upcomingMsg } from "./i18n.ts";
 
 export interface Ctx {
   data: AppData;
@@ -20,6 +20,7 @@ export function useAddToDeck() {
   const { byId } = useData();
   const show = useToast((s) => s.show);
   return (card: AppCard) => {
+    if (card.upcoming) return show(upcomingMsg(card), "error");
     // リストを編集しているときは、そのリストに足す（ふつうの絵柄で1枚）
     const target = useEditTarget.getState().list;
     const list = target && useLists.getState().lists.find((l) => l.id === target.id);

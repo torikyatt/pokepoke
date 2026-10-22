@@ -17,6 +17,7 @@ export interface AppEffect {
   textJa?: string;
   textEn?: string;
   machine?: true; // 仮訳
+  unknown?: true; // まだ公開されていない（実装前のカード）
   tags: string[];
 }
 
@@ -47,6 +48,7 @@ export interface AppCard {
   nameKana?: string; // 漢字を含む名前のよみ（ローマ字検索用）
   kind: CardKind;
   type?: EnergyType;
+  type2?: EnergyType; // デュアルタイプの2つ目のタイプ
   // トレーナーズが効果文で名指ししているタイプ（例: カスミ → 水）。タイプ絞り込みに使う
   typeRefs: EnergyType[];
   accelTypes: EnergyType[]; // エネ加速で付けるエネのタイプ
@@ -77,7 +79,18 @@ export interface AppCard {
   refHow?: Record<string, string>; // 名前そのもの以外で指しているときの指し方（mega_ex / team_rocket / evolves:Riolu / attack:Puppy Pile …）
   supplies: Record<string, Selector[]>; // 場に作るもの（シナジーの供給）と、その効く相手
   requires: Record<string, RequireInfo>; // 何があると強いか（シナジーの要求）
+  upcoming?: Upcoming; // まだ実装されていない（先行公開の情報）。デッキ・リストには入れられない
 }
+
+/** 実装前のカードの情報 */
+export interface Upcoming {
+  date?: string; // 実装予定日（YYYY-MM-DD。未定なら無し）
+  source: string; // 情報の出どころ（URL）
+  unknown?: ("weakness" | "retreat" | "hp")[]; // まだ公開されていない項目
+}
+
+/** カードのタイプ（デュアルタイプなら2つ） */
+export const typesOf = (c: Pick<AppCard, "type" | "type2">): EnergyType[] => (c.type ? (c.type2 ? [c.type, c.type2] : [c.type]) : []);
 
 /** 効果が効く相手（シナジー判定用。scripts/lib/targets.ts が英文から読む） */
 /** トラッシュに送る・トラッシュで数えるカードの種類。any は何でも（手札からランダムに捨てるなど） */

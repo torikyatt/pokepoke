@@ -653,3 +653,25 @@ describe("辞書の言葉を含むカード名（「フィールド」→ フィ
     expect(bad).toEqual([]);
   }, 120000);
 });
+
+// 実装前のカード（data/upcoming.yaml）。実装されると無くなるので、あるときだけ確かめる
+describe("実装前のカード・デュアルタイプ", () => {
+  const upcoming = data.cards.filter((c) => c.upcoming);
+  const dual = data.cards.filter((c) => c.type2);
+  const TYPE_WORD: Record<string, string> = { water: "水", darkness: "悪", psychic: "超", fighting: "闘", fire: "炎", grass: "草", lightning: "雷", metal: "鋼", dragon: "ドラゴン" };
+  it.runIf(dual.length > 0)("デュアルタイプは、どちらのタイプで探しても出る", () => {
+    for (const c of dual) {
+      for (const t of [c.type!, c.type2!]) expect(engine.search(`${TYPE_WORD[t]}タイプのポケモン`, 5000).map((h) => h.card.id)).toContain(c.id);
+    }
+  });
+  it.runIf(upcoming.length > 0)("名前で探せる", () => {
+    for (const c of upcoming) expect(ids(c.nameJa, 10)).toContain(c.id);
+  });
+  it.runIf(upcoming.length > 0)("ふつうのカードの「相性のいいカード」には出ない", () => {
+    const synergy = createSynergy(data);
+    const up = new Set(upcoming.map((c) => c.id));
+    for (const c of data.cards.filter((c) => !c.upcoming && c.evolvesTo.some((id) => up.has(id)))) {
+      expect(synergy.partners(c).some((p) => up.has(p.card.id))).toBe(false);
+    }
+  });
+});

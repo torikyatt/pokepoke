@@ -59,7 +59,12 @@ const commonPrefix = (a: string, b: string) => {
   while (i < a.length && a[i] === b[i]) i++;
   return a.slice(0, i);
 };
+// 実装前のパック（data/upcoming.yaml）の日本語名
+const upcomingSets = new Map(
+  ((loadYaml(readFileSync(join(DATA, "upcoming.yaml"), "utf8")) as { sets: { code: string; nameJa: string }[] }).sets ?? []).map((s) => [s.code, s.nameJa]),
+);
 function setJaOf(code: string): string {
+  if (upcomingSets.has(code) && !packNames.has(code.charAt(0).toUpperCase() + code.slice(1))) return upcomingSets.get(code)!;
   const g8code = ({ pa: "PROMO-A", pb: "PROMO-B" } as Record<string, string>)[code] ?? code.charAt(0).toUpperCase() + code.slice(1);
   const top = [...(packNames.get(g8code) ?? [])].sort((a, b) => b[1] - a[1]).map(([n]) => n);
   if (g8code.startsWith("PROMO") || !top.length) return g8code.replace("PROMO", "プロモ");
@@ -100,6 +105,13 @@ function withFoilImages(prints: AppPrint[]): AppPrint[] {
 
 function printOf(c: Card, p: Card["prints"][number]): AppPrint {
   const out: AppPrint = { id: p.id, set: p.set, setName: p.setName, rarity: p.rarity };
+  // 実装前のカードは先行公開の画像（日本語）だけ。英語表示でも同じ画像を使う。無ければ手で置いた画像（public/cards-ja/manual/）
+  if (c.upcoming) {
+    const manual = `cards-ja/manual/${p.id}.webp`;
+    out.imageJa = existsSync(join(ROOT, "public", manual)) ? manual : p.image ? jaLocal(p.image) : manual;
+    out.imageEn = out.imageJa;
+    return out;
+  }
   // 英語画像は収録IDから場所が決まるので、まだ自前で置いていないものだけ元の URL を持たせる
   if (enLocal(p.id) === enImageFile(p.id)) enLocalCount++;
   else out.imageEn = enImageRemote(p.id);
@@ -125,6 +137,7 @@ function effect(e: Effect, slot: Slot, t: string[] | undefined): AppEffect {
   if (e.textJa) out.textJa = e.textJa;
   if (e.textEn) out.textEn = e.textEn;
   if (e.jaSource === "machine") out.machine = true;
+  if (e.unknown) out.unknown = true;
   return out;
 }
 
@@ -211,7 +224,7 @@ const out: AppCard[] = cards.map((c) => {
     attacks,
     // 絵柄は「いちばん基本のもの」を先頭に（一覧・詳細・サムネイルはこれ）
     prints: withFoilImages(orderedPrints(c.prints).map((p) => printOf(c, p))),
-    image: enLocal(basePrint(c.prints).id),
+    image: c.upcoming ? "" : enLocal(basePrint(c.prints).id),
     ...(jaImageOf(c) ? { imageJa: jaLocal(jaImageOf(c)!) } : {}),
     ...(existsSync(join(ROOT, "public/thumbs-ja", `${c.id}.webp`)) ? { jaThumb: true as const } : {}),
     order: Math.min(...c.prints.map((p) => p.builderNr ?? 99999)),
@@ -228,6 +241,11 @@ const out: AppCard[] = cards.map((c) => {
   };
   if (c.nameJaMachine) card.nameMachine = true;
   if (c.type) card.type = c.type;
+  if (c.type2) card.type2 = c.type2;
+  if (c.upcoming) {
+    card.upcoming = c.upcoming;
+    card.image = card.imageJa = card.prints[0].imageJa!;
+  }
   if (c.stage) card.stage = c.stage;
   if (c.points !== undefined) card.points = c.points;
   if (c.hp !== undefined) card.hp = c.hp;

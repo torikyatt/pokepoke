@@ -5,7 +5,7 @@ import { energyIconUrl } from "../icons.ts";
 import { useNav, type Tab } from "../nav.ts";
 import { useSettings, useToast } from "../store.ts";
 import type { AppCard, EnergyType } from "../types.ts";
-import { cardName, typeName, useLang, useT } from "../i18n.ts";
+import { cardName, typeName, upcomingLabel, useLang, useT } from "../i18n.ts";
 
 export function EnergyIcon({ type, size = "md" }: { type: EnergyType; size?: "sm" | "md" | "lg" | "xl" | "fill" }) {
   // fill: 置き場所いっぱいの大きさ
@@ -130,6 +130,12 @@ export function PoolCard({ card, count, maxed, onTap, onLongPress, compact }: { 
   return (
     <Pressable onTap={onTap} onLongPress={onLongPress} label={cardName(card, lang)} className="relative rounded-md shadow-[2px_3px_6px_rgb(150_165_185/0.45)]">
       <Thumb card={card} className={maxed ? "opacity-45" : ""} />
+      {/* 実装前のカード: 右上に実装予定日 */}
+      {card.upcoming && (
+        <span className={`absolute top-[3%] right-[3%] rounded-full bg-[#e8553d] px-1 leading-tight font-extrabold text-white shadow ${compact ? "text-[8px]" : "text-[9px]"}`}>
+          {upcomingLabel(card, lang)}
+        </span>
+      )}
       {!!count && (
         <span className={`count-tab absolute bottom-0 left-0 flex w-[56%] items-center justify-center font-extrabold ${compact ? "h-[19%] text-sm" : "h-[17%] text-lg"}`}>
           {count}

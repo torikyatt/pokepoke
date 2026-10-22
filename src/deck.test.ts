@@ -1,5 +1,11 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { decodeShare, encodeShare } from "./deck.ts";
+import { canAdd, decodeShare, encodeShare } from "./deck.ts";
+import type { AppData } from "./types.ts";
+
+const data: AppData = JSON.parse(readFileSync(join(import.meta.dirname, "data/app-data.json"), "utf8"));
+const byId = new Map(data.cards.map((c) => [c.id, c]));
 
 describe("共有コード", () => {
   const deck = { name: "メガルカリオ/型?", energy: ["fighting", "darkness"] as const, cards: ["b3-081", "b3-081", "a2-092", "pa-007", "b3-081"] };
@@ -14,5 +20,13 @@ describe("共有コード", () => {
   it("以前の形（JSON の base64url）も読める", () => {
     const old = Buffer.from(JSON.stringify({ n: "古い", e: ["water"], c: "a1-001,a1-001" })).toString("base64url");
     expect(decodeShare(old)).toEqual({ name: "古い", energy: ["water"], cards: ["a1-001", "a1-001"] });
+  });
+});
+
+describe("実装前のカード", () => {
+  it("デッキに入れられない", () => {
+    const up = data.cards.find((c) => c.upcoming);
+    if (!up) return;
+    expect(canAdd({ cards: [] }, up, byId)).toBeTruthy();
   });
 });
