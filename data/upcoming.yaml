@@ -253,7 +253,7 @@ cards:
       - { cost: PP, damage: 60×, nameJa: サイコブラスター, nameEn: Psychic Blaster, textJa: このポケモンについている超エネルギーの数ぶんコインを投げ、オモテの数×60ダメージ。, textEn: "Flip a coin for each [P] Energy attached to this Pokémon. This attack does 60 damage for each heads." }
 
   # ---- はじまりのパートナー（スペシャルパック）----
-  # 英語のワザ名は Game8・pokemon-zone の先行画像から。効果文は pokemon-zone が粗い画像から読み取った推測（tentative: true。画面に「推測」と出す）。
+  # 英語のワザ名は Game8・pokemon-zone の先行画像から。効果文は pokemon-zone が粗い画像から読み取った推測（tentative: true。画面では文の最後に「？」を付ける）。
   # 日本語の効果文は、同じ英文の既存カードの公式訳（translate.ts が埋める）
   - id: up-15
     set: sp1

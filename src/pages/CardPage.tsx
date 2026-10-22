@@ -287,10 +287,12 @@ function EffectBlock({ e, label, tagChip, lang }: { e: AppEffect; label: string;
   const t = useT();
   const isAtkOrAbility = e.slot === "attack" || e.slot === "ability";
   const name = isAtkOrAbility ? effectName(e, lang) : lang === "en" ? "" : (e.nameJa ?? "");
-  const main = lang === "en" ? e.textEn ?? e.textJa : e.textJa;
+  // 推測の効果文（実装前のカードで、粗い先行画像から読み取ったもの）は、文の最後に「？」を付ける
+  const guess = (x: string | undefined, l: Lang) => (x && e.tentative ? x.replace(/[。.]$/, "") + (l === "en" ? "?" : "？") : x);
+  const main = lang === "en" ? guess(e.textEn, "en") ?? e.textJa : guess(e.textJa, "ja");
   // もう一方の言語の文（日本語表示なら英語原文、英語表示なら日本語）
   const otherName = lang === "en" ? e.nameJa : e.nameEn;
-  const otherText = lang === "en" ? e.textJa : e.textEn;
+  const otherText = lang === "en" ? guess(e.textJa, "ja") : guess(e.textEn, "en");
   const atk = e.slot === "attack" ? (e as AppAttack) : undefined;
   const ability = e.slot === "ability";
   // 実装前のカードで、まだ公開されていないワザ・特性（コスト・ダメージだけ分かっていることもある）
@@ -311,7 +313,6 @@ function EffectBlock({ e, label, tagChip, lang }: { e: AppEffect; label: string;
       {main && <p className="mt-2 text-sm leading-relaxed font-medium">{main}</p>}
       {/* 実装前のカードで、名前は分かっているが効果がまだ公開されていないワザ */}
       {e.unknown && name && <p className="mt-2 text-xs font-bold text-muted">{t("効果は未公開", "Effect TBA")}</p>}
-      {e.tentative && <p className="mt-1 text-[11px] font-bold text-[#9a6b12]">{t("※ 先行画像から読み取った推測です（未確定）", "* Read from a blurry preview image (unconfirmed)")}</p>}
       {(otherText || otherName) && (
         <details className="mt-1.5 text-xs text-muted">
           <summary className="cursor-pointer font-bold select-none">{t("英語原文", "Japanese text")}</summary>
