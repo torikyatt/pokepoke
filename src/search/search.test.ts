@@ -238,7 +238,7 @@ describe("その他の検索", () => {
       expect(h.card.hp).toBeGreaterThanOrEqual(150);
       expect(h.card.type).toBe("water");
     }
-    for (const h of engine.search("120ダメ以上のワザ")) expect(h.card.attacks.some((a) => (a.damage ?? 0) >= 120)).toBe(true);
+    for (const h of engine.search("120ダメ以上のワザ")) expect(h.card.attacks.some((a) => (a.maxDamage ?? a.damage ?? 0) >= 120)).toBe(true);
   });
   it("他TCGの言葉（墓地・ハンデス）", () => {
     expect(engine.parse("墓地からエネをつける").some((c) => c.kind === "tag" && c.tag === "energy.accel.trash")).toBe(true);
@@ -673,5 +673,24 @@ describe("実装前のカード・デュアルタイプ", () => {
     for (const c of data.cards.filter((c) => !c.upcoming && c.evolvesTo.some((id) => up.has(id)))) {
       expect(synergy.partners(c).some((p) => up.has(p.card.id))).toBe(false);
     }
+  });
+});
+
+describe("効果も入れた最大ダメージ", () => {
+  const byId = new Map(data.cards.map((c) => [c.id, c]));
+  const max = (id: string) => byId.get(id)!.maxDamage;
+  it("効果文で与えるダメージ・ランダムに選ばれた回数・コインの回数・条件付きの追加", () => {
+    expect(max("b3-023")).toBe(160); // メガバクーダex: ランダムに選ばれたポケモンに160
+    expect(byId.get("a1a-003")!.maxUncapped).toBe(true); // セレビィex: エネの数ぶんコイン（上限なし）
+    expect(max("a1a-003")).toBeGreaterThanOrEqual(250);
+    expect(max("a1-056")).toBe(160); // カメックスex: 100 + 追加60
+    const ironMoth = data.cards.find((c) => c.attacks.some((a) => /If all of them are heads, this attack does 120 more/.test(a.textEn ?? "")))!;
+    expect(ironMoth.maxDamage).toBe(130); // オモテの数で分かれる追加は、どれか1つ（足さない）
+  });
+  it("「ダメージの高い順」は効果のダメージでも並ぶ", () => {
+    const top = engine.search("ダメージの高い順", 40).map((h) => h.card.id);
+    expect(top).toContain("a1a-003"); // セレビィex
+    const dragonite = data.cards.find((c) => c.nameEn === "Mega Dragonite ex");
+    if (dragonite) expect(top).toContain(dragonite.id);
   });
 });

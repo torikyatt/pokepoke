@@ -93,7 +93,7 @@ export function sortHits<T extends { card: AppCard; score: number }>(list: T[], 
       case "score": return h.score;
       case "usage": return usage[c.id] ?? 0;
       case "hp": return c.hp ?? -1;
-      case "damage": return c.maxDamage;
+      case "damage": return c.maxDamage + (c.maxUncapped ? 0.5 : 0); // 同じ数なら上限の無いものを上に
       case "retreat": return c.retreat ?? -1;
       case "cost": return c.minCost ?? 99;
       case "rarity": return baseRarity(c);

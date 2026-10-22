@@ -25,7 +25,7 @@ export type Cond = { id: string; label: string; en: string; weight?: number; wor
   | { kind: "costTyped"; n: number }
   | { kind: "costHas"; type: EnergyType } // そのタイプのエネを使うワザ（「水技」）
   | { kind: "costTotal"; op: Op; n: number }
-  | { kind: "damage"; op: Op; n: number }
+  | { kind: "damage"; op: Op; n: number; base?: true } // base: 効果で増える分を入れず、ワザのダメージの数字だけで見る
   | { kind: "hp"; op: Op; n: number }
   | { kind: "retreat"; op: Op; n: number }
   | { kind: "weakness"; type: EnergyType }
@@ -105,6 +105,8 @@ const cmp = (v: number | undefined, op: Op, n: number) => v !== undefined && (op
 const retreatCond = (op: Op, n: number): Cond => ({ id: `retreat:${op}${n}`, kind: "retreat", op, n, label: `にげる${n}${OP_JA[op]}`, en: `Retreat ${n}${OP_EN[op]}` });
 const hpCond = (op: Op, n: number): Cond => ({ id: `hp:${op}${n}`, kind: "hp", op, n, label: `HP${n}${OP_JA[op]}`, en: `HP ${n}${OP_EN[op]}` });
 const damageCond = (op: Op, n: number): Cond => ({ id: `damage:${op}${n}`, kind: "damage", op, n, label: `${n}ダメージ${OP_JA[op]}`, en: `${n}${OP_EN[op]} damage` });
+// アグロ・donk の「少ないエネで大きく殴る」は、運やエネの追加に頼らないダメージ（ワザの数字）で見る
+const baseDamageCond = (op: Op, n: number): Cond => ({ ...(damageCond(op, n) as Extract<Cond, { kind: "damage" }>), id: `damage:${op}${n}:base`, base: true });
 const weakCond = (t: EnergyType): Cond => ({ id: `weakness:${t}`, kind: "weakness", type: t, label: `弱点${TYPE_JA[t]}`, en: `Weak to ${TYPE_EN[t]}` });
 const costCond = (t: EnergyType, n: number): Cond => ({ id: `cost:${t}${n}`, kind: "cost", type: t, n, label: `${TYPE_JA[t]}エネ${n}`, en: `${n} ${TYPE_EN[t]} Energy` });
 const costTotalCond = (op: Op, n: number): Cond => ({
@@ -473,14 +475,14 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       //   big basic: HPの高いたね、pivot: にげるの軽い、入れ替え役のポケモン
       take(new RegExp(`(?<![a-z])aggro(?:\\s+(?:decks?|attackers?|pokemon))?${END}`, "g"), () => {
         add(costTotalCond("le", 2));
-        add(damageCond("ge", 70));
+        add(baseDamageCond("ge", 70));
         add({ id: "rule:any_ex", kind: "rule", value: "any_ex", label: "ex", en: "ex" });
         add({ id: "stage:basic", kind: "stage", value: "basic", label: STAGE_JA.basic, en: STAGE_EN.basic });
         add({ id: "stage:stage1", kind: "stage", value: "stage1", label: STAGE_JA.stage1, en: STAGE_EN.stage1 });
       });
       take(new RegExp(`(?<![a-z])donk(?:s|ing|ers?)?${END}`, "g"), () => {
         add(FAST);
-        add(damageCond("ge", 40));
+        add(baseDamageCond("ge", 40));
         add({ id: "stage:basic", kind: "stage", value: "basic", label: STAGE_JA.basic, en: STAGE_EN.basic });
       });
       take(new RegExp(`(?<![a-z])big\\s+basics?${END}`, "g"), () => {
@@ -734,7 +736,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     // 「アグロ」: 序盤から少ないエネで大きく殴るデッキ（攻略記事の呼び方）→ 2エネ以下で70ダメージ以上のワザを持つ、たね・1進化の ex
     take(/あぐろ(?:でつき|型|系|向き|むき)?/g, () => {
       add(costTotalCond("le", 2));
-      add(damageCond("ge", 70));
+      add(baseDamageCond("ge", 70));
       add({ id: "rule:any_ex", kind: "rule", value: "any_ex", label: "ex", en: "ex" });
       add({ id: "stage:basic", kind: "stage", value: "basic", label: STAGE_JA.basic, en: STAGE_EN.basic });
       add({ id: "stage:stage1", kind: "stage", value: "stage1", label: STAGE_JA.stage1, en: STAGE_EN.stage1 });
@@ -1078,7 +1080,8 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       const trainerAsked = kinds.length > 0 && kinds.every((k) => k.value !== "pokemon");
       const okAttacks = atkConds.length ? card.attacks.filter((a) => atkConds.every((c) => attackOk(a, c))) : card.attacks;
       // 「HP最大」「火力最大」: その数字があるものだけを、大きい（小さい）順に
-      const sortVal = (s: Extract<Cond, { kind: "sort" }>) => (s.by === "hp" ? card.hp : card.maxDamage || undefined);
+      // ダメージは効果で増える分も入れた最大。同じ数なら上限の無いもの（エネの数・ウラが出るまで など）を上に
+      const sortVal = (s: Extract<Cond, { kind: "sort" }>) => (s.by === "hp" ? card.hp : card.maxDamage ? card.maxDamage + (card.maxUncapped ? 0.5 : 0) : undefined);
       if (!pinned) {
         if (!hard(types, (t) => card.type === t.type || card.type2 === t.type || card.typeRefs.includes(t.type))) continue;
         if (kinds.length && !toolAsItem && !kinds.some((k) => (k.value === "trainer" ? card.kind !== "pokemon" : card.kind === k.value))) continue;
@@ -1201,7 +1204,7 @@ function attackOk(a: AppCard["attacks"][number], c: Cond): boolean {
     case "costTyped": return a.costTyped === c.n;
     case "costHas": return (a.cost[c.type] ?? 0) > 0;
     case "costTotal": return cmp(a.costTotal, c.op, c.n);
-    case "damage": return cmp(a.damage, c.op, c.n);
+    case "damage": return cmp(c.base ? a.damage : (a.maxDamage ?? a.damage), c.op, c.n);
     default: return true;
   }
 }

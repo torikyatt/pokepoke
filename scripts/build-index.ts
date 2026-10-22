@@ -10,9 +10,10 @@ import { requireInfoOf, selectorOf } from "./lib/targets.ts";
 import { loadTaxonomy } from "./lib/taxonomy.ts";
 import { createReader, hasKanji } from "./lib/reading.ts";
 import { jaImageFile } from "./lib/ja-images.ts";
+import { maxDamageOf } from "./lib/damage.ts";
 import { enImageFile, enImageRemote } from "../src/en-images.ts";
 import { recommendScore } from "../src/deck-score.ts";
-import type { Card, Effect } from "./lib/types.ts";
+import type { Attack, Card, Effect } from "./lib/types.ts";
 import type { G8Card } from "./lib/game8.ts";
 import type { AppArchetype, AppAttack, AppCard, AppCombo, AppData, AppHelp, AppMeta, HelpTarget, AppEffect, AppPrint, AppSet, EnergyType, LexEntry, RequireInfo, Selector, Slot } from "../src/types.ts";
 
@@ -130,6 +131,12 @@ function printOf(c: Card, p: Card["prints"][number]): AppPrint {
   return out;
 }
 
+/** 効果も入れた最大ダメージ（ダメージの数字と同じなら持たせない） */
+function maxOf(a: Attack): { maxDamage?: number; uncapped?: true } {
+  const r = maxDamageOf(a);
+  return { ...(r.max !== (a.damage ?? 0) ? { maxDamage: r.max } : {}), ...(r.uncapped ? { uncapped: true as const } : {}) };
+}
+
 function effect(e: Effect, slot: Slot, t: string[] | undefined): AppEffect {
   const out: AppEffect = { slot, tags: t ?? [] };
   if (e.nameJa) out.nameJa = e.nameJa;
@@ -147,6 +154,7 @@ const out: AppCard[] = cards.map((c) => {
     ...effect(a, "attack", ct.attacks[i]),
     cost: a.cost, costTotal: a.costTotal, costTyped: a.costTyped,
     ...(a.damage !== undefined ? { damage: a.damage } : {}),
+    ...maxOf(a),
     damageVariable: a.damageVariable,
   }));
   const ability = c.ability ? effect(c.ability, "ability", ct.ability) : undefined;
@@ -233,7 +241,8 @@ const out: AppCard[] = cards.map((c) => {
     released: c.prints.map((p) => p.released ?? "9999").sort()[0],
     rarities: [...new Set(c.prints.map((p) => p.rarity))],
     sets: [...new Set(c.prints.map((p) => p.set))],
-    maxDamage: Math.max(0, ...c.attacks.map((a) => a.damage ?? 0)),
+    maxDamage: Math.max(0, ...attacks.map((a) => a.maxDamage ?? a.damage ?? 0)),
+    ...(attacks.some((a) => a.uncapped && a.maxDamage === Math.max(0, ...attacks.map((b) => b.maxDamage ?? b.damage ?? 0))) ? { maxUncapped: true as const } : {}),
     ...(c.attacks.length ? { minCost: Math.min(...c.attacks.map((a) => a.costTotal)) } : {}),
     tags: [...new Set([...(ability?.tags ?? []), ...attacks.flatMap((a) => a.tags), ...(text?.tags ?? [])])].sort(),
     refs: ct.refs,
