@@ -1,6 +1,6 @@
 // PocketDecks の全プリントを、ゲーム上の同一カードごとに1レコードへまとめる。
 // 出力: data/cards.base.json
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import type { Attack, Card, CardKind, EnergyType, Print } from "./lib/types.ts";
 
@@ -62,10 +62,18 @@ for (const x of raw) {
   groups.get(k)!.push(x);
 }
 
+// カードIDは一度決めたら変えない（デッキ・リスト・お気に入り・共有URL・/card/<ID> のページがカードIDで覚えている）。
+// data/card-ids.json に今までのカードIDを残し、そのどれかを含むカードは、そのIDのまま。
+// （発売日の無いプロモの再録が出ると、並び順で代表が入れ替わってIDが変わってしまうため）
+const ID_FILE = join(DATA, "card-ids.json");
+const pinnedIds = new Set<string>(existsSync(ID_FILE) ? JSON.parse(readFileSync(ID_FILE, "utf8")) : []);
+
 const cards: Card[] = [];
 for (const xs of groups.values()) {
-  // 代表プリントは最も早く出た通常レアリティのもの
-  const sorted = [...xs].sort((a, b) => (a.release_date ?? "").localeCompare(b.release_date ?? "") || a.id.localeCompare(b.id));
+  // 代表プリントは、今までのカードIDがあればそれ。無ければ最も早く出たもの
+  const byDate = [...xs].sort((a, b) => (a.release_date ?? "").localeCompare(b.release_date ?? "") || a.id.localeCompare(b.id));
+  const pinned = byDate.find((p) => pinnedIds.has(p.id));
+  const sorted = pinned ? [pinned, ...byDate.filter((p) => p !== pinned)] : byDate;
   const x = sorted[0];
   const kind = kindOf(x);
   const prints: Print[] = sorted.map((p) => ({
@@ -122,6 +130,9 @@ for (const c of cards) {
 
 cards.sort((a, b) => a.id.localeCompare(b.id, "en", { numeric: true }));
 writeFileSync(join(DATA, "cards.base.json"), JSON.stringify(cards, null, 1));
+// 新しく決まったカードIDも残す（なくなったカードのIDも、また出てきたときのために消さない）
+const allIds = [...new Set([...pinnedIds, ...cards.map((c) => c.id)])].sort((a, b) => a.localeCompare(b, "en", { numeric: true }));
+writeFileSync(ID_FILE, `${JSON.stringify(allIds).replace(/","/g, '",\n"')}\n`);
 
 const count = (k: CardKind) => cards.filter((c) => c.kind === k).length;
 console.log(`プリント ${raw.length} 枚 → カード ${cards.length} 種`);

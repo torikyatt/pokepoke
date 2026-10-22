@@ -21493,7 +21493,8 @@
   "evolvesTo": [
    "a2-123",
    "a2a-047",
-   "b4a-054"
+   "b4a-054",
+   "pb-099"
   ],
   "rule": "normal",
   "groups": [],
@@ -25424,7 +25425,8 @@
   "evolvesTo": [
    "a2-123",
    "a2a-047",
-   "b4a-054"
+   "b4a-054",
+   "pb-099"
   ],
   "rule": "normal",
   "groups": [],
@@ -28427,6 +28429,14 @@
     "rarity": "◊◊◊◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/a2b/022.webp",
     "released": "2025-03-27",
+    "builderNr": 541
+   },
+   {
+    "id": "pb-103",
+    "set": "pb",
+    "setName": "Promo-B",
+    "rarity": "Promo",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/pb/103.webp",
     "builderNr": 541
    },
    {
@@ -57788,6 +57798,15 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1/272.webp",
     "released": "2025-10-30",
     "builderNr": 1084
+   },
+   {
+    "id": "b4b-008",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/008.webp",
+    "released": "2026-09-30",
+    "builderNr": 1084
    }
   ],
   "tags": [],
@@ -58434,6 +58453,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/205.webp",
     "released": "2026-04-28",
     "builderNr": 1097
+   },
+   {
+    "id": "b4b-016",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/016.webp",
+    "released": "2026-09-30",
+    "builderNr": 1097
+   },
+   {
+    "id": "b4b-248",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/248.webp",
+    "released": "2026-09-30",
+    "builderNr": 1097
    }
   ],
   "tags": [],
@@ -58510,6 +58547,15 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/225.webp",
     "released": "2026-04-28",
     "builderNr": 1098
+   },
+   {
+    "id": "b4b-017",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/017.webp",
+    "released": "2026-09-30",
+    "builderNr": 1098
    }
   ],
   "tags": [],
@@ -58559,6 +58605,24 @@
     "rarity": "◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1/017.webp",
     "released": "2025-10-30",
+    "builderNr": 1099
+   },
+   {
+    "id": "b4b-018",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/018.webp",
+    "released": "2026-09-30",
+    "builderNr": 1099
+   },
+   {
+    "id": "b4b-249",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/249.webp",
+    "released": "2026-09-30",
     "builderNr": 1099
    }
   ],
@@ -58619,6 +58683,24 @@
     "rarity": "Crown Rare",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1/329.webp",
     "released": "2025-10-30",
+    "builderNr": 1100
+   },
+   {
+    "id": "b4b-019",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/019.webp",
+    "released": "2026-09-30",
+    "builderNr": 1100
+   },
+   {
+    "id": "b4b-250",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/250.webp",
+    "released": "2026-09-30",
     "builderNr": 1100
    }
   ],
@@ -59265,6 +59347,15 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1/274.webp",
     "released": "2025-10-30",
     "builderNr": 1113
+   },
+   {
+    "id": "b4b-035",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/035.webp",
+    "released": "2026-09-30",
+    "builderNr": 1113
    }
   ],
   "tags": [],
@@ -59369,6 +59460,24 @@
     "rarity": "✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/207.webp",
     "released": "2026-04-28",
+    "builderNr": 1116
+   },
+   {
+    "id": "b4b-040",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/040.webp",
+    "released": "2026-09-30",
+    "builderNr": 1116
+   },
+   {
+    "id": "b4b-265",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/265.webp",
+    "released": "2026-09-30",
     "builderNr": 1116
    }
   ],
@@ -59501,6 +59610,24 @@
     "rarity": "✵✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/226.webp",
     "released": "2026-04-28",
+    "builderNr": 1118
+   },
+   {
+    "id": "b4b-041",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/041.webp",
+    "released": "2026-09-30",
+    "builderNr": 1118
+   },
+   {
+    "id": "b4b-413",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "☆☆",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/413.webp",
+    "released": "2026-09-30",
     "builderNr": 1118
    }
   ],
@@ -60158,6 +60285,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1/232.webp",
     "released": "2025-10-30",
     "builderNr": 1132
+   },
+   {
+    "id": "b4b-059",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/059.webp",
+    "released": "2026-09-30",
+    "builderNr": 1132
+   },
+   {
+    "id": "b4b-277",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/277.webp",
+    "released": "2026-09-30",
+    "builderNr": 1132
    }
   ],
   "tags": [],
@@ -60289,6 +60434,24 @@
     "rarity": "✵✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3b/101.webp",
     "released": "2026-06-30",
+    "builderNr": 1134
+   },
+   {
+    "id": "b4b-060",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/060.webp",
+    "released": "2026-09-30",
+    "builderNr": 1134
+   },
+   {
+    "id": "b4b-415",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "☆☆",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/415.webp",
+    "released": "2026-09-30",
     "builderNr": 1134
    }
   ],
@@ -61252,6 +61415,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1/071.webp",
     "released": "2025-10-30",
     "builderNr": 1153
+   },
+   {
+    "id": "b4b-071",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/071.webp",
+    "released": "2026-09-30",
+    "builderNr": 1153
+   },
+   {
+    "id": "b4b-283",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/283.webp",
+    "released": "2026-09-30",
+    "builderNr": 1153
    }
   ],
   "tags": [],
@@ -61303,6 +61484,24 @@
     "rarity": "◊◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1/072.webp",
     "released": "2025-10-30",
+    "builderNr": 1154
+   },
+   {
+    "id": "b4b-072",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/072.webp",
+    "released": "2026-09-30",
+    "builderNr": 1154
+   },
+   {
+    "id": "b4b-284",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/284.webp",
+    "released": "2026-09-30",
     "builderNr": 1154
    }
   ],
@@ -61378,6 +61577,15 @@
     "rarity": "✵✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/227.webp",
     "released": "2026-04-28",
+    "builderNr": 1155
+   },
+   {
+    "id": "b4b-073",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/073.webp",
+    "released": "2026-09-30",
     "builderNr": 1155
    }
   ],
@@ -61825,6 +62033,15 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/228.webp",
     "released": "2026-04-28",
     "builderNr": 1163
+   },
+   {
+    "id": "b4b-087",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/087.webp",
+    "released": "2026-09-30",
+    "builderNr": 1163
    }
   ],
   "tags": [],
@@ -61894,6 +62111,24 @@
     "rarity": "✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3b/095.webp",
     "released": "2026-06-30",
+    "builderNr": 1165
+   },
+   {
+    "id": "b4b-089",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/089.webp",
+    "released": "2026-09-30",
+    "builderNr": 1165
+   },
+   {
+    "id": "b4b-296",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/296.webp",
+    "released": "2026-09-30",
     "builderNr": 1165
    }
   ],
@@ -62030,6 +62265,15 @@
     "rarity": "✵✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3b/103.webp",
     "released": "2026-06-30",
+    "builderNr": 1167
+   },
+   {
+    "id": "b4b-090",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/090.webp",
+    "released": "2026-09-30",
     "builderNr": 1167
    }
   ],
@@ -62839,6 +63083,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3a/107.webp",
     "released": "2026-05-28",
     "builderNr": 1184
+   },
+   {
+    "id": "b4b-107",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/107.webp",
+    "released": "2026-09-30",
+    "builderNr": 1184
+   },
+   {
+    "id": "b4b-417",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "☆☆",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/417.webp",
+    "released": "2026-09-30",
+    "builderNr": 1184
    }
   ],
   "tags": [],
@@ -63086,6 +63348,24 @@
     "rarity": "◊◊◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1/109.webp",
     "released": "2025-10-30",
+    "builderNr": 1191
+   },
+   {
+    "id": "b4b-109",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/109.webp",
+    "released": "2026-09-30",
+    "builderNr": 1191
+   },
+   {
+    "id": "b4b-307",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/307.webp",
+    "released": "2026-09-30",
     "builderNr": 1191
    }
   ],
@@ -63635,6 +63915,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1/330.webp",
     "released": "2025-10-30",
     "builderNr": 1202
+   },
+   {
+    "id": "b4b-113",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/113.webp",
+    "released": "2026-09-30",
+    "builderNr": 1202
+   },
+   {
+    "id": "b4b-311",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/311.webp",
+    "released": "2026-09-30",
+    "builderNr": 1202
    }
   ],
   "tags": [],
@@ -63714,6 +64012,15 @@
     "rarity": "✵✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3b/104.webp",
     "released": "2026-06-30",
+    "builderNr": 1203
+   },
+   {
+    "id": "b4b-116",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/116.webp",
+    "released": "2026-09-30",
     "builderNr": 1203
    }
   ],
@@ -63909,6 +64216,15 @@
     "rarity": "✵✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/229.webp",
     "released": "2026-04-28",
+    "builderNr": 1206
+   },
+   {
+    "id": "b4b-123",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/123.webp",
+    "released": "2026-09-30",
     "builderNr": 1206
    }
   ],
@@ -65588,6 +65904,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/218.webp",
     "released": "2026-04-28",
     "builderNr": 1241
+   },
+   {
+    "id": "b4b-147",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/147.webp",
+    "released": "2026-09-30",
+    "builderNr": 1241
+   },
+   {
+    "id": "b4b-330",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/330.webp",
+    "released": "2026-09-30",
+    "builderNr": 1241
    }
   ],
   "tags": [],
@@ -65662,6 +65996,15 @@
     "rarity": "✵✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/231.webp",
     "released": "2026-04-28",
+    "builderNr": 1242
+   },
+   {
+    "id": "b4b-148",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/148.webp",
+    "released": "2026-09-30",
     "builderNr": 1242
    }
   ],
@@ -66150,6 +66493,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1/170.webp",
     "released": "2025-10-30",
     "builderNr": 1252
+   },
+   {
+    "id": "b4b-161",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/161.webp",
+    "released": "2026-09-30",
+    "builderNr": 1252
+   },
+   {
+    "id": "b4b-338",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/338.webp",
+    "released": "2026-09-30",
+    "builderNr": 1252
    }
   ],
   "tags": [],
@@ -66200,6 +66561,24 @@
     "rarity": "◊◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1/171.webp",
     "released": "2025-10-30",
+    "builderNr": 1253
+   },
+   {
+    "id": "b4b-162",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/162.webp",
+    "released": "2026-09-30",
+    "builderNr": 1253
+   },
+   {
+    "id": "b4b-339",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/339.webp",
+    "released": "2026-09-30",
     "builderNr": 1253
    }
   ],
@@ -66259,6 +66638,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1a/102.webp",
     "released": "2025-12-17",
     "builderNr": 1254
+   },
+   {
+    "id": "b4b-164",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/164.webp",
+    "released": "2026-09-30",
+    "builderNr": 1254
+   },
+   {
+    "id": "b4b-341",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/341.webp",
+    "released": "2026-09-30",
+    "builderNr": 1254
    }
   ],
   "tags": [],
@@ -66316,6 +66713,24 @@
     "rarity": "◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1/173.webp",
     "released": "2025-10-30",
+    "builderNr": 1255
+   },
+   {
+    "id": "b4b-165",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/165.webp",
+    "released": "2026-09-30",
+    "builderNr": 1255
+   },
+   {
+    "id": "b4b-342",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/342.webp",
+    "released": "2026-09-30",
     "builderNr": 1255
    }
   ],
@@ -66400,6 +66815,15 @@
     "rarity": "☆☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1/282.webp",
     "released": "2025-10-30",
+    "builderNr": 1256
+   },
+   {
+    "id": "b4b-166",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/166.webp",
+    "released": "2026-09-30",
     "builderNr": 1256
    }
   ],
@@ -66838,6 +67262,15 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1/283.webp",
     "released": "2025-10-30",
     "builderNr": 1265
+   },
+   {
+    "id": "b4b-182",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/182.webp",
+    "released": "2026-09-30",
+    "builderNr": 1265
    }
   ],
   "tags": [],
@@ -67271,6 +67704,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1/193.webp",
     "released": "2025-10-30",
     "builderNr": 1275
+   },
+   {
+    "id": "b4b-184",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/184.webp",
+    "released": "2026-09-30",
+    "builderNr": 1275
+   },
+   {
+    "id": "b4b-354",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/354.webp",
+    "released": "2026-09-30",
+    "builderNr": 1275
    }
   ],
   "tags": [],
@@ -67328,6 +67779,24 @@
     "rarity": "☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1/248.webp",
     "released": "2025-10-30",
+    "builderNr": 1276
+   },
+   {
+    "id": "b4b-185",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/185.webp",
+    "released": "2026-09-30",
+    "builderNr": 1276
+   },
+   {
+    "id": "b4b-355",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/355.webp",
+    "released": "2026-09-30",
     "builderNr": 1276
    }
   ],
@@ -67440,6 +67909,24 @@
     "rarity": "✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3a/102.webp",
     "released": "2026-05-28",
+    "builderNr": 1278
+   },
+   {
+    "id": "b4b-186",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/186.webp",
+    "released": "2026-09-30",
+    "builderNr": 1278
+   },
+   {
+    "id": "b4b-356",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/356.webp",
+    "released": "2026-09-30",
     "builderNr": 1278
    }
   ],
@@ -68332,6 +68819,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1/331.webp",
     "released": "2025-10-30",
     "builderNr": 1000091
+   },
+   {
+    "id": "b4b-203",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/203.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000091
+   },
+   {
+    "id": "b4b-369",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/369.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000091
    }
   ],
   "tags": [],
@@ -68533,6 +69038,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1/268.webp",
     "released": "2025-10-30",
     "builderNr": 1000097
+   },
+   {
+    "id": "b4b-220",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/220.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000097
+   },
+   {
+    "id": "b4b-386",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/386.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000097
    }
   ],
   "tags": [],
@@ -68609,6 +69132,33 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1/270.webp",
     "released": "2025-10-30",
     "builderNr": 1000099
+   },
+   {
+    "id": "b4b-225",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/225.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000099
+   },
+   {
+    "id": "b4b-391",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/391.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000099
+   },
+   {
+    "id": "b4b-424",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "☆☆",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/424.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000099
    }
   ],
   "tags": [],
@@ -68646,6 +69196,24 @@
     "rarity": "☆☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1/271.webp",
     "released": "2025-10-30",
+    "builderNr": 1000100
+   },
+   {
+    "id": "b4b-226",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/226.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000100
+   },
+   {
+    "id": "b4b-392",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/392.webp",
+    "released": "2026-09-30",
     "builderNr": 1000100
    }
   ],
@@ -68693,6 +69261,24 @@
     "rarity": "◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1a/001.webp",
     "released": "2025-12-17",
+    "builderNr": 1307
+   },
+   {
+    "id": "b4b-001",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/001.webp",
+    "released": "2026-09-30",
+    "builderNr": 1307
+   },
+   {
+    "id": "b4b-237",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/237.webp",
+    "released": "2026-09-30",
     "builderNr": 1307
    }
   ],
@@ -68745,6 +69331,24 @@
     "rarity": "◊◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1a/002.webp",
     "released": "2025-12-17",
+    "builderNr": 1308
+   },
+   {
+    "id": "b4b-002",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/002.webp",
+    "released": "2026-09-30",
+    "builderNr": 1308
+   },
+   {
+    "id": "b4b-238",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/238.webp",
+    "released": "2026-09-30",
     "builderNr": 1308
    }
   ],
@@ -68863,6 +69467,24 @@
     "rarity": "☆☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1a/083.webp",
     "released": "2025-12-17",
+    "builderNr": 1310
+   },
+   {
+    "id": "b4b-003",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/003.webp",
+    "released": "2026-09-30",
+    "builderNr": 1310
+   },
+   {
+    "id": "b4b-409",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "☆☆",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/409.webp",
+    "released": "2026-09-30",
     "builderNr": 1310
    }
   ],
@@ -69372,6 +69994,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4a/105.webp",
     "released": "2026-08-27",
     "builderNr": 1319
+   },
+   {
+    "id": "b4b-032",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/032.webp",
+    "released": "2026-09-30",
+    "builderNr": 1319
+   },
+   {
+    "id": "b4b-412",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "☆☆",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/412.webp",
+    "released": "2026-09-30",
+    "builderNr": 1319
    }
   ],
   "tags": [],
@@ -69521,6 +70161,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1a/017.webp",
     "released": "2025-12-17",
     "builderNr": 1322
+   },
+   {
+    "id": "b4b-052",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/052.webp",
+    "released": "2026-09-30",
+    "builderNr": 1322
+   },
+   {
+    "id": "b4b-273",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/273.webp",
+    "released": "2026-09-30",
+    "builderNr": 1322
    }
   ],
   "tags": [],
@@ -69573,6 +70231,24 @@
     "rarity": "◊◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1a/018.webp",
     "released": "2025-12-17",
+    "builderNr": 1323
+   },
+   {
+    "id": "b4b-053",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/053.webp",
+    "released": "2026-09-30",
+    "builderNr": 1323
+   },
+   {
+    "id": "b4b-274",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/274.webp",
+    "released": "2026-09-30",
     "builderNr": 1323
    }
   ],
@@ -69699,6 +70375,24 @@
     "rarity": "☆☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1a/084.webp",
     "released": "2025-12-17",
+    "builderNr": 1325
+   },
+   {
+    "id": "b4b-054",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/054.webp",
+    "released": "2026-09-30",
+    "builderNr": 1325
+   },
+   {
+    "id": "b4b-414",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "☆☆",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/414.webp",
+    "released": "2026-09-30",
     "builderNr": 1325
    }
   ],
@@ -69890,6 +70584,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1a/024.webp",
     "released": "2025-12-17",
     "builderNr": 1329
+   },
+   {
+    "id": "b4b-084",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/084.webp",
+    "released": "2026-09-30",
+    "builderNr": 1329
+   },
+   {
+    "id": "b4b-293",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/293.webp",
+    "released": "2026-09-30",
+    "builderNr": 1329
    }
   ],
   "tags": [],
@@ -69945,6 +70657,24 @@
     "rarity": "◊◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1a/025.webp",
     "released": "2025-12-17",
+    "builderNr": 1330
+   },
+   {
+    "id": "b4b-085",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/085.webp",
+    "released": "2026-09-30",
+    "builderNr": 1330
+   },
+   {
+    "id": "b4b-294",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/294.webp",
+    "released": "2026-09-30",
     "builderNr": 1330
    }
   ],
@@ -70566,6 +71296,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/211.webp",
     "released": "2026-04-28",
     "builderNr": 1342
+   },
+   {
+    "id": "b4b-122",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/122.webp",
+    "released": "2026-09-30",
+    "builderNr": 1342
+   },
+   {
+    "id": "b4b-316",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/316.webp",
+    "released": "2026-09-30",
+    "builderNr": 1342
    }
   ],
   "tags": [],
@@ -70789,6 +71537,15 @@
     "rarity": "✵✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/228.webp",
     "released": "2026-07-30",
+    "builderNr": 1346
+   },
+   {
+    "id": "b4b-125",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/125.webp",
+    "released": "2026-09-30",
     "builderNr": 1346
    }
   ],
@@ -71352,6 +72109,15 @@
     "rarity": "✵✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/232.webp",
     "released": "2026-04-28",
+    "builderNr": 1356
+   },
+   {
+    "id": "b4b-155",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/155.webp",
+    "released": "2026-09-30",
     "builderNr": 1356
    }
   ],
@@ -71951,6 +72717,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1a/103.webp",
     "released": "2025-12-17",
     "builderNr": 1000102
+   },
+   {
+    "id": "b4b-201",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/201.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000102
+   },
+   {
+    "id": "b4b-367",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/367.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000102
    }
   ],
   "tags": [],
@@ -71989,6 +72773,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1a/081.webp",
     "released": "2025-12-17",
     "builderNr": 1000103
+   },
+   {
+    "id": "b4b-218",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/218.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000103
+   },
+   {
+    "id": "b4b-384",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/384.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000103
    }
   ],
   "tags": [],
@@ -72026,6 +72828,24 @@
     "rarity": "☆☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1a/082.webp",
     "released": "2025-12-17",
+    "builderNr": 1000104
+   },
+   {
+    "id": "b4b-219",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/219.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000104
+   },
+   {
+    "id": "b4b-385",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/385.webp",
+    "released": "2026-09-30",
     "builderNr": 1000104
    }
   ],
@@ -72893,6 +73713,15 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2/194.webp",
     "released": "2026-01-29",
     "builderNr": 1383
+   },
+   {
+    "id": "b4b-028",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/028.webp",
+    "released": "2026-09-30",
+    "builderNr": 1383
    }
   ],
   "tags": [],
@@ -73244,6 +74073,15 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/224.webp",
     "released": "2026-07-30",
     "builderNr": 1389
+   },
+   {
+    "id": "b4b-045",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/045.webp",
+    "released": "2026-09-30",
+    "builderNr": 1389
    }
   ],
   "tags": [],
@@ -73394,6 +74232,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2/027.webp",
     "released": "2026-01-29",
     "builderNr": 1393
+   },
+   {
+    "id": "b4b-051",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/051.webp",
+    "released": "2026-09-30",
+    "builderNr": 1393
+   },
+   {
+    "id": "b4b-272",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/272.webp",
+    "released": "2026-09-30",
+    "builderNr": 1393
    }
   ],
   "tags": [],
@@ -73468,6 +74324,15 @@
     "rarity": "✵✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/225.webp",
     "released": "2026-07-30",
+    "builderNr": 1395
+   },
+   {
+    "id": "b4b-056",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/056.webp",
+    "released": "2026-09-30",
     "builderNr": 1395
    }
   ],
@@ -73663,6 +74528,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/205.webp",
     "released": "2026-07-30",
     "builderNr": 1399
+   },
+   {
+    "id": "b4b-062",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/062.webp",
+    "released": "2026-09-30",
+    "builderNr": 1399
+   },
+   {
+    "id": "b4b-278",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/278.webp",
+    "released": "2026-09-30",
+    "builderNr": 1399
    }
   ],
   "tags": [],
@@ -73722,6 +74605,24 @@
     "rarity": "✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/206.webp",
     "released": "2026-07-30",
+    "builderNr": 1400
+   },
+   {
+    "id": "b4b-063",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/063.webp",
+    "released": "2026-09-30",
+    "builderNr": 1400
+   },
+   {
+    "id": "b4b-279",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/279.webp",
+    "released": "2026-09-30",
     "builderNr": 1400
    }
   ],
@@ -73854,6 +74755,15 @@
     "rarity": "✵✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/226.webp",
     "released": "2026-07-30",
+    "builderNr": 1402
+   },
+   {
+    "id": "b4b-064",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/064.webp",
+    "released": "2026-09-30",
     "builderNr": 1402
    }
   ],
@@ -74739,6 +75649,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4a/099.webp",
     "released": "2026-08-27",
     "builderNr": 1420
+   },
+   {
+    "id": "b4b-098",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/098.webp",
+    "released": "2026-09-30",
+    "builderNr": 1420
+   },
+   {
+    "id": "b4b-301",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/301.webp",
+    "released": "2026-09-30",
+    "builderNr": 1420
    }
   ],
   "tags": [],
@@ -74815,6 +75743,15 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4a/106.webp",
     "released": "2026-08-27",
     "builderNr": 1421
+   },
+   {
+    "id": "b4b-099",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/099.webp",
+    "released": "2026-09-30",
+    "builderNr": 1421
    }
   ],
   "tags": [],
@@ -74871,6 +75808,24 @@
     "rarity": "✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3a/096.webp",
     "released": "2026-05-28",
+    "builderNr": 1422
+   },
+   {
+    "id": "b4b-100",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/100.webp",
+    "released": "2026-09-30",
+    "builderNr": 1422
+   },
+   {
+    "id": "b4b-302",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/302.webp",
+    "released": "2026-09-30",
     "builderNr": 1422
    }
   ],
@@ -75414,6 +76369,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/227.webp",
     "released": "2026-07-30",
     "builderNr": 1432
+   },
+   {
+    "id": "b4b-106",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/106.webp",
+    "released": "2026-09-30",
+    "builderNr": 1432
+   },
+   {
+    "id": "b4b-416",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "☆☆",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/416.webp",
+    "released": "2026-09-30",
+    "builderNr": 1432
    }
   ],
   "tags": [],
@@ -75726,6 +76699,15 @@
     "rarity": "✵✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4a/107.webp",
     "released": "2026-08-27",
+    "builderNr": 1439
+   },
+   {
+    "id": "b4b-115",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/115.webp",
+    "released": "2026-09-30",
     "builderNr": 1439
    }
   ],
@@ -76375,6 +77357,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/213.webp",
     "released": "2026-07-30",
     "builderNr": 1451
+   },
+   {
+    "id": "b4b-129",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/129.webp",
+    "released": "2026-09-30",
+    "builderNr": 1451
+   },
+   {
+    "id": "b4b-319",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/319.webp",
+    "released": "2026-09-30",
+    "builderNr": 1451
    }
   ],
   "tags": [],
@@ -76432,6 +77432,24 @@
     "rarity": "✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/214.webp",
     "released": "2026-07-30",
+    "builderNr": 1452
+   },
+   {
+    "id": "b4b-130",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/130.webp",
+    "released": "2026-09-30",
+    "builderNr": 1452
+   },
+   {
+    "id": "b4b-320",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/320.webp",
+    "released": "2026-09-30",
     "builderNr": 1452
    }
   ],
@@ -76506,6 +77524,15 @@
     "rarity": "✵✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/229.webp",
     "released": "2026-07-30",
+    "builderNr": 1453
+   },
+   {
+    "id": "b4b-131",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/131.webp",
+    "released": "2026-09-30",
     "builderNr": 1453
    }
   ],
@@ -76752,6 +77779,14 @@
     "builderNr": 1458
    },
    {
+    "id": "pb-096",
+    "set": "pb",
+    "setName": "Promo-B",
+    "rarity": "Promo",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/pb/096.webp",
+    "builderNr": 1458
+   },
+   {
     "id": "b2-172",
     "set": "b2",
     "setName": "Fantastical Parade",
@@ -76767,6 +77802,24 @@
     "rarity": "✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/215.webp",
     "released": "2026-07-30",
+    "builderNr": 1458
+   },
+   {
+    "id": "b4b-135",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/135.webp",
+    "released": "2026-09-30",
+    "builderNr": 1458
+   },
+   {
+    "id": "b4b-323",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/323.webp",
+    "released": "2026-09-30",
     "builderNr": 1458
    }
   ],
@@ -76966,6 +78019,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2/096.webp",
     "released": "2026-01-29",
     "builderNr": 1462
+   },
+   {
+    "id": "b4b-137",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/137.webp",
+    "released": "2026-09-30",
+    "builderNr": 1462
+   },
+   {
+    "id": "b4b-324",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/324.webp",
+    "released": "2026-09-30",
+    "builderNr": 1462
    }
   ],
   "tags": [],
@@ -77023,6 +78094,24 @@
     "rarity": "☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2/173.webp",
     "released": "2026-01-29",
+    "builderNr": 1463
+   },
+   {
+    "id": "b4b-138",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/138.webp",
+    "released": "2026-09-30",
+    "builderNr": 1463
+   },
+   {
+    "id": "b4b-325",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/325.webp",
+    "released": "2026-09-30",
     "builderNr": 1463
    }
   ],
@@ -77700,6 +78789,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/218.webp",
     "released": "2026-07-30",
     "builderNr": 1476
+   },
+   {
+    "id": "b4b-153",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/153.webp",
+    "released": "2026-09-30",
+    "builderNr": 1476
+   },
+   {
+    "id": "b4b-334",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/334.webp",
+    "released": "2026-09-30",
+    "builderNr": 1476
    }
   ],
   "tags": [],
@@ -77763,6 +78870,24 @@
     "rarity": "✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/219.webp",
     "released": "2026-07-30",
+    "builderNr": 1477
+   },
+   {
+    "id": "b4b-154",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/154.webp",
+    "released": "2026-09-30",
+    "builderNr": 1477
+   },
+   {
+    "id": "b4b-335",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/335.webp",
+    "released": "2026-09-30",
     "builderNr": 1477
    }
   ],
@@ -77899,6 +79024,15 @@
     "rarity": "✵✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4a/108.webp",
     "released": "2026-08-27",
+    "builderNr": 1479
+   },
+   {
+    "id": "b4b-157",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/157.webp",
+    "released": "2026-09-30",
     "builderNr": 1479
    }
   ],
@@ -78242,6 +79376,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2/120.webp",
     "released": "2026-01-29",
     "builderNr": 1486
+   },
+   {
+    "id": "b4b-163",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/163.webp",
+    "released": "2026-09-30",
+    "builderNr": 1486
+   },
+   {
+    "id": "b4b-340",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/340.webp",
+    "released": "2026-09-30",
+    "builderNr": 1486
    }
   ],
   "tags": [],
@@ -78451,6 +79603,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2/204.webp",
     "released": "2026-01-29",
     "builderNr": 1490
+   },
+   {
+    "id": "b4b-180",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/180.webp",
+    "released": "2026-09-30",
+    "builderNr": 1490
+   },
+   {
+    "id": "b4b-352",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/352.webp",
+    "released": "2026-09-30",
+    "builderNr": 1490
    }
   ],
   "tags": [],
@@ -78632,6 +79802,15 @@
     "rarity": "✵✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/231.webp",
     "released": "2026-07-30",
+    "builderNr": 1493
+   },
+   {
+    "id": "b4b-181",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/181.webp",
+    "released": "2026-09-30",
     "builderNr": 1493
    }
   ],
@@ -79463,6 +80642,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2/145.webp",
     "released": "2026-01-29",
     "builderNr": 1000106
+   },
+   {
+    "id": "b4b-198",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/198.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000106
+   },
+   {
+    "id": "b4b-364",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/364.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000106
    }
   ],
   "tags": [],
@@ -79532,6 +80729,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2/234.webp",
     "released": "2026-01-29",
     "builderNr": 1000108
+   },
+   {
+    "id": "b4b-209",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/209.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000108
+   },
+   {
+    "id": "b4b-375",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/375.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000108
    }
   ],
   "tags": [],
@@ -79570,6 +80785,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2b/117.webp",
     "released": "2026-03-26",
     "builderNr": 1000109
+   },
+   {
+    "id": "b4b-210",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/210.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000109
+   },
+   {
+    "id": "b4b-376",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/376.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000109
    }
   ],
   "tags": [],
@@ -79607,6 +80840,24 @@
     "rarity": "☆☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2/190.webp",
     "released": "2026-01-29",
+    "builderNr": 1000110
+   },
+   {
+    "id": "b4b-214",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/214.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000110
+   },
+   {
+    "id": "b4b-380",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/380.webp",
+    "released": "2026-09-30",
     "builderNr": 1000110
    }
   ],
@@ -79751,6 +81002,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2/153.webp",
     "released": "2026-01-29",
     "builderNr": 1000114
+   },
+   {
+    "id": "b4b-232",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/232.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000114
+   },
+   {
+    "id": "b4b-398",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/398.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000114
    }
   ],
   "tags": [],
@@ -79780,6 +81049,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2/154.webp",
     "released": "2026-01-29",
     "builderNr": 1000115
+   },
+   {
+    "id": "b4b-235",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/235.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000115
+   },
+   {
+    "id": "b4b-401",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/401.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000115
    }
   ],
   "tags": [],
@@ -79808,6 +81095,24 @@
     "rarity": "◊◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2/155.webp",
     "released": "2026-01-29",
+    "builderNr": 1000116
+   },
+   {
+    "id": "b4b-236",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/236.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000116
+   },
+   {
+    "id": "b4b-402",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/402.webp",
+    "released": "2026-09-30",
     "builderNr": 1000116
    }
   ],
@@ -79864,6 +81169,24 @@
     "rarity": "✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2a/116.webp",
     "released": "2026-02-26",
+    "builderNr": 1510
+   },
+   {
+    "id": "b4b-021",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/021.webp",
+    "released": "2026-09-30",
+    "builderNr": 1510
+   },
+   {
+    "id": "b4b-252",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/252.webp",
+    "released": "2026-09-30",
     "builderNr": 1510
    }
   ],
@@ -80053,6 +81376,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2a/007.webp",
     "released": "2026-02-26",
     "builderNr": 1516
+   },
+   {
+    "id": "b4b-024",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/024.webp",
+    "released": "2026-09-30",
+    "builderNr": 1516
+   },
+   {
+    "id": "b4b-254",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/254.webp",
+    "released": "2026-09-30",
+    "builderNr": 1516
    }
   ],
   "tags": [],
@@ -80102,6 +81443,24 @@
     "rarity": "◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2a/008.webp",
     "released": "2026-02-26",
+    "builderNr": 1517
+   },
+   {
+    "id": "b4b-025",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/025.webp",
+    "released": "2026-09-30",
+    "builderNr": 1517
+   },
+   {
+    "id": "b4b-255",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/255.webp",
+    "released": "2026-09-30",
     "builderNr": 1517
    }
   ],
@@ -80158,6 +81517,24 @@
     "rarity": "Crown Rare",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2b/116.webp",
     "released": "2026-03-26",
+    "builderNr": 1518
+   },
+   {
+    "id": "b4b-026",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/026.webp",
+    "released": "2026-09-30",
+    "builderNr": 1518
+   },
+   {
+    "id": "b4b-256",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/256.webp",
+    "released": "2026-09-30",
     "builderNr": 1518
    }
   ],
@@ -80517,6 +81894,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2a/094.webp",
     "released": "2026-02-26",
     "builderNr": 1525
+   },
+   {
+    "id": "b4b-046",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/046.webp",
+    "released": "2026-09-30",
+    "builderNr": 1525
+   },
+   {
+    "id": "b4b-268",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/268.webp",
+    "released": "2026-09-30",
+    "builderNr": 1525
    }
   ],
   "tags": [],
@@ -80566,6 +81961,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2a/017.webp",
     "released": "2026-02-26",
     "builderNr": 1526
+   },
+   {
+    "id": "b4b-047",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/047.webp",
+    "released": "2026-09-30",
+    "builderNr": 1526
+   },
+   {
+    "id": "b4b-269",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/269.webp",
+    "released": "2026-09-30",
+    "builderNr": 1526
    }
   ],
   "tags": [],
@@ -80613,6 +82026,24 @@
     "rarity": "◊◊◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2a/018.webp",
     "released": "2026-02-26",
+    "builderNr": 1527
+   },
+   {
+    "id": "b4b-048",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/048.webp",
+    "released": "2026-09-30",
+    "builderNr": 1527
+   },
+   {
+    "id": "b4b-270",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/270.webp",
+    "released": "2026-09-30",
     "builderNr": 1527
    }
   ],
@@ -80698,6 +82129,15 @@
     "rarity": "✵✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3a/105.webp",
     "released": "2026-05-28",
+    "builderNr": 1529
+   },
+   {
+    "id": "b4b-050",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/050.webp",
+    "released": "2026-09-30",
     "builderNr": 1529
    }
   ],
@@ -81284,6 +82724,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2a/034.webp",
     "released": "2026-02-26",
     "builderNr": 1543
+   },
+   {
+    "id": "b4b-078",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/078.webp",
+    "released": "2026-09-30",
+    "builderNr": 1543
+   },
+   {
+    "id": "b4b-288",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/288.webp",
+    "released": "2026-09-30",
+    "builderNr": 1543
    }
   ],
   "tags": [],
@@ -81333,6 +82791,24 @@
     "rarity": "◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2a/035.webp",
     "released": "2026-02-26",
+    "builderNr": 1544
+   },
+   {
+    "id": "b4b-079",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/079.webp",
+    "released": "2026-09-30",
+    "builderNr": 1544
+   },
+   {
+    "id": "b4b-289",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/289.webp",
+    "released": "2026-09-30",
     "builderNr": 1544
    }
   ],
@@ -81389,6 +82865,33 @@
     "rarity": "Crown Rare",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2a/130.webp",
     "released": "2026-02-26",
+    "builderNr": 1545
+   },
+   {
+    "id": "b4b-080",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/080.webp",
+    "released": "2026-09-30",
+    "builderNr": 1545
+   },
+   {
+    "id": "b4b-290",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/290.webp",
+    "released": "2026-09-30",
+    "builderNr": 1545
+   },
+   {
+    "id": "b4b-404",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "☆",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/404.webp",
+    "released": "2026-09-30",
     "builderNr": 1545
    }
   ],
@@ -81641,6 +83144,15 @@
     "rarity": "✵✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3a/106.webp",
     "released": "2026-05-28",
+    "builderNr": 1551
+   },
+   {
+    "id": "b4b-101",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/101.webp",
+    "released": "2026-09-30",
     "builderNr": 1551
    }
   ],
@@ -82256,6 +83768,24 @@
     "rarity": "✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2a/122.webp",
     "released": "2026-02-26",
+    "builderNr": 1563
+   },
+   {
+    "id": "b4b-121",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/121.webp",
+    "released": "2026-09-30",
+    "builderNr": 1563
+   },
+   {
+    "id": "b4b-315",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/315.webp",
+    "released": "2026-09-30",
     "builderNr": 1563
    }
   ],
@@ -83387,6 +84917,15 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2a/114.webp",
     "released": "2026-02-26",
     "builderNr": 1587
+   },
+   {
+    "id": "b4b-168",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/168.webp",
+    "released": "2026-09-30",
+    "builderNr": 1587
    }
   ],
   "tags": [],
@@ -83762,6 +85301,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2a/131.webp",
     "released": "2026-02-26",
     "builderNr": 1000117
+   },
+   {
+    "id": "b4b-199",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/199.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000117
+   },
+   {
+    "id": "b4b-365",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/365.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000117
    }
   ],
   "tags": [],
@@ -83914,6 +85471,33 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2a/115.webp",
     "released": "2026-02-26",
     "builderNr": 1000121
+   },
+   {
+    "id": "b4b-222",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/222.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000121
+   },
+   {
+    "id": "b4b-388",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/388.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000121
+   },
+   {
+    "id": "b4b-423",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "☆☆",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/423.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000121
    }
   ],
   "tags": [],
@@ -83942,6 +85526,24 @@
     "rarity": "◊◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2a/093.webp",
     "released": "2026-02-26",
+    "builderNr": 1000122
+   },
+   {
+    "id": "b4b-231",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/231.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000122
+   },
+   {
+    "id": "b4b-397",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/397.webp",
+    "released": "2026-09-30",
     "builderNr": 1000122
    }
   ],
@@ -83999,6 +85601,24 @@
     "rarity": "✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2b/087.webp",
     "released": "2026-03-26",
+    "builderNr": 1607
+   },
+   {
+    "id": "b4b-007",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/007.webp",
+    "released": "2026-09-30",
+    "builderNr": 1607
+   },
+   {
+    "id": "b4b-242",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/242.webp",
+    "released": "2026-09-30",
     "builderNr": 1607
    }
   ],
@@ -84317,12 +85937,38 @@
     "builderNr": 1613
    },
    {
+    "id": "pb-101",
+    "set": "pb",
+    "setName": "Promo-B",
+    "rarity": "Promo",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/pb/101.webp",
+    "builderNr": 1613
+   },
+   {
     "id": "b2b-091",
     "set": "b2b",
     "setName": "Mega Shine",
     "rarity": "✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2b/091.webp",
     "released": "2026-03-26",
+    "builderNr": 1613
+   },
+   {
+    "id": "b4b-029",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/029.webp",
+    "released": "2026-09-30",
+    "builderNr": 1613
+   },
+   {
+    "id": "b4b-258",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/258.webp",
+    "released": "2026-09-30",
     "builderNr": 1613
    }
   ],
@@ -84388,6 +86034,33 @@
     "rarity": "✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2b/092.webp",
     "released": "2026-03-26",
+    "builderNr": 1614
+   },
+   {
+    "id": "b4b-030",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/030.webp",
+    "released": "2026-09-30",
+    "builderNr": 1614
+   },
+   {
+    "id": "b4b-259",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/259.webp",
+    "released": "2026-09-30",
+    "builderNr": 1614
+   },
+   {
+    "id": "b4b-403",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "☆",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/403.webp",
+    "released": "2026-09-30",
     "builderNr": 1614
    }
   ],
@@ -84465,6 +86138,33 @@
     "rarity": "✵✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2b/111.webp",
     "released": "2026-03-26",
+    "builderNr": 1615
+   },
+   {
+    "id": "b4b-031",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/031.webp",
+    "released": "2026-09-30",
+    "builderNr": 1615
+   },
+   {
+    "id": "b4b-411",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "☆☆",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/411.webp",
+    "released": "2026-09-30",
+    "builderNr": 1615
+   },
+   {
+    "id": "b4b-425",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "☆☆☆",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/425.webp",
+    "released": "2026-09-30",
     "builderNr": 1615
    }
   ],
@@ -84811,6 +86511,15 @@
     "rarity": "✵✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2b/112.webp",
     "released": "2026-03-26",
+    "builderNr": 1621
+   },
+   {
+    "id": "b4b-058",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/058.webp",
+    "released": "2026-09-30",
     "builderNr": 1621
    }
   ],
@@ -85366,6 +87075,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2b/098.webp",
     "released": "2026-03-26",
     "builderNr": 1631
+   },
+   {
+    "id": "b4b-091",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/091.webp",
+    "released": "2026-09-30",
+    "builderNr": 1631
+   },
+   {
+    "id": "b4b-297",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/297.webp",
+    "released": "2026-09-30",
+    "builderNr": 1631
    }
   ],
   "tags": [],
@@ -85441,6 +87168,15 @@
     "rarity": "✵✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2b/113.webp",
     "released": "2026-03-26",
+    "builderNr": 1632
+   },
+   {
+    "id": "b4b-092",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/092.webp",
+    "released": "2026-09-30",
     "builderNr": 1632
    }
   ],
@@ -85990,6 +87726,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2b/101.webp",
     "released": "2026-03-26",
     "builderNr": 1642
+   },
+   {
+    "id": "b4b-140",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/140.webp",
+    "released": "2026-09-30",
+    "builderNr": 1642
+   },
+   {
+    "id": "b4b-327",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/327.webp",
+    "released": "2026-09-30",
+    "builderNr": 1642
    }
   ],
   "tags": [],
@@ -86060,6 +87814,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2b/114.webp",
     "released": "2026-03-26",
     "builderNr": 1643
+   },
+   {
+    "id": "b4b-141",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/141.webp",
+    "released": "2026-09-30",
+    "builderNr": 1643
+   },
+   {
+    "id": "b4b-419",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "☆☆",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/419.webp",
+    "released": "2026-09-30",
+    "builderNr": 1643
    }
   ],
   "tags": [],
@@ -86105,6 +87877,32 @@
     "rarity": "◊◊◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2b/040.webp",
     "released": "2026-03-26",
+    "builderNr": 1644
+   },
+   {
+    "id": "pb-095",
+    "set": "pb",
+    "setName": "Promo-B",
+    "rarity": "Promo",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/pb/095.webp",
+    "builderNr": 1644
+   },
+   {
+    "id": "b4b-144",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/144.webp",
+    "released": "2026-09-30",
+    "builderNr": 1644
+   },
+   {
+    "id": "b4b-328",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/328.webp",
+    "released": "2026-09-30",
     "builderNr": 1644
    }
   ],
@@ -86507,6 +88305,15 @@
     "rarity": "✵✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2b/115.webp",
     "released": "2026-03-26",
+    "builderNr": 1651
+   },
+   {
+    "id": "b4b-156",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/156.webp",
+    "released": "2026-09-30",
     "builderNr": 1651
    }
   ],
@@ -86914,6 +88721,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2b/108.webp",
     "released": "2026-03-26",
     "builderNr": 1658
+   },
+   {
+    "id": "b4b-174",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/174.webp",
+    "released": "2026-09-30",
+    "builderNr": 1658
+   },
+   {
+    "id": "b4b-346",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/346.webp",
+    "released": "2026-09-30",
+    "builderNr": 1658
    }
   ],
   "tags": [],
@@ -86970,6 +88795,24 @@
     "rarity": "✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2b/109.webp",
     "released": "2026-03-26",
+    "builderNr": 1659
+   },
+   {
+    "id": "b4b-175",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/175.webp",
+    "released": "2026-09-30",
+    "builderNr": 1659
+   },
+   {
+    "id": "b4b-347",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/347.webp",
+    "released": "2026-09-30",
     "builderNr": 1659
    }
   ],
@@ -87368,6 +89211,33 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2b/081.webp",
     "released": "2026-03-26",
     "builderNr": 1000125
+   },
+   {
+    "id": "b4b-212",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/212.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000125
+   },
+   {
+    "id": "b4b-378",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/378.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000125
+   },
+   {
+    "id": "b4b-421",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "☆☆",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/421.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000125
    }
   ],
   "tags": [],
@@ -87406,6 +89276,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2b/082.webp",
     "released": "2026-03-26",
     "builderNr": 1000126
+   },
+   {
+    "id": "b4b-215",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/215.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000126
+   },
+   {
+    "id": "b4b-381",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/381.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000126
    }
   ],
   "tags": [],
@@ -87434,6 +89322,24 @@
     "rarity": "◊◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2b/069.webp",
     "released": "2026-03-26",
+    "builderNr": 1000127
+   },
+   {
+    "id": "b4b-234",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/234.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000127
+   },
+   {
+    "id": "b4b-400",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/400.webp",
+    "released": "2026-09-30",
     "builderNr": 1000127
    }
   ],
@@ -87638,6 +89544,24 @@
     "rarity": "☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/157.webp",
     "released": "2026-04-28",
+    "builderNr": 1671
+   },
+   {
+    "id": "b4b-011",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/011.webp",
+    "released": "2026-09-30",
+    "builderNr": 1671
+   },
+   {
+    "id": "b4b-245",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/245.webp",
+    "released": "2026-09-30",
     "builderNr": 1671
    }
   ],
@@ -87943,6 +89867,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/159.webp",
     "released": "2026-04-28",
     "builderNr": 1678
+   },
+   {
+    "id": "b4b-013",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/013.webp",
+    "released": "2026-09-30",
+    "builderNr": 1678
+   },
+   {
+    "id": "b4b-246",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/246.webp",
+    "released": "2026-09-30",
+    "builderNr": 1678
    }
   ],
   "tags": [],
@@ -88173,6 +90115,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/018.webp",
     "released": "2026-04-28",
     "builderNr": 1683
+   },
+   {
+    "id": "b4b-020",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/020.webp",
+    "released": "2026-09-30",
+    "builderNr": 1683
+   },
+   {
+    "id": "b4b-251",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/251.webp",
+    "released": "2026-09-30",
+    "builderNr": 1683
    }
   ],
   "tags": [],
@@ -88329,6 +90289,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/021.webp",
     "released": "2026-04-28",
     "builderNr": 1686
+   },
+   {
+    "id": "b4b-042",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/042.webp",
+    "released": "2026-09-30",
+    "builderNr": 1686
+   },
+   {
+    "id": "b4b-266",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/266.webp",
+    "released": "2026-09-30",
+    "builderNr": 1686
    }
   ],
   "tags": [],
@@ -88441,6 +90419,15 @@
     "rarity": "☆☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/195.webp",
     "released": "2026-04-28",
+    "builderNr": 1688
+   },
+   {
+    "id": "b4b-043",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/043.webp",
+    "released": "2026-09-30",
     "builderNr": 1688
    }
   ],
@@ -89076,6 +91063,15 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3b/102.webp",
     "released": "2026-06-30",
     "builderNr": 1702
+   },
+   {
+    "id": "b4b-061",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/061.webp",
+    "released": "2026-09-30",
+    "builderNr": 1702
    }
   ],
   "tags": [],
@@ -89622,6 +91618,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/203.webp",
     "released": "2026-04-28",
     "builderNr": 1713
+   },
+   {
+    "id": "b4b-074",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/074.webp",
+    "released": "2026-09-30",
+    "builderNr": 1713
+   },
+   {
+    "id": "b4b-285",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/285.webp",
+    "released": "2026-09-30",
+    "builderNr": 1713
    }
   ],
   "tags": [],
@@ -89669,6 +91683,24 @@
     "rarity": "◊◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/049.webp",
     "released": "2026-04-28",
+    "builderNr": 1714
+   },
+   {
+    "id": "b4b-075",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/075.webp",
+    "released": "2026-09-30",
+    "builderNr": 1714
+   },
+   {
+    "id": "b4b-286",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/286.webp",
+    "released": "2026-09-30",
     "builderNr": 1714
    }
   ],
@@ -89724,6 +91756,24 @@
     "rarity": "◊◊◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/050.webp",
     "released": "2026-04-28",
+    "builderNr": 1715
+   },
+   {
+    "id": "b4b-076",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/076.webp",
+    "released": "2026-09-30",
+    "builderNr": 1715
+   },
+   {
+    "id": "b4b-287",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/287.webp",
+    "released": "2026-09-30",
     "builderNr": 1715
    }
   ],
@@ -89966,6 +92016,15 @@
     "rarity": "☆☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/197.webp",
     "released": "2026-04-28",
+    "builderNr": 1719
+   },
+   {
+    "id": "b4b-086",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/086.webp",
+    "released": "2026-09-30",
     "builderNr": 1719
    }
   ],
@@ -90881,6 +92940,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/072.webp",
     "released": "2026-04-28",
     "builderNr": 1737
+   },
+   {
+    "id": "b4b-118",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/118.webp",
+    "released": "2026-09-30",
+    "builderNr": 1737
+   },
+   {
+    "id": "b4b-313",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/313.webp",
+    "released": "2026-09-30",
+    "builderNr": 1737
    }
   ],
   "tags": [],
@@ -90937,6 +93014,24 @@
     "rarity": "☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/167.webp",
     "released": "2026-04-28",
+    "builderNr": 1738
+   },
+   {
+    "id": "b4b-119",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/119.webp",
+    "released": "2026-09-30",
+    "builderNr": 1738
+   },
+   {
+    "id": "b4b-314",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/314.webp",
+    "released": "2026-09-30",
     "builderNr": 1738
    }
   ],
@@ -91090,6 +93185,24 @@
     "rarity": "◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/076.webp",
     "released": "2026-04-28",
+    "builderNr": 1741
+   },
+   {
+    "id": "b4b-124",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/124.webp",
+    "released": "2026-09-30",
+    "builderNr": 1741
+   },
+   {
+    "id": "b4b-317",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/317.webp",
+    "released": "2026-09-30",
     "builderNr": 1741
    }
   ],
@@ -91247,6 +93360,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/169.webp",
     "released": "2026-04-28",
     "builderNr": 1744
+   },
+   {
+    "id": "b4b-126",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/126.webp",
+    "released": "2026-09-30",
+    "builderNr": 1744
+   },
+   {
+    "id": "b4b-318",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/318.webp",
+    "released": "2026-09-30",
+    "builderNr": 1744
    }
   ],
   "tags": [],
@@ -91363,6 +93494,24 @@
     "rarity": "☆☆☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/204.webp",
     "released": "2026-04-28",
+    "builderNr": 1746
+   },
+   {
+    "id": "b4b-127",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/127.webp",
+    "released": "2026-09-30",
+    "builderNr": 1746
+   },
+   {
+    "id": "b4b-418",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "☆☆",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/418.webp",
+    "released": "2026-09-30",
     "builderNr": 1746
    }
   ],
@@ -91600,6 +93749,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/087.webp",
     "released": "2026-04-28",
     "builderNr": 1752
+   },
+   {
+    "id": "b4b-132",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/132.webp",
+    "released": "2026-09-30",
+    "builderNr": 1752
+   },
+   {
+    "id": "b4b-321",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/321.webp",
+    "released": "2026-09-30",
+    "builderNr": 1752
    }
   ],
   "tags": [],
@@ -91665,6 +93832,15 @@
     "rarity": "☆☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/198.webp",
     "released": "2026-04-28",
+    "builderNr": 1753
+   },
+   {
+    "id": "b4b-133",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/133.webp",
+    "released": "2026-09-30",
     "builderNr": 1753
    }
   ],
@@ -92588,6 +94764,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/174.webp",
     "released": "2026-04-28",
     "builderNr": 1770
+   },
+   {
+    "id": "b4b-145",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/145.webp",
+    "released": "2026-09-30",
+    "builderNr": 1770
+   },
+   {
+    "id": "b4b-329",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/329.webp",
+    "released": "2026-09-30",
+    "builderNr": 1770
    }
   ],
   "tags": [],
@@ -92663,6 +94857,15 @@
     "rarity": "✵✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/230.webp",
     "released": "2026-07-30",
+    "builderNr": 1771
+   },
+   {
+    "id": "b4b-146",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/146.webp",
+    "released": "2026-09-30",
     "builderNr": 1771
    }
   ],
@@ -93070,6 +95273,24 @@
     "rarity": "Crown Rare",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/234.webp",
     "released": "2026-04-28",
+    "builderNr": 1780
+   },
+   {
+    "id": "b4b-151",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/151.webp",
+    "released": "2026-09-30",
+    "builderNr": 1780
+   },
+   {
+    "id": "b4b-332",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/332.webp",
+    "released": "2026-09-30",
     "builderNr": 1780
    }
   ],
@@ -93555,6 +95776,15 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/200.webp",
     "released": "2026-04-28",
     "builderNr": 1789
+   },
+   {
+    "id": "b4b-167",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/167.webp",
+    "released": "2026-09-30",
+    "builderNr": 1789
    }
   ],
   "tags": [],
@@ -93603,6 +95833,24 @@
     "rarity": "◊◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/125.webp",
     "released": "2026-04-28",
+    "builderNr": 1790
+   },
+   {
+    "id": "b4b-171",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/171.webp",
+    "released": "2026-09-30",
+    "builderNr": 1790
+   },
+   {
+    "id": "b4b-345",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/345.webp",
+    "released": "2026-09-30",
     "builderNr": 1790
    }
   ],
@@ -93670,6 +95918,15 @@
     "rarity": "☆☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/201.webp",
     "released": "2026-04-28",
+    "builderNr": 1791
+   },
+   {
+    "id": "b4b-172",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/172.webp",
+    "released": "2026-09-30",
     "builderNr": 1791
    }
   ],
@@ -94275,6 +96532,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/137.webp",
     "released": "2026-04-28",
     "builderNr": 1802
+   },
+   {
+    "id": "b4b-189",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/189.webp",
+    "released": "2026-09-30",
+    "builderNr": 1802
+   },
+   {
+    "id": "b4b-359",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/359.webp",
+    "released": "2026-09-30",
+    "builderNr": 1802
    }
   ],
   "tags": [],
@@ -94485,6 +96760,15 @@
     "rarity": "☆☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/202.webp",
     "released": "2026-04-28",
+    "builderNr": 1806
+   },
+   {
+    "id": "b4b-190",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/190.webp",
+    "released": "2026-09-30",
     "builderNr": 1806
    }
   ],
@@ -94697,6 +96981,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/145.webp",
     "released": "2026-04-28",
     "builderNr": 1810
+   },
+   {
+    "id": "b4b-195",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/195.webp",
+    "released": "2026-09-30",
+    "builderNr": 1810
+   },
+   {
+    "id": "b4b-362",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/362.webp",
+    "released": "2026-09-30",
+    "builderNr": 1810
    }
   ],
   "tags": [],
@@ -94750,6 +97052,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/146.webp",
     "released": "2026-04-28",
     "builderNr": 1811
+   },
+   {
+    "id": "b4b-196",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/196.webp",
+    "released": "2026-09-30",
+    "builderNr": 1811
+   },
+   {
+    "id": "b4b-363",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/363.webp",
+    "released": "2026-09-30",
+    "builderNr": 1811
    }
   ],
   "tags": [],
@@ -94780,6 +97100,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/147.webp",
     "released": "2026-04-28",
     "builderNr": 1000128
+   },
+   {
+    "id": "b4b-202",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/202.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000128
+   },
+   {
+    "id": "b4b-368",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/368.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000128
    }
   ],
   "tags": [],
@@ -94808,6 +97146,24 @@
     "rarity": "◊◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/148.webp",
     "released": "2026-04-28",
+    "builderNr": 1000129
+   },
+   {
+    "id": "b4b-205",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/205.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000129
+   },
+   {
+    "id": "b4b-371",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/371.webp",
+    "released": "2026-09-30",
     "builderNr": 1000129
    }
   ],
@@ -94846,6 +97202,24 @@
     "rarity": "☆☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/190.webp",
     "released": "2026-04-28",
+    "builderNr": 1000130
+   },
+   {
+    "id": "b4b-217",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/217.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000130
+   },
+   {
+    "id": "b4b-383",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/383.webp",
+    "released": "2026-09-30",
     "builderNr": 1000130
    }
   ],
@@ -94990,6 +97364,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/153.webp",
     "released": "2026-04-28",
     "builderNr": 1000134
+   },
+   {
+    "id": "b4b-227",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/227.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000134
+   },
+   {
+    "id": "b4b-393",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/393.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000134
    }
   ],
   "tags": [],
@@ -95019,6 +97411,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/154.webp",
     "released": "2026-04-28",
     "builderNr": 1000135
+   },
+   {
+    "id": "b4b-228",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/228.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000135
+   },
+   {
+    "id": "b4b-394",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/394.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000135
    }
   ],
   "tags": [],
@@ -95047,6 +97457,24 @@
     "rarity": "◊◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/155.webp",
     "released": "2026-04-28",
+    "builderNr": 1000136
+   },
+   {
+    "id": "b4b-230",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/230.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000136
+   },
+   {
+    "id": "b4b-396",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/396.webp",
+    "released": "2026-09-30",
     "builderNr": 1000136
    }
   ],
@@ -95660,6 +98088,15 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3a/089.webp",
     "released": "2026-05-28",
     "builderNr": 1828
+   },
+   {
+    "id": "b4b-077",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/077.webp",
+    "released": "2026-09-30",
+    "builderNr": 1828
    }
   ],
   "tags": [],
@@ -95907,6 +98344,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3a/018.webp",
     "released": "2026-05-28",
     "builderNr": 1833
+   },
+   {
+    "id": "b4b-102",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/102.webp",
+    "released": "2026-09-30",
+    "builderNr": 1833
+   },
+   {
+    "id": "b4b-303",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/303.webp",
+    "released": "2026-09-30",
+    "builderNr": 1833
    }
   ],
   "tags": [],
@@ -95971,6 +98426,24 @@
     "rarity": "☆☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3a/090.webp",
     "released": "2026-05-28",
+    "builderNr": 1834
+   },
+   {
+    "id": "b4b-103",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/103.webp",
+    "released": "2026-09-30",
+    "builderNr": 1834
+   },
+   {
+    "id": "b4b-428",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "Crown Rare",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/428.webp",
+    "released": "2026-09-30",
     "builderNr": 1834
    }
   ],
@@ -96351,6 +98824,15 @@
     "rarity": "☆☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3a/091.webp",
     "released": "2026-05-28",
+    "builderNr": 1841
+   },
+   {
+    "id": "b4b-120",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/120.webp",
+    "released": "2026-09-30",
     "builderNr": 1841
    }
   ],
@@ -96875,6 +99357,24 @@
     "rarity": "☆☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3a/092.webp",
     "released": "2026-05-28",
+    "builderNr": 1851
+   },
+   {
+    "id": "b4b-136",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/136.webp",
+    "released": "2026-09-30",
+    "builderNr": 1851
+   },
+   {
+    "id": "b4b-429",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "Crown Rare",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/429.webp",
+    "released": "2026-09-30",
     "builderNr": 1851
    }
   ],
@@ -97414,6 +99914,24 @@
     "rarity": "Crown Rare",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3a/109.webp",
     "released": "2026-05-28",
+    "builderNr": 1862
+   },
+   {
+    "id": "b4b-152",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/152.webp",
+    "released": "2026-09-30",
+    "builderNr": 1862
+   },
+   {
+    "id": "b4b-333",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/333.webp",
+    "released": "2026-09-30",
     "builderNr": 1862
    }
   ],
@@ -98442,6 +100960,15 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3a/093.webp",
     "released": "2026-05-28",
     "builderNr": 1883
+   },
+   {
+    "id": "b4b-197",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/197.webp",
+    "released": "2026-09-30",
+    "builderNr": 1883
    }
   ],
   "tags": [],
@@ -98471,6 +100998,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3a/069.webp",
     "released": "2026-05-28",
     "builderNr": 1000137
+   },
+   {
+    "id": "b4b-207",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/207.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000137
+   },
+   {
+    "id": "b4b-373",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/373.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000137
    }
   ],
   "tags": [],
@@ -98499,6 +101044,24 @@
     "rarity": "◊◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3a/070.webp",
     "released": "2026-05-28",
+    "builderNr": 1000138
+   },
+   {
+    "id": "b4b-208",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/208.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000138
+   },
+   {
+    "id": "b4b-374",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/374.webp",
+    "released": "2026-09-30",
     "builderNr": 1000138
    }
   ],
@@ -98537,6 +101100,24 @@
     "rarity": "☆☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3a/086.webp",
     "released": "2026-05-28",
+    "builderNr": 1000139
+   },
+   {
+    "id": "b4b-213",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/213.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000139
+   },
+   {
+    "id": "b4b-379",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/379.webp",
+    "released": "2026-09-30",
     "builderNr": 1000139
    }
   ],
@@ -98703,6 +101284,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3b/091.webp",
     "released": "2026-06-30",
     "builderNr": 1904
+   },
+   {
+    "id": "b4b-004",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/004.webp",
+    "released": "2026-09-30",
+    "builderNr": 1904
+   },
+   {
+    "id": "b4b-239",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/239.webp",
+    "released": "2026-09-30",
+    "builderNr": 1904
    }
   ],
   "tags": [],
@@ -98770,6 +101369,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3b/092.webp",
     "released": "2026-06-30",
     "builderNr": 1905
+   },
+   {
+    "id": "b4b-005",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/005.webp",
+    "released": "2026-09-30",
+    "builderNr": 1905
+   },
+   {
+    "id": "b4b-240",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/240.webp",
+    "released": "2026-09-30",
+    "builderNr": 1905
    }
   ],
   "tags": [],
@@ -98827,6 +101444,24 @@
     "rarity": "✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3b/093.webp",
     "released": "2026-06-30",
+    "builderNr": 1906
+   },
+   {
+    "id": "b4b-006",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/006.webp",
+    "released": "2026-09-30",
+    "builderNr": 1906
+   },
+   {
+    "id": "b4b-241",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/241.webp",
+    "released": "2026-09-30",
     "builderNr": 1906
    }
   ],
@@ -99309,6 +101944,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3b/014.webp",
     "released": "2026-06-30",
     "builderNr": 1915
+   },
+   {
+    "id": "b4b-069",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/069.webp",
+    "released": "2026-09-30",
+    "builderNr": 1915
+   },
+   {
+    "id": "b4b-282",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/282.webp",
+    "released": "2026-09-30",
+    "builderNr": 1915
    }
   ],
   "tags": [],
@@ -99375,6 +102028,15 @@
     "rarity": "☆☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3b/086.webp",
     "released": "2026-06-30",
+    "builderNr": 1916
+   },
+   {
+    "id": "b4b-070",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/070.webp",
+    "released": "2026-09-30",
     "builderNr": 1916
    }
   ],
@@ -99708,6 +102370,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3b/090.webp",
     "released": "2026-06-30",
     "builderNr": 1922
+   },
+   {
+    "id": "b4b-096",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/096.webp",
+    "released": "2026-09-30",
+    "builderNr": 1922
+   },
+   {
+    "id": "b4b-426",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "✵✵",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/426.webp",
+    "released": "2026-09-30",
+    "builderNr": 1922
    }
   ],
   "tags": [],
@@ -99755,6 +102435,24 @@
     "rarity": "◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3b/025.webp",
     "released": "2026-06-30",
+    "builderNr": 1923
+   },
+   {
+    "id": "b4b-097",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/097.webp",
+    "released": "2026-09-30",
+    "builderNr": 1923
+   },
+   {
+    "id": "b4b-300",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/300.webp",
+    "released": "2026-09-30",
     "builderNr": 1923
    }
   ],
@@ -100029,6 +102727,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3b/073.webp",
     "released": "2026-06-30",
     "builderNr": 1928
+   },
+   {
+    "id": "b4b-112",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/112.webp",
+    "released": "2026-09-30",
+    "builderNr": 1928
+   },
+   {
+    "id": "b4b-310",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/310.webp",
+    "released": "2026-09-30",
+    "builderNr": 1928
    }
   ],
   "tags": [],
@@ -100145,6 +102861,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3b/087.webp",
     "released": "2026-06-30",
     "builderNr": 1930
+   },
+   {
+    "id": "b4b-114",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/114.webp",
+    "released": "2026-09-30",
+    "builderNr": 1930
+   },
+   {
+    "id": "b4b-427",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "✵✵",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/427.webp",
+    "released": "2026-09-30",
+    "builderNr": 1930
    }
   ],
   "tags": [],
@@ -100237,6 +102971,33 @@
     "rarity": "◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3b/034.webp",
     "released": "2026-06-30",
+    "builderNr": 1932
+   },
+   {
+    "id": "b4b-117",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/117.webp",
+    "released": "2026-09-30",
+    "builderNr": 1932
+   },
+   {
+    "id": "b4b-312",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/312.webp",
+    "released": "2026-09-30",
+    "builderNr": 1932
+   },
+   {
+    "id": "b4b-406",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "☆",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/406.webp",
+    "released": "2026-09-30",
     "builderNr": 1932
    }
   ],
@@ -100436,6 +103197,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3b/038.webp",
     "released": "2026-06-30",
     "builderNr": 1936
+   },
+   {
+    "id": "b4b-134",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/134.webp",
+    "released": "2026-09-30",
+    "builderNr": 1936
+   },
+   {
+    "id": "b4b-322",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/322.webp",
+    "released": "2026-09-30",
+    "builderNr": 1936
    }
   ],
   "tags": [],
@@ -100599,6 +103378,15 @@
     "rarity": "☆☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3b/088.webp",
     "released": "2026-06-30",
+    "builderNr": 1939
+   },
+   {
+    "id": "b4b-142",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/142.webp",
+    "released": "2026-09-30",
     "builderNr": 1939
    }
   ],
@@ -101288,6 +104076,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3b/105.webp",
     "released": "2026-06-30",
     "builderNr": 1952
+   },
+   {
+    "id": "b4b-188",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/188.webp",
+    "released": "2026-09-30",
+    "builderNr": 1952
+   },
+   {
+    "id": "b4b-358",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/358.webp",
+    "released": "2026-09-30",
+    "builderNr": 1952
    }
   ],
   "tags": [],
@@ -101582,6 +104388,15 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3b/089.webp",
     "released": "2026-06-30",
     "builderNr": 1957
+   },
+   {
+    "id": "b4b-192",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/192.webp",
+    "released": "2026-09-30",
+    "builderNr": 1957
    }
   ],
   "tags": [],
@@ -101779,6 +104594,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3b/106.webp",
     "released": "2026-06-30",
     "builderNr": 1000143
+   },
+   {
+    "id": "b4b-206",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/206.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000143
+   },
+   {
+    "id": "b4b-372",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/372.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000143
    }
   ],
   "tags": [],
@@ -101807,6 +104640,24 @@
     "rarity": "◊◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3b/065.webp",
     "released": "2026-06-30",
+    "builderNr": 1000144
+   },
+   {
+    "id": "b4b-211",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/211.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000144
+   },
+   {
+    "id": "b4b-377",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/377.webp",
+    "released": "2026-09-30",
     "builderNr": 1000144
    }
   ],
@@ -101846,6 +104697,15 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3b/083.webp",
     "released": "2026-06-30",
     "builderNr": 1000145
+   },
+   {
+    "id": "b4b-422",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "☆☆",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/422.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000145
    }
   ],
   "tags": [],
@@ -101884,6 +104744,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3b/084.webp",
     "released": "2026-06-30",
     "builderNr": 1000146
+   },
+   {
+    "id": "b4b-216",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/216.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000146
+   },
+   {
+    "id": "b4b-382",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/382.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000146
    }
   ],
   "tags": [],
@@ -101921,6 +104799,24 @@
     "rarity": "☆☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3b/085.webp",
     "released": "2026-06-30",
+    "builderNr": 1000147
+   },
+   {
+    "id": "b4b-223",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/223.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000147
+   },
+   {
+    "id": "b4b-389",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/389.webp",
+    "released": "2026-09-30",
     "builderNr": 1000147
    }
   ],
@@ -102476,6 +105372,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/010.webp",
     "released": "2026-07-30",
     "builderNr": 1971
+   },
+   {
+    "id": "b4b-014",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/014.webp",
+    "released": "2026-09-30",
+    "builderNr": 1971
+   },
+   {
+    "id": "b4b-247",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/247.webp",
+    "released": "2026-09-30",
+    "builderNr": 1971
    }
   ],
   "tags": [],
@@ -102542,6 +105456,15 @@
     "rarity": "☆☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/194.webp",
     "released": "2026-07-30",
+    "builderNr": 1972
+   },
+   {
+    "id": "b4b-015",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/015.webp",
+    "released": "2026-09-30",
     "builderNr": 1972
    }
   ],
@@ -102993,6 +105916,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/160.webp",
     "released": "2026-07-30",
     "builderNr": 1981
+   },
+   {
+    "id": "b4b-034",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/034.webp",
+    "released": "2026-09-30",
+    "builderNr": 1981
+   },
+   {
+    "id": "b4b-261",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/261.webp",
+    "released": "2026-09-30",
+    "builderNr": 1981
    }
   ],
   "tags": [],
@@ -103197,6 +106138,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/024.webp",
     "released": "2026-07-30",
     "builderNr": 1985
+   },
+   {
+    "id": "b4b-036",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/036.webp",
+    "released": "2026-09-30",
+    "builderNr": 1985
+   },
+   {
+    "id": "b4b-262",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/262.webp",
+    "released": "2026-09-30",
+    "builderNr": 1985
    }
   ],
   "tags": [],
@@ -103256,6 +106215,24 @@
     "rarity": "☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/161.webp",
     "released": "2026-07-30",
+    "builderNr": 1986
+   },
+   {
+    "id": "b4b-037",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/037.webp",
+    "released": "2026-09-30",
+    "builderNr": 1986
+   },
+   {
+    "id": "b4b-263",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/263.webp",
+    "released": "2026-09-30",
     "builderNr": 1986
    }
   ],
@@ -103324,6 +106301,15 @@
     "rarity": "☆☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/195.webp",
     "released": "2026-07-30",
+    "builderNr": 1987
+   },
+   {
+    "id": "b4b-038",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/038.webp",
+    "released": "2026-09-30",
     "builderNr": 1987
    }
   ],
@@ -103721,6 +106707,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/034.webp",
     "released": "2026-07-30",
     "builderNr": 1995
+   },
+   {
+    "id": "b4b-065",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/065.webp",
+    "released": "2026-09-30",
+    "builderNr": 1995
+   },
+   {
+    "id": "b4b-280",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/280.webp",
+    "released": "2026-09-30",
+    "builderNr": 1995
    }
   ],
   "tags": [],
@@ -103788,6 +106792,15 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/196.webp",
     "released": "2026-07-30",
     "builderNr": 1996
+   },
+   {
+    "id": "b4b-066",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/066.webp",
+    "released": "2026-09-30",
+    "builderNr": 1996
    }
   ],
   "tags": [],
@@ -103835,6 +106848,24 @@
     "rarity": "◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/036.webp",
     "released": "2026-07-30",
+    "builderNr": 1997
+   },
+   {
+    "id": "b4b-067",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/067.webp",
+    "released": "2026-09-30",
+    "builderNr": 1997
+   },
+   {
+    "id": "b4b-281",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/281.webp",
+    "released": "2026-09-30",
     "builderNr": 1997
    }
   ],
@@ -103901,6 +106932,15 @@
     "rarity": "☆☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/197.webp",
     "released": "2026-07-30",
+    "builderNr": 1998
+   },
+   {
+    "id": "b4b-068",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/068.webp",
+    "released": "2026-09-30",
     "builderNr": 1998
    }
   ],
@@ -104523,6 +107563,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/232.webp",
     "released": "2026-07-30",
     "builderNr": 2011
+   },
+   {
+    "id": "b4b-083",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/083.webp",
+    "released": "2026-09-30",
+    "builderNr": 2011
+   },
+   {
+    "id": "b4b-292",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/292.webp",
+    "released": "2026-09-30",
+    "builderNr": 2011
    }
   ],
   "tags": [],
@@ -104752,6 +107810,15 @@
     "rarity": "☆☆☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/202.webp",
     "released": "2026-07-30",
+    "builderNr": 2016
+   },
+   {
+    "id": "b4b-093",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/093.webp",
+    "released": "2026-09-30",
     "builderNr": 2016
    }
   ],
@@ -105001,6 +108068,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/060.webp",
     "released": "2026-07-30",
     "builderNr": 2021
+   },
+   {
+    "id": "b4b-094",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/094.webp",
+    "released": "2026-09-30",
+    "builderNr": 2021
+   },
+   {
+    "id": "b4b-298",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/298.webp",
+    "released": "2026-09-30",
+    "builderNr": 2021
    }
   ],
   "tags": [],
@@ -105050,6 +108135,24 @@
     "rarity": "◊◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/061.webp",
     "released": "2026-07-30",
+    "builderNr": 2022
+   },
+   {
+    "id": "b4b-095",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/095.webp",
+    "released": "2026-09-30",
+    "builderNr": 2022
+   },
+   {
+    "id": "b4b-299",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/299.webp",
+    "released": "2026-09-30",
     "builderNr": 2022
    }
   ],
@@ -105405,6 +108508,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/068.webp",
     "released": "2026-07-30",
     "builderNr": 2029
+   },
+   {
+    "id": "b4b-110",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/110.webp",
+    "released": "2026-09-30",
+    "builderNr": 2029
+   },
+   {
+    "id": "b4b-308",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/308.webp",
+    "released": "2026-09-30",
+    "builderNr": 2029
    }
   ],
   "tags": [],
@@ -105572,6 +108693,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/167.webp",
     "released": "2026-07-30",
     "builderNr": 2032
+   },
+   {
+    "id": "b4b-104",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/104.webp",
+    "released": "2026-09-30",
+    "builderNr": 2032
+   },
+   {
+    "id": "b4b-304",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/304.webp",
+    "released": "2026-09-30",
+    "builderNr": 2032
    }
   ],
   "tags": [],
@@ -105630,6 +108769,24 @@
     "rarity": "◊◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/072.webp",
     "released": "2026-07-30",
+    "builderNr": 2033
+   },
+   {
+    "id": "b4b-105",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/105.webp",
+    "released": "2026-09-30",
+    "builderNr": 2033
+   },
+   {
+    "id": "b4b-305",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/305.webp",
+    "released": "2026-09-30",
     "builderNr": 2033
    }
   ],
@@ -105729,6 +108886,24 @@
     "rarity": "☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/168.webp",
     "released": "2026-07-30",
+    "builderNr": 2035
+   },
+   {
+    "id": "b4b-108",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/108.webp",
+    "released": "2026-09-30",
+    "builderNr": 2035
+   },
+   {
+    "id": "b4b-306",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/306.webp",
+    "released": "2026-09-30",
     "builderNr": 2035
    }
   ],
@@ -106249,6 +109424,15 @@
     "rarity": "☆☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/198.webp",
     "released": "2026-07-30",
+    "builderNr": 2045
+   },
+   {
+    "id": "b4b-128",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/128.webp",
+    "released": "2026-09-30",
     "builderNr": 2045
    }
   ],
@@ -107228,6 +110412,15 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/199.webp",
     "released": "2026-07-30",
     "builderNr": 2064
+   },
+   {
+    "id": "b4b-149",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/149.webp",
+    "released": "2026-09-30",
+    "builderNr": 2064
    }
   ],
   "tags": [],
@@ -107369,6 +110562,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/107.webp",
     "released": "2026-07-30",
     "builderNr": 2068
+   },
+   {
+    "id": "b4b-159",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/159.webp",
+    "released": "2026-09-30",
+    "builderNr": 2068
+   },
+   {
+    "id": "b4b-337",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/337.webp",
+    "released": "2026-09-30",
+    "builderNr": 2068
    }
   ],
   "tags": [],
@@ -107483,6 +110694,15 @@
     "rarity": "☆☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/200.webp",
     "released": "2026-07-30",
+    "builderNr": 2070
+   },
+   {
+    "id": "b4b-160",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/160.webp",
+    "released": "2026-09-30",
     "builderNr": 2070
    }
   ],
@@ -107847,6 +111067,33 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/116.webp",
     "released": "2026-07-30",
     "builderNr": 2077
+   },
+   {
+    "id": "b4b-169",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/169.webp",
+    "released": "2026-09-30",
+    "builderNr": 2077
+   },
+   {
+    "id": "b4b-343",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/343.webp",
+    "released": "2026-09-30",
+    "builderNr": 2077
+   },
+   {
+    "id": "b4b-407",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "☆",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/407.webp",
+    "released": "2026-09-30",
+    "builderNr": 2077
    }
   ],
   "tags": [],
@@ -107917,6 +111164,24 @@
     "rarity": "Crown Rare",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/233.webp",
     "released": "2026-07-30",
+    "builderNr": 2078
+   },
+   {
+    "id": "b4b-170",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/170.webp",
+    "released": "2026-09-30",
+    "builderNr": 2078
+   },
+   {
+    "id": "b4b-344",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/344.webp",
+    "released": "2026-09-30",
     "builderNr": 2078
    }
   ],
@@ -108089,6 +111354,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/203.webp",
     "released": "2026-07-30",
     "builderNr": 2081
+   },
+   {
+    "id": "b4b-173",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/173.webp",
+    "released": "2026-09-30",
+    "builderNr": 2081
+   },
+   {
+    "id": "b4b-420",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "☆☆",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/420.webp",
+    "released": "2026-09-30",
+    "builderNr": 2081
    }
   ],
   "tags": [],
@@ -108224,6 +111507,32 @@
     "rarity": "◊◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/124.webp",
     "released": "2026-07-30",
+    "builderNr": 2085
+   },
+   {
+    "id": "pb-102",
+    "set": "pb",
+    "setName": "Promo-B",
+    "rarity": "Promo",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/pb/102.webp",
+    "builderNr": 2085
+   },
+   {
+    "id": "b4b-177",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/177.webp",
+    "released": "2026-09-30",
+    "builderNr": 2085
+   },
+   {
+    "id": "b4b-349",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/349.webp",
+    "released": "2026-09-30",
     "builderNr": 2085
    }
   ],
@@ -108485,6 +111794,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/220.webp",
     "released": "2026-07-30",
     "builderNr": 2090
+   },
+   {
+    "id": "b4b-178",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/178.webp",
+    "released": "2026-09-30",
+    "builderNr": 2090
+   },
+   {
+    "id": "b4b-350",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/350.webp",
+    "released": "2026-09-30",
+    "builderNr": 2090
    }
   ],
   "tags": [],
@@ -108550,6 +111877,24 @@
     "rarity": "✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/221.webp",
     "released": "2026-07-30",
+    "builderNr": 2091
+   },
+   {
+    "id": "b4b-179",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/179.webp",
+    "released": "2026-09-30",
+    "builderNr": 2091
+   },
+   {
+    "id": "b4b-351",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/351.webp",
+    "released": "2026-09-30",
     "builderNr": 2091
    }
   ],
@@ -108841,6 +112186,14 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/135.webp",
     "released": "2026-07-30",
     "builderNr": 2096
+   },
+   {
+    "id": "pb-100",
+    "set": "pb",
+    "setName": "Promo-B",
+    "rarity": "Promo",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/pb/100.webp",
+    "builderNr": 2096
    }
   ],
   "tags": [],
@@ -109078,6 +112431,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/140.webp",
     "released": "2026-07-30",
     "builderNr": 2101
+   },
+   {
+    "id": "b4b-193",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/193.webp",
+    "released": "2026-09-30",
+    "builderNr": 2101
+   },
+   {
+    "id": "b4b-361",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/361.webp",
+    "released": "2026-09-30",
+    "builderNr": 2101
    }
   ],
   "tags": [],
@@ -109144,6 +112515,15 @@
     "rarity": "☆☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/201.webp",
     "released": "2026-07-30",
+    "builderNr": 2102
+   },
+   {
+    "id": "b4b-194",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/194.webp",
+    "released": "2026-09-30",
     "builderNr": 2102
    }
   ],
@@ -109324,6 +112704,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/145.webp",
     "released": "2026-07-30",
     "builderNr": 1000149
+   },
+   {
+    "id": "b4b-200",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/200.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000149
+   },
+   {
+    "id": "b4b-366",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/366.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000149
    }
   ],
   "tags": [],
@@ -109414,6 +112812,24 @@
     "rarity": "◊◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/148.webp",
     "released": "2026-07-30",
+    "builderNr": 1000152
+   },
+   {
+    "id": "b4b-204",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/204.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000152
+   },
+   {
+    "id": "b4b-370",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/370.webp",
+    "released": "2026-09-30",
     "builderNr": 1000152
    }
   ],
@@ -109558,6 +112974,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/192.webp",
     "released": "2026-07-30",
     "builderNr": 1000156
+   },
+   {
+    "id": "b4b-221",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/221.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000156
+   },
+   {
+    "id": "b4b-387",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/387.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000156
    }
   ],
   "tags": [],
@@ -109596,6 +113030,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/193.webp",
     "released": "2026-07-30",
     "builderNr": 1000157
+   },
+   {
+    "id": "b4b-224",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/224.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000157
+   },
+   {
+    "id": "b4b-390",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/390.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000157
    }
   ],
   "tags": [],
@@ -109625,6 +113077,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/154.webp",
     "released": "2026-07-30",
     "builderNr": 1000158
+   },
+   {
+    "id": "b4b-229",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/229.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000158
+   },
+   {
+    "id": "b4b-395",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/395.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000158
    }
   ],
   "tags": [],
@@ -109653,6 +113123,24 @@
     "rarity": "◊◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/155.webp",
     "released": "2026-07-30",
+    "builderNr": 1000159
+   },
+   {
+    "id": "b4b-233",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/233.webp",
+    "released": "2026-09-30",
+    "builderNr": 1000159
+   },
+   {
+    "id": "b4b-399",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/399.webp",
+    "released": "2026-09-30",
     "builderNr": 1000159
    }
   ],
@@ -112140,6 +115628,14 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4a/052.webp",
     "released": "2026-08-27",
     "builderNr": 2114
+   },
+   {
+    "id": "pb-097",
+    "set": "pb",
+    "setName": "Promo-B",
+    "rarity": "Promo",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/pb/097.webp",
+    "builderNr": 2114
    }
   ],
   "tags": [],
@@ -112162,7 +115658,8 @@
   "evolvesTo": [
    "a2-123",
    "a2a-047",
-   "b4a-054"
+   "b4a-054",
+   "pb-099"
   ],
   "rule": "normal",
   "groups": [],
@@ -112191,6 +115688,14 @@
     "rarity": "◊◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4a/053.webp",
     "released": "2026-08-27",
+    "builderNr": 2115
+   },
+   {
+    "id": "pb-098",
+    "set": "pb",
+    "setName": "Promo-B",
+    "rarity": "Promo",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/pb/098.webp",
     "builderNr": 2115
    }
   ],
@@ -113127,6 +116632,60 @@
    "jaSource": "official"
   },
   "nameJa": "ゲームセンター"
+ },
+ {
+  "id": "b4b-027",
+  "nameEn": "Teal Mask Ogerpon",
+  "kind": "pokemon",
+  "evolvesFrom": [],
+  "evolvesTo": [],
+  "rule": "normal",
+  "groups": [],
+  "attacks": [
+   {
+    "nameEn": "Ogre’s Whip",
+    "textEn": "This attack does damage to your opponent's Active Pokémon equal to this Pokémon's remaining HP.",
+    "tags": [],
+    "cost": {
+     "grass": 2,
+     "colorless": 1
+    },
+    "costTotal": 3,
+    "costTyped": 2,
+    "damageVariable": false,
+    "nameJa": "オーガウィップ",
+    "textJa": "このポケモンの残りHPと同じ数のダメージを、相手のバトルポケモンに与える。",
+    "jaSource": "machine"
+   }
+  ],
+  "prints": [
+   {
+    "id": "b4b-027",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/027.webp",
+    "released": "2026-09-30",
+    "builderNr": 1980
+   },
+   {
+    "id": "b4b-257",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/257.webp",
+    "released": "2026-09-30",
+    "builderNr": 1980
+   }
+  ],
+  "tags": [],
+  "type": "grass",
+  "stage": "basic",
+  "points": 1,
+  "hp": 90,
+  "weakness": "fire",
+  "retreat": 1,
+  "nameJa": "オーガポン（みどりのめん）"
  },
  {
   "id": "pa-001",
@@ -120580,6 +124139,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/206.webp",
     "released": "2026-04-28",
     "builderNr": 1115
+   },
+   {
+    "id": "b4b-039",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/039.webp",
+    "released": "2026-09-30",
+    "builderNr": 1115
+   },
+   {
+    "id": "b4b-264",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/264.webp",
+    "released": "2026-09-30",
+    "builderNr": 1115
    }
   ],
   "tags": [],
@@ -120716,6 +124293,15 @@
     "rarity": "✵✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/230.webp",
     "released": "2026-04-28",
+    "builderNr": 1233
+   },
+   {
+    "id": "b4b-143",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/143.webp",
+    "released": "2026-09-30",
     "builderNr": 1233
    }
   ],
@@ -120863,6 +124449,33 @@
     "rarity": "◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b1/184.webp",
     "released": "2025-10-30",
+    "builderNr": 1266
+   },
+   {
+    "id": "b4b-183",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/183.webp",
+    "released": "2026-09-30",
+    "builderNr": 1266
+   },
+   {
+    "id": "b4b-353",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/353.webp",
+    "released": "2026-09-30",
+    "builderNr": 1266
+   },
+   {
+    "id": "b4b-408",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "☆",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/408.webp",
+    "released": "2026-09-30",
     "builderNr": 1266
    }
   ],
@@ -121106,6 +124719,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3b/094.webp",
     "released": "2026-06-30",
     "builderNr": 1164
+   },
+   {
+    "id": "b4b-088",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/088.webp",
+    "released": "2026-09-30",
+    "builderNr": 1164
+   },
+   {
+    "id": "b4b-295",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/295.webp",
+    "released": "2026-09-30",
+    "builderNr": 1164
    }
   ],
   "tags": [],
@@ -121346,6 +124977,24 @@
     "rarity": "✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/223.webp",
     "released": "2026-07-30",
+    "builderNr": 1304
+   },
+   {
+    "id": "b4b-187",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/187.webp",
+    "released": "2026-09-30",
+    "builderNr": 1304
+   },
+   {
+    "id": "b4b-357",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/357.webp",
+    "released": "2026-09-30",
     "builderNr": 1304
    }
   ],
@@ -122043,6 +125692,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/204.webp",
     "released": "2026-07-30",
     "builderNr": 1394
+   },
+   {
+    "id": "b4b-055",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/055.webp",
+    "released": "2026-09-30",
+    "builderNr": 1394
+   },
+   {
+    "id": "b4b-275",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/275.webp",
+    "released": "2026-09-30",
+    "builderNr": 1394
    }
   ],
   "tags": [],
@@ -122207,6 +125874,24 @@
     "rarity": "✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3a/095.webp",
     "released": "2026-05-28",
+    "builderNr": 1528
+   },
+   {
+    "id": "b4b-049",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/049.webp",
+    "released": "2026-09-30",
+    "builderNr": 1528
+   },
+   {
+    "id": "b4b-271",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/271.webp",
+    "released": "2026-09-30",
     "builderNr": 1528
    }
   ],
@@ -122571,6 +126256,15 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2a/112.webp",
     "released": "2026-02-26",
     "builderNr": 1546
+   },
+   {
+    "id": "b4b-081",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/081.webp",
+    "released": "2026-09-30",
+    "builderNr": 1546
    }
   ],
   "tags": [],
@@ -122638,6 +126332,24 @@
     "rarity": "✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2b/095.webp",
     "released": "2026-03-26",
+    "builderNr": 1600
+   },
+   {
+    "id": "b4b-057",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/057.webp",
+    "released": "2026-09-30",
+    "builderNr": 1600
+   },
+   {
+    "id": "b4b-276",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/276.webp",
+    "released": "2026-09-30",
     "builderNr": 1600
    }
   ],
@@ -122800,6 +126512,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2b/110.webp",
     "released": "2026-03-26",
     "builderNr": 1603
+   },
+   {
+    "id": "b4b-176",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/176.webp",
+    "released": "2026-09-30",
+    "builderNr": 1603
+   },
+   {
+    "id": "b4b-348",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/348.webp",
+    "released": "2026-09-30",
+    "builderNr": 1603
    }
   ],
   "tags": [],
@@ -122919,6 +126649,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2b/100.webp",
     "released": "2026-03-26",
     "builderNr": 1605
+   },
+   {
+    "id": "b4b-139",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/139.webp",
+    "released": "2026-09-30",
+    "builderNr": 1605
+   },
+   {
+    "id": "b4b-326",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/326.webp",
+    "released": "2026-09-30",
+    "builderNr": 1605
    }
   ],
   "tags": [],
@@ -123031,6 +126779,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/025.webp",
     "released": "2026-04-28",
     "builderNr": 1690
+   },
+   {
+    "id": "b4b-044",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/044.webp",
+    "released": "2026-09-30",
+    "builderNr": 1690
+   },
+   {
+    "id": "b4b-267",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/267.webp",
+    "released": "2026-09-30",
+    "builderNr": 1690
    }
   ],
   "tags": [],
@@ -123099,6 +126865,33 @@
     "rarity": "Crown Rare",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2/233.webp",
     "released": "2026-01-29",
+    "builderNr": 1436
+   },
+   {
+    "id": "b4b-111",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/111.webp",
+    "released": "2026-09-30",
+    "builderNr": 1436
+   },
+   {
+    "id": "b4b-309",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/309.webp",
+    "released": "2026-09-30",
+    "builderNr": 1436
+   },
+   {
+    "id": "b4b-405",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "☆",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/405.webp",
+    "released": "2026-09-30",
     "builderNr": 1436
    }
   ],
@@ -123499,6 +127292,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/114.webp",
     "released": "2026-04-28",
     "builderNr": 1779
+   },
+   {
+    "id": "b4b-150",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/150.webp",
+    "released": "2026-09-30",
+    "builderNr": 1779
+   },
+   {
+    "id": "b4b-331",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/331.webp",
+    "released": "2026-09-30",
+    "builderNr": 1779
    }
   ],
   "tags": [],
@@ -123561,6 +127372,24 @@
     "rarity": "☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/156.webp",
     "released": "2026-04-28",
+    "builderNr": 1670
+   },
+   {
+    "id": "b4b-010",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/010.webp",
+    "released": "2026-09-30",
+    "builderNr": 1670
+   },
+   {
+    "id": "b4b-244",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/244.webp",
+    "released": "2026-09-30",
     "builderNr": 1670
    }
   ],
@@ -123718,6 +127547,15 @@
     "rarity": "✵✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3a/104.webp",
     "released": "2026-05-28",
+    "builderNr": 1512
+   },
+   {
+    "id": "b4b-023",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/023.webp",
+    "released": "2026-09-30",
     "builderNr": 1512
    }
   ],
@@ -124054,6 +127892,24 @@
     "rarity": "✵",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2a/117.webp",
     "released": "2026-02-26",
+    "builderNr": 1511
+   },
+   {
+    "id": "b4b-022",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/022.webp",
+    "released": "2026-09-30",
+    "builderNr": 1511
+   },
+   {
+    "id": "b4b-253",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/253.webp",
+    "released": "2026-09-30",
     "builderNr": 1511
    }
   ],
@@ -124435,6 +128291,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3b/059.webp",
     "released": "2026-06-30",
     "builderNr": 1900
+   },
+   {
+    "id": "b4b-191",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/191.webp",
+    "released": "2026-09-30",
+    "builderNr": 1900
+   },
+   {
+    "id": "b4b-360",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/360.webp",
+    "released": "2026-09-30",
+    "builderNr": 1900
    }
   ],
   "tags": [],
@@ -124492,6 +128366,24 @@
     "rarity": "◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3b/010.webp",
     "released": "2026-06-30",
+    "builderNr": 1901
+   },
+   {
+    "id": "b4b-033",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/033.webp",
+    "released": "2026-09-30",
+    "builderNr": 1901
+   },
+   {
+    "id": "b4b-260",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/260.webp",
+    "released": "2026-09-30",
     "builderNr": 1901
    }
   ],
@@ -124606,6 +128498,24 @@
     "rarity": "Crown Rare",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/233.webp",
     "released": "2026-04-28",
+    "builderNr": 1669
+   },
+   {
+    "id": "b4b-009",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/009.webp",
+    "released": "2026-09-30",
+    "builderNr": 1669
+   },
+   {
+    "id": "b4b-243",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/243.webp",
+    "released": "2026-09-30",
     "builderNr": 1669
    }
   ],
@@ -124774,6 +128684,24 @@
     "rarity": "◊",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/049.webp",
     "released": "2026-07-30",
+    "builderNr": 2010
+   },
+   {
+    "id": "b4b-082",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/082.webp",
+    "released": "2026-09-30",
+    "builderNr": 2010
+   },
+   {
+    "id": "b4b-291",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/291.webp",
+    "released": "2026-09-30",
     "builderNr": 2010
    }
   ],
@@ -124994,6 +128922,24 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/106.webp",
     "released": "2026-07-30",
     "builderNr": 2067
+   },
+   {
+    "id": "b4b-158",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/158.webp",
+    "released": "2026-09-30",
+    "builderNr": 2067
+   },
+   {
+    "id": "b4b-336",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/336.webp",
+    "released": "2026-09-30",
+    "builderNr": 2067
    }
   ],
   "tags": [],
@@ -125074,6 +129020,24 @@
     "rarity": "☆☆",
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b3/194.webp",
     "released": "2026-04-28",
+    "builderNr": 1673
+   },
+   {
+    "id": "b4b-012",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "◊◊◊◊",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/012.webp",
+    "released": "2026-09-30",
+    "builderNr": 1673
+   },
+   {
+    "id": "b4b-410",
+    "set": "b4b",
+    "setName": "Deluxe Pack: Mega",
+    "rarity": "☆☆",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/410.webp",
+    "released": "2026-09-30",
     "builderNr": 1673
    }
   ],
@@ -125459,5 +129423,55 @@
   "weakness": "darkness",
   "retreat": 1,
   "nameJa": "ニャオニクス"
+ },
+ {
+  "id": "pb-099",
+  "nameEn": "Mega Garchomp ex",
+  "kind": "pokemon",
+  "evolvesFrom": [
+   "a2-122",
+   "a2a-046",
+   "b4a-053"
+  ],
+  "evolvesTo": [],
+  "rule": "mega_ex",
+  "groups": [],
+  "attacks": [
+   {
+    "nameEn": "Falling Edge",
+    "textEn": "Discard 2 random Energy from this Pokémon.",
+    "tags": [],
+    "cost": {
+     "water": 1,
+     "fighting": 1,
+     "colorless": 1
+    },
+    "costTotal": 3,
+    "costTyped": 2,
+    "damage": 190,
+    "damageVariable": false,
+    "nameJa": "フォーリングエッジ",
+    "textJa": "このポケモンからエネルギーをランダムに2個トラッシュ",
+    "jaSource": "machine"
+   }
+  ],
+  "prints": [
+   {
+    "id": "pb-099",
+    "set": "pb",
+    "setName": "Promo-B",
+    "rarity": "Promo",
+    "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/pb/099.webp",
+    "builderNr": 2116
+   }
+  ],
+  "tags": [],
+  "type": "dragon",
+  "stage": "stage2",
+  "evolvesFromName": "Gabite",
+  "points": 3,
+  "hp": 220,
+  "retreat": 2,
+  "nameJa": "メガガブリアスex"
  }
 ]

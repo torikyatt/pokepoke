@@ -1,17 +1,17 @@
 {
   "pocketdecks": {
     "repo": "PocketDecks/pokemon-tcg-pocket-cards",
-    "sha": "9c1ea2ecb718f23a3fc37bc67e3320a12bf882e0",
-    "fetchedAt": "2026-10-04T06:28:35.235Z"
+    "sha": "ec444f849be468d0104977906b4e1f14b42a5d47",
+    "fetchedAt": "2026-10-22T01:39:46.152Z"
   },
   "flibustier": {
     "repo": "flibustier/pokemon-tcg-pocket-database",
-    "sha": "68dcb17474ecff17f1ecd791975c4e4f0babb0be",
-    "fetchedAt": "2026-10-04T06:28:35.902Z"
+    "sha": "746566d75408c04fe35210c503351dc87aee00c5",
+    "fetchedAt": "2026-10-22T01:39:46.851Z"
   },
   "pokeapi": {
     "repo": "PokeAPI/pokeapi",
-    "sha": "bc92d3b6029ef1abe9e7ad424c400b338f3c11fe",
-    "fetchedAt": "2026-10-04T06:28:36.515Z"
+    "sha": "2bf639e5572812a67d2b94903fdcb9d095f5aeb2",
+    "fetchedAt": "2026-10-22T01:39:47.767Z"
   }
 }
