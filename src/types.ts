@@ -26,6 +26,7 @@ export interface AppAttack extends AppEffect {
   costTotal: number;
   costTyped: number;
   damage?: number;
+  maxDamage?: number; // 効果で増える分・効果で与えるダメージも入れた最大（damage と違うときだけ）。「〇〇ダメージ以上」の条件・並べ替えに使い、画面には出さない
   damageVariable: boolean;
 }
 

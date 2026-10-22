@@ -238,7 +238,7 @@ describe("その他の検索", () => {
       expect(h.card.hp).toBeGreaterThanOrEqual(150);
       expect(h.card.type).toBe("water");
     }
-    for (const h of engine.search("120ダメ以上のワザ")) expect(h.card.attacks.some((a) => (a.damage ?? 0) >= 120)).toBe(true);
+    for (const h of engine.search("120ダメ以上のワザ")) expect(h.card.attacks.some((a) => (a.maxDamage ?? a.damage ?? 0) >= 120)).toBe(true);
   });
   it("他TCGの言葉（墓地・ハンデス）", () => {
     expect(engine.parse("墓地からエネをつける").some((c) => c.kind === "tag" && c.tag === "energy.accel.trash")).toBe(true);
@@ -676,12 +676,13 @@ describe("実装前のカード・デュアルタイプ", () => {
   });
 });
 
-describe("効果も入れた最大ダメージ（並べ替えだけに使う）", () => {
+describe("効果も入れた最大ダメージ（並べ替え・条件の絞り込み）", () => {
   const byId = new Map(data.cards.map((c) => [c.id, c]));
   const sd = (id: string) => byId.get(id)!.sortDamage;
   it("効果文で与えるダメージ・コインの回数・条件付きの追加・上限の無いもの", () => {
     expect(sd("b3-023")).toBe(160); // メガバクーダex: ランダムに選ばれたポケモンに160
-    expect(byId.get("b3-023")!.maxDamage).toBe(0); // 画面・絞り込みの「最大ダメージ」はワザの数字のまま
+    expect(engine.search("150ダメージ以上", 999).map((h) => h.card.id)).toContain("b3-023"); // 条件の絞り込みにも効く
+    expect(engine.search("アグロ", 999).map((h) => h.card.id)).not.toContain("a1a-003"); // アグロはワザに書かれた数字だけ
     expect(sd("a1a-003")).toBeGreaterThan(250); // セレビィex: エネの数ぶんコイン（上限なし。同じ数なら上に）
     expect(sd("a1-056")).toBe(160); // カメックスex: 100 + 追加60
     const ironMoth = data.cards.find((c) => c.attacks.some((a) => /If all of them are heads, this attack does 120 more/.test(a.textEn ?? "")))!;

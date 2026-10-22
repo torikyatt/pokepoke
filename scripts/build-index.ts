@@ -156,6 +156,7 @@ const out: AppCard[] = cards.map((c) => {
     ...effect(a, "attack", ct.attacks[i]),
     cost: a.cost, costTotal: a.costTotal, costTyped: a.costTyped,
     ...(a.damage !== undefined ? { damage: a.damage } : {}),
+    ...(maxDamageOf(a).max !== (a.damage ?? 0) ? { maxDamage: maxDamageOf(a).max } : {}),
     damageVariable: a.damageVariable,
   }));
   const ability = c.ability ? effect(c.ability, "ability", ct.ability) : undefined;

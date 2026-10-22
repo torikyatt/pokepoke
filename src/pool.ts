@@ -64,7 +64,7 @@ export function matchFilters(c: AppCard, f: Filters): boolean {
   if (f.hpMax !== undefined && (c.hp === undefined || c.hp > f.hpMax)) return false;
   if (f.retreat.length && (c.retreat === undefined || !f.retreat.includes(Math.min(c.retreat, 4)))) return false;
   if (f.weakness.length && !has(f.weakness, c.weakness)) return false;
-  if (f.damageMin !== undefined && c.maxDamage < f.damageMin) return false;
+  if (f.damageMin !== undefined && Math.floor(c.sortDamage) < f.damageMin) return false; // 効果で増える分も入れた最大
   if (f.costMax !== undefined && (c.minCost === undefined || c.minCost > f.costMax)) return false;
   if (f.tags.length && !f.tags.some((t) => c.tags.some((x) => x === t || x.startsWith(t + ".")))) return false;
   if (f.groups.length && !f.groups.some((g) => c.groups.includes(g))) return false;
