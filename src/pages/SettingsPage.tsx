@@ -29,6 +29,12 @@ const SOURCES: { name: string; url: string; ja: string; en: string }[] = [
     en: "English deck guides. Some known combos are summarized in our own words from these guides (each combo links to its article).",
   },
   {
+    name: "ゲームウィズ（ポケポケ攻略）",
+    url: "https://gamewith.jp/pokemon-tcg-pocket/",
+    ja: "実装前のカードの一部（メガミュウツーYex）の、先行公開された画像。",
+    en: "Pre-release image of some upcoming cards (Mega Mewtwo Y ex).",
+  },
+  {
     name: "Limitless TCG",
     url: "https://play.limitlesstcg.com/",
     ja: "大会の結果とデッキリスト。カードの採用率・一緒に使われるカード・「このカードを使ったデッキ」は、ここの大会結果を集計したものです。",

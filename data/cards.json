@@ -130264,15 +130264,15 @@
   "prints": [
    {
     "id": "up-14",
-    "set": "pb",
-    "setName": "Promo-B",
+    "set": "pc",
+    "setName": "Promo-C",
     "rarity": "Promo",
     "image": ""
    }
   ],
   "tags": [],
   "upcoming": {
-   "source": "https://game8.jp/pokemon-tcg-pocket/833551",
+   "source": "https://www.pokemon-zone.com/spoilers/promo-c-mega-mewtwo-y-ex/",
    "unknown": [
     "weakness",
     "retreat"

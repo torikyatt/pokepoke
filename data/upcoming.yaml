@@ -13,6 +13,11 @@ sets:
     nameJa: デュアルフュージョン
     date: 2026-10-29
     source: https://game8.jp/pokemon-tcg-pocket/833551
+  # 新しいプロモの区分（Promo-C）。デュアルフュージョンのイベントなどで手に入る（時期は未発表）
+  - code: pc
+    nameEn: Promo-C
+    nameJa: プロモC
+    source: https://www.pokemon-zone.com/spoilers/promo-c-mega-mewtwo-y-ex/
 
 cards:
   - id: up-01
@@ -225,11 +230,11 @@ cards:
     attacks:
       - { cost: C, damage: 30, unknown: true }
 
-  # プロモ（入手方法・時期は未発表）。日本語の文は英語の先行情報からの仮訳
+  # プロモC（デュアルフュージョンで入手。時期は未発表）。英語のカード画像は公開済み（弱点・にげるは画像の外で未確認）。
+  # 日本語の文は英語からの仮訳。画像は public/cards-ja/manual/up-14.webp（ゲームウィズ掲載の英語版画像を、カードの形に合わせたもの）
   - id: up-14
-    set: pb
+    set: pc
     rarity: Promo
-    source: https://game8.jp/pokemon-tcg-pocket/833551
     nameEn: Mega Mewtwo Y ex
     nameJa: メガミュウツーYex
     type: [psychic]
