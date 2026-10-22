@@ -66,11 +66,34 @@ describe("相手の状態を見る効果", () => {
   });
 });
 
+describe("どのエネルギーを数えるか", () => {
+  const tagsOf = (id: string) => byId.get(id)!.tags.filter((t) => t.startsWith("cond.energy") || t === "cond.retreat");
+  it("このポケモン・自分の場・おたがい・相手・にげるコストを分ける", () => {
+    expect(tagsOf("a4-132")).toEqual(["cond.energy.self"]); // ハピナス: このポケモンのエネの数
+    expect(tagsOf("b2-059")).toEqual(["cond.energy.own"]); // ガラルギャロップ: 自分の場の超エネ
+    expect(tagsOf("b2-017")).toEqual(["cond.energy.both"]); // オーガポンex: おたがいのバトルポケモンのエネ
+    expect(tagsOf("b4-067")).toEqual(["cond.energy.opp"]); // スリーパー: 相手のバトルポケモンのエネ
+    expect(tagsOf("a3b-028")).toEqual(["cond.energy.opp"]); // エーフィ: 相手のポケモン全員のエネ
+    expect(tagsOf("a4-005")).toEqual(["cond.retreat"]); // モジャンボ: 相手のにげるコスト
+  });
+  it("相手のエネで強くなるカードは、エネ加速と「エネが多いほど強くなる」で結ばない", () => {
+    for (const c of data.cards.filter((c) => c.tags.includes("cond.energy.opp") && !c.tags.some((t) => /^cond\.energy\.(self|own|both)$/.test(t)))) {
+      expect(c.requires["supply.energy.many"], c.id).toBeUndefined();
+    }
+    const mew = data.cards.find((c) => c.accelTypes.includes("psychic") && c.supplies["supply.energy.many"]?.some((s) => !s.self))!;
+    expect(syn.partners(mew, 200).filter((p) => p.card.tags.includes("cond.energy.opp") && p.reasons.some((r) => /エネが多いほど/.test(r)))).toHaveLength(0);
+  });
+  it("おたがいのエネの合計・相手より多いと強いワザは、エネ加速と結ぶ（同じ数・同じタイプは結ばない）", () => {
+    expect(byId.get("b2-017")!.requires["supply.energy.many"]).toBeDefined(); // オーガポンex
+    expect(byId.get("b4-069")!.requires["supply.energy.many"]).toBeUndefined(); // バリヤード: 同じ数なら
+  });
+});
+
 describe("自分にしか効かない効果は他と結ばない", () => {
   it("自分にエネを付ける特性は「エネの数で強くなる」他のカードと結ばない", () => {
     const flareonEx = byId.get("a3b-009")!; // ブースターex: トラッシュの炎エネを自分に付ける
     expect(flareonEx.supplies["supply.energy.many"].every((s) => s.self)).toBe(true);
-    expect(reasonOf("a3b-009", /付いているエネの数/)).toHaveLength(0);
+    expect(reasonOf("a3b-009", /自分のエネが多いほど/)).toHaveLength(0);
   });
   it("自分を入れ替えるワザ（ケーシィ）は、にげるが重いポケモンと結ばない", () => {
     expect(reasonOf("a1-115", /にげるエネが重い/)).toHaveLength(0);

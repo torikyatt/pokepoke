@@ -180,7 +180,9 @@ const out: AppCard[] = cards.map((c) => {
       if (slot === "ability" || c.kind === "stadium" || c.kind === "tool") sel.repeat = true;
       (supplies[s] ??= []).push(sel);
     }
-    for (const r of new Set(ts.flatMap(requiresOfTag))) {
+    // おたがいのエネの合計・相手より多いと強いワザは、自分のエネを増やすほど条件を満たしやすい（同じ数・同じタイプは別）
+    const bothMore = ts.includes("cond.energy.both") && /amount of Energy attached to both|more Energy attached than/.test(e.textEn);
+    for (const r of new Set([...ts.flatMap(requiresOfTag), ...(bothMore ? ["supply.energy.many"] : [])])) {
       const info = requireInfoOf(r, e.textEn);
       const cur = requires[r];
       const merged: RequireInfo = cur && !(cur.etypes && info.etypes) ? {} : { ...(info.etypes || cur?.etypes ? { etypes: [...new Set([...(cur?.etypes ?? []), ...(info.etypes ?? [])])] } : {}) };

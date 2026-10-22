@@ -15,7 +15,7 @@ const SUPPLY: Record<string, { give: string; need: string; giveEn: string; needE
   "supply.trash.energy": { give: "トラッシュにエネを送れる", need: "トラッシュのエネを使う", giveEn: "Can send Energy to the discard pile", needEn: "Uses Energy in the discard pile" },
   "supply.trash.fill": { give: "トラッシュを増やせる", need: "トラッシュの枚数で強くなる", giveEn: "Can fill the discard pile", needEn: "Stronger with more cards in the discard pile" },
   "supply.bench.fill": { give: "ベンチを埋められる", need: "ベンチの数で強くなる", giveEn: "Can fill the Bench", needEn: "Stronger with more Benched Pokémon" },
-  "supply.energy.many": { give: "エネを増やせる", need: "付いているエネの数で強くなる", giveEn: "Can add Energy", needEn: "Stronger with more Energy attached" },
+  "supply.energy.many": { give: "エネを増やせる", need: "自分のエネが多いほど強くなる", giveEn: "Can add Energy", needEn: "Stronger with more of your own Energy" },
   "supply.damage.self": { give: "自分のポケモンにダメージを乗せる", need: "自分のダメージで強くなる", giveEn: "Puts damage on your own Pokémon", needEn: "Stronger when damaged" },
   "supply.status": { give: "状態異常にできる", need: "相手が状態異常だと強くなる", giveEn: "Inflicts Special Conditions", needEn: "Stronger vs. Special Conditions" },
   "supply.status.poison": { give: "どくにできる", need: "相手がどくだと強くなる", giveEn: "Can Poison", needEn: "Stronger vs. Poisoned" },

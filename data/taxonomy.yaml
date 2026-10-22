@@ -749,23 +749,52 @@
             - 'for each [A-Z][a-z]+ (and [A-Z][a-z]+ )?you have in play'
             - 'for each of your Benched [A-Z][a-z]+'
             - 'that have the [A-Z][\w ]+ attack'
+    # どのエネルギーを数えるかで分ける。エネ加速と相性がいいのは、自分のエネを数えるもの（self・own）だけ。
+    # 相手のエネを数えるもの（スリーパー・ミュウツーなど）は、自分がエネを付けても強くならない
     - id: cond.energy
       ja: エネルギーで変わる
       en: Depends on Energy
-      requires: [supply.energy.many]
+      children:
+        - id: cond.energy.self
+          ja: このポケモンのエネで変わる
+          en: Energy on this Pokémon
+          requires: [supply.energy.many]
+          match:
+            - 'for each (type of |\[[A-Z]\] )?Energy attached to this Pokémon'
+            - 'this Pokémon has at least \d+ extra \[[A-Z]\] Energy attached'
+            - 'this Pokémon has any \[[A-Z]\] Energy attached, this attack'
+            - 'this Pokémon has \d+ or more different types of Energy attached'
+          exclude:
+            - 'than your opponent'
+            - 'and your opponent'
+        - id: cond.energy.own
+          ja: 自分の場のエネで変わる
+          en: Energy on your side
+          requires: [supply.energy.many]
+          match:
+            - 'for each (\[[A-Z]\] )?Energy attached to all of your Pokémon'
+            - 'you have \d+ or more (\[[A-Z]\] )?Energy in play'
+            - 'your Pokémon in play have \d+ or more different types of Energy'
+        # 自分と相手のバトルポケモンのエネの合計・比べ合い（数を足す・上回るものはエネ加速と相性がいい: build-index.ts）
+        - id: cond.energy.both
+          ja: おたがいのエネで変わる
+          en: Energy on both Active Pokémon
+          match:
+            - 'amount of Energy attached to both Active Pokémon'
+            - 'more Energy attached than your opponent'
+            - 'this Pokémon and your opponent.s Active Pokémon have'
+        - id: cond.energy.opp
+          ja: 相手のエネで変わる
+          en: Energy on the opponent
+          match:
+            - 'for each Energy attached to (your opponent.s Active|all of your opponent.s) Pokémon'
+            - 'of your opponent.s Pokémon for each Energy attached to that Pokémon'
+            - 'opponent.s Benched Pokémon that has any Energy attached'
+    - id: cond.retreat
+      ja: 相手のにげるコストで変わる
+      en: Depends on opponent's Retreat Cost
       match:
-        - 'for each (\[[A-Z]\] )?Energy attached to (this|all of your)'
-        - 'more Energy attached than'
-        - 'amount of Energy attached'
-        - 'for each type of Energy'
-        - 'different types of Energy attached'
-        - 'extra \[[A-Z]\] Energy attached'
-        - 'has any \[[A-Z]\] Energy attached, this attack'
-        - 'Energy in play, this attack'
-        - 'same type of Energy attached'
-        - 'for each Energy attached to (your opponent|all of your opponent)'
         - 'for each Energy in your opponent.s Active Pokémon.s Retreat Cost'
-        - 'Flip a coin for each (\[[A-Z]\] )?Energy attached'
     - id: cond.damage
       ja: ダメージで変わる
       en: Depends on damage
