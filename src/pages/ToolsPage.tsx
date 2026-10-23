@@ -10,7 +10,7 @@ import { PoolFab, PoolGrid, PoolToolbar, QueryBox, usePoolResults } from "../com
 import { rarityLabel, setColor } from "../components/prints.tsx";
 import { rarityIcons } from "../icons.ts";
 import { DeckRow } from "../components/tournament-decks.tsx";
-import { Chip, Header, Pressable, Sheet, Thumb } from "../components/ui.tsx";
+import { Chip, Header, Pressable, Sheet, SlotSizePicker, Thumb } from "../components/ui.tsx";
 import { useData } from "../context.tsx";
 import { useTournamentDecks, type TournamentDeck } from "../data/decks.ts";
 import { isSingleFile, printImageUrl, thumbUrl } from "../data/load.ts";
@@ -53,19 +53,10 @@ export function ToolRoutes({ parts }: { parts: string[] }) {
 
 function ToolsHome() {
   const t = useT();
+  const nLists = useLists((s) => s.lists.length);
   const tools = [
-    {
-      path: "/tools/meta",
-      icon: "🏆",
-      title: t("大会のデッキ", "Tournament decks"),
-      desc: t("最近の大会で使われているデッキ。環境上位・急上昇のデッキタイプや、新しい順・成績順のデッキリストを見られます", "Decks from recent tournaments: top and rising archetypes, newest lists and best results"),
-    },
-    {
-      path: "/tools/lists",
-      icon: "📋",
-      title: t("リスト", "Lists"),
-      desc: t("枚数の上限なしでカードをまとめる。トレード用（欲しい・出せる）も。絵柄違いやミラーも指定できます", "Collect any number of cards, or make a trade list (want / have). Pick alternate arts and mirror foils"),
-    },
+    { path: "/tools/meta", icon: "🏆", title: t("大会のデッキ", "Tournament decks"), n: undefined },
+    { path: "/tools/lists", icon: "📋", title: t("リスト・トレード用リスト", "Lists & trade lists"), n: nLists || undefined },
   ];
   return (
     <div>
@@ -76,10 +67,8 @@ function ToolsHome() {
             <span className="text-3xl leading-none" aria-hidden>
               {x.icon}
             </span>
-            <span className="min-w-0 flex-1">
-              <span className="block font-extrabold">{x.title}</span>
-              <span className="block text-xs font-medium text-muted">{x.desc}</span>
-            </span>
+            <span className="min-w-0 flex-1 font-extrabold">{x.title}</span>
+            {x.n !== undefined && <span className="text-sm font-extrabold text-muted tabular-nums">{x.n}</span>}
             <span className="text-muted" aria-hidden>
               ›
             </span>
@@ -202,11 +191,8 @@ function MetaPage() {
           <p className="neu rounded-2xl p-4 text-center text-xs font-bold text-muted">{t("大会のデッキを読み込み中…", "Loading tournament decks…")}</p>
         ) : view === "hot" || view === "rising" ? (
           <>
-            <p className="text-[11px] font-bold text-muted">
-              {t(
-                `直近2週間（${day(from + DAY)}〜${day(to)}）の大会で使われたデッキタイプ。バーは勝率で、対戦数${MIN_GAMES}戦以上の中でいちばん高い勝率（${pct(bestWin)}）を満タンにしています。右の矢印は使用率の、その前の2週間との差です。`,
-                `Archetypes played in the last 2 weeks (${day(from + DAY)}–${day(to)}). Bars show win rate, full = the best among archetypes with ${MIN_GAMES}+ games (${pct(bestWin)}). Arrows show the change in play rate vs. the 2 weeks before.`,
-              )}
+            <p className="text-right text-[11px] font-bold text-muted tabular-nums">
+              {day(from + DAY)}〜{day(to)}
             </p>
             {ranked.map((s, i) => {
               const diff = s.share - s.prevShare;
@@ -231,29 +217,32 @@ function MetaPage() {
                     ))}
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className="line-clamp-2 text-sm leading-snug font-extrabold">{archName(s)}</span>
+                    <span className="line-clamp-2 text-sm leading-snug font-extrabold">
+                      {archName(s)}
+                      {isNew && <span className="ml-1.5 rounded-full bg-[#e8553d] px-1.5 align-middle text-[9px] text-white">NEW</span>}
+                    </span>
                     <span className="mt-1 block h-1.5 overflow-hidden rounded-full bg-line" title={t("勝率（対戦数が十分なデッキタイプでいちばん高い勝率が満タン）", "Win rate (full = best among archetypes with enough games)")}>
                       <span className={`block h-full rounded-full ${s.games >= MIN_GAMES ? "bg-accent" : "bg-accent/35"}`} style={{ width: `${winBar(s)}%` }} />
                     </span>
                     <span className="mt-1 flex flex-wrap gap-x-2 text-[10px] font-bold text-muted">
                       <span className="text-accent-deep">{t(`勝率 ${pct(s.winRate)}`, `Win ${pct(s.winRate)}`)}</span>
-                      <span>{t(`使用率 ${pct(s.share)}`, `${pct(s.share)} of decks`)}</span>
+                      <span>
+                        {t(`使用率 ${pct(s.share)}`, `${pct(s.share)} of decks`)}
+                        {/* その前の2週間からの使用率の増減 */}
+                        {!isNew && (diff > 0.002 || diff < -0.002) && (
+                          <span className={`ml-1 ${diff > 0 ? "text-accent-deep" : "text-[#b8394c]"}`}>
+                            {diff > 0 ? "↑" : "↓"}
+                            {Math.abs(diff * 100).toFixed(1)}
+                          </span>
+                        )}
+                      </span>
                       {s.games < MIN_GAMES && <span>{t(`${s.games}戦・参考`, `${s.games} games, low sample`)}</span>}
                       {s.top8 > 0 && <span>{t(`8位以内 ${s.top8}回`, `Top 8 ×${s.top8}`)}</span>}
                     </span>
                   </span>
-                  <span className={`shrink-0 text-right text-xs font-extrabold ${isNew ? "text-[#c2410c]" : diff > 0.002 ? "text-accent-deep" : diff < -0.002 ? "text-[#b8394c]" : "text-muted"}`}>
-                    {isNew ? "NEW" : `${diff > 0.002 ? "↑" : diff < -0.002 ? "↓" : "→"} ${Math.abs(diff * 100).toFixed(1)}`}
-                  </span>
                 </button>
               );
             })}
-            <p className="text-[10px] font-medium text-muted">
-              {t(
-                `Limitless TCG の大会結果（${index.fetchedAt.slice(0, 10)} 取得）。勝ち越し・五分のデッキだけのデータなので、勝率はどれも50%以上で、デッキタイプどうしを比べるための目安です。`,
-                `Tournament results from Limitless TCG (fetched ${index.fetchedAt.slice(0, 10)}). Only even or winning records are included, so win rates are all 50%+ and are for comparing archetypes.`,
-              )}
-            </p>
           </>
         ) : (
           <>
@@ -415,7 +404,8 @@ function ListsPage() {
             <button key={l.id} type="button" onClick={() => navigate(`/tools/list/${l.id}`)} className="neu neu-press rounded-2xl p-3 text-left">
               <div className="mb-2 flex items-center gap-2">
                 <span className="min-w-0 flex-1 truncate font-extrabold">{l.name}</span>
-                <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-extrabold ${l.kind === "trade" ? "bg-[#ffe9c7] text-[#8a5c0c]" : "neu-in text-muted"}`}>{lang === "en" ? KIND_LABEL[l.kind][1] : KIND_LABEL[l.kind][0]}</span>
+                {/* ふつうのリストには印を付けず、トレード用だけに付ける */}
+                {l.kind === "trade" && <span className="shrink-0 rounded-full bg-[#ffe9c7] px-2 py-0.5 text-[10px] font-extrabold text-[#8a5c0c]">{lang === "en" ? KIND_LABEL.trade[1] : KIND_LABEL.trade[0]}</span>}
                 <span className="shrink-0 text-xs font-extrabold text-muted">{t(`${total(l.items)}枚`, `${total(l.items)}`)}</span>
               </div>
               <div className="grid grid-cols-10 gap-1">
@@ -494,8 +484,7 @@ function ImportListSheet({ open, onClose }: { open: boolean; onClose: () => void
         </button>
       }
     >
-      <p className="mb-2 text-xs font-medium text-muted">{t("共有されたリストのURLか共有コードを貼り付けてください", "Paste a shared list URL or share code")}</p>
-      <textarea value={text} onChange={(e) => setText(e.target.value)} rows={4} className="neu-in w-full rounded-2xl p-3 text-xs" placeholder="https://pokepokeindex.com/#/list/L1~…" />
+      <textarea value={text} onChange={(e) => setText(e.target.value)} rows={4} className="neu-in w-full rounded-2xl p-3 text-xs" placeholder={t("共有URL・共有コード", "Share URL or code")} />
     </Sheet>
   );
 }
@@ -545,7 +534,6 @@ function ListPage({ id }: { id: string }) {
         {SIDES[list.kind].map((side) => (
           <ListSection key={side} list={list} side={side} onAdd={() => edit(side)} />
         ))}
-        <p className="text-center text-[11px] font-bold text-muted">{t("カードをタップで絵柄・ミラー・枚数を変更", "Tap a card to change its art, mirror or count")}</p>
       </div>
       {exp.image}
     </div>
@@ -773,14 +761,8 @@ function ListBuilderPage({ id }: { id: string }) {
               )}
             </div>
           </div>
-          <div className="mt-2 flex items-center justify-end gap-1 text-[11px] font-bold text-muted">
-            {cols > v && <span className="mr-auto">{t("← 横にスクロール →", "← scroll →")}</span>}
-            <span className="mr-1">{t("枠の大きさ", "Slot size")}</span>
-            {(["s", "m", "l"] as const).map((x) => (
-              <button key={x} type="button" aria-pressed={slotSize === x} onClick={() => setSlotSize(x)} className={`h-6 w-7 rounded-full ${slotSize === x ? "bg-accent text-white" : "neu-in"}`}>
-                {lang === "en" ? { s: "S", m: "M", l: "L" }[x] : { s: "小", m: "中", l: "大" }[x]}
-              </button>
-            ))}
+          <div className="mt-2">
+            <SlotSizePicker value={slotSize} onChange={setSlotSize} />
           </div>
         </div>
         <div className="mt-3">
@@ -822,9 +804,6 @@ function ListBuilderPage({ id }: { id: string }) {
       </div>
 
       <div className="px-4">
-        <p className="mb-2 text-center text-[11px] font-bold text-muted">
-          {t("タップで詳細 ・ 長押しで追加 ・ 上の枠はタップで絵柄・ミラー、長押しで1枚減らす", "Tap for details ・ long-press to add ・ tap a slot above for art/mirror, long-press to remove one")}
-        </p>
         <PoolGrid hits={hits} counts={counts} onTap={(c) => openCard(c.id, hits.map((h) => h.card.id))} />
       </div>
 
@@ -1143,12 +1122,6 @@ export function ListColumn({ id, onClose }: { id: string; onClose: () => void })
           </div>
         ))}
       </div>
-      <p className="text-[11px] font-bold text-muted">
-        {t(
-          "左の一覧で長押し、またはカード詳細の「＋ リストに追加」で追加。ここのカードはタップで絵柄・ミラー・枚数、長押しで1枚減らす",
-          "Long-press a card on the left, or use “＋ Add to list” in the card details. Tap a card here for art/mirror/count, long-press to remove one",
-        )}
-      </p>
       <div className="grid grid-cols-3 gap-2">
         <button type="button" disabled={!list.items.length || exp.exporting} onClick={exp.savePng} className={colBtn}>
           {exp.exporting ? t("作成中…", "Creating…") : t("画像で保存", "Save image")}

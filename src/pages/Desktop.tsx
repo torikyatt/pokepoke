@@ -61,7 +61,6 @@ export function Desktop() {
         <button type="button" onClick={() => navigate("/")} aria-label="POKÉPOKE INDECKS">
           <Logo />
         </button>
-        <span className="text-xs font-bold text-muted">{t("ふだんの言葉でカードを探す ・ 「/」で検索欄へ", "Find cards in plain words ・ press “/” to search")}</span>
         <div className="flex-1" />
         <button type="button" onClick={() => navigate("/tools")} className="neu-sm neu-press rounded-full px-4 py-1.5 text-xs font-extrabold text-muted">
           {t("ツール", "Tools")}
@@ -166,7 +165,6 @@ function DeckColumn({ deck }: { deck?: Deck }) {
 
       {!deck ? (
         <div className="neu-in flex flex-col items-center gap-3 rounded-2xl p-8 text-center text-sm font-bold text-muted">
-          <p>{t("カード詳細の「＋ デッキに追加」で、ここにデッキができます", "Use “＋ Add to deck” on a card to start a deck here")}</p>
           <button type="button" onClick={() => create()} className="btn-ok rounded-full px-5 py-2 text-sm">
             {t("新しいデッキを作る", "New deck")}
           </button>

@@ -146,7 +146,7 @@ function QuickAdd({ card }: { card: AppCard }) {
 }
 
 /** 検索文の入力欄と、一致した条件のチップ（タップで外す） */
-export function QueryBox({ value, onChange, onSubmit, conds, excluded, onToggle, autoFocus }: { value: string; onChange: (v: string) => void; onSubmit?: (v: string) => void; conds: Cond[]; excluded: Set<string>; onToggle: (id: string) => void; autoFocus?: boolean }) {
+export function QueryBox({ value, onChange, onSubmit, conds, excluded, onToggle, autoFocus, kbd }: { value: string; onChange: (v: string) => void; onSubmit?: (v: string) => void; conds: Cond[]; excluded: Set<string>; onToggle: (id: string) => void; autoFocus?: boolean; kbd?: boolean }) {
   const t = useT();
   const lang = useLang();
   return (
@@ -169,10 +169,13 @@ export function QueryBox({ value, onChange, onSubmit, conds, excluded, onToggle,
           placeholder={t("例: エネ加速できる炎のカード", "e.g. fire energy acceleration")}
           className="min-w-0 flex-1 bg-transparent text-base font-bold outline-none placeholder:font-medium placeholder:text-muted"
         />
-        {value && (
+        {value ? (
           <button type="button" onClick={() => onChange("")} className="text-muted" aria-label={t("消す", "Clear")}>
             ✕
           </button>
+        ) : (
+          // PC: 「/」で検索欄へ（キーの形で出す）
+          kbd && <kbd className="rounded-md border border-line px-1.5 text-xs font-bold text-muted">/</kbd>
         )}
       </form>
       {conds.length > 0 && (
@@ -224,7 +227,7 @@ export function PoolGrid({ hits, counts, maxed, onTap, footer, wide }: { hits: H
       )}
       {favOnly && !nFav && (
         <p className="py-10 text-center text-sm font-bold text-muted">
-          {t("まだお気に入りはありません。カード詳細の「♡ お気に入り」で登録できます", "No favorites yet. Add one with “♡ Favorite” on a card’s detail.")}
+          {t("お気に入りはまだありません", "No favorites yet")}
         </p>
       )}
       <div
@@ -321,8 +324,7 @@ function ViewedSheet({ open, onClose, closeOnOpen }: { open: boolean; onClose: (
       z="z-[48]"
       footer={
         cards.length > 0 && (
-          <div className="flex items-center justify-between gap-3">
-            <span className="text-[11px] font-bold text-muted">{t(`新しい順・${VIEWED_MAX}件まで`, `Newest first, up to ${VIEWED_MAX}`)}</span>
+          <div className="flex items-center justify-end gap-3">
             <button type="button" onClick={() => {
                 if (!confirm(t("見たカードの履歴を消しますか？", "Clear viewed cards?"))) return;
                 clear();
@@ -367,7 +369,7 @@ function ViewedSheet({ open, onClose, closeOnOpen }: { open: boolean; onClose: (
           ))}
         </ul>
       ) : (
-        <p className="py-10 text-center text-sm font-bold text-muted">{t("まだカードを見ていません。カードをタップすると、ここに並びます。", "No cards viewed yet. Cards you open will show up here.")}</p>
+        <p className="py-10 text-center text-sm font-bold text-muted">{t("まだありません", "Nothing yet")}</p>
       )}
     </Sheet>
   );

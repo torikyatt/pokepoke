@@ -647,12 +647,15 @@ export function DetailPane() {
         {id ? (
           <CardDetail id={id} keepOpen actions={card && <DeckButtons card={card} />} fav={card && <FavToggle card={card} />} />
         ) : (
-          <div className="flex h-full flex-col items-center justify-center gap-4 p-8 text-center text-sm font-bold text-muted">
-            <p className="whitespace-pre-line">{t("左の一覧のカードをクリックすると\nここに詳細が出ます", "Click a card in the list on the left\nto see its details here")}</p>
-            {stack.length > 0 && (
-              <button type="button" onClick={reopenDetail} className="neu-sm neu-press rounded-full px-4 py-2 text-ink">
-                {t("最後に見たカードを開く", "Open last viewed card")}（{last && cardName(last, lang)}）
+          // まだ開いていないときは、カードの形の空き枠（最後に見たカードがあれば、それを押すと開き直す）
+          <div className="flex h-full flex-col items-center justify-center p-8">
+            {stack.length > 0 && last ? (
+              <button type="button" onClick={reopenDetail} className="neu-press flex w-36 flex-col items-center gap-2 rounded-xl text-xs font-bold text-muted" title={cardName(last, lang)}>
+                <Thumb card={last} className="opacity-60" />
+                <span className="w-full truncate">{cardName(last, lang)}</span>
               </button>
+            ) : (
+              <div className="aspect-[367/512] w-36 rounded-xl border-2 border-dashed border-line" aria-hidden />
             )}
           </div>
         )}

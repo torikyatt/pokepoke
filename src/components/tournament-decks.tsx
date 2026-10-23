@@ -45,21 +45,20 @@ export function CardDecks({ card, keepOpen }: { card: AppCard; keepOpen?: boolea
     return [...m].sort((a, b) => (order === "recommended" ? b[1].rec - a[1].rec : 0) || b[1].n - a[1].n).slice(0, 8);
   }, [all, order, index]);
   const list = arch ? all.filter((d) => d.archId === arch) : all;
-  const total = all.reduce((n, d) => n + d.dup, 0);
 
   return (
     <section>
-      <h2 className="mb-2 text-sm font-extrabold text-muted">{t("このカードを使ったデッキ（大会）", "Tournament decks with this card")}</h2>
+      <h2 className="mb-2 text-sm font-extrabold text-muted">
+        {t("大会のデッキ", "Tournament decks")}
+        {index && all.length > 0 && <span className="ml-1.5 tabular-nums">{all.length}</span>}
+      </h2>
       {!index ? (
         <p className="neu rounded-2xl p-4 text-center text-xs font-bold text-muted">{t("大会のデッキを読み込み中…", "Loading tournament decks…")}</p>
       ) : !all.length ? (
-        <p className="neu rounded-2xl p-4 text-center text-xs font-bold text-muted">{t("勝ち越したデッキでの使用はまだ見つかっていません", "Not found in any deck with a winning record yet")}</p>
+        <p className="neu rounded-2xl p-4 text-center text-xs font-bold text-muted">{t("見つかりませんでした", "None found")}</p>
       ) : (
         <div className="space-y-2.5">
-          <div className="flex items-center gap-2">
-            <p className="min-w-0 flex-1 text-[11px] font-bold text-muted">
-              {t(`勝ち越し・五分のデッキ ${total} 件（同じ構成をまとめて ${all.length} 種類）`, `${total} decks with an even or winning record (${all.length} unique lists)`)}
-            </p>
+          <div className="flex justify-end">
             <div className="neu-in flex shrink-0 rounded-full p-0.5 text-[11px] font-bold">
               {ORDERS.map(([o, label, en]) => (
                 <button key={o} type="button" onClick={() => { setOrder(o); setShown(PAGE); }} className={`rounded-full px-2 py-1 ${order === o ? "bg-white text-accent shadow" : "text-muted"}`}>
@@ -88,7 +87,6 @@ export function CardDecks({ card, keepOpen }: { card: AppCard; keepOpen?: boolea
               {t(`もっと見る（あと ${list.length - shown} 種類）`, `Show more (${list.length - shown} left)`)}
             </button>
           )}
-          <p className="text-[10px] font-medium text-muted">{t(`Limitless TCG の大会結果（${index.fetchedAt.slice(0, 10)} 取得）`, `Tournament results from Limitless TCG (fetched ${index.fetchedAt.slice(0, 10)})`)}</p>
         </div>
       )}
     </section>
@@ -149,9 +147,11 @@ export function DeckRow({ d, highlight, keepOpen }: { d: TournamentDeck; highlig
           </Pressable>
         ))}
       </div>
-      <button type="button" onClick={copy} className="btn-ok mt-2.5 w-full rounded-full py-2 text-xs tracking-normal">
-        {t("このデッキをコピーして編集", "Copy this deck and edit")}
-      </button>
+      <div className="mt-2 flex justify-end">
+        <button type="button" onClick={copy} className="neu-sm neu-press rounded-full px-3 py-1.5 text-xs font-extrabold text-accent-deep">
+          {t("コピーして編集", "Copy & edit")}
+        </button>
+      </div>
     </div>
   );
 }

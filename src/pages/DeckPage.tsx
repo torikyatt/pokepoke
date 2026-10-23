@@ -2,7 +2,7 @@ import { toPng } from "html-to-image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { PoolFab, PoolGrid, PoolToolbar, QueryBox, usePoolResults } from "../components/pool.tsx";
-import { EnergyIcon, Header, IconDeck, Pressable, Sheet, Thumb } from "../components/ui.tsx";
+import { EnergyIcon, Header, IconDeck, Pressable, Sheet, SlotSizePicker, Thumb } from "../components/ui.tsx";
 import { energyIconUrl } from "../icons.ts";
 import { useData } from "../context.tsx";
 import { largeUrl, thumbUrl } from "../data/load.ts";
@@ -98,7 +98,7 @@ export function ImportDeckButton({ className }: { className: string }) {
       <Sheet open={open} onClose={() => setOpen(false)} title={t("デッキを読み込む", "Import decks")} z="z-[60]">
         <div className="space-y-5 pt-1 pb-2">
           <div>
-            <p className="mb-2 text-xs font-extrabold text-muted">{t("共有コード（共有URLでも）", "Share code (or share URL)")}</p>
+            <p className="mb-2 text-xs font-extrabold text-muted">{t("共有コード・URL", "Share code or URL")}</p>
             <textarea
               value={code}
               onChange={(e) => setCode(e.target.value)}
@@ -107,11 +107,11 @@ export function ImportDeckButton({ className }: { className: string }) {
               className="neu-in w-full resize-none rounded-2xl px-3 py-2.5 text-sm font-medium break-all outline-none"
             />
             <button type="button" disabled={!code.trim()} onClick={fromCode} className="btn-ok mt-2 w-full rounded-full py-2.5 text-sm disabled:opacity-40">
-              {t("このコードで読み込む", "Import this code")}
+              {t("読み込む", "Import")}
             </button>
           </div>
           <div>
-            <p className="mb-2 text-xs font-extrabold text-muted">{t("ファイルから（デッキの画像・書き出したJSON）", "From a file (deck image or exported JSON)")}</p>
+            <p className="mb-2 text-xs font-extrabold text-muted">{t("ファイル（デッキの画像・JSON）", "File (deck image or JSON)")}</p>
             <button type="button" onClick={() => fileRef.current?.click()} className="neu-sm neu-press w-full rounded-full py-2.5 text-sm font-extrabold text-muted">
               {t("ファイルを選ぶ", "Choose a file")}
             </button>
@@ -231,14 +231,8 @@ export function DeckBuilderPage({ id }: { id: string }) {
             )}
           </div>
           </div>
-          <div className="mt-2 flex items-center justify-end gap-1 text-[11px] font-bold text-muted">
-            {slotSize !== "s" && <span className="mr-auto">{t("← 横にスクロール →", "← scroll →")}</span>}
-            <span className="mr-1">{t("枠の大きさ", "Slot size")}</span>
-            {(["s", "m", "l"] as const).map((v) => (
-              <button key={v} type="button" aria-pressed={slotSize === v} onClick={() => setSlotSize(v)} className={`h-6 w-7 rounded-full ${slotSize === v ? "bg-accent text-white" : "neu-in"}`}>
-                {lang === "en" ? { s: "S", m: "M", l: "L" }[v] : { s: "小", m: "中", l: "大" }[v]}
-              </button>
-            ))}
+          <div className="mt-2">
+            <SlotSizePicker value={slotSize} onChange={setSlotSize} />
           </div>
         </div>
         <div className="mt-3">
@@ -282,7 +276,6 @@ export function DeckBuilderPage({ id }: { id: string }) {
       </div>
 
       <div className="px-4">
-        <p className="mb-2 text-center text-[11px] font-bold text-muted">{t("タップで詳細 ・ 長押しで追加 ・ 上の枠を長押しで外す", "Tap for details ・ long-press to add ・ long-press a slot above to remove")}</p>
         <PoolGrid
           hits={hits}
           counts={counts}
@@ -533,7 +526,7 @@ export function EnergyZone({ deck }: { deck: Deck }) {
   return (
     <div className="neu rounded-3xl p-4">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
-        <h2 className="text-sm font-extrabold whitespace-nowrap text-muted">{t(`エネルギー（${MAX_ENERGY}タイプまで）`, `Energy (up to ${MAX_ENERGY} types)`)}</h2>
+        <h2 className="text-sm font-extrabold whitespace-nowrap text-muted">{t("エネルギー", "Energy")}</h2>
         <button type="button" className="ml-auto text-xs font-bold whitespace-nowrap text-accent-deep" onClick={() => update(deck.id, { energy: guessEnergy(deck, byId) })}>
           {t("デッキから自動設定", "Set from deck")}
         </button>
@@ -712,7 +705,7 @@ export function ImagePreview({ url, onClose, onDownload, label }: { url: string;
       <button type="button" aria-label={t("閉じる", "Close")} className="absolute inset-0" onClick={onClose} />
       <div className="pop-in relative flex max-h-full w-full max-w-4xl flex-col gap-2 rounded-3xl bg-panel p-3 shadow-2xl">
         <div className="flex items-center gap-2">
-          <p className="min-w-0 flex-1 text-xs font-bold text-muted">{t("画像を長押し（PCは右クリック）して保存してください", "Long-press the image (right-click on PC) to save it")}</p>
+          <p className="min-w-0 flex-1 text-xs font-bold text-muted">{t("長押しで保存", "Long-press to save")}</p>
           <button type="button" onClick={onClose} className="neu-sm neu-press flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-muted" aria-label={t("閉じる", "Close")}>
             ✕
           </button>

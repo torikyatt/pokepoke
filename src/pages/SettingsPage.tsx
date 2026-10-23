@@ -2,7 +2,6 @@ import { useState } from "react";
 import { ContactSheet } from "../components/contact.tsx";
 import { Header } from "../components/ui.tsx";
 import { useData } from "../context.tsx";
-import { isSingleFile } from "../data/load.ts";
 import { navigate } from "../router.ts";
 import { useSettings } from "../store.ts";
 import { Chip } from "../components/ui.tsx";
@@ -68,12 +67,6 @@ export function SettingsPage({ embedded }: { embedded?: boolean }) {
               English
             </Chip>
           </div>
-          <p className="text-xs text-muted">
-            {t(
-              "画面の文字・カード名・効果文・検索の言葉が切り替わります。英語の検索文（例: fire energy acceleration）は、どちらの言語でも使えます。",
-              "Switches the interface, card names, card text and search. Japanese search phrases keep working in English mode too.",
-            )}
-          </p>
         </section>
 
         <section className="neu space-y-2 rounded-3xl p-4">
@@ -86,10 +79,6 @@ export function SettingsPage({ embedded }: { embedded?: boolean }) {
               {t("英語", "English")}
             </Chip>
           </div>
-          <p className="text-xs text-muted">
-            {t("表示言語を変えると、画像も同じ言語になります（ここで別にもできます）。日本語の画像が無いカードは英語で表示します。", "Changing the language also switches images (you can override it here). Cards without a Japanese image are shown in English.")}
-            {isSingleFile && t("オフライン版で英語を選ぶと、ネットにつながっているときだけ英語の画像を読み込みます。", " In the offline version, English images load only when you're online.")}
-          </p>
         </section>
 
         <section className="neu space-y-1 rounded-3xl p-4">
@@ -135,16 +124,14 @@ export function SettingsPage({ embedded }: { embedded?: boolean }) {
 
         <section className="neu space-y-2 rounded-3xl p-4">
           <h2 className="font-extrabold">{t("お問い合わせ", "Contact")}</h2>
-          <p className="text-xs text-muted">{t("ご意見・ご要望・不具合などはこちらからお寄せください。", "Feedback, requests and bug reports are welcome.")}</p>
           <button type="button" onClick={() => setContact(true)} className="neu-sm neu-press rounded-full px-4 py-2 text-xs font-extrabold text-accent-deep">
-            {t("お問い合わせフォームを開く", "Open the contact form")}
+            {t("ご意見・不具合を送る", "Send feedback")}
           </button>
           <ContactSheet open={contact} onClose={() => setContact(false)} />
         </section>
 
         <section className="neu space-y-3 rounded-3xl p-4 text-xs text-muted">
           <h2 className="text-sm font-extrabold text-ink">{t("データの出典", "Data sources")}</h2>
-          <p>{t("このサイトは、次のサイト・データを参照・引用して作っています。各サイトに感謝します。", "This site is built on data from the following sources. Many thanks to each of them.")}</p>
           <ul className="space-y-2.5">
             {SOURCES.map((src) => (
               <li key={src.url}>

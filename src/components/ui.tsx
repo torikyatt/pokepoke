@@ -322,3 +322,18 @@ export function Sheet({ open, onClose, title, children, footer, z = "z-50" }: { 
     document.body,
   );
 }
+
+/** 枠の大きさ（小・中・大）。文字の代わりに、大きさの違うカードの形で見せる */
+export function SlotSizePicker({ value, onChange }: { value: "s" | "m" | "l"; onChange: (v: "s" | "m" | "l") => void }) {
+  const t = useT();
+  const H = { s: 9, m: 12, l: 15 };
+  return (
+    <div className="flex items-center justify-end gap-1" role="group" aria-label={t("枠の大きさ", "Slot size")}>
+      {(["s", "m", "l"] as const).map((v) => (
+        <button key={v} type="button" aria-pressed={value === v} aria-label={t({ s: "小", m: "中", l: "大" }[v], { s: "Small", m: "Medium", l: "Large" }[v])} onClick={() => onChange(v)} className={`flex h-6 w-7 items-center justify-center rounded-full ${value === v ? "bg-accent" : "neu-in"}`}>
+          <span className={`block rounded-[1px] border-[1.5px] ${value === v ? "border-white" : "border-muted"}`} style={{ height: H[v], width: Math.round(H[v] * 0.72) }} />
+        </button>
+      ))}
+    </div>
+  );
+}

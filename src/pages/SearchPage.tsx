@@ -6,9 +6,8 @@ import { openCard } from "../detail.ts";
 import { logOpen, logSearch } from "../search-log.ts";
 import { usePool } from "../pool.ts";
 import { navigate, searchPath, useRoute } from "../router.ts";
-import { dateStr, useLang, useT } from "../i18n.ts";
+import { useLang, useT } from "../i18n.ts";
 import { pickExamples } from "../examples.ts";
-import { useEditTarget } from "../store.ts";
 
 const csv = (s: string | null) => (s ? s.split(",").filter(Boolean) : []);
 
@@ -26,7 +25,7 @@ export function useQueryConds(q: string, excluded: Set<string>, tagParam = "") {
 
 /** カードの検索。wide は PC の左の列（右下の丸ボタンの代わりにツールバーで絞り込む） */
 export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<string, number> }) {
-  const { data, engine } = useData();
+  const { engine } = useData();
   const { params } = useRoute();
   const q = params.get("q") ?? "";
   const tagParam = params.get("tag") ?? "";
@@ -43,12 +42,12 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
   useEffect(() => logSearch(q, total, "search", lang, unread), [q, total, lang, unread]);
   // 検索の例: 開くたび・検索欄を空に戻すたびに選び直す
   const examples = useMemo(() => pickExamples(lang), [lang, !q]);
-  const toList = useEditTarget((s) => !!s.list); // PCでリストを開いている間は、長押しでそのリストに足す
   const latest = useMemo(() => {
     const lq = lang === "en" ? "newest cards" : "最新のカード";
     const c = engine.explain(lq).conds.find((x) => x.kind === "latest");
     return { q: lq, label: c ? (lang === "en" ? c.en : c.label) : "", n: c ? engine.search(lq, Infinity).length : 0 };
   }, [engine, lang]);
+  const soft = conds.filter((c) => c.kind === "tag" || c.kind === "variable").map((c) => c.id);
   const labelOf = useMemo(() => new Map(parsed.map((c) => [c.id, lang === "en" ? c.en : c.label])), [parsed, lang]);
 
   const go = (patch: { q?: string; x?: string[] }, replace = true) =>
@@ -71,6 +70,7 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
           conds={parsed}
           excluded={excluded}
           onToggle={(id) => go({ x: excluded.has(id) ? [...excluded].filter((x) => x !== id) : [...excluded, id] })}
+          kbd={wide}
         />
         <PoolToolbar
           filter={wide}
@@ -92,7 +92,6 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
                 <Logo />
               </h1>
             )}
-            <p className="mb-2 text-xs font-bold text-muted">{toList ? t("ふだんの言葉で探せます（タップで詳細・長押しでリストに追加）", "Search in plain words (tap for details, long-press to add to the list)") : t("ふだんの言葉で探せます（タップで詳細・長押しでデッキに追加）", "Search in plain words (tap for details, long-press to add to your deck)")}</p>
             <div className={wide ? "flex flex-wrap gap-2 pb-2" : "scrollbar-none -mx-4 flex gap-2 overflow-x-auto px-4 pb-2"}>
               {examples.map((ex) => (
                 <Chip key={ex} onClick={() => go({ q: ex }, false)}>
@@ -110,7 +109,7 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
             )}
           </div>
         )}
-        {q && !favOnly && hits.length === 0 && <p className="py-8 text-center text-sm font-bold text-muted">{t("見つかりませんでした。条件をタップして外すか、絞り込みをゆるめてください。", "Nothing found. Tap a condition to remove it, or loosen the filters.")}</p>}
+        {q && !favOnly && hits.length === 0 && <p className="py-8 text-center text-sm font-bold text-muted">{t("見つかりませんでした", "Nothing found")}</p>}
         <PoolGrid
           hits={hits}
           wide={wide}
@@ -123,7 +122,8 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
             scored && (
               <div className="mt-1 space-y-0.5 text-[10px] leading-tight font-bold text-muted">
                 {h.note && <div className="truncate text-accent-deep">{lang === "en" ? h.noteEn : h.note}</div>}
-                {h.matched
+                {/* 一致した条件は、上のチップと同じなので、一部しか当たっていないカードだけに出す */}
+                {!soft.every((id) => h.matched.includes(id)) && h.matched
                   .filter((id) => labelOf.has(id) && !(h.note && (id.startsWith("deck:") || id === "meta")))
                   .slice(0, 2)
                   .map((id) => (
@@ -134,9 +134,6 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
             )
           }
         />
-        <p className="mt-8 text-center text-[10px] text-muted">
-          {t(`データ ${data.cards.length} 種 ・ ${dateStr(data.builtAt, lang)} 時点`, `${data.cards.length} cards ・ as of ${dateStr(data.builtAt, lang)}`)}
-        </p>
       </div>
       {!wide && <PoolFab history />}
     </div>

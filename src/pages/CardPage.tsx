@@ -199,7 +199,7 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
 
         {comboGroups.length > 0 && (
           <section>
-            <h2 className="mb-2 text-sm font-extrabold text-muted">{t("定番の組み合わせ（攻略記事より）", "Known combos (from strategy guides)")}</h2>
+            <h2 className="mb-2 text-sm font-extrabold text-muted">{t("定番の組み合わせ", "Known combos")}</h2>
             <ul className="space-y-2">
               {comboGroups.map((g) => {
                 const main = g.items[0];
@@ -262,12 +262,6 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
                   ))}
                 </div>
               )}
-              <p className="text-[10px] font-medium text-muted">
-                {t(
-                  `直近${data.meta.days}日・${data.meta.tournaments}大会・勝ち越した${data.meta.decks}デッキ（Limitless TCG の大会結果）。デッキ名の横の%は、そのデッキでの採用率`,
-                  `Last ${data.meta.days} days, ${data.meta.tournaments} tournaments, ${data.meta.decks} decks with a winning record (Limitless TCG). The % next to a deck is how often it plays this card.`,
-                )}
-              </p>
             </div>
           </section>
         )}
@@ -338,15 +332,11 @@ function UpcomingNote({ card }: { card: AppCard }) {
   const u = card.upcoming!;
   // 日付だけの文字列は new Date() だと UTC 扱いになり、時差で前日にずれるので、そのまま組み立てる
   const [y, m, d] = (u.date ?? "").split("-").map(Number);
-  const when = u.date ? (lang === "en" ? new Date(y, m - 1, d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : `${y}年${m}月${d}日`) : t("時期未定", "date TBA");
+  const when = u.date ? (lang === "en" ? new Date(y, m - 1, d).toLocaleDateString("en-US", { month: "short", day: "numeric" }) : `${m}/${d}`) : t("時期未定", "date TBA");
   return (
-    <div className="rounded-2xl bg-[#fdf1d8] px-3 py-2 text-[11px] leading-relaxed font-bold text-[#7a5410]">
-      <div className="text-xs font-extrabold">{t(`実装予定のカード（${when}）`, `Upcoming card (${when})`)}</div>
-      {t(
-        "先行公開の情報をもとに載せています。実装されるまで、デッキ・リストには入れられません。",
-        "Based on pre-release info; English text is our own translation. It can't be added to decks or lists until release.",
-      )}{" "}
-      <a className="underline" href={u.source} target="_blank" rel="noreferrer">
+    <div className="flex items-center justify-between gap-2 rounded-2xl bg-[#fdf1d8] px-3 py-2 text-xs font-extrabold text-[#7a5410]">
+      {t(`${when} 実装予定`, `Coming ${when}`)}
+      <a className="shrink-0 text-[11px] font-bold underline" href={u.source} target="_blank" rel="noreferrer">
         {t("情報元", "Source")}
       </a>
     </div>
