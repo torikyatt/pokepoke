@@ -99,7 +99,7 @@ interface SettingsState {
   setDeckView: (v: "grid" | "list") => void;
   slotSize: "s" | "m" | "l"; // デッキ編集画面の上の枠の大きさ
   setSlotSize: (v: "s" | "m" | "l") => void;
-  theme: Theme; // 画面の明るさ（auto は端末の設定に合わせる）
+  theme: Theme; // 画面の明るさ（はじめはライト。auto は端末の設定に合わせる）
   setTheme: (v: Theme) => void;
 }
 export type Theme = "auto" | "light" | "dark";
@@ -119,10 +119,20 @@ export const useSettings = create<SettingsState>()(
       setDeckView: (deckView) => set({ deckView }),
       slotSize: "s",
       setSlotSize: (slotSize) => set({ slotSize }),
-      theme: "auto",
+      theme: "light",
       setTheme: (theme) => set({ theme }),
     }),
-    { name: "pokepoke.settings", storage: createJSONStorage(() => safeStorage), version: 1 },
+    {
+      name: "pokepoke.settings",
+      storage: createJSONStorage(() => safeStorage),
+      // v2: 画面の明るさのはじめの値を「自動」から「ライト」に変えた（v1 で保存された「自動」はライトにする）
+      version: 2,
+      migrate: (s, v) => {
+        const st = s as Partial<SettingsState>;
+        if (v < 2 && (!st.theme || st.theme === "auto")) st.theme = "light";
+        return st as SettingsState;
+      },
+    },
   ),
 );
 

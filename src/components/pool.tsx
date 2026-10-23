@@ -65,10 +65,10 @@ export function PoolToolbar({ left, searchOpen, onSearch, filter, history }: { l
         {t("お気に入り", "Favorites")}{nFav > 0 && <span className="tabular-nums">{nFav}</span>}
       </button>
       <div className="neu-in flex rounded-full p-0.5" role="group" aria-label={t("カードの大きさ", "Card size")}>
-        <button type="button" onClick={() => setColumns(3)} aria-pressed={columns === 3} title={t("カードを大きく", "Larger cards")} aria-label={t("カードを大きく", "Larger cards")} className={seg(columns === 3)}>
+        <button type="button" onClick={() => (captureAnchors(), setColumns(3))} aria-pressed={columns === 3} title={t("カードを大きく", "Larger cards")} aria-label={t("カードを大きく", "Larger cards")} className={seg(columns === 3)}>
           <IconCardsLarge />
         </button>
-        <button type="button" onClick={() => setColumns(5)} aria-pressed={columns === 5} title={t("カードを小さく", "Smaller cards")} aria-label={t("カードを小さく", "Smaller cards")} className={seg(columns === 5)}>
+        <button type="button" onClick={() => (captureAnchors(), setColumns(5))} aria-pressed={columns === 5} title={t("カードを小さく", "Smaller cards")} aria-label={t("カードを小さく", "Smaller cards")} className={seg(columns === 5)}>
           <IconCardsSmall />
         </button>
       </div>
@@ -195,6 +195,32 @@ export function QueryBox({ value, onChange, onSubmit, conds, excluded, onToggle,
   );
 }
 
+// カードの大きさを変えても、見ていたカード（画面のいちばん上に見えていたもの）が同じ高さに来るようにする。
+// 変える直前に、見えているグリッドごとにそのカードと画面上の高さを覚え（captureAnchors）、並び直したあと PoolGrid がそこへスクロールし直す
+const anchors = new WeakMap<Element, { id: string; top: number }>();
+/** 縦にスクロールする親（無ければページ全体 = null） */
+function scrollParent(el: HTMLElement): HTMLElement | null {
+  for (let p = el.parentElement; p; p = p.parentElement) {
+    const oy = getComputedStyle(p).overflowY;
+    if ((oy === "auto" || oy === "scroll") && p.scrollHeight > p.clientHeight) return p;
+  }
+  return null;
+}
+function captureAnchors() {
+  for (const grid of document.querySelectorAll<HTMLElement>("[data-pool-grid]")) {
+    if (!grid.offsetParent) continue; // 隠れているタブのグリッド
+    const sc = scrollParent(grid);
+    // 上に貼り付いている検索欄・ツールバーの下から見えているところ
+    let limit = sc ? sc.getBoundingClientRect().top : 0;
+    for (const st of (sc ?? document.body).querySelectorAll<HTMLElement>(".sticky")) {
+      const r = st.getBoundingClientRect();
+      if (st.offsetParent && r.top <= limit + 2 && r.bottom > limit) limit = r.bottom;
+    }
+    const cell = [...grid.children].find((c) => c.getBoundingClientRect().bottom > limit + 8) as HTMLElement | undefined;
+    if (cell?.dataset.card) anchors.set(grid, { id: cell.dataset.card, top: cell.getBoundingClientRect().top });
+  }
+}
+
 /** カードのグリッド。下までスクロールすると続きを出す */
 export function PoolGrid({ hits, counts, maxed, onTap, footer, wide }: { hits: Hit[]; counts?: Map<string, number>; maxed?: (c: AppCard) => boolean; onTap: (c: AppCard) => void; footer?: (h: Hit) => ReactNode; wide?: boolean }) {
   const { columns, favOnly, setFavOnly } = usePool();
@@ -203,6 +229,20 @@ export function PoolGrid({ hits, counts, maxed, onTap, footer, wide }: { hits: H
   const t = useT();
   const [shown, setShown] = useState(90);
   const sentinel = useRef<HTMLDivElement>(null);
+  const grid = useRef<HTMLDivElement>(null);
+  // カードの大きさを変えたら、見ていたカードが前と同じ高さに来るようにスクロールし直す（captureAnchors）
+  useLayoutEffect(() => {
+    const el = grid.current;
+    const a = el && anchors.get(el);
+    if (!el || !a) return;
+    anchors.delete(el);
+    const cell = el.querySelector<HTMLElement>(`[data-card="${CSS.escape(a.id)}"]`);
+    if (!cell) return;
+    const delta = cell.getBoundingClientRect().top - a.top;
+    const sc = scrollParent(el);
+    if (sc) sc.scrollTop += delta;
+    else window.scrollBy(0, delta);
+  }, [columns]);
   useEffect(() => setShown(90), [hits]);
   useEffect(() => {
     const el = sentinel.current;
@@ -231,11 +271,13 @@ export function PoolGrid({ hits, counts, maxed, onTap, footer, wide }: { hits: H
         </p>
       )}
       <div
+        ref={grid}
+        data-pool-grid
         className={wide ? `grid ${columns === 5 ? "gap-2" : "gap-3"}` : `grid ${columns === 5 ? "grid-cols-5 gap-2 sm:grid-cols-7 md:grid-cols-8" : "grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5"}`}
         style={wide ? { gridTemplateColumns: `repeat(auto-fill, minmax(${columns === 5 ? 76 : 116}px, 1fr))` } : undefined}
       >
         {hits.slice(0, shown).map((h) => (
-          <div key={h.card.id}>
+          <div key={h.card.id} data-card={h.card.id}>
             <PoolCard card={h.card} count={counts?.get(h.card.id)} maxed={maxed?.(h.card)} compact={columns === 5} onTap={() => onTap(h.card)} onLongPress={() => addToDeck(h.card)} />
             {favOnly ? <QuickAdd card={h.card} /> : footer?.(h)}
           </div>
