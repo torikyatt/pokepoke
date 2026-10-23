@@ -47,7 +47,6 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
     const c = engine.explain(lq).conds.find((x) => x.kind === "latest");
     return { q: lq, label: c ? (lang === "en" ? c.en : c.label) : "", n: c ? engine.search(lq, Infinity).length : 0 };
   }, [engine, lang]);
-  const soft = conds.filter((c) => c.kind === "tag" || c.kind === "variable").map((c) => c.id);
   const labelOf = useMemo(() => new Map(parsed.map((c) => [c.id, lang === "en" ? c.en : c.label])), [parsed, lang]);
 
   const go = (patch: { q?: string; x?: string[] }, replace = true) =>
@@ -122,8 +121,7 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
             scored && (
               <div className="mt-1 space-y-0.5 text-[10px] leading-tight font-bold text-muted">
                 {h.note && <div className="truncate text-accent-deep">{lang === "en" ? h.noteEn : h.note}</div>}
-                {/* 一致した条件は、上のチップと同じなので、一部しか当たっていないカードだけに出す */}
-                {!soft.every((id) => h.matched.includes(id)) && h.matched
+                {h.matched
                   .filter((id) => labelOf.has(id) && !(h.note && (id.startsWith("deck:") || id === "meta")))
                   .slice(0, 2)
                   .map((id) => (
