@@ -71,7 +71,7 @@ export function PrintGallery({ card, index, onIndex }: { card: AppCard; index: n
 
   return (
     <div>
-      <div className="group relative rounded-xl shadow-[3px_5px_12px_rgb(150_165_185/0.55)]">
+      <div className="group relative rounded-xl shadow-[3px_5px_12px_rgb(var(--shadow-rgb)/0.55)]">
         <div ref={ref} onScroll={onScroll} onPointerDown={() => (target.current = null)} className="scrollbar-none flex snap-x snap-mandatory overflow-x-auto rounded-xl" style={{ touchAction: "pan-x pan-y" }}>
           {card.prints.map((pr, i) => (
             <img
@@ -95,10 +95,10 @@ export function PrintGallery({ card, index, onIndex }: { card: AppCard; index: n
         </div>
         {n > 1 && (
           <>
-            <button type="button" aria-label={t("前の絵柄", "Previous art")} onClick={() => go(-1)} disabled={index === 0} className="absolute top-1/2 left-1 hidden h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-white/85 text-sm font-extrabold text-ink shadow disabled:opacity-0 [@media(hover:hover)]:flex">
+            <button type="button" aria-label={t("前の絵柄", "Previous art")} onClick={() => go(-1)} disabled={index === 0} className="absolute top-1/2 left-1 hidden h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-raised/85 text-sm font-extrabold text-ink shadow disabled:opacity-0 [@media(hover:hover)]:flex">
               ‹
             </button>
-            <button type="button" aria-label={t("次の絵柄", "Next art")} onClick={() => go(1)} disabled={index === n - 1} className="absolute top-1/2 right-1 hidden h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-white/85 text-sm font-extrabold text-ink shadow disabled:opacity-0 [@media(hover:hover)]:flex">
+            <button type="button" aria-label={t("次の絵柄", "Next art")} onClick={() => go(1)} disabled={index === n - 1} className="absolute top-1/2 right-1 hidden h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-raised/85 text-sm font-extrabold text-ink shadow disabled:opacity-0 [@media(hover:hover)]:flex">
               ›
             </button>
           </>
@@ -116,7 +116,7 @@ export function PrintGallery({ card, index, onIndex }: { card: AppCard; index: n
                 aria-selected={i === index}
                 aria-label={t(`${i + 1}枚目の絵柄`, `Art ${i + 1}`)}
                 onClick={() => onIndex(i)}
-                className={`h-1.5 rounded-full transition-all ${i === index ? "w-4 bg-accent" : "w-1.5 bg-[#c5cfdb]"}`}
+                className={`h-1.5 rounded-full transition-all ${i === index ? "w-4 bg-accent" : "w-1.5 bg-slot-line"}`}
               />
             ))}
           </div>

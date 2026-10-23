@@ -49,7 +49,7 @@ export function PoolToolbar({ left, searchOpen, onSearch, filter, history }: { l
   const [viewedOpen, setViewedOpen] = useState(false);
   const nFav = useFavorites((s) => s.ids.length);
   const t = useT();
-  const seg = (on: boolean) => `flex h-7 w-8 items-center justify-center rounded-full transition ${on ? "bg-white text-accent shadow" : "text-muted"}`;
+  const seg = (on: boolean) => `flex h-7 w-8 items-center justify-center rounded-full transition ${on ? "bg-raised text-accent shadow" : "text-muted"}`;
   return (
     <div className="neu flex items-center gap-2 rounded-2xl px-2.5 py-1.5">
       <div className="neu-in flex items-center gap-1.5 rounded-full px-3 py-0.5 text-sm font-extrabold">{left}</div>
@@ -59,7 +59,7 @@ export function PoolToolbar({ left, searchOpen, onSearch, filter, history }: { l
         onClick={() => setFavOnly(!favOnly)}
         aria-pressed={favOnly}
         title={t("お気に入り", "Favorites")}
-        className={`flex h-8 items-center gap-1 rounded-full px-2.5 text-xs font-extrabold transition ${favOnly ? "bg-[#ffe3e8] text-[#e5566a] shadow-[inset_0_1px_3px_rgb(229_86_106/0.25)]" : "neu-sm neu-press text-muted"}`}
+        className={`flex h-8 items-center gap-1 rounded-full px-2.5 text-xs font-extrabold transition ${favOnly ? "bg-fav-soft text-danger shadow-[inset_0_1px_3px_rgb(229_86_106/0.25)]" : "neu-sm neu-press text-muted"}`}
       >
         <IconHeart filled={favOnly} className="h-4 w-4" />
         {t("お気に入り", "Favorites")}{nFav > 0 && <span className="tabular-nums">{nFav}</span>}
@@ -74,7 +74,7 @@ export function PoolToolbar({ left, searchOpen, onSearch, filter, history }: { l
       </div>
       {/* PC: スマホの右下の丸ボタンの代わりに、見たカードの履歴をここから開く */}
       {history && (
-        <button type="button" onClick={() => setViewedOpen(true)} aria-label={t("見たカード", "Viewed cards")} title={t("見たカード", "Viewed cards")} className="neu-sm neu-press flex h-8 w-8 items-center justify-center rounded-full text-[#5aa9d6]">
+        <button type="button" onClick={() => setViewedOpen(true)} aria-label={t("見たカード", "Viewed cards")} title={t("見たカード", "Viewed cards")} className="neu-sm neu-press flex h-8 w-8 items-center justify-center rounded-full text-sky">
           <span className="scale-75">
             <IconHistory />
           </span>
@@ -214,13 +214,13 @@ export function PoolGrid({ hits, counts, maxed, onTap, footer, wide }: { hits: H
   return (
     <>
       {favOnly && (
-        <div className="mb-3 flex items-center gap-2 rounded-2xl bg-[#ffe3e8]/70 px-3 py-2 text-xs font-bold text-[#b8394c]">
+        <div className="mb-3 flex items-center gap-2 rounded-2xl bg-fav-soft/70 px-3 py-2 text-xs font-bold text-down">
           <IconHeart filled className="h-4 w-4 shrink-0" />
           <span className="min-w-0 flex-1 leading-tight">
             {t("お気に入り", "Favorites")} {hits.length < nFav ? t(`${nFav}枚中 ${hits.length}枚`, `${hits.length} of ${nFav}`) : t(`${nFav}枚`, `${nFav}`)}
-            <span className="block text-[10px] font-medium text-[#c76676]">{t("−／＋ でそのままデッキに出し入れ", "Use − / ＋ to add or remove from your deck")}</span>
+            <span className="block text-[10px] font-medium text-fav-muted">{t("−／＋ でそのままデッキに出し入れ", "Use − / ＋ to add or remove from your deck")}</span>
           </span>
-          <button type="button" onClick={() => setFavOnly(false)} className="shrink-0 rounded-full bg-white/80 px-2.5 py-1 text-[11px] font-extrabold">
+          <button type="button" onClick={() => setFavOnly(false)} className="shrink-0 rounded-full bg-raised/80 px-2.5 py-1 text-[11px] font-extrabold">
             {t("すべてのカード", "All cards")}
           </button>
         </div>
@@ -256,7 +256,7 @@ function FilterButton() {
   const label = so && (lang === "en" ? so.en : so.label);
   return (
     <>
-      <button type="button" onClick={() => setOpen(true)} className="neu-sm neu-press relative flex items-center gap-1.5 rounded-full py-1.5 pr-3 pl-2 text-xs font-extrabold text-[#5aa9d6]">
+      <button type="button" onClick={() => setOpen(true)} className="neu-sm neu-press relative flex items-center gap-1.5 rounded-full py-1.5 pr-3 pl-2 text-xs font-extrabold text-sky">
         <span className="scale-75">
           <IconSort />
         </span>
@@ -280,12 +280,12 @@ export function PoolFab({ bottom = "bottom-24", history }: { bottom?: string; hi
     <>
       <div className={`fixed right-4 z-40 flex flex-col items-center gap-3 ${bottom} pb-[env(safe-area-inset-bottom)]`}>
         {history && (
-          <button type="button" onClick={() => setViewedOpen(true)} aria-label={t("見たカード", "Viewed cards")} title={t("見たカード", "Viewed cards")} className="neu neu-press flex h-16 w-16 items-center justify-center rounded-full text-[#5aa9d6]">
+          <button type="button" onClick={() => setViewedOpen(true)} aria-label={t("見たカード", "Viewed cards")} title={t("見たカード", "Viewed cards")} className="neu neu-press flex h-16 w-16 items-center justify-center rounded-full text-sky">
             <IconHistory />
           </button>
         )}
         <div className="relative">
-          <button type="button" onClick={() => setOpen(true)} aria-label={t("並べ替え・絞り込み", "Sort & filter")} className="neu neu-press relative flex h-16 w-16 items-center justify-center rounded-full text-[#5aa9d6]">
+          <button type="button" onClick={() => setOpen(true)} aria-label={t("並べ替え・絞り込み", "Sort & filter")} className="neu neu-press relative flex h-16 w-16 items-center justify-center rounded-full text-sky">
             <IconSort />
             {(n > 0 || sort !== "score") && <span className="absolute -top-1 -left-1 flex h-6 min-w-6 items-center justify-center rounded-full bg-accent px-1 text-xs font-extrabold text-white">{n || "↕"}</span>}
           </button>
@@ -458,7 +458,7 @@ export function SortFilterSheet({ open, onClose }: { open: boolean; onClose: () 
         right={
           <div className="neu-in flex rounded-full p-0.5 text-xs font-bold">
             {[false, true].map((d) => (
-              <button key={String(d)} type="button" onClick={() => setDesc(d)} className={`rounded-full px-3 py-1 ${desc === d ? "bg-white text-accent shadow" : "text-muted"}`}>
+              <button key={String(d)} type="button" onClick={() => setDesc(d)} className={`rounded-full px-3 py-1 ${desc === d ? "bg-raised text-accent shadow" : "text-muted"}`}>
                 {d ? t("大きい順", "Descending") : t("小さい順", "Ascending")}
               </button>
             ))}

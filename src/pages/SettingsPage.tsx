@@ -49,7 +49,7 @@ const SOURCES: { name: string; url: string; ja: string; en: string }[] = [
 
 export function SettingsPage({ embedded }: { embedded?: boolean }) {
   const { data } = useData();
-  const { lang, setLang, imageLang, setImageLang } = useSettings();
+  const { lang, setLang, imageLang, setImageLang, theme, setTheme } = useSettings();
   const t = useT();
   const [contact, setContact] = useState(false);
   return (
@@ -66,6 +66,17 @@ export function SettingsPage({ embedded }: { embedded?: boolean }) {
             <Chip active={lang === "en"} onClick={() => setLang("en")}>
               English
             </Chip>
+          </div>
+        </section>
+
+        <section className="neu space-y-2 rounded-3xl p-4">
+          <h2 className="font-extrabold">{t("画面の明るさ", "Appearance")}</h2>
+          <div className="flex gap-2">
+            {(["auto", "light", "dark"] as const).map((v) => (
+              <Chip key={v} active={theme === v} onClick={() => setTheme(v)}>
+                {{ auto: t("自動", "Auto"), light: t("ライト", "Light"), dark: t("ダーク", "Dark") }[v]}
+              </Chip>
+            ))}
           </div>
         </section>
 

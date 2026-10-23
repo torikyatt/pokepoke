@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
-/* ポケポケ本体のデッキ編集画面に寄せた、淡い青灰色＋ニューモーフィズムの見た目。ライトのみ */
+/* ポケポケ本体のデッキ編集画面に寄せた、淡い青灰色＋ニューモーフィズムの見た目。
+   ダークモードは <html class="dark">（設定の「画面の明るさ」。自動なら端末の設定に合わせる: main.tsx・index.html） */
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
@@ -16,10 +17,62 @@
   --color-ok-from: #9fe6f5;
   --color-ok-to: #5cc6e6;
   --color-danger: #e5566a;
+  /* 意味ごとの色（ダークモードで値を入れ替える） */
+  --color-raised: #ffffff; /* 切り替えボタンの選ばれた面など、いちばん手前の面 */
+  --color-ok-soft: #dff4f1;
+  --color-warn-soft: #fdf1d8;
+  --color-warn: #8a5c0c;
+  --color-trade-soft: #ffe9c7;
+  --color-fav-soft: #ffe3e8;
+  --color-fav-muted: #c76676;
+  --color-down: #b8394c;
+  --color-ability: #c4302b;
+  --color-slot: #b8c3d1; /* 空き枠の「＋」 */
+  --color-slot-line: #c5cfdb;
+  --color-scrim: #3d4757; /* シートの後ろを暗くする幕 */
+  --color-sky: #5aa9d6;
 }
 
 :root {
   color-scheme: light;
+  /* ニューモーフィズムの影（右下の暗い影・左上の明るい影）と、カードの落ち影 */
+  --neu-dark: 176 189 206;
+  --neu-light: 255 255 255;
+  --neu-light-a: 0.95;
+  --shadow-rgb: 150 165 185;
+}
+
+/* ダークモード: 同じニューモーフィズムを、暗い青灰色で */
+:root.dark {
+  color-scheme: dark;
+  --color-canvas: #1d232c;
+  --color-panel: #232a35;
+  --color-ink: #e2e7ee;
+  --color-muted: #8f9bad;
+  --color-line: #36404e;
+  --color-accent: #35bfae;
+  --color-accent-deep: #4fd3c2;
+  --color-badge: #56627a;
+  --color-ok-from: #5bbfd8;
+  --color-ok-to: #3a9cc2;
+  --color-danger: #ff7085;
+  --color-raised: #343e4d;
+  --color-ok-soft: #1a3b38;
+  --color-warn-soft: #3b3221;
+  --color-warn: #e9c47c;
+  --color-trade-soft: #3f3220;
+  --color-fav-soft: #3d2530;
+  --color-fav-muted: #d993a0;
+  --color-down: #ff7d8f;
+  --color-ability: #ff6d5e;
+  --color-slot: #4d5869;
+  --color-slot-line: #46515f;
+  --color-scrim: #05080c;
+  --color-sky: #74bde6;
+  --neu-dark: 8 11 16;
+  --neu-light: 58 68 84;
+  --neu-light-a: 0.45;
+  --shadow-rgb: 0 0 0;
 }
 
 /* Windows では、丸ゴシックの Web フォントは文字の輪郭がギザギザに見えるので、Windows 向けに調整された日本語フォントにする
@@ -44,26 +97,26 @@ body {
   .neu {
     background: var(--color-panel);
     box-shadow:
-      6px 6px 14px rgb(176 189 206 / 0.55),
-      -6px -6px 14px rgb(255 255 255 / 0.95);
+      6px 6px 14px rgb(var(--neu-dark) / 0.55),
+      -6px -6px 14px rgb(var(--neu-light) / var(--neu-light-a));
   }
   .neu-sm {
     background: var(--color-panel);
     box-shadow:
-      3px 3px 7px rgb(176 189 206 / 0.55),
-      -3px -3px 7px rgb(255 255 255 / 0.95);
+      3px 3px 7px rgb(var(--neu-dark) / 0.55),
+      -3px -3px 7px rgb(var(--neu-light) / var(--neu-light-a));
   }
   /* へこんだ面（空きスロット・入力欄） */
   .neu-in {
     background: var(--color-canvas);
     box-shadow:
-      inset 3px 3px 6px rgb(176 189 206 / 0.6),
-      inset -3px -3px 6px rgb(255 255 255 / 0.9);
+      inset 3px 3px 6px rgb(var(--neu-dark) / 0.6),
+      inset -3px -3px 6px rgb(var(--neu-light) / var(--neu-light-a));
   }
   .neu-press:active {
     box-shadow:
-      inset 2px 2px 5px rgb(176 189 206 / 0.6),
-      inset -2px -2px 5px rgb(255 255 255 / 0.9);
+      inset 2px 2px 5px rgb(var(--neu-dark) / 0.6),
+      inset -2px -2px 5px rgb(var(--neu-light) / var(--neu-light-a));
   }
   /* アプリの「OK」ボタン */
   .btn-ok {

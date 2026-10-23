@@ -230,7 +230,7 @@ function MetaPage() {
                         {t(`使用率 ${pct(s.share)}`, `${pct(s.share)} of decks`)}
                         {/* その前の2週間からの使用率の増減 */}
                         {!isNew && (diff > 0.002 || diff < -0.002) && (
-                          <span className={`ml-1 ${diff > 0 ? "text-accent-deep" : "text-[#b8394c]"}`}>
+                          <span className={`ml-1 ${diff > 0 ? "text-accent-deep" : "text-down"}`}>
                             {diff > 0 ? "↑" : "↓"}
                             {Math.abs(diff * 100).toFixed(1)}
                           </span>
@@ -405,7 +405,7 @@ function ListsPage() {
               <div className="mb-2 flex items-center gap-2">
                 <span className="min-w-0 flex-1 truncate font-extrabold">{l.name}</span>
                 {/* ふつうのリストには印を付けず、トレード用だけに付ける */}
-                {l.kind === "trade" && <span className="shrink-0 rounded-full bg-[#ffe9c7] px-2 py-0.5 text-[10px] font-extrabold text-[#8a5c0c]">{lang === "en" ? KIND_LABEL.trade[1] : KIND_LABEL.trade[0]}</span>}
+                {l.kind === "trade" && <span className="shrink-0 rounded-full bg-trade-soft px-2 py-0.5 text-[10px] font-extrabold text-warn">{lang === "en" ? KIND_LABEL.trade[1] : KIND_LABEL.trade[0]}</span>}
                 <span className="shrink-0 text-xs font-extrabold text-muted">{t(`${total(l.items)}枚`, `${total(l.items)}`)}</span>
               </div>
               <div className="grid grid-cols-10 gap-1">
@@ -526,7 +526,7 @@ function ListPage({ id }: { id: string }) {
               remove(list.id);
               navigate("/tools/lists");
             }}
-            className="neu-sm neu-press ml-auto rounded-full px-3 py-1.5 text-xs font-extrabold text-[#b8394c]"
+            className="neu-sm neu-press ml-auto rounded-full px-3 py-1.5 text-xs font-extrabold text-down"
           >
             {t("削除", "Delete")}
           </button>
@@ -565,7 +565,7 @@ function ListSection({ list, side, onAdd, readOnly, narrow }: { list: Pick<CardL
           </Pressable>
         ))}
         {onAdd && (
-          <button type="button" onClick={onAdd} aria-label={t("カードを追加", "Add cards")} className="neu-in flex aspect-[367/512] items-center justify-center rounded-[4px] text-2xl font-light text-[#9fadbf]">
+          <button type="button" onClick={onAdd} aria-label={t("カードを追加", "Add cards")} className="neu-in flex aspect-[367/512] items-center justify-center rounded-[4px] text-2xl font-light text-slot">
             ＋
           </button>
         )}
@@ -608,7 +608,7 @@ function ItemSheet({ listId, kind, target, onChange, onClose }: { listId: string
           <button type="button" onClick={() => openCard(card.id, [card.id])} className="neu-sm neu-press flex-1 rounded-full py-2.5 text-xs font-extrabold text-muted">
             {t("カードの詳細", "Card details")}
           </button>
-          <button type="button" onClick={() => update({ n: 0 })} className="neu-sm neu-press flex-1 rounded-full py-2.5 text-xs font-extrabold text-[#b8394c]">
+          <button type="button" onClick={() => update({ n: 0 })} className="neu-sm neu-press flex-1 rounded-full py-2.5 text-xs font-extrabold text-down">
             {t("リストから外す", "Remove")}
           </button>
         </div>
@@ -730,7 +730,7 @@ function ListBuilderPage({ id }: { id: string }) {
             {sides.length > 1 && (
               <div className="neu-in flex shrink-0 rounded-full p-0.5 text-[11px] font-bold">
                 {sides.map((sd) => (
-                  <button key={sd} type="button" onClick={() => setSide(sd)} aria-pressed={side === sd} className={`rounded-full px-2.5 py-1 ${side === sd ? "bg-white text-accent shadow" : "text-muted"}`}>
+                  <button key={sd} type="button" onClick={() => setSide(sd)} aria-pressed={side === sd} className={`rounded-full px-2.5 py-1 ${side === sd ? "bg-raised text-accent shadow" : "text-muted"}`}>
                     {lang === "en" ? SIDE_LABEL[sd][1] : SIDE_LABEL[sd][0]} {totalOf(sd)}
                   </button>
                 ))}
@@ -749,12 +749,12 @@ function ListBuilderPage({ id }: { id: string }) {
                       show(t(`「${r.card.nameJa}」を1枚減らしました`, `Removed one ${r.card.nameEn}`));
                     }}
                     label={t(`${r.card.nameJa} ${r.it.n}枚（タップで設定・長押しで1枚減らす）`, `${cardName(r.card, lang)} ×${r.it.n} (tap to edit, long-press to remove one)`)}
-                    className="pop-in rounded-[4px] shadow-[1px_2px_3px_rgb(150_165_185/0.5)]"
+                    className="pop-in rounded-[4px] shadow-[1px_2px_3px_rgb(var(--shadow-rgb)/0.5)]"
                   >
                     <PrintThumb card={r.card} print={r.it.print} mirror={r.it.mirror} n={r.it.n} compact={slotSize === "s"} rarity={list.kind === "trade"} />
                   </Pressable>
                 ) : (
-                  <div key={i} className="neu-in flex aspect-[367/512] items-center justify-center rounded-[4px] text-lg font-light text-[#b8c3d1]">
+                  <div key={i} className="neu-in flex aspect-[367/512] items-center justify-center rounded-[4px] text-lg font-light text-slot">
                     ＋
                   </div>
                 ),
@@ -999,7 +999,7 @@ function SharedListPage({ code }: { code: string }) {
       <Header title={t(`共有リスト: ${shared.name}`, `Shared list: ${shared.name}`)} back={() => navigate("/tools")} />
       <div className="mx-auto max-w-3xl space-y-4 px-4 pb-8">
         <div className="flex items-center gap-2">
-          <span className="rounded-full bg-[#ffe9c7] px-2 py-0.5 text-[10px] font-extrabold text-[#8a5c0c]">{shared.kind === "trade" ? t("トレード用", "Trade") : t("リスト", "List")}</span>
+          <span className="rounded-full bg-trade-soft px-2 py-0.5 text-[10px] font-extrabold text-warn">{shared.kind === "trade" ? t("トレード用", "Trade") : t("リスト", "List")}</span>
           <span className="text-xs font-bold text-muted">{t(`${total(shared.items)}枚`, `${total(shared.items)} cards`)}</span>
           <button type="button" onClick={exp.savePng} disabled={exp.exporting} className="neu-sm neu-press ml-auto rounded-full px-3 py-1.5 text-xs font-extrabold text-muted disabled:opacity-50">
             {exp.exporting ? t("画像を作成中…", "Creating…") : t("画像で保存", "Save as image")}
@@ -1082,7 +1082,7 @@ export function ListColumn({ id, onClose }: { id: string; onClose: () => void })
           {t("← デッキ", "← Deck")}
         </button>
         <div className="flex-1" />
-        <span className={`rounded-full px-2 py-0.5 text-[10px] font-extrabold ${list.kind === "trade" ? "bg-[#ffe9c7] text-[#8a5c0c]" : "neu-in text-muted"}`}>{lang === "en" ? KIND_LABEL[list.kind][1] : KIND_LABEL[list.kind][0]}</span>
+        <span className={`rounded-full px-2 py-0.5 text-[10px] font-extrabold ${list.kind === "trade" ? "bg-trade-soft text-warn" : "neu-in text-muted"}`}>{lang === "en" ? KIND_LABEL[list.kind][1] : KIND_LABEL[list.kind][0]}</span>
         <button type="button" onClick={() => navigate("/tools/lists")} className="neu-sm neu-press rounded-full px-3 py-1.5 text-xs font-extrabold text-muted">
           {t("リスト一覧", "All lists")}
         </button>
@@ -1094,7 +1094,7 @@ export function ListColumn({ id, onClose }: { id: string; onClose: () => void })
         {sides.length > 1 && (
           <div className="neu-in flex rounded-full p-0.5 text-xs font-bold">
             {sides.map((sd) => (
-              <button key={sd} type="button" aria-pressed={side === sd} onClick={() => setSide(sd)} className={`rounded-full px-3 py-1 ${side === sd ? "bg-white text-accent shadow" : "text-muted"}`}>
+              <button key={sd} type="button" aria-pressed={side === sd} onClick={() => setSide(sd)} className={`rounded-full px-3 py-1 ${side === sd ? "bg-raised text-accent shadow" : "text-muted"}`}>
                 {lang === "en" ? SIDE_LABEL[sd][1] : SIDE_LABEL[sd][0]} {total(list.items.filter((x) => x.side === sd))}
               </button>
             ))}
@@ -1111,13 +1111,13 @@ export function ListColumn({ id, onClose }: { id: string; onClose: () => void })
               show(t(`「${r.card.nameJa}」を1枚減らしました`, `Removed one ${r.card.nameEn}`));
             }}
             label={t(`${r.card.nameJa} ${r.it.n}枚（タップで設定・長押しで1枚減らす）`, `${cardName(r.card, lang)} ×${r.it.n} (tap to edit, long-press to remove one)`)}
-            className="pop-in rounded-[4px] shadow-[1px_2px_3px_rgb(150_165_185/0.5)]"
+            className="pop-in rounded-[4px] shadow-[1px_2px_3px_rgb(var(--shadow-rgb)/0.5)]"
           >
             <PrintThumb card={r.card} print={r.it.print} mirror={r.it.mirror} n={r.it.n} rarity={list.kind === "trade"} />
           </Pressable>
         ))}
         {Array.from({ length: Math.max(5 - (rows.length % 5 || 5), rows.length ? 0 : 5) }, (_, i) => (
-          <div key={`e${i}`} className="flex aspect-[367/512] items-center justify-center rounded-[4px] border border-dashed border-[#c5cfdb] text-sm text-[#b8c3d1]">
+          <div key={`e${i}`} className="flex aspect-[367/512] items-center justify-center rounded-[4px] border border-dashed border-slot-line text-sm text-slot">
             ＋
           </div>
         ))}

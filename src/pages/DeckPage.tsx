@@ -220,11 +220,11 @@ export function DeckBuilderPage({ id }: { id: string }) {
           <div className="grid grid-cols-10 gap-1.5" style={{ width: `${(1000 / SLOT_VISIBLE[slotSize]).toFixed(2)}%` }}>
             {Array.from({ length: DECK_SIZE }, (_, i) => cards[i]).map((c, i) =>
               c ? (
-                <Pressable key={`${c.id}-${i}`} onTap={() => openCard(c.id, uniqIds(cards))} onLongPress={() => { removeCard(deck.id, c.id); show(t(`「${c.nameJa}」を1枚外しました`, `Removed one ${c.nameEn}`)); }} label={t(`${c.nameJa}（長押しで外す）`, `${cardName(c, lang)} (long-press to remove)`)} className="pop-in snap-start rounded-[4px] shadow-[1px_2px_3px_rgb(150_165_185/0.5)]">
+                <Pressable key={`${c.id}-${i}`} onTap={() => openCard(c.id, uniqIds(cards))} onLongPress={() => { removeCard(deck.id, c.id); show(t(`「${c.nameJa}」を1枚外しました`, `Removed one ${c.nameEn}`)); }} label={t(`${c.nameJa}（長押しで外す）`, `${cardName(c, lang)} (long-press to remove)`)} className="pop-in snap-start rounded-[4px] shadow-[1px_2px_3px_rgb(var(--shadow-rgb)/0.5)]">
                   <Thumb card={c} className="rounded-[4px]" />
                 </Pressable>
               ) : (
-                <div key={i} className="neu-in flex aspect-[367/512] snap-start items-center justify-center rounded-[4px] text-lg font-light text-[#b8c3d1]">
+                <div key={i} className="neu-in flex aspect-[367/512] snap-start items-center justify-center rounded-[4px] text-lg font-light text-slot">
                   ＋
                 </div>
               ),
@@ -432,7 +432,7 @@ export function DeckViewPage({ id }: { id: string }) {
           </span>
           <div className="neu-in flex rounded-full p-0.5 text-xs font-bold" role="tablist" aria-label={t("表示", "View")}>
             {(["grid", "list"] as const).map((v) => (
-              <button key={v} type="button" role="tab" aria-selected={deckView === v} onClick={() => setDeckView(v)} className={`rounded-full px-4 py-1.5 ${deckView === v ? "bg-white text-accent shadow" : "text-muted"}`}>
+              <button key={v} type="button" role="tab" aria-selected={deckView === v} onClick={() => setDeckView(v)} className={`rounded-full px-4 py-1.5 ${deckView === v ? "bg-raised text-accent shadow" : "text-muted"}`}>
                 {v === "grid" ? t("カード", "Cards") : t("リスト", "List")}
               </button>
             ))}
@@ -446,7 +446,7 @@ export function DeckViewPage({ id }: { id: string }) {
             <div className="grid grid-cols-5 gap-2">
               {Array.from({ length: DECK_SIZE }, (_, i) => cards[i]).map((c, i) =>
                 c ? (
-                  <Pressable key={i} onTap={() => openCard(c.id, uniqIds(cards))} label={cardName(c, lang)} className="rounded-md shadow-[1px_2px_4px_rgb(150_165_185/0.5)]">
+                  <Pressable key={i} onTap={() => openCard(c.id, uniqIds(cards))} label={cardName(c, lang)} className="rounded-md shadow-[1px_2px_4px_rgb(var(--shadow-rgb)/0.5)]">
                     <Thumb card={c} />
                   </Pressable>
                 ) : (
@@ -463,7 +463,7 @@ export function DeckViewPage({ id }: { id: string }) {
 
         <EnergyZone deck={deck} />
 
-        <div className={`rounded-2xl p-4 text-sm font-bold ${check.ok ? "bg-[#dff4f1] text-accent-deep" : "bg-[#fdf1d8] text-[#8a5c0c]"}`}>
+        <div className={`rounded-2xl p-4 text-sm font-bold ${check.ok ? "bg-ok-soft text-accent-deep" : "bg-warn-soft text-warn"}`}>
           {check.ok ? t("✓ このデッキでバトルできます", "✓ This deck is ready to battle") : check.problems.map((p) => <div key={p}>・{p}</div>)}
         </div>
 
@@ -701,7 +701,7 @@ function DeckImage({ deck, cards, qr, ref }: { deck: Deck; cards: AppCard[]; qr:
 export function ImagePreview({ url, onClose, onDownload, label }: { url: string; onClose: () => void; onDownload: () => void; label?: string }) {
   const t = useT();
   return createPortal(
-    <div className="fixed inset-0 z-[70] flex flex-col items-center justify-center bg-[#3d4757]/60 p-3" role="dialog" aria-modal="true" aria-label={label ?? t("デッキの画像", "Deck image")}>
+    <div className="fixed inset-0 z-[70] flex flex-col items-center justify-center bg-scrim/60 p-3" role="dialog" aria-modal="true" aria-label={label ?? t("デッキの画像", "Deck image")}>
       <button type="button" aria-label={t("閉じる", "Close")} className="absolute inset-0" onClick={onClose} />
       <div className="pop-in relative flex max-h-full w-full max-w-4xl flex-col gap-2 rounded-3xl bg-panel p-3 shadow-2xl">
         <div className="flex items-center gap-2">
@@ -747,7 +747,7 @@ export function SharePage({ code, embedded }: { code: string; embedded?: boolean
           ))}
           <span className="text-sm font-bold text-muted">{t(`${cards.length} 枚`, `${cards.length} cards`)}</span>
         </div>
-        {!check.ok && <div className="text-xs font-bold text-[#8a5c0c]">{check.problems.join(" / ")}</div>}
+        {!check.ok && <div className="text-xs font-bold text-warn">{check.problems.join(" / ")}</div>}
         <div className="neu grid grid-cols-5 gap-2 rounded-3xl p-3">
           {cards.map((c, i) => (
             <Pressable key={i} onTap={() => openCard(c.id, uniqIds(cards))} label={cardName(c, lang)}>

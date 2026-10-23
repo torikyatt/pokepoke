@@ -167,7 +167,7 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
           <h2 className="mb-1 text-sm font-extrabold text-muted">{t("収録", "Printings")}</h2>
           <ul className="neu space-y-1.5 rounded-2xl p-3">
             {card.prints.map((p, i) => (
-              <li key={p.id} onClick={() => setPrintIndex(i)} className={`-mx-1.5 flex cursor-pointer items-center gap-2 rounded-lg px-1.5 ${card.prints.length > 1 && i === printIndex ? "bg-[#dff4f1]" : ""}`}>
+              <li key={p.id} onClick={() => setPrintIndex(i)} className={`-mx-1.5 flex cursor-pointer items-center gap-2 rounded-lg px-1.5 ${card.prints.length > 1 && i === printIndex ? "bg-ok-soft" : ""}`}>
                 <div className="min-w-0 flex-1">
                   <PrintLine p={p} />
                   {lang === "ja" && p.how && p.how.includes("|") && <div className="mt-0.5 truncate text-[10px] font-bold text-muted">{p.how.split(/[|｜]/).slice(1).join(" / ")}</div>}
@@ -274,7 +274,7 @@ export function CardDetail({ id, keepOpen, actions, fav }: { id: string; keepOpe
 
 function MachineBadge() {
   const t = useT();
-  return <span title={t("機械翻訳", "Machine translation")} className="ml-1 rounded-full bg-[#fdf1d8] px-1.5 align-middle text-[10px] font-bold text-[#9a6b12]">{t("仮訳", "MT")}</span>;
+  return <span title={t("機械翻訳", "Machine translation")} className="ml-1 rounded-full bg-warn-soft px-1.5 align-middle text-[10px] font-bold text-warn">{t("仮訳", "MT")}</span>;
 }
 
 function EffectBlock({ e, label, tagChip, lang }: { e: AppEffect; label: string; tagChip: (t: string) => React.ReactNode; lang: Lang }) {
@@ -296,9 +296,9 @@ function EffectBlock({ e, label, tagChip, lang }: { e: AppEffect; label: string;
     <div className="neu rounded-2xl p-3.5">
       <div className="flex items-center gap-2">
         {/* 特性は実際のカードと同じく、ラベルも名前も濃いめの赤 */}
-        <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold text-white ${ability ? "bg-[#c4302b]" : "bg-badge"}`}>{label}</span>
+        <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold text-white ${ability ? "bg-ability" : "bg-badge"}`}>{label}</span>
         {atk && <Cost cost={atk.cost} />}
-        <span className={`min-w-0 flex-1 truncate font-extrabold ${ability ? "text-[#c4302b]" : ""}`}>
+        <span className={`min-w-0 flex-1 truncate font-extrabold ${ability ? "text-ability" : ""}`}>
           {name || hidden}
           {lang === "ja" && e.machine && <MachineBadge />}
         </span>
@@ -334,7 +334,7 @@ function UpcomingNote({ card }: { card: AppCard }) {
   const [y, m, d] = (u.date ?? "").split("-").map(Number);
   const when = u.date ? (lang === "en" ? new Date(y, m - 1, d).toLocaleDateString("en-US", { month: "short", day: "numeric" }) : `${m}/${d}`) : t("時期未定", "date TBA");
   return (
-    <div className="flex items-center justify-between gap-2 rounded-2xl bg-[#fdf1d8] px-3 py-2 text-xs font-extrabold text-[#7a5410]">
+    <div className="flex items-center justify-between gap-2 rounded-2xl bg-warn-soft px-3 py-2 text-xs font-extrabold text-warn">
       {t(`${when} 実装予定`, `Coming ${when}`)}
       <a className="shrink-0 text-[11px] font-bold underline" href={u.source} target="_blank" rel="noreferrer">
         {t("情報元", "Source")}

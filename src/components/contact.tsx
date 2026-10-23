@@ -136,7 +136,7 @@ export function ContactSheet({ open, onClose }: { open: boolean; onClose: () => 
         <label className="block">
           <span className={label}>{t("メールアドレス（お返事用）", "Email (for our reply)")}</span>
           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} maxLength={254} autoComplete="email" inputMode="email" placeholder="you@example.com" className={field} />
-          {email.trim() !== "" && !emailOk && <span className="mt-1 block text-[11px] font-bold text-[#c4302b]">{t("メールアドレスの形をご確認ください", "Please check the email address")}</span>}
+          {email.trim() !== "" && !emailOk && <span className="mt-1 block text-[11px] font-bold text-ability">{t("メールアドレスの形をご確認ください", "Please check the email address")}</span>}
         </label>
         <label className="block">
           <span className={label}>{t("種類", "Type")}</span>
@@ -151,7 +151,7 @@ export function ContactSheet({ open, onClose }: { open: boolean; onClose: () => 
         <label className="block">
           <span className={`${label} flex items-baseline justify-between`}>
             <span>{t("内容", "Message")}</span>
-            <span className={`tabular-nums ${chars > MAX_CHARS ? "text-[#c4302b]" : ""}`}>
+            <span className={`tabular-nums ${chars > MAX_CHARS ? "text-ability" : ""}`}>
               {chars} / {MAX_CHARS}
             </span>
           </span>

@@ -17,9 +17,22 @@ import { RouteContext, useHash, useRoute } from "./router.ts";
 import { createEngine } from "./search/engine.ts";
 import { createSynergy } from "./synergy.ts";
 import { cardName, siteTitle, useLang, useT } from "./i18n.ts";
+import { useSettings } from "./store.ts";
 
 // iPhone の Safari は viewport の user-scalable=no を無視するので、2本指の拡大（ジェスチャー）も止める
 document.addEventListener("gesturestart", (e) => e.preventDefault());
+
+// ダークモード: 設定（自動なら端末の設定）に合わせて <html class="dark"> を付け外しする。最初の1回は index.html の中でも付けている
+const darkQuery = matchMedia("(prefers-color-scheme: dark)");
+function applyTheme() {
+  const theme = useSettings.getState().theme;
+  const dark = theme === "dark" || (theme === "auto" && darkQuery.matches);
+  document.documentElement.classList.toggle("dark", dark);
+  document.querySelector('meta[name="theme-color"]')?.setAttribute("content", dark ? "#1d232c" : "#e6ecf3");
+}
+applyTheme();
+useSettings.subscribe(applyTheme);
+darkQuery.addEventListener("change", applyTheme);
 
 // 本番ビルドでは import.meta.env.DEV が false になり、レビューページは含まれない
 const ReviewPage = import.meta.env.DEV ? lazy(() => import("./pages/ReviewPage.tsx")) : null;

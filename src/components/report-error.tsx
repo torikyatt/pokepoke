@@ -116,7 +116,7 @@ export function ReportErrorSheet({ open, onClose, card }: { open: boolean; onClo
         <label className="block">
           <span className="mb-1 flex items-baseline justify-between text-xs font-extrabold text-muted">
             <span>{t("詳しい内容（任意）", "Details (optional)")}</span>
-            <span className={`tabular-nums ${chars > MAX_CHARS ? "text-[#c4302b]" : ""}`}>
+            <span className={`tabular-nums ${chars > MAX_CHARS ? "text-ability" : ""}`}>
               {chars} / {MAX_CHARS}
             </span>
           </span>
@@ -125,7 +125,7 @@ export function ReportErrorSheet({ open, onClose, card }: { open: boolean; onClo
         <div>
           <span className="mb-1 block text-xs font-extrabold text-muted">{t(`画像（任意・${MAX_IMAGES}枚まで）`, `Images (optional, up to ${MAX_IMAGES})`)}</span>
           {category === "image" && (
-            <p className="mb-2 rounded-xl bg-[#e8f6f3] px-3 py-2 text-xs font-bold text-accent-deep">
+            <p className="mb-2 rounded-xl bg-ok-soft px-3 py-2 text-xs font-bold text-accent-deep">
               {t("正しいカードの画像（ゲーム内のスクリーンショットなど）を添えていただけると、とても助かります。", "If you can, attaching an image of the correct card (e.g. an in-game screenshot) helps a lot.")}
             </p>
           )}

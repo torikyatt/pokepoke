@@ -30,7 +30,7 @@ export function FavToggle({ card }: { card: AppCard }) {
       }}
       aria-label={on ? t("お気に入りから外す", "Remove from favorites") : t("お気に入りに追加", "Add to favorites")}
       title={on ? t("お気に入りから外す", "Remove from favorites") : t("お気に入りに追加", "Add to favorites")}
-      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition active:scale-95 ${on ? "bg-[#ffe3e8] text-[#e5566a]" : "neu-sm text-muted"}`}
+      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition active:scale-95 ${on ? "bg-fav-soft text-danger" : "neu-sm text-muted"}`}
     >
       <IconHeart filled={on} className="h-4 w-4" />
     </button>
@@ -440,7 +440,7 @@ export function DetailSheet() {
         tabIndex={-1}
         aria-label={t("閉じる", "Close")}
         onClick={() => closeDetail()}
-        className={`fixed inset-0 z-[49] bg-[#3d4757]/35 will-change-[opacity] transition-opacity duration-300 ${full ? "" : "pointer-events-none"}`}
+        className={`fixed inset-0 z-[49] bg-scrim/35 will-change-[opacity] transition-opacity duration-300 ${full ? "" : "pointer-events-none"}`}
         style={{ opacity: SHEET_DIM[at] }}
       />
       <div
@@ -456,7 +456,7 @@ export function DetailSheet() {
         <div aria-hidden className="pointer-events-none absolute inset-0 z-10 rounded-t-3xl opacity-0 shadow-[0_-6px_34px_12px_rgb(120_200_255/0.75),inset_0_0_0_2px_rgb(150_215_255),inset_0_14px_22px_-12px_rgb(175_225_255/0.8)] transition-opacity duration-200 group-data-[hint=1]:opacity-100" />
         <div ref={header} className="shrink-0 px-3 pt-1 pb-1.5">
           <button type="button" aria-label={snap === "half" ? t("いっぱいに開く", "Expand") : t("半分に下げる", "Lower halfway")} onClick={() => useDetail.setState({ snap: snap === "half" ? "full" : "half" })} className="mx-auto block pt-0.5 pb-1">
-            <span className="block h-1 w-10 rounded-full bg-[#c5cfdb] transition-all duration-150 group-data-[hint=1]:w-16 group-data-[hint=1]:bg-[#8fd3ff]" />
+            <span className="block h-1 w-10 rounded-full bg-slot-line transition-all duration-150 group-data-[hint=1]:w-16 group-data-[hint=1]:bg-[#8fd3ff]" />
           </button>
           <DetailHeader card={card} />
         </div>

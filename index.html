@@ -7,6 +7,14 @@
     <script>
       // Windows では丸ゴシックの Web フォントがギザギザに見えるので、Windows 用のフォントにする（index.css の html.win）
       if (/Windows/i.test((navigator.userAgentData && navigator.userAgentData.platform) || navigator.userAgent)) document.documentElement.classList.add("win");
+      // ダークモード: 描く前に <html class="dark"> を付けて、明るい画面が一瞬出ないようにする（設定は main.tsx の applyTheme と同じ読み方）
+      try {
+        var th = (JSON.parse(localStorage.getItem("pokepoke.settings") || "{}").state || {}).theme || "auto";
+        if (th === "dark" || (th === "auto" && matchMedia("(prefers-color-scheme: dark)").matches)) {
+          document.documentElement.classList.add("dark");
+          document.querySelector('meta[name="theme-color"]').setAttribute("content", "#1d232c");
+        }
+      } catch (e) {}
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

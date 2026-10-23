@@ -34,9 +34,9 @@ export function Chip({ children, onClick, active, tone = "plain", title }: { chi
   const cls = active
     ? "bg-accent text-white shadow-[inset_0_2px_4px_rgb(0_0_0/0.15)]"
     : tone === "match"
-      ? "bg-[#dff4f1] text-accent-deep"
+      ? "bg-ok-soft text-accent-deep"
       : tone === "text"
-        ? "bg-[#fdf1d8] text-[#9a6b12]"
+        ? "bg-warn-soft text-warn"
         : "neu-sm text-ink";
   return onClick ? (
     <button type="button" title={title} onClick={onClick} className={`${base} ${cls} active:scale-95`} aria-pressed={active}>
@@ -128,7 +128,7 @@ export function Thumb({ card, className = "" }: { card: AppCard; className?: str
 export function PoolCard({ card, count, maxed, onTap, onLongPress, compact }: { card: AppCard; count?: number; maxed?: boolean; onTap?: () => void; onLongPress?: () => void; compact?: boolean }) {
   const lang = useLang();
   return (
-    <Pressable onTap={onTap} onLongPress={onLongPress} label={cardName(card, lang)} className="relative rounded-md shadow-[2px_3px_6px_rgb(150_165_185/0.45)]">
+    <Pressable onTap={onTap} onLongPress={onLongPress} label={cardName(card, lang)} className="relative rounded-md shadow-[2px_3px_6px_rgb(var(--shadow-rgb)/0.45)]">
       <Thumb card={card} className={maxed ? "opacity-45" : ""} />
       {/* 実装前のカード: 右上に実装予定日 */}
       {card.upcoming && (
@@ -304,10 +304,10 @@ export function Sheet({ open, onClose, title, children, footer, z = "z-50" }: { 
   };
   return createPortal(
     <div className={`fixed inset-0 ${z} flex flex-col justify-end lg:items-center lg:justify-center lg:p-6`} role="dialog" aria-modal="true" aria-label={title}>
-      <button ref={backdrop} type="button" aria-label={t("閉じる", "Close")} className="absolute inset-0 bg-[#3d4757]/35" onClick={onClose} />
+      <button ref={backdrop} type="button" aria-label={t("閉じる", "Close")} className="absolute inset-0 bg-scrim/35" onClick={onClose} />
       <div ref={panel} className="sheet-up relative mx-auto flex max-h-[88dvh] w-full max-w-3xl flex-col rounded-t-3xl bg-panel shadow-2xl lg:max-w-2xl lg:rounded-3xl">
         <div onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerCancel={onUp} className="cursor-grab touch-none select-none">
-          <span aria-hidden className="mx-auto mt-2 block h-1 w-10 rounded-full bg-[#c5cfdb] lg:hidden" />
+          <span aria-hidden className="mx-auto mt-2 block h-1 w-10 rounded-full bg-slot-line lg:hidden" />
           <div className="flex items-center justify-between px-5 pt-2 pb-2 lg:pt-4">
             <h2 className="text-lg font-extrabold">{title}</h2>
             <button type="button" onClick={onClose} className="neu-sm neu-press flex h-8 w-8 items-center justify-center rounded-full text-muted" aria-label={t("閉じる", "Close")}>

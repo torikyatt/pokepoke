@@ -61,7 +61,7 @@ export function CardDecks({ card, keepOpen }: { card: AppCard; keepOpen?: boolea
           <div className="flex justify-end">
             <div className="neu-in flex shrink-0 rounded-full p-0.5 text-[11px] font-bold">
               {ORDERS.map(([o, label, en]) => (
-                <button key={o} type="button" onClick={() => { setOrder(o); setShown(PAGE); }} className={`rounded-full px-2 py-1 ${order === o ? "bg-white text-accent shadow" : "text-muted"}`}>
+                <button key={o} type="button" onClick={() => { setOrder(o); setShown(PAGE); }} className={`rounded-full px-2 py-1 ${order === o ? "bg-raised text-accent shadow" : "text-muted"}`}>
                   {lang === "en" ? en : label}
                 </button>
               ))}

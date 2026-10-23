@@ -112,7 +112,7 @@ function Modal({ title, onClose, children, wide }: { title: string; onClose: () 
   }, [onClose]);
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-6" role="dialog" aria-modal="true" aria-label={title}>
-      <button type="button" aria-label={t("閉じる", "Close")} className="absolute inset-0 bg-[#3d4757]/35" onClick={onClose} />
+      <button type="button" aria-label={t("閉じる", "Close")} className="absolute inset-0 bg-scrim/35" onClick={onClose} />
       <div className={`pop-in relative flex max-h-[88dvh] w-full ${wide ? "max-w-4xl" : "max-w-2xl"} flex-col rounded-3xl bg-canvas shadow-2xl`}>
         <div className="flex items-center justify-between px-5 pt-4 pb-2">
           <h2 className="text-lg font-extrabold">{title}</h2>
@@ -187,7 +187,7 @@ function DeckColumn({ deck }: { deck?: Deck }) {
             <div className="flex-1" />
             <div className="neu-in flex rounded-full p-0.5 text-xs font-bold" role="tablist" aria-label={t("表示", "View")}>
               {(["grid", "list"] as const).map((v) => (
-                <button key={v} type="button" role="tab" aria-selected={deckView === v} onClick={() => setDeckView(v)} className={`rounded-full px-3 py-1 ${deckView === v ? "bg-white text-accent shadow" : "text-muted"}`}>
+                <button key={v} type="button" role="tab" aria-selected={deckView === v} onClick={() => setDeckView(v)} className={`rounded-full px-3 py-1 ${deckView === v ? "bg-raised text-accent shadow" : "text-muted"}`}>
                   {v === "grid" ? t("カード", "Cards") : t("リスト", "List")}
                 </button>
               ))}
@@ -200,11 +200,11 @@ function DeckColumn({ deck }: { deck?: Deck }) {
             <div className="neu-in grid grid-cols-5 gap-1.5 rounded-2xl p-2.5">
               {Array.from({ length: DECK_SIZE }, (_, i) => cards[i]).map((c, i) =>
                 c ? (
-                  <Pressable key={`${c.id}-${i}`} onTap={() => openCard(c.id, [...new Set(cards.map((x) => x.id))])} onLongPress={() => { useDecks.getState().removeCard(deck.id, c.id); show(t(`「${c.nameJa}」を1枚外しました`, `Removed one ${c.nameEn}`)); }} label={t(`${c.nameJa}（長押しで外す）`, `${cardName(c, lang)} (long-press to remove)`)} className="pop-in rounded-[4px] shadow-[1px_2px_3px_rgb(150_165_185/0.5)]">
+                  <Pressable key={`${c.id}-${i}`} onTap={() => openCard(c.id, [...new Set(cards.map((x) => x.id))])} onLongPress={() => { useDecks.getState().removeCard(deck.id, c.id); show(t(`「${c.nameJa}」を1枚外しました`, `Removed one ${c.nameEn}`)); }} label={t(`${c.nameJa}（長押しで外す）`, `${cardName(c, lang)} (long-press to remove)`)} className="pop-in rounded-[4px] shadow-[1px_2px_3px_rgb(var(--shadow-rgb)/0.5)]">
                     <Thumb card={c} className="rounded-[4px]" />
                   </Pressable>
                 ) : (
-                  <div key={i} className="flex aspect-[367/512] items-center justify-center rounded-[4px] border border-dashed border-[#c5cfdb] text-sm text-[#b8c3d1]">
+                  <div key={i} className="flex aspect-[367/512] items-center justify-center rounded-[4px] border border-dashed border-slot-line text-sm text-slot">
                     ＋
                   </div>
                 ),
@@ -215,7 +215,7 @@ function DeckColumn({ deck }: { deck?: Deck }) {
           <EnergyZone deck={deck} />
 
           {check && (
-            <div className={`rounded-2xl px-3 py-2.5 text-xs font-bold ${check.ok ? "bg-[#dff4f1] text-accent-deep" : "bg-[#fdf1d8] text-[#8a5c0c]"}`}>
+            <div className={`rounded-2xl px-3 py-2.5 text-xs font-bold ${check.ok ? "bg-ok-soft text-accent-deep" : "bg-warn-soft text-warn"}`}>
               {check.ok ? t("✓ このデッキでバトルできます", "✓ This deck is ready to battle") : check.problems.map((p) => <div key={p}>・{p}</div>)}
             </div>
           )}
