@@ -8,43 +8,13 @@ import { Chip } from "../components/ui.tsx";
 import { dateStr, useT } from "../i18n.ts";
 
 // データの出典（設定画面の「データの出典」に並べる）
-const SOURCES: { name: string; url: string; ja: string; en: string }[] = [
-  {
-    name: "PocketDecks / pokemon-tcg-pocket-cards",
-    url: "https://github.com/PocketDecks/pokemon-tcg-pocket-cards",
-    ja: "カードの基本データ（英語のカード名・効果文・HP・ワザのコスト・収録パックなど）と、英語のカード画像。ライセンスは AGPL-3.0 です。",
-    en: "Core card data (English names, card text, HP, attack costs, expansions, etc.) and English card images. Licensed under AGPL-3.0.",
-  },
-  {
-    name: "Game8（ポケポケ攻略）",
-    url: "https://game8.jp/pokemon-tcg-pocket",
-    ja: "日本語のカード名・効果文・カード画像・収録パック名。定番の組み合わせは、デッキ解説記事を参考に、内容を自分の言葉でまとめ直したものです（各組み合わせに記事へのリンクがあります）。",
-    en: "Japanese card names, card text, card images and pack names. Known combos are summarized in our own words from their Japanese deck guides (each combo links to its article).",
-  },
-  {
-    name: "Game8 (Pokémon TCG Pocket Wiki)",
-    url: "https://game8.co/games/Pokemon-TCG-Pocket",
-    ja: "英語版のデッキ解説記事。定番の組み合わせの一部は、これを参考に自分の言葉でまとめ直したものです（各組み合わせに記事へのリンクがあります）。",
-    en: "English deck guides. Some known combos are summarized in our own words from these guides (each combo links to its article).",
-  },
-  {
-    name: "Serebii.net",
-    url: "https://serebii.net/tcgpocket/",
-    ja: "実装前の新しいパックのカード（先行公開されたカードの情報と英語の画像）。実装されたら、上の元データに置き換わります。",
-    en: "Upcoming cards from new sets (pre-release card details and English images). Replaced by the data above once released.",
-  },
-  {
-    name: "Limitless TCG",
-    url: "https://play.limitlesstcg.com/",
-    ja: "大会の結果とデッキリスト。カードの採用率・一緒に使われるカード・「このカードを使ったデッキ」は、ここの大会結果を集計したものです。",
-    en: "Tournament results and decklists. Card usage rates, cards played together and “tournament decks with this card” are aggregated from these results.",
-  },
-  {
-    name: "PokéAPI",
-    url: "https://pokeapi.co/",
-    ja: "ポケモンの日本語名（日本語のカード名が見つからないときの補い）。",
-    en: "Japanese Pokémon names (used where no Japanese card name was found).",
-  },
+const SOURCES: { name: string; url: string }[] = [
+  { name: "PocketDecks / pokemon-tcg-pocket-cards（AGPL-3.0）", url: "https://github.com/PocketDecks/pokemon-tcg-pocket-cards" },
+  { name: "Game8（ポケポケ攻略）", url: "https://game8.jp/pokemon-tcg-pocket" },
+  { name: "Game8 (Pokémon TCG Pocket Wiki)", url: "https://game8.co/games/Pokemon-TCG-Pocket" },
+  { name: "Serebii.net", url: "https://serebii.net/tcgpocket/" },
+  { name: "Limitless TCG", url: "https://play.limitlesstcg.com/" },
+  { name: "PokéAPI", url: "https://pokeapi.co/" },
 ];
 
 export function SettingsPage({ embedded }: { embedded?: boolean }) {
@@ -143,13 +113,12 @@ export function SettingsPage({ embedded }: { embedded?: boolean }) {
 
         <section className="neu space-y-3 rounded-3xl p-4 text-xs text-muted">
           <h2 className="text-sm font-extrabold text-ink">{t("データの出典", "Data sources")}</h2>
-          <ul className="space-y-2.5">
+          <ul className="space-y-1.5">
             {SOURCES.map((src) => (
               <li key={src.url}>
                 <a className="font-extrabold text-accent-deep underline" href={src.url} target="_blank" rel="noreferrer">
                   {src.name}
                 </a>
-                <div className="mt-0.5 leading-relaxed">{t(src.ja, src.en)}</div>
               </li>
             ))}
           </ul>
