@@ -89,6 +89,14 @@ describe("どのエネルギーを数えるか", () => {
   });
 });
 
+describe("除いているものは指していることにしない", () => {
+  it("結界のフィールド（メガシンカexをのぞく）は、メガシンカexを相手に出さない", () => {
+    const field = data.cards.find((c) => c.nameEn === "Bounded Field")!;
+    expect(field.refs.some((id) => byId.get(id)?.rule === "mega_ex")).toBe(false);
+    expect(syn.partners(field, 200).filter((p) => p.card.rule === "mega_ex" && p.reasons.some((r) => /指定/.test(r)))).toHaveLength(0);
+  });
+});
+
 describe("自分にしか効かない効果は他と結ばない", () => {
   it("自分にエネを付ける特性は「エネの数で強くなる」他のカードと結ばない", () => {
     const flareonEx = byId.get("a3b-009")!; // ブースターex: トラッシュの炎エネを自分に付ける

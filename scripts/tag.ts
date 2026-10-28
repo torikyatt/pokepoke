@@ -92,7 +92,8 @@ function refsWithHow(card: Card, texts: string[]): Map<string, string | undefine
   };
   const own = new Set([card.nameEn, ...card.attacks.map((a) => a.nameEn ?? "")]);
   for (const raw of texts) {
-    let t = clean(raw);
+    // 「メガシンカexをのぞく」のように除いているものは、指していることにしない（結界のフィールド「that aren't Mega Evolution Pokémon ex」）
+    let t = clean(raw).replace(/(that aren.t|that are not|other than|except(?: for)?(?: any)?|that don.t have|that do not have)\s+(Mega Evolution Pokémon ex|Pokémon ex|Ultra Beasts?|[A-Z][\w'.-]*(?: [A-Z][\w'.-]*)*)/g, " ");
     for (const [re, pick, h] of GROUPS) if (re.test(t)) for (const c of cards) if (pick(c)) put(c.id, h);
     for (const m of t.matchAll(/evolves? from ([A-Z][\w'.-]*(?: [A-Z][\w'.-]*)*)/g)) {
       for (const id of byEvolvesFrom.get(m[1]) ?? []) put(id, `evolves:${m[1]}`);
