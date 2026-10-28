@@ -244,13 +244,15 @@ export function PoolGrid({ hits, counts, maxed, onTap, footer, wide }: { hits: H
     else window.scrollBy(0, delta);
   }, [columns]);
   useEffect(() => setShown(90), [hits]);
+  // 続きの目印を見張る。出す枚数が変わるたびに見張り直す（目印が出し直されたときや、続きを出してもまだ目印が見えているときも続きを出せるように。
+  // 全部出したあとに検索結果が作り直されると、目印が後から出てきて見張られず、90枚で止まっていた）
   useEffect(() => {
     const el = sentinel.current;
     if (!el) return;
     const io = new IntersectionObserver((es) => es.some((e) => e.isIntersecting) && setShown((n) => n + 90), { rootMargin: "800px" });
     io.observe(el);
     return () => io.disconnect();
-  }, [hits]);
+  }, [hits, shown]);
   return (
     <>
       {favOnly && (
