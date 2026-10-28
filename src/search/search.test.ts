@@ -713,3 +713,30 @@ describe("最新のカード", () => {
     expect(engine.explain("newest cards").conds.map((c) => c.id)).toEqual(["latest"]);
   });
 });
+
+describe("検索ログから: パック名・打ちまちがいの名前・言い回し", () => {
+  const names = (q: string) => [...new Set(engine.search(q, 999).map((h) => h.card.nameJa))];
+  it("パック名で、そのパックのカード（ひらがな・英語・ほかの条件と一緒でも）", () => {
+    const a1 = data.cards.filter((c) => c.prints.some((p) => p.set === "a1")).length;
+    expect(engine.search("最強の遺伝子", 9999).length).toBe(a1);
+    expect(engine.explain("genetic apex cards").conds.map((c) => c.id)).toEqual(["set:a1"]);
+    const fire = engine.search("最強の遺伝子 炎", 9999);
+    expect(fire.length).toBeGreaterThan(0);
+    expect(fire.every((h) => h.card.prints.some((p) => p.set === "a1"))).toBe(true);
+    expect(fire.filter((h) => h.card.type === "fire").length).toBeGreaterThan(fire.length / 2);
+  });
+  it("濁点のつけわすれ・1文字の打ちまちがい・she のローマ字でも名前が当たる", () => {
+    expect(names("くらじお")).toEqual(["グラジオ"]);
+    expect(names("しざりざー")).toEqual(["シザリガー"]);
+    expect(names("syeimi")).toContain("シェイミ");
+    expect(engine.search("こわる", 50).length).toBe(0); // 短い言葉は、ほかの名前に寄せない
+  });
+  it("「火力」「攻撃力」だけ → ダメージの大きい順、「団」だけ → ロケット団、「fire acce」→ 炎のエネ加速", () => {
+    expect(engine.explain("攻撃力").conds.map((c) => c.id)).toEqual(["sort:damage"]);
+    expect(engine.explain("火力").conds.map((c) => c.id)).toEqual(["sort:damage"]);
+    expect(engine.explain("団").conds.map((c) => c.id)).toEqual(["group:team_rocket"]);
+    expect(engine.explain("fire acce").conds.map((c) => c.id)).toEqual(expect.arrayContaining(["type:fire", "tag:energy.accel"]));
+    expect(engine.explain("エネルギー 種類 強くなる").conds.map((c) => c.id)).toContain("tag:cond.energy.self");
+    expect(engine.explain("雷エネ１ 残り無").conds.map((c) => c.id)).toContain("costTyped");
+  });
+});

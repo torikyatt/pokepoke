@@ -35,6 +35,7 @@ export type Cond = { id: string; label: string; en: string; weight?: number; wor
   | { kind: "partner"; cards: string[]; deck?: boolean } // そのカードと相性のいいカード。deck: 「〇〇デッキ」（そのカードと進化ラインを先頭に）
   | { kind: "meta" } // 大会でよく使われるカード
   | { kind: "latest" } // 最新のカード: 実装予定のカードがあればそれ、無ければ最新パックのカード
+  | { kind: "set"; code: string } // パック名（「デュアルフュージョン」）: そのパックに入っているカード
   | { kind: "sort"; by: "hp" | "damage"; desc: boolean } // 「HP最大」「火力がいちばん高い」: その数字の順に並べる
 );
 
@@ -345,6 +346,24 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     return { ids: new Set(data.cards.filter((c) => c.prints.some((p) => p.set === set.code)).map((c) => c.id)), label: `最新パック「${set.nameJa || set.name}」`, en: `Newest set: ${set.name}` };
   })();
   const LATEST: Cond = { id: "latest", kind: "latest", label: latest.label, en: latest.en, weight: 1 };
+  // パック名（カード名と同じ名前のものは除く）。日本語はひらがなで打っても当たるよう normalize した形で
+  const usedSets = new Set(data.cards.flatMap((c) => c.prints.map((p) => p.set)));
+  const setNames = data.sets
+    .filter((s) => usedSets.has(s.code))
+    .map((s) => ({ s, ja: s.nameJa ? normalize(s.nameJa).replace(/ /g, "") : "", en: enKey(s.name).trim() }))
+    .filter((x) => !cardsByName.has(x.ja))
+    .sort((a, b) => b.ja.length - a.ja.length);
+  const setCond = (s: AppData["sets"][number]): Cond => ({ id: `set:${s.code}`, kind: "set", code: s.code, label: `パック「${s.nameJa || s.name}」`, en: `Set: ${s.name}`, weight: 1 });
+  // 打ちまちがいの名前（「くらじお」→ グラジオ、「しざりざー」→ シザリガー）: 濁点・半濁点を外した形で比べる
+  const seion = (s: string) => s.normalize("NFD").replace(/[\u3099\u309a]/g, "").normalize("NFC");
+  const seionNames = [...cardsByName].map(([k, cs]) => [seion(k), cs] as const);
+  /** 1文字までの打ちまちがい（入れかえ・抜け・余分）か */
+  const near = (a: string, b: string) => {
+    if (Math.abs(a.length - b.length) > 1) return false;
+    let i = 0;
+    while (i < a.length && a[i] === b[i]) i++;
+    return a.slice(i + 1) === b.slice(i + 1) || a.slice(i) === b.slice(i + 1) || a.slice(i + 1) === b.slice(i);
+  };
   /** 大会のデッキタイプに無いカードの「〇〇デッキ」。大会のおすすめ上位のデッキがあればそれで、無ければ進化ラインと相性のいいカードで */
   const deckOfCond = (cs: AppCard[]): Cond => {
     const ids = cs.map((c) => c.id);
@@ -455,11 +474,12 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       else if ((c.weight ?? 0) > (same.weight ?? 0)) same.weight = c.weight;
     };
     let q = enKey(query.replace(/(\d+)\s*\+/g, "$1 or more "));
-    // よくある打ちまちがい・ひらがな: 「次の晩」→ 次の番、「1しんか」→ 1進化、「腹バリー」→ ハラバリー
+    // よくある打ちまちがい・ひらがな: 「次の晩」→ 次の番、「1しんか」→ 1進化、「腹バリー」→ ハラバリー、「エネルギー 種類」→ エネの種類
     q = q
       .replace(/(?:次|つぎ)の\s*(?:晩|ばん)/g, "次の番")
       .replace(/(\d|一|二)\s*しんか/g, "$1進化")
-      .replace(/腹ばり/g, "はらばり");
+      .replace(/腹ばり/g, "はらばり")
+      .replace(/えね\s+(?:の\s*)?種類/g, "えねの種類");
 
     const take = (re: RegExp, f: (m: RegExpExecArray) => void) => {
       q = q.replace(re, (...args) => {
@@ -548,6 +568,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
         }
       }
       take(new RegExp(`(?<![a-z])(?:(?:newest|latest|new|upcoming|unreleased)\\s+(?:cards?|sets?|packs?|expansions?)|upcoming|unreleased)${END}`, "g"), () => add(LATEST));
+      for (const { s, en } of setNames) if (en.length >= 5 && q.includes(en)) take(new RegExp(`${W(en)}(?:\\s+(?:set|pack|expansion))?(?:\\s+cards?)?${END}`, "g"), () => add(setCond(s)));
       if (data.meta) take(new RegExp(`(?<![a-z])(?:meta|popular|tournaments?|competitive|top\\s+decks?|most\\s+used|commonly\\s+used|staples?|tier\\s*(?:1|one)|top\\s+tier|bdif)${END}`, "g"), () => add(META));
       // カード名
       for (const n of enNameList) {
@@ -691,6 +712,9 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     //   「大会でよく使われる」「環境で人気」「採用率が高い」 → 大会での採用率
     //   「最新のカード」「新カード」「実装予定のカード」「新弾」 → 最新のカード
     take(/(?:最新|さいしん|新(?:しい)?|あたらしい)(?:の)?(?:かど|ぱつく|弾|だん)|新弾|(?:実装予定|じつそうよてい|未実装|みじつそう)(?:の)?(?:かど)?/g, () => add(LATEST));
+    //   「デュアルフュージョン」「最強の遺伝子のカード」 → そのパックのカード
+    for (const { s, ja } of setNames)
+      if (ja.length >= 3 && flat.includes(ja)) take(new RegExp(`${spaced(ja)}(?:\\s*(?:の)?\\s*(?:ぱつく|弾|だん)?(?:の)?(?:かど)?)`, "g"), () => add(setCond(s)));
     if (data.meta) {
       take(/(?:大会|環境|めたげむ)(?:で|に|の)?(?:よく)?(?:使われ(?:る|て(?:いる|る)?)|つかわれ(?:る|て(?:いる|る)?)|採用され(?:る|て(?:いる|る)?)|入(?:る|つて(?:いる|る)?)|はい(?:る|つて(?:いる|る)?)|人気|にんき|流行|はやり|定番|ていばん)?|(?:採用率|使用率)(?:が|の)?(?:高い|たかい)?/g, () => {
         add(META);
@@ -714,10 +738,14 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       const HP = "(?:hp|体力|たいりよく)";
       take(new RegExp(`${BEST}\\s*${HP}(?:が|の)?${HIGH}|${HP}(?:が|の)?\\s*(?:${BEST}${HIGH}|最大|さいだい|最高|さいこう|max|まつくす|${HIGH}順|順)|${HP}(?:が|の)?(?:${BEST})?${HIGH}(?:もの|やつ)?順`, "g"), () => add(sortCond("hp", true)));
       take(new RegExp(`${BEST}\\s*${HP}(?:が|の)?${LOW}|${HP}(?:が|の)?\\s*(?:${BEST}${LOW}|最小|さいしよう|最低|さいてい|${LOW}順)`, "g"), () => add(sortCond("hp", false)));
-      const DMG = "(?:だめじ|火力|かりよく|打点|だてん|威力|いりよく)";
+      const DMG = "(?:だめじ|火力|かりよく|打点|だてん|威力|いりよく|攻撃力|こうげきりよく)";
       take(new RegExp(`${BEST}\\s*${DMG}(?:が|の)?${HIGH}|${DMG}(?:が|の)?\\s*(?:${BEST}${HIGH}|最大|さいだい|最高|さいこう|${HIGH}順)|${BEST}\\s*(?:強い|つよい)(?:わざ|技)`, "g"), () => add(sortCond("damage", true)));
       if (/^\s*(?:hp|体力)\s*$/.test(q)) take(/hp|体力/g, () => add(sortCond("hp", true)));
+      // 「火力」「攻撃力」だけ → ダメージの大きい順
+      if (/^\s*(?:火力|かりよく|攻撃力|こうげきりよく|打点|だてん|威力|いりよく)\s*$/.test(q)) take(/.+/g, () => add(sortCond("damage", true)));
     }
+    // 「団」だけ → ロケット団（「ロケット団」まで打ちきらないとき）
+    if (/^\s*団\s*$/.test(q)) take(/団/g, () => add(condOf({ group: "team_rocket" }, 1, "団")));
     // 「ちょう」だけ（ひらがなで打った「超」）→ 超タイプ。「ちょうはつ」などの一部では読まない
     take(/(?<![ぁ-ん])ちよう(?:たいぷ|えね)?(?![ぁ-ん])/g, () => add(condOf({ type: "psychic" }, 1, "ちょう")));
     // 「HPが高い」「HPが低い」→ HP130以上・HP60以下
@@ -769,7 +797,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       add(costCond(t, +m[2]));
     });
     // 「残りは無色」「あとは無色エネのワザ」（後ろの「エネ」「わざ」まで含めて読む。「無色わざ」より先に）
-    take(/(?:あとは|あと|残りは|残り|のこりは|ほかは|他は)無色(?:えね)?(?:の)?(?:わざ|技)?/g, () => {
+    take(/(?:あとは|あと|残りは|残り|のこりは|ほかは|他は)無(?:色(?:えね)?(?:の)?(?:わざ|技)?|(?= |$))/g, () => {
       add({ id: "costTyped", kind: "costTyped", n: typedSum, label: typedSeen ? "残りは無色" : "無色だけ", en: typedSeen ? "Rest Colorless" : "Colorless only" });
     });
     // 「無色エネを含む技」「水エネを使う技」（空白をはさんでも）→ そのタイプのエネを1つ以上使うワザ（無色も「無色だけ」ではなく、含むもの）
@@ -995,6 +1023,22 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       if (effKeys.length && effKeys.length <= 8) {
         const ids = [...new Set(effKeys.flatMap((k) => effectNames.get(k)!.ids))];
         out.splice(out.indexOf(c), 1, { id: `effect:${t}`, kind: "name", name: t, ids, weight: 3, label: `ワザ・特性の名前に「${t}」`, en: `Attack/Ability name contains "${t}"` });
+        continue;
+      }
+      // 濁点を付けわすれた・1文字打ちまちがえた名前（「くらじお」→ グラジオ、「しざりざー」→ シザリガー）。名前の頭と比べる
+      //   濁点ちがいは3文字から、1文字の打ちまちがいは4文字から（短い言葉は別の名前に当たりやすい）
+      if (!/^[ぁ-ん]+$/.test(t) || t.length < 3) continue;
+      const st = seion(t);
+      let fuzzy = seionNames.filter(([k]) => k.includes(st));
+      if (!fuzzy.length && t.length >= 4) fuzzy = seionNames.filter(([k]) => [-1, 0, 1].some((d) => near(st, k.slice(0, st.length + d))));
+      const cs = [...new Set(fuzzy.flatMap(([, x]) => x))];
+      const ja = [...new Set(cs.map((x) => x.nameJa.replace(/（[^）]*）/g, "")))];
+      if (cs.length && ja.length <= 4) {
+        const en = [...new Set(cs.map((x) => x.nameEn))];
+        out.splice(out.indexOf(c), 1, {
+          id: `name:fuzzy:${t}`, kind: "name", name: t, ids: cs.map((x) => x.id), weight: 3,
+          label: `「${t}」→ ${ja.slice(0, 2).join("・")}${ja.length > 2 ? " など" : ""}`, en: `"${t}" → ${en.slice(0, 2).join(", ")}${en.length > 2 ? " …" : ""}`,
+        });
       }
     }
     // 「カイリュー タケルライコ デッキ」: デッキの言葉の前に並んだほかのカード名も、そのデッキのカードとしてまとめる
@@ -1060,7 +1104,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     const needNames = nameConds.filter((n) => !n.pin || !others.length);
     const nameHit = (card: AppCard, h: { name: string; nameEn: string }, n: Extract<Cond, { kind: "name" }>) =>
       n.ids ? n.ids.includes(card.id) : h.name.includes(n.name) || h.nameEn.includes(n.name);
-    const decks = of("deck"), partnerConds = of("partner"), metaCond = of("meta")[0], latestCond = of("latest")[0];
+    const decks = of("deck"), partnerConds = of("partner"), metaCond = of("meta")[0], latestCond = of("latest")[0], setConds = of("set");
     const sortBy = of("sort");
     // デッキタイプ: カードごとの、そのデッキへの採用率（いちばん高いもの）
     const deckRate = new Map<string, number>();
@@ -1112,6 +1156,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
         if (partnerMaps.some((p) => !p.map.has(card.id))) continue;
         if (metaCond && (usage[card.id] ?? 0) < 0.01) continue;
         if (latestCond && !latest.ids.has(card.id)) continue;
+        if (setConds.length && !setConds.some((s) => card.prints.some((p) => p.set === s.code))) continue;
         if (sortBy.some((s) => sortVal(s) === undefined)) continue;
       }
       let useScore = pinned ? 10 : 0; // 名前で先頭に置くカード

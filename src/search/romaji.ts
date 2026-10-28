@@ -38,6 +38,7 @@ export function looseRomaji(s: string): string {
     .replace(/sh(?=[aueo])/g, "sy")
     .replace(/ch(?=[aueo])/g, "ty")
     .replace(/j(?=[aueo])/g, "zy")
+    .replace(/([stz])y(?=e)/g, "$1") // she・che・je（syeimi）→ se・te・ze（かなの「しぇ」と同じ形）
     .replace(/shi/g, "si")
     .replace(/chi/g, "ti")
     .replace(/tsu/g, "tu")
