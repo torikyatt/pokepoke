@@ -110,7 +110,7 @@ function printOf(c: Card, p: Card["prints"][number]): AppPrint {
   if (c.upcoming) {
     const manual = `cards-ja/manual/${p.id}.webp`;
     out.imageJa = existsSync(join(ROOT, "public", manual)) ? manual : p.image ? jaLocal(p.image) : manual;
-    out.imageEn = out.imageJa;
+    out.imageEn = p.imageEn ? jaLocal(p.imageEn) : out.imageJa;
     return out;
   }
   // 英語画像は収録IDから場所が決まるので、まだ自前で置いていないものだけ元の URL を持たせる
@@ -258,7 +258,8 @@ const out: AppCard[] = cards.map((c) => {
   if (c.type2) card.type2 = c.type2;
   if (c.upcoming) {
     card.upcoming = c.upcoming;
-    card.image = card.imageJa = card.prints[0].imageJa!;
+    card.imageJa = card.prints[0].imageJa!;
+    card.image = card.prints[0].imageEn ?? card.imageJa;
   }
   if (c.stage) card.stage = c.stage;
   if (c.points !== undefined) card.points = c.points;

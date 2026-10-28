@@ -32,6 +32,7 @@ export interface Print {
   rarity: string;
   image: string;
   released?: string; // 発売日（YYYY-MM-DD）
+  imageEn?: string; // 実装前のカードで、英語の画像が日本語の画像（image）と別にあるとき
   builderNr?: number; // アプリのデッキ編集画面での並び順
 }
 

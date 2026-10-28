@@ -129511,17 +129511,10 @@
   "nameEn": "Mega Mewtwo X ex",
   "nameJa": "メガミュウツーXex",
   "kind": "pokemon",
-  "type": "psychic",
-  "type2": "fighting",
-  "stage": "basic",
   "evolvesFrom": [],
   "evolvesTo": [],
   "rule": "mega_ex",
   "groups": [],
-  "points": 3,
-  "hp": 180,
-  "weakness": "darkness",
-  "retreat": 2,
   "attacks": [
    {
     "nameEn": "Dual Impact",
@@ -129554,17 +129547,20 @@
   "upcoming": {
    "date": "2026-10-29",
    "source": "https://game8.jp/pokemon-tcg-pocket/833551"
-  }
+  },
+  "type": "psychic",
+  "type2": "fighting",
+  "stage": "basic",
+  "points": 3,
+  "hp": 180,
+  "weakness": "darkness",
+  "retreat": 2
  },
  {
   "id": "up-02",
   "nameEn": "Mega Greninja ex",
   "nameJa": "メガゲッコウガex",
   "kind": "pokemon",
-  "type": "water",
-  "type2": "darkness",
-  "stage": "stage2",
-  "evolvesFromName": "Frogadier",
   "evolvesFrom": [
    "a1-088",
    "b1-072"
@@ -129572,10 +129568,6 @@
   "evolvesTo": [],
   "rule": "mega_ex",
   "groups": [],
-  "points": 3,
-  "hp": 200,
-  "weakness": "lightning",
-  "retreat": 0,
   "attacks": [
    {
     "nameEn": "Splash Dark",
@@ -129607,16 +129599,21 @@
   "upcoming": {
    "date": "2026-10-29",
    "source": "https://game8.jp/pokemon-tcg-pocket/833551"
-  }
+  },
+  "type": "water",
+  "type2": "darkness",
+  "stage": "stage2",
+  "evolvesFromName": "Frogadier",
+  "points": 3,
+  "hp": 200,
+  "weakness": "lightning",
+  "retreat": 0
  },
  {
   "id": "up-03",
   "nameEn": "Mega Dragonite ex",
   "nameJa": "メガカイリューex",
   "kind": "pokemon",
-  "type": "dragon",
-  "stage": "stage2",
-  "evolvesFromName": "Dragonair",
   "evolvesFrom": [
    "a1-184",
    "a3b-052",
@@ -129627,9 +129624,6 @@
   "evolvesTo": [],
   "rule": "mega_ex",
   "groups": [],
-  "points": 3,
-  "hp": 240,
-  "retreat": 4,
   "attacks": [
    {
     "nameEn": "Draconic Meteor",
@@ -129662,16 +129656,19 @@
   "upcoming": {
    "date": "2026-10-29",
    "source": "https://game8.jp/pokemon-tcg-pocket/833551"
-  }
+  },
+  "type": "dragon",
+  "stage": "stage2",
+  "evolvesFromName": "Dragonair",
+  "points": 3,
+  "hp": 240,
+  "retreat": 4
  },
  {
   "id": "up-04",
   "nameEn": "Mega Tyranitar ex",
   "nameJa": "メガバンギラスex",
   "kind": "pokemon",
-  "type": "darkness",
-  "stage": "stage2",
-  "evolvesFromName": "Pupitar",
   "evolvesFrom": [
    "a2a-040",
    "a4-104"
@@ -129679,10 +129676,6 @@
   "evolvesTo": [],
   "rule": "mega_ex",
   "groups": [],
-  "points": 3,
-  "hp": 240,
-  "weakness": "grass",
-  "retreat": 4,
   "attacks": [
    {
     "nameEn": "Crushing Rampage",
@@ -129715,23 +129708,24 @@
   "upcoming": {
    "date": "2026-10-29",
    "source": "https://game8.jp/pokemon-tcg-pocket/833551"
-  }
+  },
+  "type": "darkness",
+  "stage": "stage2",
+  "evolvesFromName": "Pupitar",
+  "points": 3,
+  "hp": 240,
+  "weakness": "grass",
+  "retreat": 4
  },
  {
   "id": "up-05",
   "nameEn": "Mew ex",
   "nameJa": "ミュウex",
   "kind": "pokemon",
-  "type": "psychic",
-  "stage": "basic",
   "evolvesFrom": [],
   "evolvesTo": [],
   "rule": "ex",
   "groups": [],
-  "points": 2,
-  "hp": 130,
-  "weakness": "darkness",
-  "retreat": 1,
   "attacks": [
    {
     "nameEn": "Secret Guidance",
@@ -129777,23 +129771,23 @@
   "upcoming": {
    "date": "2026-10-29",
    "source": "https://game8.jp/pokemon-tcg-pocket/833551"
-  }
+  },
+  "type": "psychic",
+  "stage": "basic",
+  "points": 2,
+  "hp": 130,
+  "weakness": "darkness",
+  "retreat": 1
  },
  {
   "id": "up-06",
   "nameEn": "Pikachu ex",
   "nameJa": "ピカチュウex",
   "kind": "pokemon",
-  "type": "lightning",
-  "stage": "basic",
   "evolvesFrom": [],
   "evolvesTo": [],
   "rule": "ex",
   "groups": [],
-  "points": 2,
-  "hp": 120,
-  "weakness": "fighting",
-  "retreat": 1,
   "attacks": [
    {
     "nameEn": "Pika Punch",
@@ -129840,23 +129834,23 @@
   "upcoming": {
    "date": "2026-10-29",
    "source": "https://game8.jp/pokemon-tcg-pocket/833551"
-  }
+  },
+  "type": "lightning",
+  "stage": "basic",
+  "points": 2,
+  "hp": 120,
+  "weakness": "fighting",
+  "retreat": 1
  },
  {
   "id": "up-07",
   "nameEn": "Piplup ex",
   "nameJa": "ポッチャマex",
   "kind": "pokemon",
-  "type": "water",
-  "stage": "basic",
   "evolvesFrom": [],
   "evolvesTo": [],
   "rule": "ex",
   "groups": [],
-  "points": 2,
-  "hp": 120,
-  "weakness": "lightning",
-  "retreat": 1,
   "attacks": [
    {
     "nameEn": "Playful Bubble",
@@ -129888,23 +129882,23 @@
   "upcoming": {
    "date": "2026-10-29",
    "source": "https://game8.jp/pokemon-tcg-pocket/833551"
-  }
+  },
+  "type": "water",
+  "stage": "basic",
+  "points": 2,
+  "hp": 120,
+  "weakness": "lightning",
+  "retreat": 1
  },
  {
   "id": "up-08",
   "nameEn": "Fuecoco ex",
   "nameJa": "ホゲータex",
   "kind": "pokemon",
-  "type": "fire",
-  "stage": "basic",
   "evolvesFrom": [],
   "evolvesTo": [],
   "rule": "ex",
   "groups": [],
-  "points": 2,
-  "hp": 130,
-  "weakness": "water",
-  "retreat": 2,
   "attacks": [
    {
     "nameEn": "Bite",
@@ -129951,16 +129945,19 @@
   "upcoming": {
    "date": "2026-10-29",
    "source": "https://game8.jp/pokemon-tcg-pocket/833551"
-  }
+  },
+  "type": "fire",
+  "stage": "basic",
+  "points": 2,
+  "hp": 130,
+  "weakness": "water",
+  "retreat": 2
  },
  {
   "id": "up-09",
   "nameEn": "Venusaur",
   "nameJa": "フシギバナ",
   "kind": "pokemon",
-  "type": "grass",
-  "stage": "stage2",
-  "evolvesFromName": "Ivysaur",
   "evolvesFrom": [
    "a1-002",
    "b1a-002"
@@ -129968,18 +129965,6 @@
   "evolvesTo": [],
   "rule": "normal",
   "groups": [],
-  "points": 1,
-  "hp": 150,
-  "weakness": "fire",
-  "retreat": 3,
-  "ability": {
-   "nameEn": "Sunny Heal",
-   "nameJa": "サニーヒール",
-   "textEn": "Once during your turn, you may heal 30 damage from your Active Pokémon.",
-   "textJa": "自分の番に1回使える。自分のバトルポケモンのHPを30回復。",
-   "jaSource": "official",
-   "tags": []
-  },
   "attacks": [
    {
     "nameEn": "Solar Beam",
@@ -130011,6 +129996,21 @@
   "upcoming": {
    "date": "2026-10-29",
    "source": "https://game8.jp/pokemon-tcg-pocket/833551"
+  },
+  "type": "grass",
+  "stage": "stage2",
+  "evolvesFromName": "Ivysaur",
+  "points": 1,
+  "hp": 150,
+  "weakness": "fire",
+  "retreat": 3,
+  "ability": {
+   "nameEn": "Sunny Heal",
+   "nameJa": "サニーヒール",
+   "textEn": "Once during your turn, you may heal 30 damage from your Active Pokémon.",
+   "textJa": "自分の番に1回使える。自分のバトルポケモンのHPを30回復。",
+   "jaSource": "official",
+   "tags": []
   }
  },
  {
@@ -130018,9 +130018,6 @@
   "nameEn": "Charizard",
   "nameJa": "リザードン",
   "kind": "pokemon",
-  "type": "fire",
-  "stage": "stage2",
-  "evolvesFromName": "Charmeleon",
   "evolvesFrom": [
    "a1-034",
    "a2b-009",
@@ -130030,18 +130027,6 @@
   "evolvesTo": [],
   "rule": "normal",
   "groups": [],
-  "points": 1,
-  "hp": 150,
-  "weakness": "water",
-  "retreat": 3,
-  "ability": {
-   "nameEn": "Flame Aura",
-   "nameJa": "フレイムオーラ",
-   "textEn": "Whenever you attach a [R] Energy from your Energy Zone to this Pokémon, do 30 damage to your opponent's Active Pokémon.",
-   "textJa": "自分のエネルギーゾーンからこのポケモンに炎エネルギーをつけるたび、相手のバトルポケモンに30ダメージ。",
-   "jaSource": "official",
-   "tags": []
-  },
   "attacks": [
    {
     "nameEn": "Fire Wing",
@@ -130073,6 +130058,21 @@
   "upcoming": {
    "date": "2026-10-29",
    "source": "https://game8.jp/pokemon-tcg-pocket/833551"
+  },
+  "type": "fire",
+  "stage": "stage2",
+  "evolvesFromName": "Charmeleon",
+  "points": 1,
+  "hp": 150,
+  "weakness": "water",
+  "retreat": 3,
+  "ability": {
+   "nameEn": "Flame Aura",
+   "nameJa": "フレイムオーラ",
+   "textEn": "Whenever you attach a [R] Energy from your Energy Zone to this Pokémon, do 30 damage to your opponent's Active Pokémon.",
+   "textJa": "自分のエネルギーゾーンからこのポケモンに炎エネルギーをつけるたび、相手のバトルポケモンに30ダメージ。",
+   "jaSource": "official",
+   "tags": []
   }
  },
  {
@@ -130080,9 +130080,6 @@
   "nameEn": "Blastoise",
   "nameJa": "カメックス",
   "kind": "pokemon",
-  "type": "water",
-  "stage": "stage2",
-  "evolvesFromName": "Wartortle",
   "evolvesFrom": [
    "a1-054",
    "b1a-018"
@@ -130090,18 +130087,6 @@
   "evolvesTo": [],
   "rule": "normal",
   "groups": [],
-  "points": 1,
-  "hp": 150,
-  "weakness": "lightning",
-  "retreat": 4,
-  "ability": {
-   "nameEn": "Aqua Charge",
-   "nameJa": "アクアチャージ",
-   "textEn": "Once during your turn, you may take a [W] Energy from your Energy Zone and attach it to this Pokémon.",
-   "textJa": "自分の番に1回使える。自分のエネルギーゾーンから水エネルギーを1個出し、このポケモンにつける。",
-   "jaSource": "official",
-   "tags": []
-  },
   "attacks": [
    {
     "nameEn": "Surf",
@@ -130132,6 +130117,21 @@
   "upcoming": {
    "date": "2026-10-29",
    "source": "https://game8.jp/pokemon-tcg-pocket/833551"
+  },
+  "type": "water",
+  "stage": "stage2",
+  "evolvesFromName": "Wartortle",
+  "points": 1,
+  "hp": 150,
+  "weakness": "lightning",
+  "retreat": 4,
+  "ability": {
+   "nameEn": "Aqua Charge",
+   "nameJa": "アクアチャージ",
+   "textEn": "Once during your turn, you may take a [W] Energy from your Energy Zone and attach it to this Pokémon.",
+   "textJa": "自分の番に1回使える。自分のエネルギーゾーンから水エネルギーを1個出し、このポケモンにつける。",
+   "jaSource": "official",
+   "tags": []
   }
  },
  {
@@ -130139,25 +130139,12 @@
   "nameEn": "Ribombee",
   "nameJa": "アブリボン",
   "kind": "pokemon",
-  "type": "grass",
-  "stage": "stage1",
-  "evolvesFromName": "Cutiefly",
   "evolvesFrom": [
    "a3-078"
   ],
   "evolvesTo": [],
   "rule": "normal",
   "groups": [],
-  "points": 1,
-  "hp": 70,
-  "weakness": "fire",
-  "retreat": 1,
-  "ability": {
-   "unknown": true,
-   "textEn": "",
-   "tags": [],
-   "jaSource": "official"
-  },
   "attacks": [
    {
     "unknown": true,
@@ -130187,6 +130174,19 @@
   "upcoming": {
    "date": "2026-10-29",
    "source": "https://game8.jp/pokemon-tcg-pocket/833551"
+  },
+  "type": "grass",
+  "stage": "stage1",
+  "evolvesFromName": "Cutiefly",
+  "points": 1,
+  "hp": 70,
+  "weakness": "fire",
+  "retreat": 1,
+  "ability": {
+   "unknown": true,
+   "textEn": "",
+   "tags": [],
+   "jaSource": "official"
   }
  },
  {
@@ -130194,9 +130194,6 @@
   "nameEn": "Raboot",
   "nameJa": "ラビフット",
   "kind": "pokemon",
-  "type": "fire",
-  "stage": "stage1",
-  "evolvesFromName": "Scorbunny",
   "evolvesFrom": [
    "b2-024"
   ],
@@ -130205,16 +130202,6 @@
   ],
   "rule": "normal",
   "groups": [],
-  "points": 1,
-  "hp": 70,
-  "weakness": "water",
-  "retreat": 1,
-  "ability": {
-   "unknown": true,
-   "textEn": "",
-   "tags": [],
-   "jaSource": "official"
-  },
   "attacks": [
    {
     "unknown": true,
@@ -130244,6 +130231,19 @@
   "upcoming": {
    "date": "2026-10-29",
    "source": "https://game8.jp/pokemon-tcg-pocket/833551"
+  },
+  "type": "fire",
+  "stage": "stage1",
+  "evolvesFromName": "Scorbunny",
+  "points": 1,
+  "hp": 70,
+  "weakness": "water",
+  "retreat": 1,
+  "ability": {
+   "unknown": true,
+   "textEn": "",
+   "tags": [],
+   "jaSource": "official"
   }
  },
  {
@@ -130251,15 +130251,10 @@
   "nameEn": "Mega Mewtwo Y ex",
   "nameJa": "メガミュウツーYex",
   "kind": "pokemon",
-  "type": "psychic",
-  "stage": "basic",
   "evolvesFrom": [],
   "evolvesTo": [],
   "rule": "mega_ex",
   "groups": [],
-  "points": 3,
-  "hp": 170,
-  "retreat": 0,
   "attacks": [
    {
     "nameEn": "Psychic Blaster",
@@ -130289,15 +130284,18 @@
   "tags": [],
   "upcoming": {
    "source": "https://www.pokemon-zone.com/spoilers/promo-c-mega-mewtwo-y-ex/"
-  }
+  },
+  "type": "psychic",
+  "stage": "basic",
+  "points": 3,
+  "hp": 170,
+  "retreat": 0
  },
  {
   "id": "up-15",
   "nameEn": "Bulbasaur",
   "nameJa": "フシギダネ",
   "kind": "pokemon",
-  "type": "grass",
-  "stage": "basic",
   "evolvesFrom": [],
   "evolvesTo": [
    "a1-002",
@@ -130305,17 +130303,12 @@
   ],
   "rule": "normal",
   "groups": [],
-  "points": 1,
-  "hp": 70,
-  "weakness": "fire",
-  "retreat": 2,
   "attacks": [
    {
     "tentative": true,
     "nameEn": "Leech Seed",
     "nameJa": "やどりぎのタネ",
     "textEn": "Heal 10 damage from this Pokémon.",
-    "jaSource": "official",
     "tags": [],
     "cost": {
      "grass": 1,
@@ -130325,7 +130318,8 @@
     "costTyped": 1,
     "damage": 30,
     "damageVariable": false,
-    "textJa": "このポケモンのHPを10回復。"
+    "textJa": "このポケモンのHPを10回復。",
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -130340,15 +130334,19 @@
   "tags": [],
   "upcoming": {
    "source": "https://game8.jp/pokemon-tcg-pocket/833615"
-  }
+  },
+  "type": "grass",
+  "stage": "basic",
+  "points": 1,
+  "hp": 70,
+  "weakness": "fire",
+  "retreat": 2
  },
  {
   "id": "up-16",
   "nameEn": "Charmander",
   "nameJa": "ヒトカゲ",
   "kind": "pokemon",
-  "type": "fire",
-  "stage": "basic",
   "evolvesFrom": [],
   "evolvesTo": [
    "a1-034",
@@ -130358,17 +130356,12 @@
   ],
   "rule": "normal",
   "groups": [],
-  "points": 1,
-  "hp": 60,
-  "weakness": "water",
-  "retreat": 1,
   "attacks": [
    {
     "tentative": true,
     "nameEn": "Ember",
     "nameJa": "ひのこ",
     "textEn": "Discard a [R] Energy from this Pokémon.",
-    "jaSource": "official",
     "tags": [],
     "cost": {
      "fire": 1,
@@ -130378,7 +130371,8 @@
     "costTyped": 1,
     "damage": 50,
     "damageVariable": false,
-    "textJa": "このポケモンから炎エネルギーを1個トラッシュ。"
+    "textJa": "このポケモンから炎エネルギーを1個トラッシュ。",
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -130393,15 +130387,19 @@
   "tags": [],
   "upcoming": {
    "source": "https://game8.jp/pokemon-tcg-pocket/833615"
-  }
+  },
+  "type": "fire",
+  "stage": "basic",
+  "points": 1,
+  "hp": 60,
+  "weakness": "water",
+  "retreat": 1
  },
  {
   "id": "up-17",
   "nameEn": "Squirtle",
   "nameJa": "ゼニガメ",
   "kind": "pokemon",
-  "type": "water",
-  "stage": "basic",
   "evolvesFrom": [],
   "evolvesTo": [
    "a1-054",
@@ -130409,17 +130407,12 @@
   ],
   "rule": "normal",
   "groups": [],
-  "points": 1,
-  "hp": 60,
-  "weakness": "lightning",
-  "retreat": 1,
   "attacks": [
    {
     "tentative": true,
     "nameEn": "Bubble",
     "nameJa": "あわ",
     "textEn": "Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed.",
-    "jaSource": "official",
     "tags": [],
     "cost": {
      "water": 1
@@ -130428,7 +130421,8 @@
     "costTyped": 1,
     "damage": 10,
     "damageVariable": false,
-    "textJa": "コインを1回投げオモテなら、相手のバトルポケモンをマヒにする。"
+    "textJa": "コインを1回投げオモテなら、相手のバトルポケモンをマヒにする。",
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -130443,25 +130437,25 @@
   "tags": [],
   "upcoming": {
    "source": "https://game8.jp/pokemon-tcg-pocket/833615"
-  }
+  },
+  "type": "water",
+  "stage": "basic",
+  "points": 1,
+  "hp": 60,
+  "weakness": "lightning",
+  "retreat": 1
  },
  {
   "id": "up-18",
   "nameEn": "Chikorita",
   "nameJa": "チコリータ",
   "kind": "pokemon",
-  "type": "grass",
-  "stage": "basic",
   "evolvesFrom": [],
   "evolvesTo": [
    "a4-009"
   ],
   "rule": "normal",
   "groups": [],
-  "points": 1,
-  "hp": 60,
-  "weakness": "fire",
-  "retreat": 1,
   "attacks": [
    {
     "nameEn": "Razor Leaf",
@@ -130491,15 +130485,19 @@
   "tags": [],
   "upcoming": {
    "source": "https://game8.jp/pokemon-tcg-pocket/833615"
-  }
+  },
+  "type": "grass",
+  "stage": "basic",
+  "points": 1,
+  "hp": 60,
+  "weakness": "fire",
+  "retreat": 1
  },
  {
   "id": "up-19",
   "nameEn": "Piplup",
   "nameJa": "ポッチャマ",
   "kind": "pokemon",
-  "type": "water",
-  "stage": "basic",
   "evolvesFrom": [],
   "evolvesTo": [
    "a2-036",
@@ -130507,10 +130505,6 @@
   ],
   "rule": "normal",
   "groups": [],
-  "points": 1,
-  "hp": 60,
-  "weakness": "lightning",
-  "retreat": 1,
   "attacks": [
    {
     "nameEn": "Peck",
@@ -130539,32 +130533,31 @@
   "tags": [],
   "upcoming": {
    "source": "https://game8.jp/pokemon-tcg-pocket/833615"
-  }
+  },
+  "type": "water",
+  "stage": "basic",
+  "points": 1,
+  "hp": 60,
+  "weakness": "lightning",
+  "retreat": 1
  },
  {
   "id": "up-20",
   "nameEn": "Fuecoco",
   "nameJa": "ホゲータ",
   "kind": "pokemon",
-  "type": "fire",
-  "stage": "basic",
   "evolvesFrom": [],
   "evolvesTo": [
    "b2a-017"
   ],
   "rule": "normal",
   "groups": [],
-  "points": 1,
-  "hp": 70,
-  "weakness": "water",
-  "retreat": 2,
   "attacks": [
    {
     "tentative": true,
     "nameEn": "Flamethrower",
     "nameJa": "かえんほうしゃ",
     "textEn": "Discard a [R] Energy from this Pokémon.",
-    "jaSource": "official",
     "tags": [],
     "cost": {
      "fire": 1,
@@ -130574,7 +130567,8 @@
     "costTyped": 1,
     "damage": 50,
     "damageVariable": false,
-    "textJa": "このポケモンから炎エネルギーを1個トラッシュ。"
+    "textJa": "このポケモンから炎エネルギーを1個トラッシュ。",
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -130589,6 +130583,12 @@
   "tags": [],
   "upcoming": {
    "source": "https://game8.jp/pokemon-tcg-pocket/833615"
-  }
+  },
+  "type": "fire",
+  "stage": "basic",
+  "points": 1,
+  "hp": 70,
+  "weakness": "water",
+  "retreat": 2
  }
 ]

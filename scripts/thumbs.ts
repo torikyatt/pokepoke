@@ -28,7 +28,8 @@ for (const c of cards) {
   if (c.upcoming) {
     const p = c.prints[0];
     const manual = join(ROOT, "public/cards-ja/manual", `${p.id}.webp`);
-    const file = existsSync(manual) ? manual : p.image ? join(ROOT, "public", jaImageFile(p.image)) : undefined;
+    const url = ja ? p.image : (p.imageEn ?? p.image); // 英語の画像が別にあれば、英語版のサムネイルはそれから
+    const file = existsSync(manual) ? manual : url ? join(ROOT, "public", jaImageFile(url)) : undefined;
     if (file && existsSync(file)) src.set(c.id, [file]);
     continue;
   }
