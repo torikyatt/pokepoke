@@ -158,6 +158,8 @@
           match:
             - 'random Item card from your deck'
             - 'Put all Item cards you find there'
+            - 'Put a [^.]* rental card into your hand'
+            - 'random cards from among Super Potion'
             - 'put all Item cards you find there'
           children:
             - id: draw.search_trainer.item.tool

@@ -28,10 +28,10 @@ const SOURCES: { name: string; url: string; ja: string; en: string }[] = [
     en: "English deck guides. Some known combos are summarized in our own words from these guides (each combo links to its article).",
   },
   {
-    name: "ゲームウィズ（ポケポケ攻略）",
-    url: "https://gamewith.jp/pokemon-tcg-pocket/",
-    ja: "実装前のカードの一部（メガミュウツーYex）の、先行公開された画像。",
-    en: "Pre-release image of some upcoming cards (Mega Mewtwo Y ex).",
+    name: "Serebii.net",
+    url: "https://serebii.net/tcgpocket/",
+    ja: "実装前の新しいパックのカード（先行公開されたカードの情報と英語の画像）。実装されたら、上の元データに置き換わります。",
+    en: "Upcoming cards from new sets (pre-release card details and English images). Replaced by the data above once released.",
   },
   {
     name: "Limitless TCG",

@@ -23,7 +23,7 @@ for (const url of todo) {
       failed++;
       continue;
     }
-    const res = await get(url, "https://game8.jp/");
+    const res = await get(url, `${new URL(url).origin}/`); // リファラは画像と同じサイト
     if (!res.ok) {
       failed++;
       continue;

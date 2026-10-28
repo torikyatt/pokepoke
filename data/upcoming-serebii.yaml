@@ -1,0 +1,3116 @@
+# 実装前のカード（先行公開の全カード一覧から作ったもの。手で直さない）
+# 出典: Serebii.net（https://serebii.net/tcgpocket/dualfusion/ https://serebii.net/tcgpocket/promo-c/ https://serebii.net/tcgpocket/firstpartners/）
+# Game8 の公式の日本語（data/upcoming.yaml にあったもの）は引き継ぐ。ほかの日本語は translate.ts が公式訳・仮訳で埋める
+sets:
+  - code: c1
+    nameEn: Dual Fusion
+    nameJa: デュアルフュージョン
+    date: '2026-10-29'
+    source: https://serebii.net/tcgpocket/dualfusion/
+  - code: pc
+    nameEn: Promo-C
+    nameJa: プロモC
+    source: https://serebii.net/tcgpocket/promo-c/
+  - code: sp1
+    nameEn: First Partners
+    nameJa: はじまりのパートナー
+    source: https://serebii.net/tcgpocket/firstpartners/
+cards:
+  - id: c1-001
+    set: c1
+    rarity: ◊
+    image: https://img.game8.jp/13113710/402a2d2cb309c1dbf12e7fd88075c1c4.webp/show
+    nameEn: Bulbasaur
+    nameJa: フシギダネ
+    type:
+      - grass
+    stage: basic
+    rule: normal
+    hp: 70
+    weakness: fire
+    retreat: 2
+    attacks:
+      - cost: GC
+        damage: '30'
+        nameEn: Leech Seed
+        textEn: Heal 10 damage from this Pokémon.
+        nameJa: やどりぎのタネ
+    imageEn: https://serebii.net/tcgpocket/dualfusion/1.jpg
+    prints:
+      - id: sp1-001
+        set: sp1
+        rarity: ☆
+        image: https://serebii.net/tcgpocket/firstpartners/1.jpg
+  - id: c1-002
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/2.jpg
+    nameEn: Ivysaur
+    nameJa: フシギソウ
+    type:
+      - grass
+    stage: stage1
+    evolvesFrom: Bulbasaur
+    rule: normal
+    hp: 100
+    weakness: fire
+    retreat: 3
+    attacks:
+      - cost: GCC
+        damage: '50'
+        nameEn: Leaf Drain
+        textEn: Heal 20 damage from this Pokémon.
+  - id: c1-003
+    set: c1
+    rarity: ◊◊◊
+    image: https://img.game8.jp/13113530/ebcd921e0309306ca1786f9cfc9eea76.webp/show
+    nameEn: Venusaur
+    nameJa: フシギバナ
+    type:
+      - grass
+    stage: stage2
+    evolvesFrom: Ivysaur
+    rule: normal
+    hp: 150
+    weakness: fire
+    retreat: 3
+    ability:
+      nameEn: Sunny Heal
+      textEn: Once during your turn, you may heal 30 damage from your Active Pokémon.
+      nameJa: サニーヒール
+      textJa: 自分の番に1回使える。自分のバトルポケモンのHPを30回復。
+    attacks:
+      - cost: GCCC
+        damage: '90'
+        nameEn: Solar Beam
+        nameJa: ソーラービーム
+    imageEn: https://serebii.net/tcgpocket/dualfusion/3.jpg
+    prints:
+      - id: c1-132
+        rarity: ☆
+        image: https://serebii.net/tcgpocket/dualfusion/132.jpg
+  - id: c1-004
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/4.jpg
+    nameEn: Exeggcute
+    nameJa: タマタマ
+    type:
+      - grass
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: fire
+    retreat: 1
+    attacks:
+      - cost: C
+        nameEn: Nap
+        textEn: Heal 20 damage from this Pokémon.
+    prints:
+      - id: c1-133
+        rarity: ☆
+        image: https://serebii.net/tcgpocket/dualfusion/133.jpg
+  - id: c1-005
+    set: c1
+    rarity: ◊◊◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/5.jpg
+    nameEn: Alolan Exeggutor ex
+    nameJa: アローラナッシーex
+    type:
+      - grass
+    stage: stage1
+    evolvesFrom: Exeggcute
+    rule: ex
+    hp: 180
+    weakness: fire
+    retreat: 4
+    attacks:
+      - cost: GGG
+        damage: '100'
+        nameEn: Long-Neck Hammering
+        textEn: 1 of your opponent's Benched Pokémon is chosen at random. This attack also does 50 damage to it.
+    prints:
+      - id: c1-153
+        rarity: ☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/153.jpg
+      - id: c1-171
+        rarity: ☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/171.jpg
+  - id: c1-006
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/6.jpg
+    nameEn: Pinsir
+    nameJa: カイロス
+    type:
+      - grass
+    stage: basic
+    rule: normal
+    hp: 90
+    weakness: fire
+    retreat: 2
+    attacks:
+      - cost: G
+        damage: '30'
+        nameEn: Vise Grip
+  - id: c1-007
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/7.jpg
+    nameEn: Combee
+    nameJa: ミツハニー
+    type:
+      - grass
+    stage: basic
+    rule: normal
+    hp: 50
+    weakness: lightning
+    retreat: 1
+    attacks:
+      - cost: G
+        damage: '20'
+        nameEn: Flap
+  - id: c1-008
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/8.jpg
+    nameEn: Vespiquen
+    nameJa: ビークイン
+    type:
+      - grass
+    stage: stage1
+    evolvesFrom: Combee
+    rule: normal
+    hp: 80
+    weakness: lightning
+    retreat: 1
+    attacks:
+      - cost: GG
+        damage: 50×
+        nameEn: Honey Rush
+  - id: c1-009
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/9.jpg
+    nameEn: Deerling
+    nameJa: シキジカ
+    type:
+      - grass
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: fire
+    retreat: 1
+    attacks:
+      - cost: GC
+        damage: '40'
+        nameEn: Flop
+    prints:
+      - id: c1-134
+        rarity: ☆
+        image: https://serebii.net/tcgpocket/dualfusion/134.jpg
+  - id: c1-010
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/10.jpg
+    nameEn: Sawsbuck
+    nameJa: メブキジカ
+    type:
+      - grass
+    stage: stage1
+    evolvesFrom: Deerling
+    rule: normal
+    hp: 120
+    weakness: fire
+    retreat: 2
+    attacks:
+      - cost: GCC
+        damage: '100'
+        nameEn: Leaf Litter Tackle
+        textEn: Discard a [G] Energy from this Pokémon.
+  - id: c1-011
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/11.jpg
+    nameEn: Foongus
+    nameJa: タマゲタケ
+    type:
+      - grass
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: fire
+    retreat: 1
+    attacks:
+      - cost: G
+        damage: '20'
+        nameEn: Beat
+  - id: c1-012
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/12.jpg
+    nameEn: Amoonguss
+    nameJa: モロバレル
+    type:
+      - grass
+    stage: stage1
+    evolvesFrom: Foongus
+    rule: normal
+    hp: 100
+    weakness: fire
+    retreat: 2
+    attacks:
+      - cost: GC
+        damage: '50'
+        nameEn: Astonish
+  - id: c1-013
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/13.jpg
+    nameEn: Genesect
+    nameJa: ゲノセクト
+    type:
+      - grass
+    stage: basic
+    rule: normal
+    hp: 110
+    weakness: fire
+    retreat: 2
+    attacks:
+      - cost: GCC
+        damage: '60'
+        nameEn: Signal Beam
+        textEn: Your opponent's Active Pokémon is now Confused.
+  - id: c1-014
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/14.jpg
+    nameEn: Cutiefly
+    nameJa: アブリー
+    type:
+      - grass
+    stage: basic
+    rule: normal
+    hp: 30
+    weakness: fire
+    retreat: 0
+    attacks:
+      - cost: G
+        damage: '20'
+        nameEn: Bug Bite
+  - id: c1-015
+    set: c1
+    rarity: ◊◊◊
+    image: https://img.game8.jp/13113898/1912af26ca20da528f705834c0abf265.webp/show
+    nameEn: Ribombee
+    nameJa: アブリボン
+    type:
+      - grass
+    stage: stage1
+    evolvesFrom: Cutiefly
+    rule: normal
+    hp: 70
+    weakness: fire
+    retreat: 1
+    ability:
+      nameEn: Honey Gather
+      textEn: Once during your turn, you may use this Ability. Put a Sweet Honey rental card into your hand.
+    attacks:
+      - cost: G
+        damage: '40'
+        nameEn: Bug Buzz
+    imageEn: https://serebii.net/tcgpocket/dualfusion/15.jpg
+    prints:
+      - id: c1-135
+        rarity: ☆
+        image: https://serebii.net/tcgpocket/dualfusion/135.jpg
+  - id: c1-016
+    set: c1
+    rarity: ◊
+    image: https://img.game8.jp/13113711/b56d651f962299a6570533850f172883.webp/show
+    nameEn: Charmander
+    nameJa: ヒトカゲ
+    type:
+      - fire
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: water
+    retreat: 1
+    attacks:
+      - cost: RC
+        damage: '50'
+        nameEn: Ember
+        textEn: Discard a [R] Energy from this Pokémon.
+        nameJa: ひのこ
+    imageEn: https://serebii.net/tcgpocket/dualfusion/16.jpg
+    prints:
+      - id: sp1-002
+        set: sp1
+        rarity: ☆
+        image: https://serebii.net/tcgpocket/firstpartners/2.jpg
+  - id: c1-017
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/17.jpg
+    nameEn: Charmeleon
+    nameJa: リザード
+    type:
+      - fire
+    stage: stage1
+    evolvesFrom: Charmander
+    rule: normal
+    hp: 80
+    weakness: water
+    retreat: 1
+    attacks:
+      - cost: RR
+        damage: '50'
+        nameEn: Flame Tail
+  - id: c1-018
+    set: c1
+    rarity: ◊◊◊
+    image: https://img.game8.jp/13113529/b22f2b4917260c2f0999dca20c539a87.webp/show
+    nameEn: Charizard
+    nameJa: リザードン
+    type:
+      - fire
+    stage: stage2
+    evolvesFrom: Charmeleon
+    rule: normal
+    hp: 150
+    weakness: water
+    retreat: 3
+    ability:
+      nameEn: Flame Aura
+      textEn: Whenver you attach a [R] Energy from your Energy Zone to this Pokémon, do 30 damage to your opponent's Active Pokémon.
+      nameJa: フレイムオーラ
+      textJa: 自分のエネルギーゾーンからこのポケモンに炎エネルギーをつけるたび、相手のバトルポケモンに30ダメージ。
+    attacks:
+      - cost: RRC
+        damage: '90'
+        nameEn: Fire Wing
+        nameJa: ほのおのつばさ
+    imageEn: https://serebii.net/tcgpocket/dualfusion/18.jpg
+    prints:
+      - id: c1-136
+        rarity: ☆
+        image: https://serebii.net/tcgpocket/dualfusion/136.jpg
+  - id: c1-019
+    set: c1
+    rarity: ◊◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/19.jpg
+    nameEn: Volcanion
+    nameJa: ボルケニオン
+    type:
+      - fire
+    stage: basic
+    rule: normal
+    hp: 120
+    weakness: water
+    retreat: 2
+    attacks:
+      - cost: RRRC
+        damage: 110×
+        nameEn: Dynamite Steam
+        textEn: Flip 2 coins. This attack does 110 damage for each heads.
+  - id: c1-020
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/20.jpg
+    nameEn: Salandit
+    nameJa: ヤトウモリ
+    type:
+      - fire
+    stage: basic
+    rule: normal
+    hp: 50
+    weakness: water
+    retreat: 1
+    attacks:
+      - cost: R
+        damage: '30'
+        nameEn: Flare
+  - id: c1-021
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/21.jpg
+    nameEn: Salazzle
+    nameJa: エンニュート
+    type:
+      - fire
+    stage: stage1
+    evolvesFrom: Salandit
+    rule: normal
+    hp: 90
+    weakness: water
+    retreat: 1
+    attacks:
+      - cost: RR
+        damage: '70'
+        nameEn: Heat Blast
+  - id: c1-022
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/22.jpg
+    nameEn: Scorbunny
+    nameJa: ヒバニー
+    type:
+      - fire
+    stage: basic
+    rule: normal
+    hp: 50
+    weakness: water
+    retreat: 1
+    attacks:
+      - cost: C
+        damage: 20×
+        nameEn: Rabbit Jumping
+        textEn: Flip 2 coins. This attack does 20 damage for each heads.
+  - id: c1-023
+    set: c1
+    rarity: ◊◊
+    image: https://img.game8.jp/13113900/ed2048ad5a7c86c8b4d75a892ae15282.webp/show
+    nameEn: Raboot
+    nameJa: ラビフット
+    type:
+      - fire
+    stage: stage1
+    evolvesFrom: Scorbunny
+    rule: normal
+    hp: 70
+    weakness: water
+    retreat: 1
+    ability:
+      nameEn: Jumping Coach
+      textEn: As long as this Pokémon is in play, flip 3 more coins for the Rabbit Jumping attack used by your Pokémon.
+    attacks:
+      - cost: C
+        damage: '30'
+        nameEn: Headbutt
+    imageEn: https://serebii.net/tcgpocket/dualfusion/23.jpg
+    prints:
+      - id: c1-137
+        rarity: ☆
+        image: https://serebii.net/tcgpocket/dualfusion/137.jpg
+  - id: c1-024
+    set: c1
+    rarity: ◊◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/24.jpg
+    nameEn: Cinderace
+    nameJa: エースバーン
+    type:
+      - fire
+    stage: stage2
+    evolvesFrom: Raboot
+    rule: normal
+    hp: 140
+    weakness: water
+    retreat: 1
+    attacks:
+      - cost: RR
+        damage: '100'
+        nameEn: Spinning Kick
+        textEn: This Pokémon also does 20 damage to itself.
+  - id: c1-025
+    set: c1
+    rarity: ◊◊◊◊
+    image: https://img.game8.jp/12923032/7ac06d023af3fbf47ccc0d6378489d6b.webp/show
+    nameEn: Fuecoco ex
+    nameJa: ホゲータex
+    type:
+      - fire
+    stage: basic
+    rule: ex
+    hp: 130
+    weakness: water
+    retreat: 2
+    attacks:
+      - cost: R
+        damage: '30'
+        nameEn: Bite
+        nameJa: かみつく
+      - cost: RC
+        damage: 50+
+        nameEn: Feisty Flames
+        textEn: If this Pokémon has damage on it, this attack does 70 more damage.
+        nameJa: げきおこファイヤー
+        textJa: このポケモンがダメージを受けているなら、70ダメージ追加。
+    imageEn: https://serebii.net/tcgpocket/dualfusion/25.jpg
+    prints:
+      - id: c1-154
+        rarity: ☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/154.jpg
+      - id: c1-172
+        rarity: ☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/172.jpg
+      - id: c1-215
+        rarity: Crown Rare
+        image: https://serebii.net/tcgpocket/dualfusion/215.jpg
+  - id: c1-026
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/26.jpg
+    nameEn: Charcadet
+    nameJa: カルボウ
+    type:
+      - fire
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: water
+    retreat: 1
+    attacks:
+      - cost: RR
+        damage: '40'
+        nameEn: Will-O-Wisp
+  - id: c1-027
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/27.jpg
+    nameEn: Armarouge
+    nameJa: グレンアルマ
+    type:
+      - fire
+    stage: stage1
+    evolvesFrom: Charcadet
+    rule: normal
+    hp: 120
+    weakness: water
+    retreat: 2
+    attacks:
+      - cost: RRR
+        damage: '130'
+        nameEn: Boundless Power
+        textEn: During your next turn, this Pokémon can't attack.
+  - id: c1-028
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/28.jpg
+    nameEn: Ceruledge
+    nameJa: ソウブレイズ
+    type:
+      - fire
+    stage: stage1
+    evolvesFrom: Charcadet
+    rule: normal
+    hp: 120
+    weakness: water
+    retreat: 2
+    attacks:
+      - cost: RRC
+        damage: 70+
+        nameEn: Rally Back
+        textEn: If any of your Pokémon were Knocked Out by damage from an attack during your opponent's last turn, this attack does 70 more damage.
+    prints:
+      - id: c1-138
+        rarity: ☆
+        image: https://serebii.net/tcgpocket/dualfusion/138.jpg
+  - id: c1-029
+    set: c1
+    rarity: ◊
+    image: https://img.game8.jp/13113712/2416660b7c44756d3773a2141a480c15.webp/show
+    nameEn: Squirtle
+    nameJa: ゼニガメ
+    type:
+      - water
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: lightning
+    retreat: 1
+    attacks:
+      - cost: W
+        damage: '10'
+        nameEn: Bubble
+        textEn: Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed.
+        nameJa: あわ
+    imageEn: https://serebii.net/tcgpocket/dualfusion/29.jpg
+    prints:
+      - id: sp1-003
+        set: sp1
+        rarity: ☆
+        image: https://serebii.net/tcgpocket/firstpartners/3.jpg
+  - id: c1-030
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/30.jpg
+    nameEn: Wartortle
+    nameJa: カメール
+    type:
+      - water
+    stage: stage1
+    evolvesFrom: Squirtle
+    rule: normal
+    hp: 90
+    weakness: lightning
+    retreat: 2
+    attacks:
+      - cost: WW
+        damage: '50'
+        nameEn: Spinning Attack
+  - id: c1-031
+    set: c1
+    rarity: ◊◊◊
+    image: https://img.game8.jp/13113528/3b2824f4c00918427a57e99f81393985.webp/show
+    nameEn: Blastoise
+    nameJa: カメックス
+    type:
+      - water
+    stage: stage2
+    evolvesFrom: Wartortle
+    rule: normal
+    hp: 150
+    weakness: lightning
+    retreat: 4
+    ability:
+      nameEn: Aqua Charge
+      textEn: Once during your turn, you may take a [W] Energy from your Energy Zone and attach it to this Pokémon.
+      nameJa: アクアチャージ
+      textJa: 自分の番に1回使える。自分のエネルギーゾーンから水エネルギーを1個出し、このポケモンにつける。
+    attacks:
+      - cost: WWW
+        damage: '100'
+        nameEn: Surf
+        nameJa: なみのり
+    imageEn: https://serebii.net/tcgpocket/dualfusion/31.jpg
+    prints:
+      - id: c1-139
+        rarity: ☆
+        image: https://serebii.net/tcgpocket/dualfusion/139.jpg
+  - id: c1-032
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/32.jpg
+    nameEn: Seel
+    nameJa: パウワウ
+    type:
+      - water
+    stage: basic
+    rule: normal
+    hp: 70
+    weakness: lightning
+    retreat: 1
+    attacks:
+      - cost: WW
+        damage: '40'
+        nameEn: Waterfall
+    prints:
+      - id: c1-192
+        rarity: ✵
+        image: https://serebii.net/tcgpocket/dualfusion/192.jpg
+  - id: c1-033
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/33.jpg
+    nameEn: Dewgong
+    nameJa: ジュゴン
+    type:
+      - water
+    stage: stage1
+    evolvesFrom: Seel
+    rule: normal
+    hp: 120
+    weakness: metal
+    retreat: 3
+    attacks:
+      - unknown: true
+        cost: WWW
+        nameEn: Dual Blizzard
+    prints:
+      - id: c1-193
+        rarity: ✵
+        image: https://serebii.net/tcgpocket/dualfusion/193.jpg
+  - id: c1-034
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/34.jpg
+    nameEn: Shellder
+    nameJa: シェルダー
+    type:
+      - water
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: lightning
+    retreat: 1
+    attacks:
+      - cost: WC
+        damage: '40'
+        nameEn: Water Gun
+  - id: c1-035
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/35.jpg
+    nameEn: Cloyster
+    nameJa: パルシェン
+    type:
+      - water
+    stage: stage1
+    evolvesFrom: Shellder
+    rule: normal
+    hp: 120
+    weakness: metal
+    retreat: 3
+    attacks:
+      - cost: WWC
+        damage: '60'
+        nameEn: Blizzard
+        textEn: This attack also does 20 damage to each of your opponent's Benched Pokémon.
+  - id: c1-036
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/36.jpg
+    nameEn: Jynx
+    nameJa: ルージュラ
+    type:
+      - water
+    stage: basic
+    rule: normal
+    hp: 80
+    weakness: metal
+    retreat: 1
+    attacks:
+      - cost: W
+        damage: '30'
+        nameEn: Slap
+  - id: c1-037
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/37.jpg
+    nameEn: Lapras
+    nameJa: ラプラス
+    type:
+      - water
+    stage: basic
+    rule: normal
+    hp: 100
+    weakness: metal
+    retreat: 3
+    attacks:
+      - cost: W
+        nameEn: Ice Blade
+        textEn: This attack does 20 damage to 1 of your opponent's Pokémon.
+  - id: c1-038
+    set: c1
+    rarity: ◊◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/38.jpg
+    nameEn: Palkia
+    nameJa: パルキア
+    type:
+      - water
+    stage: basic
+    rule: normal
+    hp: 120
+    weakness: lightning
+    retreat: 2
+    attacks:
+      - cost: WWC
+        damage: '70'
+        nameEn: Spacial Rend
+        textEn: If your opponent has a Stadium in play, discard it.
+    prints:
+      - id: c1-140
+        rarity: ☆
+        image: https://serebii.net/tcgpocket/dualfusion/140.jpg
+  - id: c1-039
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/39.jpg
+    nameEn: Basculin
+    nameJa: バスラオ
+    type:
+      - water
+    stage: basic
+    rule: normal
+    hp: 70
+    weakness: lightning
+    retreat: 1
+    attacks:
+      - cost: WC
+        damage: '40'
+        nameEn: Rock Head
+        textEn: During your opponent's next turn, this Pokémon takes -30 damage from attacks.
+  - id: c1-040
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/40.jpg
+    nameEn: Froakie
+    nameJa: ケロマツ
+    type:
+      - water
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: lightning
+    retreat: 1
+    attacks:
+      - cost: W
+        damage: '20'
+        nameEn: Pound
+    prints:
+      - id: sp1-018
+        set: sp1
+        rarity: ☆
+        image: https://serebii.net/tcgpocket/firstpartners/18.jpg
+  - id: c1-041
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/41.jpg
+    nameEn: Frogadier
+    nameJa: ゲコガシラ
+    type:
+      - water
+    stage: stage1
+    evolvesFrom: Froakie
+    rule: normal
+    hp: 70
+    weakness: lightning
+    retreat: 1
+    ability:
+      nameEn: Sudden Duplication
+      textEn: Once during your turn, when you play this card from your hand to evolve 1 of your Pokémon, you may use this Ability. Put a random Frogadier from your deck onto your Bench.
+    attacks:
+      - cost: WW
+        damage: '30'
+        nameEn: Wave Splash
+    prints:
+      - id: c1-141
+        rarity: ☆
+        image: https://serebii.net/tcgpocket/dualfusion/141.jpg
+  - id: c1-042
+    set: c1
+    rarity: ◊◊◊◊
+    image: https://img.game8.jp/13113526/e068da7d3b77b97e1e6d75520d5fbe9d.webp/show
+    nameEn: Mega Greninja ex
+    nameJa: メガゲッコウガex
+    type:
+      - water
+      - darkness
+    stage: stage2
+    evolvesFrom: Frogadier
+    rule: mega_ex
+    hp: 200
+    weakness: lightning
+    retreat: 0
+    attacks:
+      - cost: WW
+        damage: '100'
+        nameEn: Splash of Darkness
+        textEn: During your opponent's next turn, the Defending Pokémon can't retreat.
+        nameJa: スプラッシュダーク
+        textJa: 次の相手の番、このワザを受けたポケモンはにげるができない。
+    imageEn: https://serebii.net/tcgpocket/dualfusion/42.jpg
+    prints:
+      - id: c1-155
+        rarity: ☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/155.jpg
+      - id: c1-173
+        rarity: ☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/173.jpg
+  - id: c1-043
+    set: c1
+    rarity: ◊◊◊◊
+    image: https://img.game8.jp/13113527/7b79df7f0e8faa29d7d615eb8b864854.webp/show
+    nameEn: Pikachu ex
+    nameJa: ピカチュウex
+    type:
+      - lightning
+    stage: basic
+    rule: ex
+    hp: 120
+    weakness: fighting
+    retreat: 1
+    attacks:
+      - cost: L
+        damage: '30'
+        nameEn: Pika Punch
+        nameJa: ピカパンチ
+      - cost: LLC
+        damage: '130'
+        nameEn: Thundertail
+        textEn: Discard 2 [L] Energy from this Pokémon.
+        nameJa: いなずまテール
+        textJa: このポケモンから雷エネルギーを2個トラッシュ。
+    imageEn: https://serebii.net/tcgpocket/dualfusion/43.jpg
+    prints:
+      - id: c1-156
+        rarity: ☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/156.jpg
+      - id: c1-174
+        rarity: ☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/174.jpg
+      - id: c1-183
+        rarity: ☆☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/183.jpg
+  - id: c1-044
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/44.jpg
+    nameEn: Voltorb
+    nameJa: ビリリダマ
+    type:
+      - lightning
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: fighting
+    retreat: 1
+    attacks:
+      - cost: C
+        damage: '10'
+        nameEn: Rollout
+  - id: c1-045
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/45.jpg
+    nameEn: Electrode
+    nameJa: マルマイン
+    type:
+      - lightning
+    stage: stage1
+    evolvesFrom: Voltorb
+    rule: normal
+    hp: 90
+    weakness: fighting
+    retreat: 1
+    attacks:
+      - cost: CC
+        damage: '90'
+        nameEn: Self-Destruct
+        textEn: This Pokémon also does 90 damage to itself.
+  - id: c1-046
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/46.jpg
+    nameEn: Stunfisk
+    nameJa: マッギョ
+    type:
+      - lightning
+    stage: basic
+    rule: normal
+    hp: 100
+    weakness: fighting
+    retreat: 2
+    attacks:
+      - cost: LLC
+        damage: '80'
+        nameEn: Electric Ball
+  - id: c1-047
+    set: c1
+    rarity: ◊◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/47.jpg
+    nameEn: Zeraora
+    nameJa: ゼラオラ
+    type:
+      - lightning
+    stage: basic
+    rule: normal
+    hp: 90
+    weakness: fighting
+    retreat: 1
+    attacks:
+      - cost: LL
+        damage: '90'
+        nameEn: Thunderbolt
+        textEn: Discard all Energy from this Pokémon.
+  - id: c1-048
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/48.jpg
+    nameEn: Pawmi
+    nameJa: パモ
+    type:
+      - lightning
+    stage: basic
+    rule: normal
+    hp: 40
+    weakness: fighting
+    retreat: 0
+    attacks:
+      - cost: L
+        damage: '20'
+        nameEn: Zap Kick
+  - id: c1-049
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/49.jpg
+    nameEn: Pawmo
+    nameJa: パモット
+    type:
+      - lightning
+    stage: stage1
+    evolvesFrom: Pawmi
+    rule: normal
+    hp: 80
+    weakness: fighting
+    retreat: 1
+    attacks:
+      - cost: L
+        damage: '40'
+        nameEn: Electric Punch
+  - id: c1-050
+    set: c1
+    rarity: ◊◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/50.jpg
+    nameEn: Pawmot
+    nameJa: パーモット
+    type:
+      - lightning
+    stage: stage2
+    evolvesFrom: Pawmo
+    rule: normal
+    hp: 120
+    weakness: fighting
+    retreat: 1
+    ability:
+      nameEn: Electrocreation
+      textEn: Once during your turn, you may take a [L] Energy from your Energy Zone and attach it to the [L] Pokémon in the Active Spot.
+    attacks:
+      - cost: L
+        damage: '50'
+        nameEn: Mach Bolt
+    prints:
+      - id: c1-142
+        rarity: ☆
+        image: https://serebii.net/tcgpocket/dualfusion/142.jpg
+      - id: c1-216
+        rarity: Crown Rare
+        image: https://serebii.net/tcgpocket/dualfusion/216.jpg
+  - id: c1-051
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/51.jpg
+    nameEn: Jigglypuff
+    nameJa: プリン
+    type:
+      - psychic
+    stage: basic
+    rule: normal
+    hp: 50
+    weakness: metal
+    retreat: 1
+    attacks:
+      - cost: PP
+        damage: '30'
+        nameEn: Soothing Lullaby
+    prints:
+      - id: c1-184
+        rarity: ☆☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/184.jpg
+  - id: c1-052
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/52.jpg
+    nameEn: Wigglytuff
+    nameJa: プクリン
+    type:
+      - psychic
+    stage: stage1
+    evolvesFrom: Jigglypuff
+    rule: normal
+    hp: 100
+    weakness: metal
+    retreat: 2
+    attacks:
+      - cost: PP
+        damage: 30×
+        nameEn: Do the Wave
+        textEn: This attack does 30 damage for each of your Benched Pokémon.
+  - id: c1-053
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/53.jpg
+    nameEn: Abra
+    nameJa: ケーシィ
+    type:
+      - psychic
+    stage: basic
+    rule: normal
+    hp: 50
+    weakness: darkness
+    retreat: 1
+    attacks:
+      - cost: P
+        damage: '30'
+        nameEn: Beam
+    prints:
+      - id: c1-195
+        rarity: ✵
+        image: https://serebii.net/tcgpocket/dualfusion/195.jpg
+  - id: c1-054
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/54.jpg
+    nameEn: Kadabra
+    nameJa: ユンゲラー
+    type:
+      - psychic
+    stage: stage1
+    evolvesFrom: Abra
+    rule: normal
+    hp: 80
+    weakness: darkness
+    retreat: 1
+    attacks:
+      - cost: PC
+        damage: '50'
+        nameEn: Psychic Sphere
+    prints:
+      - id: c1-196
+        rarity: ✵
+        image: https://serebii.net/tcgpocket/dualfusion/196.jpg
+  - id: c1-055
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/55.jpg
+    nameEn: Alakazam
+    nameJa: フーディン
+    type:
+      - psychic
+    stage: stage2
+    evolvesFrom: Kadabra
+    rule: normal
+    hp: 130
+    weakness: darkness
+    retreat: 1
+    attacks:
+      - cost: PC
+        damage: 50+
+        nameEn: Mind Jack
+        textEn: This attack does 30 more damage for each of your opponent's Benched Pokémon.
+    prints:
+      - id: c1-197
+        rarity: ✵
+        image: https://serebii.net/tcgpocket/dualfusion/197.jpg
+  - id: c1-056
+    set: c1
+    rarity: ◊◊◊◊
+    image: https://img.game8.jp/12922926/689e96571dcf6eaa9e40f1ae881da1e0.webp/show
+    nameEn: Mega Mewtwo X ex
+    nameJa: メガミュウツーXex
+    type:
+      - psychic
+      - fighting
+    stage: basic
+    rule: mega_ex
+    hp: 180
+    weakness: darkness
+    retreat: 2
+    attacks:
+      - cost: PPC
+        damage: 100+
+        nameEn: Dual Impact
+        textEn: If a Stadium is in play, this attack does 40 more damage.
+        nameJa: デュアルインパクト
+        textJa: 場にスタジアムが出ているなら、40ダメージ追加。
+    imageEn: https://serebii.net/tcgpocket/dualfusion/56.jpg
+    prints:
+      - id: c1-157
+        rarity: ☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/157.jpg
+      - id: c1-175
+        rarity: ☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/175.jpg
+      - id: c1-185
+        rarity: ☆☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/185.jpg
+  - id: c1-057
+    set: c1
+    rarity: ◊◊◊◊
+    image: https://img.game8.jp/13113525/a852bad97f4d171d5b2b98c6ae5d2a85.webp/show
+    nameEn: Mew ex
+    nameJa: ミュウex
+    type:
+      - psychic
+    stage: basic
+    rule: ex
+    hp: 130
+    weakness: darkness
+    retreat: 1
+    attacks:
+      - cost: P
+        nameEn: Secret Guidance
+        textEn: Flip 3 coins. Take an amount of [P] Energy from your Energy Zone equal to the number of heads and attach it to your Benched [P] Pokémon in any way you like.
+        nameJa: ひみつのみちびき
+        textJa: コインを3回投げ、オモテの数ぶんの超エネルギーを自分のエネルギーゾーンから出し、ベンチの超ポケモンに好きなようにつける。
+      - cost: PC
+        damage: '60'
+        nameEn: Psyburn
+        nameJa: サイコバーン
+    imageEn: https://serebii.net/tcgpocket/dualfusion/57.jpg
+    prints:
+      - id: c1-158
+        rarity: ☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/158.jpg
+      - id: c1-176
+        rarity: ☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/176.jpg
+  - id: c1-058
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/58.jpg
+    nameEn: Marill
+    nameJa: マリル
+    type:
+      - psychic
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: metal
+    retreat: 1
+    attacks:
+      - cost: P
+        damage: '20'
+        nameEn: Rollout
+  - id: c1-059
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/59.jpg
+    nameEn: Azumarill
+    nameJa: マリルリ
+    type:
+      - psychic
+    stage: stage1
+    evolvesFrom: Marill
+    rule: normal
+    hp: 120
+    weakness: metal
+    retreat: 3
+    attacks:
+      - cost: PC
+        damage: 60×
+        nameEn: Rabbit Jumping
+        textEn: Flip 2 coins. This attack does 60 damage for each heads.
+  - id: c1-060
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/60.jpg
+    nameEn: Espeon
+    nameJa: エーフィ
+    type:
+      - psychic
+    stage: stage1
+    evolvesFrom: Eevee
+    rule: normal
+    hp: 90
+    weakness: darkness
+    retreat: 1
+    attacks:
+      - cost: C
+        damage: 10+
+        nameEn: Brainwave
+        textEn: This attack does 20 more damage for each [P] Energy attached to this Pokémon.
+  - id: c1-061
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/61.jpg
+    nameEn: Wobbuffet
+    nameJa: ソーナンス
+    type:
+      - psychic
+    stage: basic
+    rule: normal
+    hp: 90
+    weakness: darkness
+    retreat: 2
+    attacks:
+      - cost: P
+        damage: '30'
+        nameEn: Headbutt Bounce
+  - id: c1-062
+    set: c1
+    rarity: ◊◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/62.jpg
+    nameEn: Deoxys
+    nameJa: デオキシス
+    type:
+      - psychic
+    stage: basic
+    rule: normal
+    hp: 100
+    weakness: darkness
+    retreat: 1
+    attacks:
+      - cost: PPC
+        damage: '100'
+        nameEn: Psycho Boost
+    prints:
+      - id: pc-003
+        set: pc
+        rarity: Promo
+        image: https://serebii.net/tcgpocket/promo-c/3.jpg
+  - id: c1-063
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/63.jpg
+    nameEn: Mimikyu
+    nameJa: ミミッキュ
+    type:
+      - psychic
+    stage: basic
+    rule: normal
+    hp: 70
+    weakness: darkness
+    retreat: 1
+    attacks:
+      - cost: P
+        damage: 20+
+        nameEn: Dress Up
+        textEn: If this Pokémon has a Pokémon Tool attached, this attack does 30 more damage.
+    prints:
+      - id: c1-143
+        rarity: ☆
+        image: https://serebii.net/tcgpocket/dualfusion/143.jpg
+  - id: c1-064
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/64.jpg
+    nameEn: Cosmog
+    nameJa: コスモッグ
+    type:
+      - psychic
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: darkness
+    retreat: 1
+    attacks:
+      - cost: C
+        nameEn: Dust Gathering
+        textEn: Draw a card.
+    prints:
+      - id: pc-006
+        set: pc
+        rarity: Promo
+        image: https://serebii.net/tcgpocket/promo-c/6.jpg
+  - id: c1-065
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/65.jpg
+    nameEn: Cosmoem
+    nameJa: コスモウム
+    type:
+      - psychic
+    stage: stage1
+    evolvesFrom: Cosmog
+    rule: normal
+    hp: 100
+    weakness: darkness
+    retreat: 3
+    attacks:
+      - cost: CC
+        damage: '30'
+        nameEn: Ram
+    prints:
+      - id: c1-144
+        rarity: ☆
+        image: https://serebii.net/tcgpocket/dualfusion/144.jpg
+      - id: pc-007
+        set: pc
+        rarity: Promo
+        image: https://serebii.net/tcgpocket/promo-c/7.jpg
+  - id: c1-066
+    set: c1
+    rarity: ◊◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/66.jpg
+    nameEn: Lunala
+    nameJa: ルナアーラ
+    type:
+      - psychic
+    stage: stage2
+    evolvesFrom: Cosmoem
+    rule: normal
+    hp: 150
+    weakness: darkness
+    retreat: 1
+    attacks:
+      - cost: PP
+        damage: '110'
+        nameEn: Wings of the Moone
+    prints:
+      - id: c1-198
+        rarity: ✵
+        image: https://serebii.net/tcgpocket/dualfusion/198.jpg
+      - id: pc-008
+        set: pc
+        rarity: Promo
+        image: https://serebii.net/tcgpocket/promo-c/8.jpg
+  - id: c1-067
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/67.jpg
+    nameEn: Diglett
+    nameJa: ディグダ
+    type:
+      - fighting
+    stage: basic
+    rule: normal
+    hp: 50
+    weakness: grass
+    retreat: 1
+    attacks:
+      - cost: F
+        damage: '10'
+        nameEn: Dig
+        textEn: Flip a coin. If heads, during your opponent's next turn, prevent all damage from—and effects of—attacks done to this Pokémon.
+  - id: c1-068
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/68.jpg
+    nameEn: Dugtrio
+    nameJa: ダグトリオ
+    type:
+      - fighting
+    stage: stage1
+    evolvesFrom: Diglett
+    rule: normal
+    hp: 90
+    weakness: grass
+    retreat: 1
+    attacks:
+      - cost: F
+        damage: 30×
+        nameEn: Triple Smash
+        textEn: Flip 3 coins. This attack does 30 damage for each heads.
+  - id: c1-069
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/69.jpg
+    nameEn: Rhyhorn
+    nameJa: サイホーン
+    type:
+      - fighting
+    stage: basic
+    rule: normal
+    hp: 80
+    weakness: grass
+    retreat: 3
+    attacks:
+      - cost: F
+        damage: '20'
+        nameEn: Lunge Out
+    prints:
+      - id: c1-199
+        rarity: ✵
+        image: https://serebii.net/tcgpocket/dualfusion/199.jpg
+  - id: c1-070
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/70.jpg
+    nameEn: Rhydon
+    nameJa: サイドン
+    type:
+      - fighting
+    stage: stage1
+    evolvesFrom: Rhyhorn
+    rule: normal
+    hp: 110
+    weakness: grass
+    retreat: 3
+    attacks:
+      - cost: FF
+        damage: '100'
+        nameEn: Megahorn
+        textEn: Flip a coin. If tails, this attack does nothing.
+    prints:
+      - id: c1-200
+        rarity: ✵
+        image: https://serebii.net/tcgpocket/dualfusion/200.jpg
+  - id: c1-071
+    set: c1
+    rarity: ◊◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/71.jpg
+    nameEn: Rhyperior
+    nameJa: ドサイドン
+    type:
+      - fighting
+    stage: stage2
+    evolvesFrom: Rhydon
+    rule: normal
+    hp: 160
+    weakness: grass
+    retreat: 4
+    attacks:
+      - cost: FFF
+        damage: '110'
+        nameEn: Earthen Press
+  - id: c1-072
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/72.jpg
+    nameEn: Sudowoodo
+    nameJa: ウソッキー
+    type:
+      - fighting
+    stage: basic
+    rule: normal
+    hp: 100
+    weakness: grass
+    retreat: 2
+    attacks:
+      - cost: CC
+        damage: '40'
+        nameEn: Elbow Strike
+  - id: c1-073
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/73.jpg
+    nameEn: Paldean Wooper
+    nameJa: パルデアウパー
+    type:
+      - fighting
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: grass
+    retreat: 1
+    attacks:
+      - cost: F
+        damage: '20'
+        nameEn: Mud-Slap
+  - id: c1-074
+    set: c1
+    rarity: ◊◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/74.jpg
+    nameEn: Paldean Clodsire
+    nameJa: パルデアドオー
+    type:
+      - fighting
+    stage: stage1
+    evolvesFrom: Paldean Wooper
+    rule: normal
+    hp: 130
+    weakness: grass
+    retreat: 3
+    attacks:
+      - cost: FFF
+        damage: '130'
+        nameEn: Earthquake
+        textEn: This attack also does 20 damage to each of your Benched Pokémon.
+    prints:
+      - id: c1-147
+        rarity: ☆
+        image: https://serebii.net/tcgpocket/dualfusion/147.jpg
+  - id: c1-075
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/75.jpg
+    nameEn: Larvitar
+    nameJa: ヨーギラス
+    type:
+      - fighting
+    stage: basic
+    rule: normal
+    hp: 50
+    weakness: grass
+    retreat: 1
+    attacks:
+      - cost: C
+        damage: '20'
+        nameEn: Bite
+    prints:
+      - id: c1-145
+        rarity: ☆
+        image: https://serebii.net/tcgpocket/dualfusion/145.jpg
+  - id: c1-076
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/76.jpg
+    nameEn: Pupitar
+    nameJa: サナギラス
+    type:
+      - fighting
+    stage: stage1
+    evolvesFrom: Larvitar
+    rule: normal
+    hp: 100
+    weakness: grass
+    retreat: 3
+    attacks:
+      - cost: C
+        nameEn: Amass
+        textEn: Take 2 [F] Energy from your Energy Zone and attach it to this Pokémon.
+    prints:
+      - id: c1-146
+        rarity: ☆
+        image: https://serebii.net/tcgpocket/dualfusion/146.jpg
+  - id: c1-077
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/77.jpg
+    nameEn: Barboach
+    nameJa: ドジョッチ
+    type:
+      - fighting
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: grass
+    retreat: 1
+    attacks:
+      - cost: F
+        damage: '20'
+        nameEn: Vibration
+  - id: c1-078
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/78.jpg
+    nameEn: Whiscash
+    nameJa: ナマズン
+    type:
+      - fighting
+    stage: stage1
+    evolvesFrom: Barboach
+    rule: normal
+    hp: 120
+    weakness: grass
+    retreat: 3
+    attacks:
+      - cost: F
+        damage: 40+
+        nameEn: Power Press
+        textEn: If this Pokémon has at least 3 extra [F] Energy attached, this attack does 60 more damage.
+  - id: c1-079
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/79.jpg
+    nameEn: Rockruff
+    nameJa: イワンコ
+    type:
+      - fighting
+    stage: basic
+    rule: normal
+    hp: 70
+    weakness: grass
+    retreat: 1
+    attacks:
+      - cost: F
+        damage: '10'
+        nameEn: Paw Shake Punch
+  - id: c1-080
+    set: c1
+    rarity: ◊◊◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/80.jpg
+    nameEn: Lycanroc ex
+    nameJa: ルガルガンex
+    type:
+      - fighting
+    stage: stage1
+    evolvesFrom: Rockruff
+    rule: ex
+    hp: 150
+    weakness: grass
+    retreat: 2
+    ability:
+      nameEn: Reflexive Retaliation
+      textEn: If this Pokémon is in the Active Spot and is damaged by an attack from your opponent's Pokémon, do 30 damage to the Attacking Pokémon.
+    attacks:
+      - cost: FC
+        damage: '70'
+        nameEn: Slashing Claw
+    prints:
+      - id: c1-159
+        rarity: ☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/159.jpg
+      - id: c1-177
+        rarity: ☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/177.jpg
+      - id: c1-210
+        rarity: ✵✵
+        image: https://serebii.net/tcgpocket/dualfusion/210.jpg
+  - id: c1-081
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/81.jpg
+    nameEn: Gastly
+    nameJa: ゴース
+    type:
+      - darkness
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: fighting
+    retreat: 1
+    attacks:
+      - cost: D
+        nameEn: Severe Gas
+        textEn: Your opponent's Active Pokémon is now Poisoned.
+  - id: c1-082
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/82.jpg
+    nameEn: Haunter
+    nameJa: ゴースト
+    type:
+      - darkness
+    stage: stage1
+    evolvesFrom: Gastly
+    rule: normal
+    hp: 80
+    weakness: fighting
+    retreat: 1
+    attacks:
+      - cost: D
+        damage: '30'
+        nameEn: Suffocating Gas
+  - id: c1-083
+    set: c1
+    rarity: ◊◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/83.jpg
+    nameEn: Gengar
+    nameJa: ゲンガー
+    type:
+      - darkness
+    stage: stage2
+    evolvesFrom: Haunter
+    rule: normal
+    hp: 130
+    weakness: fighting
+    retreat: 1
+    attacks:
+      - cost: D
+        damage: '50'
+        nameEn: Twilight Poison
+        textEn: Your opponent's Active Pokémon is now Poisoned and Asleep.
+    prints:
+      - id: c1-148
+        rarity: ☆
+        image: https://serebii.net/tcgpocket/dualfusion/148.jpg
+  - id: c1-084
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/84.jpg
+    nameEn: Umbreon
+    nameJa: ブラッキー
+    type:
+      - darkness
+    stage: stage1
+    evolvesFrom: Eevee
+    rule: normal
+    hp: 90
+    weakness: grass
+    retreat: 1
+    attacks:
+      - cost: D
+        damage: 30+
+        nameEn: Moonlit Raid
+        textEn: If your opponent's Active Pokémon is a Basic Pokémon, this attack does 50 more damage.
+    prints:
+      - id: c1-186
+        rarity: ☆☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/186.jpg
+  - id: c1-085
+    set: c1
+    rarity: ◊◊◊◊
+    image: https://img.game8.jp/13113899/d8c987292cf6aa015fa5af87d1714458.webp/show
+    nameEn: Mega Tyranitar ex
+    nameJa: メガバンギラスex
+    type:
+      - darkness
+    stage: stage2
+    evolvesFrom: Pupitar
+    rule: mega_ex
+    hp: 240
+    weakness: grass
+    retreat: 4
+    attacks:
+      - cost: DDCC
+        damage: '180'
+        nameEn: Crushing Rampage
+        textEn: Discard the top 2 cards of your deck.
+    imageEn: https://serebii.net/tcgpocket/dualfusion/85.jpg
+    prints:
+      - id: c1-160
+        rarity: ☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/160.jpg
+      - id: c1-178
+        rarity: ☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/178.jpg
+  - id: c1-086
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/86.jpg
+    nameEn: Seviper
+    nameJa: ハブネーク
+    type:
+      - darkness
+    stage: basic
+    rule: normal
+    hp: 80
+    weakness: fighting
+    retreat: 1
+    attacks:
+      - cost: DD
+        damage: '40'
+        nameEn: Venomous Fang
+        textEn: Your opponent's Active Pokémon is now Poisoned.
+  - id: c1-087
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/87.jpg
+    nameEn: Zorua
+    nameJa: ゾロア
+    type:
+      - darkness
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: grass
+    retreat: 1
+    attacks:
+      - cost: C
+        damage: '10'
+        nameEn: Scratch
+  - id: c1-088
+    set: c1
+    rarity: ◊◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/88.jpg
+    nameEn: Zoroark
+    nameJa: ゾロアーク
+    type:
+      - darkness
+    stage: stage1
+    evolvesFrom: Zorua
+    rule: normal
+    hp: 100
+    weakness: grass
+    retreat: 1
+    attacks:
+      - cost: CC
+        nameEn: Foul Play
+        textEn: Choose 1 of your opponent's Active Pokémon's attacks and use it as this attack.
+  - id: c1-089
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/89.jpg
+    nameEn: Nickit
+    nameJa: クスネ
+    type:
+      - darkness
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: grass
+    retreat: 1
+    attacks:
+      - cost: D
+        damage: '20'
+        nameEn: Rear Kick
+  - id: c1-090
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/90.jpg
+    nameEn: Thievul
+    nameJa: フォクスライ
+    type:
+      - darkness
+    stage: stage1
+    evolvesFrom: Nickit
+    rule: normal
+    hp: 100
+    weakness: grass
+    retreat: 1
+    attacks:
+      - cost: DD
+        damage: '70'
+        nameEn: Claw Slash
+  - id: c1-091
+    set: c1
+    rarity: ◊◊◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/91.jpg
+    nameEn: Mega Skarmory ex
+    nameJa: メガエアームドex
+    type:
+      - metal
+    stage: basic
+    rule: mega_ex
+    hp: 170
+    weakness: fire
+    retreat: 1
+    attacks:
+      - cost: MMC
+        damage: 90+
+        nameEn: Shredding Claw
+        textEn: Flip a coin until you get tails. This attack does 50 more damage for each heads.
+    prints:
+      - id: c1-161
+        rarity: ☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/161.jpg
+      - id: c1-179
+        rarity: ☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/179.jpg
+  - id: c1-092
+    set: c1
+    rarity: ◊◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/92.jpg
+    nameEn: Dialga
+    nameJa: ディアルガ
+    type:
+      - metal
+    stage: basic
+    rule: normal
+    hp: 120
+    weakness: fire
+    retreat: 2
+    attacks:
+      - cost: MMC
+        damage: '70'
+        nameEn: Roar of Time
+        textEn: Discard the top card of your opponent's deck.
+    prints:
+      - id: c1-149
+        rarity: ☆
+        image: https://serebii.net/tcgpocket/dualfusion/149.jpg
+  - id: c1-093
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/93.jpg
+    nameEn: Ferroseed
+    nameJa: テッシード
+    type:
+      - metal
+    stage: basic
+    rule: normal
+    hp: 70
+    weakness: fire
+    retreat: 3
+    attacks:
+      - cost: MM
+        damage: '40'
+        nameEn: Pierce
+  - id: c1-094
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/94.jpg
+    nameEn: Ferrothorn
+    nameJa: ナットレイ
+    type:
+      - metal
+    stage: stage1
+    evolvesFrom: Ferroseed
+    rule: normal
+    hp: 120
+    weakness: fire
+    retreat: 3
+    attacks:
+      - cost: MMM
+        damage: '90'
+        nameEn: Hammer In
+  - id: c1-095
+    set: c1
+    rarity: ◊◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/95.jpg
+    nameEn: Solgaleo
+    nameJa: ソルガレオ
+    type:
+      - metal
+    stage: stage2
+    evolvesFrom: Cosmoem
+    rule: normal
+    hp: 160
+    weakness: fire
+    retreat: 3
+    attacks:
+      - cost: MMM
+        damage: 90+
+        nameEn: Claws of the Sunne
+    prints:
+      - id: c1-202
+        rarity: ✵
+        image: https://serebii.net/tcgpocket/dualfusion/202.jpg
+  - id: c1-096
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/96.jpg
+    nameEn: Meltan
+    nameJa: メルタン
+    type:
+      - metal
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: fire
+    retreat: 1
+    attacks:
+      - cost: MC
+        damage: '40'
+        nameEn: Ram
+  - id: c1-097
+    set: c1
+    rarity: ◊◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/97.jpg
+    nameEn: Melmetal
+    nameJa: メルメタル
+    type:
+      - metal
+    stage: stage1
+    evolvesFrom: Meltan
+    rule: normal
+    hp: 120
+    weakness: fire
+    retreat: 3
+    ability:
+      nameEn: Metal Scrum
+      textEn: As long as this Pokémon is in play, all of your [M] Pokémon take -20 damage from attacks from your opponent's Pokémon. This effect doesn't stack.
+    attacks:
+      - cost: MMC
+        damage: '70'
+        nameEn: Confront
+    prints:
+      - id: c1-150
+        rarity: ☆
+        image: https://serebii.net/tcgpocket/dualfusion/150.jpg
+  - id: c1-098
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/98.jpg
+    nameEn: Dratini
+    nameJa: ミニリュウ
+    type:
+      - dragon
+    stage: basic
+    rule: normal
+    hp: 70
+    retreat: 1
+    attacks:
+      - cost: CC
+        damage: '30'
+        nameEn: Hook
+  - id: c1-099
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/99.jpg
+    nameEn: Dragonair
+    nameJa: ハクリュー
+    type:
+      - dragon
+    stage: stage1
+    evolvesFrom: Dratini
+    rule: normal
+    hp: 100
+    retreat: 1
+    attacks:
+      - cost: CCC
+        damage: '60'
+        nameEn: Beam
+  - id: c1-100
+    set: c1
+    rarity: ◊◊◊◊
+    image: https://img.game8.jp/13113524/bfd407fbb73a6b093f9440cd16a20e97.webp/show
+    nameEn: Mega Dragonite ex
+    nameJa: メガカイリューex
+    type:
+      - dragon
+    stage: stage2
+    evolvesFrom: Dragonair
+    rule: mega_ex
+    hp: 240
+    retreat: 4
+    attacks:
+      - cost: WLCCC
+        nameEn: Draconic Meteor
+        textEn: 1 of your opponent's Pokémon is chosen at random. Do 250 damage to it.
+        nameJa: ドラゴニックメテオ
+        textJa: 相手のポケモンがランダムに1回選ばれ、選ばれたポケモンに、250ダメージ。
+    imageEn: https://serebii.net/tcgpocket/dualfusion/100.jpg
+    prints:
+      - id: c1-162
+        rarity: ☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/162.jpg
+      - id: c1-180
+        rarity: ☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/180.jpg
+      - id: c1-211
+        rarity: ✵✵
+        image: https://serebii.net/tcgpocket/dualfusion/211.jpg
+      - id: pc-013
+        set: pc
+        rarity: Promo
+        image: https://serebii.net/tcgpocket/promo-c/13.jpg
+  - id: c1-101
+    set: c1
+    rarity: ◊◊◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/101.jpg
+    nameEn: Giratina ex
+    nameJa: ギラティナex
+    type:
+      - dragon
+    stage: basic
+    rule: ex
+    hp: 150
+    retreat: 2
+    attacks:
+      - cost: CC
+        damage: '50'
+        nameEn: Slash
+      - cost: GPC
+        damage: '140'
+        nameEn: Dragon Impact
+    prints:
+      - id: c1-163
+        rarity: ☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/163.jpg
+      - id: c1-181
+        rarity: ☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/181.jpg
+      - id: c1-217
+        rarity: Crown Rare
+        image: https://serebii.net/tcgpocket/dualfusion/217.jpg
+  - id: c1-102
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/102.jpg
+    nameEn: Pidgey
+    nameJa: ポッポ
+    type:
+      - colorless
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: lightning
+    retreat: 1
+    attacks:
+      - cost: C
+        nameEn: Find a Friend
+        textEn: Put 1 random [C] Pokémon from your deck into your hand.
+  - id: c1-103
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/103.jpg
+    nameEn: Pidgeotto
+    nameJa: ピジョン
+    type:
+      - colorless
+    stage: stage1
+    evolvesFrom: Pidgey
+    rule: normal
+    hp: 70
+    weakness: lightning
+    retreat: 1
+    attacks:
+      - cost: C
+        damage: '40'
+        nameEn: Cutting Wind
+  - id: c1-104
+    set: c1
+    rarity: ◊◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/104.jpg
+    nameEn: Pidgeot
+    nameJa: ピジョット
+    type:
+      - colorless
+    stage: stage2
+    evolvesFrom: Pidgeotto
+    rule: normal
+    hp: 130
+    weakness: lightning
+    retreat: 1
+    attacks:
+      - cost: C
+        damage: 40+
+        nameEn: Clean Hit
+        textEn: If your opponent's Active Pokémon is an Evolution Pokémon, this attack does 80 more damage.
+  - id: c1-105
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/105.jpg
+    nameEn: Spearow
+    nameJa: オニスズメ
+    type:
+      - colorless
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: lightning
+    retreat: 1
+    attacks:
+      - cost: C
+        damage: '20'
+        nameEn: Flap
+    prints:
+      - id: c1-203
+        rarity: ✵
+        image: https://serebii.net/tcgpocket/dualfusion/203.jpg
+  - id: c1-106
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/106.jpg
+    nameEn: Fearow
+    nameJa: オニドリル
+    type:
+      - colorless
+    stage: stage1
+    evolvesFrom: Spearow
+    rule: normal
+    hp: 90
+    weakness: lightning
+    retreat: 1
+    attacks:
+      - cost: C
+        damage: '50'
+        nameEn: Drill Peck
+    prints:
+      - id: c1-204
+        rarity: ✵
+        image: https://serebii.net/tcgpocket/dualfusion/204.jpg
+  - id: c1-107
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/107.jpg
+    nameEn: Eevee
+    nameJa: イーブイ
+    type:
+      - colorless
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: fighting
+    retreat: 1
+    attacks:
+      - cost: C
+        nameEn: Signs of Evolution
+        textEn: Put a random card that evolves from Eevee from your deck into your hand.
+  - id: c1-108
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/108.jpg
+    nameEn: Porygon
+    nameJa: ポリゴン
+    type:
+      - colorless
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: fighting
+    retreat: 1
+    attacks:
+      - cost: C
+        damage: '30'
+        nameEn: Powered Ball
+        textEn: Discard a random Energy from this Pokémon.
+  - id: c1-109
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/109.jpg
+    nameEn: Porygon2
+    nameJa: ポリゴン2
+    type:
+      - colorless
+    stage: stage1
+    evolvesFrom: Porygon
+    rule: normal
+    hp: 90
+    weakness: fighting
+    retreat: 2
+    attacks:
+      - cost: C
+        damage: '30'
+        nameEn: Tackle
+  - id: c1-110
+    set: c1
+    rarity: ◊◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/110.jpg
+    nameEn: Porygon-Z
+    nameJa: ポリゴンZ
+    type:
+      - colorless
+    stage: stage2
+    evolvesFrom: Porygon2
+    rule: normal
+    hp: 130
+    weakness: fighting
+    retreat: 1
+    attacks:
+      - cost: C
+        damage: '50'
+        nameEn: Overdrive Smash
+        textEn: During your next turn, this Pokémon's Overdrive Smash attack does +50 damage.
+  - id: c1-111
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/111.jpg
+    nameEn: Snorlax
+    nameJa: カビゴン
+    type:
+      - colorless
+    stage: basic
+    rule: normal
+    hp: 130
+    weakness: fighting
+    retreat: 3
+    attacks:
+      - cost: CCCC
+        damage: '80'
+        nameEn: Body Slam
+        textEn: Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed.
+  - id: c1-112
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/112.jpg
+    nameEn: Zangoose
+    nameJa: ザングース
+    type:
+      - colorless
+    stage: basic
+    rule: normal
+    hp: 80
+    weakness: fighting
+    retreat: 1
+    ability:
+      nameEn: Immunity
+      textEn: This Pokémon can't be affected by Special Conditions.
+    attacks:
+      - cost: C
+        damage: '30'
+        nameEn: Claw Slash
+  - id: c1-113
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/113.jpg
+    nameEn: Bidoof
+    nameJa: ビッパ
+    type:
+      - colorless
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: fighting
+    retreat: 1
+    attacks:
+      - cost: C
+        damage: '20'
+        nameEn: Gnaw
+    prints:
+      - id: c1-151
+        rarity: ☆
+        image: https://serebii.net/tcgpocket/dualfusion/151.jpg
+  - id: c1-114
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/114.jpg
+    nameEn: Bibarel
+    nameJa: ビーダル
+    type:
+      - colorless
+    stage: stage1
+    evolvesFrom: Bidoof
+    rule: normal
+    hp: 120
+    weakness: fighting
+    retreat: 2
+    attacks:
+      - cost: CCC
+        damage: '80'
+        nameEn: Strength
+  - id: c1-115
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/115.jpg
+    nameEn: Buneary
+    nameJa: ミミロル
+    type:
+      - colorless
+    stage: basic
+    rule: normal
+    hp: 50
+    weakness: fighting
+    retreat: 1
+    attacks:
+      - cost: C
+        damage: 20×
+        nameEn: Rabbit Jumping
+        textEn: Flip 2 coins. This attack does 20 damage for each heads.
+  - id: c1-116
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/116.jpg
+    nameEn: Lopunny
+    nameJa: ミミロップ
+    type:
+      - colorless
+    stage: stage1
+    evolvesFrom: Buneary
+    rule: normal
+    hp: 100
+    weakness: fighting
+    retreat: 1
+    attacks:
+      - cost: C
+        damage: 40×
+        nameEn: Rabbit Jumping
+        textEn: Flip 2 coins. This attack does 40 damage for each heads.
+  - id: c1-117
+    set: c1
+    rarity: ◊
+    image: https://serebii.net/tcgpocket/dualfusion/117.jpg
+    nameEn: Stufful
+    nameJa: ヌイコグマ
+    type:
+      - colorless
+    stage: basic
+    rule: normal
+    hp: 70
+    weakness: fighting
+    retreat: 2
+    attacks:
+      - cost: C
+        damage: '20'
+        nameEn: Beat
+    prints:
+      - id: c1-206
+        rarity: ✵
+        image: https://serebii.net/tcgpocket/dualfusion/206.jpg
+  - id: c1-118
+    set: c1
+    rarity: ◊◊◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/118.jpg
+    nameEn: Bewear ex
+    nameJa: キテルグマex
+    type:
+      - colorless
+    stage: stage1
+    evolvesFrom: Stufful
+    rule: ex
+    hp: 160
+    weakness: fighting
+    retreat: 3
+    attacks:
+      - cost: CCC
+        damage: 100+
+        nameEn: Hyper Lariat
+        textEn: Flip 2 coins. If both of them are heads, this attack does 100 more damage.
+    prints:
+      - id: c1-164
+        rarity: ☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/164.jpg
+      - id: c1-182
+        rarity: ☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/182.jpg
+      - id: c1-214
+        rarity: ✵✵
+        image: https://serebii.net/tcgpocket/dualfusion/214.jpg
+  - id: c1-119
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/119.jpg
+    nameEn: Sweet Honey
+    kind: item
+    text:
+      textEn: Choose 1 of your Pokémon, and then flip a coin until you get tails. For each heads, heal 20 damage from that Pokémon.
+    prints:
+      - id: c1-152
+        rarity: ☆
+        image: https://serebii.net/tcgpocket/dualfusion/152.jpg
+  - id: c1-120
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/120.jpg
+    nameEn: Super Potion
+    kind: item
+    text:
+      textEn: Heal 40 damage from 1 of your Pokémon that has any Energy attached. If you healed any damage in this way, discard a random Energy from that Pokémon.
+  - id: c1-121
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/121.jpg
+    nameEn: Max Repel
+    kind: item
+    text:
+      textEn: Switch out your opponent's Active Stage 2 Pokémon to the Bench. (Your opponent chooses the new Active Pokémon.)
+  - id: c1-122
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/122.jpg
+    nameEn: Full Heal
+    kind: item
+    text:
+      textEn: Your Active Pokémon recovers from all Special Conditions.
+  - id: c1-123
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/123.jpg
+    nameEn: Eviolite
+    kind: tool
+    text:
+      textEn: The Basic Pokémon this card is attached to takes -20 damage from attacks from your opponent's Pokémon.
+  - id: c1-124
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/124.jpg
+    nameEn: Light Ball
+    kind: tool
+    text:
+      textEn: Attacks used by the Pikachu ex this card is attached to do +30 damage to your opponent's Active Pokémon.
+  - id: c1-125
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/125.jpg
+    nameEn: Lorelei
+    kind: supporter
+    text:
+      textEn: During this turn, attacks used by your Dewgong, Cloyster, or Lapras do +30 damage to your opponent's Pokémon.
+    prints:
+      - id: c1-165
+        rarity: ☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/165.jpg
+  - id: c1-126
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/126.jpg
+    nameEn: Blue's Provocation
+    kind: supporter
+    text:
+      textEn: You can use this card only if you have Venusaur, Charizard, Blastoise, or Pidgeot in play. Switch in 1 of your opponent's Benched Pokémon to the Active Spot.
+    prints:
+      - id: c1-166
+        rarity: ☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/166.jpg
+  - id: c1-127
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/127.jpg
+    nameEn: Serena's Choice
+    kind: supporter
+    text:
+      textEn: Look at the top 3 cards of your deck and put 1 of them into your hand. Shuffle any other cards back into your deck.
+    prints:
+      - id: c1-167
+        rarity: ☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/167.jpg
+  - id: c1-128
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/128.jpg
+    nameEn: Rika
+    kind: supporter
+    text:
+      textEn: Produce 2 [F] Energy from your Energy Zone, and attach it to 1 of your Whiscash or Paldean Clodsire.
+    prints:
+      - id: c1-168
+        rarity: ☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/168.jpg
+  - id: c1-129
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/129.jpg
+    nameEn: Poké Mart Guy
+    kind: supporter
+    text:
+      textEn: Put 2 random cards from among Super Potion, Max Repel, and Full Heal from your deck into your hand.
+    prints:
+      - id: c1-169
+        rarity: ☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/169.jpg
+  - id: c1-130
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/130.jpg
+    nameEn: Rising Star
+    kind: supporter
+    text:
+      textEn: You can use this card only if you have 3 or more different Pokémon types in play. Switch your Active Pokémon with 1 of your Benched Pokémon.
+    prints:
+      - id: c1-170
+        rarity: ☆☆
+        image: https://serebii.net/tcgpocket/dualfusion/170.jpg
+  - id: c1-131
+    set: c1
+    rarity: ◊◊
+    image: https://serebii.net/tcgpocket/dualfusion/131.jpg
+    nameEn: Abandoned Station
+    kind: stadium
+    text:
+      textEn: Once during each player's turn, that player may use this effect. Flip a coin. If heads, draw a card.
+  - id: pc-002
+    set: pc
+    rarity: Promo
+    image: https://serebii.net/tcgpocket/promo-c/2.jpg
+    nameEn: Mega Mewtwo Y ex
+    nameJa: メガミュウツーYex
+    type:
+      - psychic
+    stage: basic
+    rule: mega_ex
+    hp: 170
+    weakness: darkness
+    retreat: 1
+    attacks:
+      - cost: PP
+        damage: 60×
+        nameEn: Psychic Blaster
+        textEn: Flip a coin for each [P] Energy attached to this Pokémon. This attack does 60 damage for each heads.
+  - id: pc-004
+    set: pc
+    rarity: Promo
+    image: https://serebii.net/tcgpocket/promo-c/4.jpg
+    nameEn: Inkay
+    nameJa: マーイーカ
+    type:
+      - psychic
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: darkness
+    retreat: 1
+    attacks:
+      - cost: P
+        nameEn: Perplex
+        textEn: Your opponent's Active Pokémon is now Confused.
+  - id: pc-005
+    set: pc
+    rarity: Promo
+    image: https://serebii.net/tcgpocket/promo-c/5.jpg
+    nameEn: Malamar
+    nameJa: カラマネロ
+    type:
+      - psychic
+    stage: stage1
+    evolvesFrom: Inkay
+    rule: normal
+    hp: 90
+    weakness: darkness
+    retreat: 1
+    attacks:
+      - cost: P
+        damage: 10+
+        nameEn: Pester the Dizzy
+        textEn: If your opponent's Active Pokémon is Confused, this attack does 90 more damage.
+  - id: pc-009
+    set: pc
+    rarity: Promo
+    image: https://serebii.net/tcgpocket/promo-c/9.jpg
+    nameEn: Genome Converter Y
+    kind: item
+    text:
+      textEn: Move all [P] Energy from 1 of your Benched [P] Pokémon to your Mega Mewtwo Y ex in the Active Spot.
+  - id: sp1-004
+    set: sp1
+    rarity: ☆
+    image: https://img.game8.jp/13113713/3333aed3a836b49ab6557d72bfa8047f.webp/show
+    nameEn: Chikorita
+    nameJa: チコリータ
+    type:
+      - grass
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: fire
+    retreat: 1
+    attacks:
+      - cost: GC
+        damage: '40'
+        nameEn: Razor Leaf
+        nameJa: はっぱカッター
+    imageEn: https://serebii.net/tcgpocket/firstpartners/4.jpg
+  - id: sp1-005
+    set: sp1
+    rarity: ☆
+    image: https://serebii.net/tcgpocket/firstpartners/5.jpg
+    nameEn: Cyndaquil
+    nameJa: ヒノアラシ
+    type:
+      - fire
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: water
+    retreat: 1
+    attacks:
+      - cost: R
+        damage: '20'
+        nameEn: Tackle
+  - id: sp1-006
+    set: sp1
+    rarity: ☆
+    image: https://serebii.net/tcgpocket/firstpartners/6.jpg
+    nameEn: Totodile
+    nameJa: ワニノコ
+    type:
+      - water
+    stage: basic
+    rule: normal
+    hp: 70
+    weakness: lightning
+    retreat: 2
+    attacks:
+      - cost: WWC
+        damage: '60'
+        nameEn: Bite
+  - id: sp1-007
+    set: sp1
+    rarity: ☆
+    image: https://serebii.net/tcgpocket/firstpartners/7.jpg
+    nameEn: Treecko
+    nameJa: キモリ
+    type:
+      - grass
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: fire
+    retreat: 1
+    attacks:
+      - cost: GC
+        damage: '40'
+        nameEn: Pound
+  - id: sp1-008
+    set: sp1
+    rarity: ☆
+    image: https://serebii.net/tcgpocket/firstpartners/8.jpg
+    nameEn: Torchic
+    nameJa: アチャモ
+    type:
+      - fire
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: water
+    retreat: 1
+    attacks:
+      - cost: RC
+        damage: '40'
+        nameEn: Peck
+  - id: sp1-009
+    set: sp1
+    rarity: ☆
+    image: https://serebii.net/tcgpocket/firstpartners/9.jpg
+    nameEn: Mudkip
+    nameJa: ミズゴロウ
+    type:
+      - water
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: lightning
+    retreat: 1
+    attacks:
+      - cost: WC
+        damage: '40'
+        nameEn: Mud-Slap
+  - id: sp1-010
+    set: sp1
+    rarity: ☆
+    image: https://serebii.net/tcgpocket/firstpartners/10.jpg
+    nameEn: Turtwig
+    nameJa: ナエトル
+    type:
+      - grass
+    stage: basic
+    rule: normal
+    hp: 70
+    weakness: fire
+    retreat: 2
+    attacks:
+      - cost: GGC
+        damage: '60'
+        nameEn: Razor Leaf
+  - id: sp1-011
+    set: sp1
+    rarity: ☆
+    image: https://serebii.net/tcgpocket/firstpartners/11.jpg
+    nameEn: Chimchar
+    nameJa: ヒコザル
+    type:
+      - fire
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: water
+    retreat: 1
+    attacks:
+      - cost: R
+        damage: 10×
+        nameEn: Fury Swipes
+        textEn: Flip 3 coins. This attack does 10 damage for each heads.
+  - id: sp1-012
+    set: sp1
+    rarity: ☆
+    image: https://img.game8.jp/13113715/f22eb7f293b90e6fbe80f01b4dbc6d7b.webp/show
+    nameEn: Piplup
+    nameJa: ポッチャマ
+    type:
+      - water
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: lightning
+    retreat: 1
+    attacks:
+      - cost: W
+        damage: '20'
+        nameEn: Peck
+        nameJa: つつく
+    imageEn: https://serebii.net/tcgpocket/firstpartners/12.jpg
+  - id: sp1-013
+    set: sp1
+    rarity: ☆
+    image: https://serebii.net/tcgpocket/firstpartners/13.jpg
+    nameEn: Snivy
+    nameJa: ツタージャ
+    type:
+      - grass
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: fire
+    retreat: 1
+    attacks:
+      - cost: G
+        damage: '20'
+        nameEn: Vine Whip
+  - id: sp1-014
+    set: sp1
+    rarity: ☆
+    image: https://serebii.net/tcgpocket/firstpartners/14.jpg
+    nameEn: Tepig
+    nameJa: ポカブ
+    type:
+      - fire
+    stage: basic
+    rule: normal
+    hp: 70
+    weakness: water
+    retreat: 2
+    attacks:
+      - cost: R
+        damage: '30'
+        nameEn: Ember
+        textEn: Discard a [R] Energy from this Pokémon.
+  - id: sp1-015
+    set: sp1
+    rarity: ☆
+    image: https://serebii.net/tcgpocket/firstpartners/15.jpg
+    nameEn: Oshawott
+    nameJa: ミジュマル
+    type:
+      - water
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: lightning
+    retreat: 1
+    attacks:
+      - cost: WC
+        damage: 20+
+        nameEn: Razor Shell
+        textEn: Flip a coin. If heads, this attack does 30 more damage.
+  - id: sp1-016
+    set: sp1
+    rarity: ☆
+    image: https://serebii.net/tcgpocket/firstpartners/16.jpg
+    nameEn: Chespin
+    nameJa: ハリマロン
+    type:
+      - grass
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: fire
+    retreat: 1
+    attacks:
+      - cost: GC
+        damage: 20×
+        nameEn: Pin Missile
+        textEn: Flip 4 coins. This attack does 20 damage for each heads.
+  - id: sp1-017
+    set: sp1
+    rarity: ☆
+    image: https://serebii.net/tcgpocket/firstpartners/17.jpg
+    nameEn: Fennekin
+    nameJa: フォッコ
+    type:
+      - fire
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: water
+    retreat: 1
+    attacks:
+      - cost: R
+        damage: '20'
+        nameEn: Scratch
+  - id: sp1-019
+    set: sp1
+    rarity: ☆
+    image: https://serebii.net/tcgpocket/firstpartners/19.jpg
+    nameEn: Rowlet
+    nameJa: モクロー
+    type:
+      - grass
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: fire
+    retreat: 1
+    attacks:
+      - cost: GC
+        damage: '40'
+        nameEn: Tackle
+  - id: sp1-020
+    set: sp1
+    rarity: ☆
+    image: https://serebii.net/tcgpocket/firstpartners/20.jpg
+    nameEn: Litten
+    nameJa: ニャビー
+    type:
+      - fire
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: water
+    retreat: 1
+    attacks:
+      - cost: RRC
+        damage: '40'
+        nameEn: Fire Fang
+        textEn: Your opponent's Active Pokémon is now Burned.
+  - id: sp1-021
+    set: sp1
+    rarity: ☆
+    image: https://serebii.net/tcgpocket/firstpartners/21.jpg
+    nameEn: Popplio
+    nameJa: アシマリ
+    type:
+      - water
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: lightning
+    retreat: 1
+    attacks:
+      - cost: WC
+        damage: '30'
+        nameEn: Disarming Voice
+        textEn: Your opponent's Active Pokémon is now Confused.
+  - id: sp1-022
+    set: sp1
+    rarity: ☆
+    image: https://serebii.net/tcgpocket/firstpartners/22.jpg
+    nameEn: Grookey
+    nameJa: サルノリ
+    type:
+      - grass
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: fire
+    retreat: 1
+    attacks:
+      - cost: GC
+        damage: '40'
+        nameEn: Branch Poke
+  - id: sp1-023
+    set: sp1
+    rarity: ☆
+    image: https://serebii.net/tcgpocket/firstpartners/23.jpg
+    nameEn: Scorbunny
+    nameJa: ヒバニー
+    type:
+      - fire
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: water
+    retreat: 1
+    attacks:
+      - cost: RC
+        damage: 40×
+        nameEn: Double Kick
+        textEn: Flip 2 coins. This attack does 40 damage for each heads.
+  - id: sp1-024
+    set: sp1
+    rarity: ☆
+    image: https://serebii.net/tcgpocket/firstpartners/24.jpg
+    nameEn: Sobble
+    nameJa: メッソン
+    type:
+      - water
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: lightning
+    retreat: 1
+    attacks:
+      - cost: WC
+        damage: '40'
+        nameEn: Water Gun
+  - id: sp1-025
+    set: sp1
+    rarity: ☆
+    image: https://serebii.net/tcgpocket/firstpartners/25.jpg
+    nameEn: Sprigatito
+    nameJa: ニャオハ
+    type:
+      - grass
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: fire
+    retreat: 1
+    attacks:
+      - cost: GC
+        damage: '40'
+        nameEn: Leafage
+  - id: sp1-026
+    set: sp1
+    rarity: ☆
+    image: https://img.game8.jp/13113714/459b5dbc62419b46546af540fd39dc07.webp/show
+    nameEn: Fuecoco
+    nameJa: ホゲータ
+    type:
+      - fire
+    stage: basic
+    rule: normal
+    hp: 70
+    weakness: water
+    retreat: 2
+    attacks:
+      - cost: RC
+        damage: '50'
+        nameEn: Flamethrower
+        textEn: Discard a [R] Energy from this Pokémon.
+        nameJa: かえんほうしゃ
+    imageEn: https://serebii.net/tcgpocket/firstpartners/26.jpg
+  - id: sp1-027
+    set: sp1
+    rarity: ☆
+    image: https://serebii.net/tcgpocket/firstpartners/27.jpg
+    nameEn: Quaxly
+    nameJa: クワッス
+    type:
+      - water
+    stage: basic
+    rule: normal
+    hp: 60
+    weakness: lightning
+    retreat: 1
+    attacks:
+      - cost: WC
+        damage: '40'
+        nameEn: Wing Attack
+  - id: sp1-028
+    set: sp1
+    rarity: ☆
+    image: https://serebii.net/tcgpocket/firstpartners/28.jpg
+    nameEn: Mew
+    nameJa: ミュウ
+    type:
+      - psychic
+    stage: basic
+    rule: normal
+    hp: 70
+    weakness: darkness
+    retreat: 1
+    attacks:
+      - cost: PC
+        damage: 30+
+        nameEn: Psychic
+        textEn: This attack does 20 more damage for each Energy attached to your opponent's Active Pokémon.
+    prints:
+      - id: sp1-029
+        rarity: ☆
+        image: https://serebii.net/tcgpocket/firstpartners/29.jpg
+      - id: sp1-030
+        rarity: ☆
+        image: https://serebii.net/tcgpocket/firstpartners/30.jpg

@@ -62,7 +62,10 @@ const commonPrefix = (a: string, b: string) => {
 };
 // 実装前のパック（data/upcoming.yaml）の日本語名
 const upcomingSets = new Map(
-  ((loadYaml(readFileSync(join(DATA, "upcoming.yaml"), "utf8")) as { sets: { code: string; nameJa: string }[] }).sets ?? []).map((s) => [s.code, s.nameJa]),
+  readdirSync(DATA)
+    .filter((f) => /^upcoming(-.+)?\.yaml$/.test(f))
+    .flatMap((f) => (loadYaml(readFileSync(join(DATA, f), "utf8")) as { sets?: { code: string; nameJa: string }[] }).sets ?? [])
+    .map((s) => [s.code, s.nameJa]),
 );
 function setJaOf(code: string): string {
   if (upcomingSets.has(code) && !packNames.has(code.charAt(0).toUpperCase() + code.slice(1))) return upcomingSets.get(code)!;

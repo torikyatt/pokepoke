@@ -665,7 +665,7 @@ describe("実装前のカード・デュアルタイプ", () => {
     }
   });
   it.runIf(upcoming.length > 0)("名前で探せる", () => {
-    for (const c of upcoming) expect(ids(c.nameJa, 10)).toContain(c.id);
+    for (const c of upcoming) expect(engine.search(c.nameJa, 999).map((h) => h.card.id)).toContain(c.id);
   });
   it.runIf(upcoming.length > 0)("ふつうのカードの「相性のいいカード」には出ない", () => {
     const synergy = createSynergy(data);
@@ -699,7 +699,7 @@ describe("効果も入れた最大ダメージ（並べ替え・条件の絞り�
 describe("最新のカード", () => {
   it("実装予定のカードがあればそれだけ、無ければ最新パックのカード", () => {
     const up = data.cards.filter((c) => c.upcoming);
-    if (up.length) expect(new Set(ids("最新のカード", 999))).toEqual(new Set(up.map((c) => c.id)));
+    if (up.length) expect(new Set(engine.search("最新のカード", 9999).map((h) => h.card.id))).toEqual(new Set(up.map((c) => c.id)));
     // 実装予定のカードを除いたデータ（全部実装されたあと）: いちばん新しいパック（プロモ以外）のカード
     const released = { ...data, cards: data.cards.filter((c) => !c.upcoming) };
     const e = createEngine(released, {});
