@@ -129685,8 +129685,11 @@
   "retreat": 4,
   "attacks": [
    {
-    "unknown": true,
-    "textEn": "",
+    "nameEn": "Crushing Rampage",
+    "nameJa": "クラッシングランペイジ",
+    "textEn": "Discard the top 3 cards of your deck.",
+    "textJa": "自分の山札を上から3枚トラッシュ。",
+    "jaSource": "machine",
     "tags": [],
     "cost": {
      "darkness": 2,
@@ -129694,8 +129697,8 @@
     },
     "costTotal": 4,
     "costTyped": 2,
-    "damageVariable": false,
-    "jaSource": "official"
+    "damage": 180,
+    "damageVariable": false
    }
   ],
   "prints": [
@@ -130256,6 +130259,7 @@
   "groups": [],
   "points": 3,
   "hp": 170,
+  "retreat": 0,
   "attacks": [
    {
     "nameEn": "Psychic Blaster",
@@ -130284,11 +130288,7 @@
   ],
   "tags": [],
   "upcoming": {
-   "source": "https://www.pokemon-zone.com/spoilers/promo-c-mega-mewtwo-y-ex/",
-   "unknown": [
-    "weakness",
-    "retreat"
-   ]
+   "source": "https://www.pokemon-zone.com/spoilers/promo-c-mega-mewtwo-y-ex/"
   }
  },
  {

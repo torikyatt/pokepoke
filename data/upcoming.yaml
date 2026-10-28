@@ -86,7 +86,8 @@ cards:
     weakness: grass
     retreat: 4
     attacks:
-      - { cost: DDCC, unknown: true }
+      # pokemon-zone の先行情報とカード画像から。日本語のワザ名はまだ不明（仮訳）、効果文は同じ英文の既存カードの公式訳
+      - { cost: DDCC, damage: 180, nameJa: クラッシングランペイジ, nameEn: Crushing Rampage, textJa: 自分の山札を上から3枚トラッシュ。, textEn: "Discard the top 3 cards of your deck.", machine: true }
 
   - id: up-05
     set: c1
@@ -247,7 +248,7 @@ cards:
     stage: basic
     rule: mega_ex
     hp: 170
-    unknown: [weakness, retreat]
+    retreat: 0 # 弱点なし・にげる0（pokemon-zone・esports2fp の先行情報）
     machine: true
     attacks:
       - { cost: PP, damage: 60×, nameJa: サイコブラスター, nameEn: Psychic Blaster, textJa: このポケモンについている超エネルギーの数ぶんコインを投げ、オモテの数×60ダメージ。, textEn: "Flip a coin for each [P] Energy attached to this Pokémon. This attack does 60 damage for each heads." }

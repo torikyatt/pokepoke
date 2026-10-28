@@ -11,7 +11,7 @@ const COST: Record<string, EnergyType> = {
   F: "fighting", D: "darkness", M: "metal", N: "dragon", C: "colorless",
 };
 
-interface YEffect { nameJa?: string; nameEn?: string; textJa?: string; textEn?: string; unknown?: boolean; tentative?: boolean }
+interface YEffect { nameJa?: string; nameEn?: string; textJa?: string; textEn?: string; unknown?: boolean; tentative?: boolean; machine?: boolean }
 interface YAttack extends YEffect { cost: string; damage?: number | string }
 interface YCard {
   id: string; set: string; rarity: string; image?: string; source?: string;
@@ -53,7 +53,7 @@ function attack(a: YAttack, machine: boolean): Attack {
   const costTotal = a.cost.length;
   const dmg = a.damage === undefined ? undefined : String(a.damage);
   return {
-    ...effect(a, machine),
+    ...effect(a, machine || !!a.machine),
     cost, costTotal, costTyped: costTotal - (cost.colorless ?? 0),
     ...(dmg ? { damage: Number(dmg.replace(/[+×]/, "")) } : {}),
     damageVariable: !!dmg && /[+×]/.test(dmg),
