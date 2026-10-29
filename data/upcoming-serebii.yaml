@@ -15,7 +15,7 @@ sets:
   - code: sp1
     nameEn: First Partners
     nameJa: はじまりのパートナー
-    available: '2026-10-31'
+    available: '2026-10-29'
     source: https://serebii.net/tcgpocket/firstpartners/
 cards:
   - id: c1-001

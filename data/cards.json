@@ -129881,7 +129881,7 @@
     "setName": "First Partners",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/firstpartners/1.jpg",
-    "released": "2026-10-31"
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
@@ -130752,7 +130752,7 @@
     "setName": "First Partners",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/firstpartners/2.jpg",
-    "released": "2026-10-31"
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
@@ -131547,7 +131547,7 @@
     "setName": "First Partners",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/firstpartners/3.jpg",
-    "released": "2026-10-31"
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
@@ -132167,7 +132167,7 @@
     "setName": "First Partners",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/firstpartners/18.jpg",
-    "released": "2026-10-31"
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
@@ -137652,13 +137652,14 @@
     "rarity": "☆",
     "image": "https://img.game8.jp/13113713/3333aed3a836b49ab6557d72bfa8047f.webp/show",
     "imageEn": "https://serebii.net/tcgpocket/firstpartners/4.jpg",
-    "released": "2026-10-31"
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
-   "date": "2026-10-31",
-   "source": "https://serebii.net/tcgpocket/firstpartners/"
+   "date": "2026-10-29",
+   "source": "https://serebii.net/tcgpocket/firstpartners/",
+   "released": true
   },
   "type": "grass",
   "stage": "basic",
@@ -137702,13 +137703,14 @@
     "setName": "First Partners",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/firstpartners/5.jpg",
-    "released": "2026-10-31"
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
-   "date": "2026-10-31",
-   "source": "https://serebii.net/tcgpocket/firstpartners/"
+   "date": "2026-10-29",
+   "source": "https://serebii.net/tcgpocket/firstpartners/",
+   "released": true
   },
   "type": "fire",
   "stage": "basic",
@@ -137752,13 +137754,14 @@
     "setName": "First Partners",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/firstpartners/6.jpg",
-    "released": "2026-10-31"
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
-   "date": "2026-10-31",
-   "source": "https://serebii.net/tcgpocket/firstpartners/"
+   "date": "2026-10-29",
+   "source": "https://serebii.net/tcgpocket/firstpartners/",
+   "released": true
   },
   "type": "water",
   "stage": "basic",
@@ -137802,13 +137805,14 @@
     "setName": "First Partners",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/firstpartners/7.jpg",
-    "released": "2026-10-31"
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
-   "date": "2026-10-31",
-   "source": "https://serebii.net/tcgpocket/firstpartners/"
+   "date": "2026-10-29",
+   "source": "https://serebii.net/tcgpocket/firstpartners/",
+   "released": true
   },
   "type": "grass",
   "stage": "basic",
@@ -137852,13 +137856,14 @@
     "setName": "First Partners",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/firstpartners/8.jpg",
-    "released": "2026-10-31"
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
-   "date": "2026-10-31",
-   "source": "https://serebii.net/tcgpocket/firstpartners/"
+   "date": "2026-10-29",
+   "source": "https://serebii.net/tcgpocket/firstpartners/",
+   "released": true
   },
   "type": "fire",
   "stage": "basic",
@@ -137902,13 +137907,14 @@
     "setName": "First Partners",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/firstpartners/9.jpg",
-    "released": "2026-10-31"
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
-   "date": "2026-10-31",
-   "source": "https://serebii.net/tcgpocket/firstpartners/"
+   "date": "2026-10-29",
+   "source": "https://serebii.net/tcgpocket/firstpartners/",
+   "released": true
   },
   "type": "water",
   "stage": "basic",
@@ -137952,13 +137958,14 @@
     "setName": "First Partners",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/firstpartners/10.jpg",
-    "released": "2026-10-31"
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
-   "date": "2026-10-31",
-   "source": "https://serebii.net/tcgpocket/firstpartners/"
+   "date": "2026-10-29",
+   "source": "https://serebii.net/tcgpocket/firstpartners/",
+   "released": true
   },
   "type": "grass",
   "stage": "basic",
@@ -138002,13 +138009,14 @@
     "setName": "First Partners",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/firstpartners/11.jpg",
-    "released": "2026-10-31"
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
-   "date": "2026-10-31",
-   "source": "https://serebii.net/tcgpocket/firstpartners/"
+   "date": "2026-10-29",
+   "source": "https://serebii.net/tcgpocket/firstpartners/",
+   "released": true
   },
   "type": "fire",
   "stage": "basic",
@@ -138053,13 +138061,14 @@
     "rarity": "☆",
     "image": "https://img.game8.jp/13113715/f22eb7f293b90e6fbe80f01b4dbc6d7b.webp/show",
     "imageEn": "https://serebii.net/tcgpocket/firstpartners/12.jpg",
-    "released": "2026-10-31"
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
-   "date": "2026-10-31",
-   "source": "https://serebii.net/tcgpocket/firstpartners/"
+   "date": "2026-10-29",
+   "source": "https://serebii.net/tcgpocket/firstpartners/",
+   "released": true
   },
   "type": "water",
   "stage": "basic",
@@ -138103,13 +138112,14 @@
     "setName": "First Partners",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/firstpartners/13.jpg",
-    "released": "2026-10-31"
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
-   "date": "2026-10-31",
-   "source": "https://serebii.net/tcgpocket/firstpartners/"
+   "date": "2026-10-29",
+   "source": "https://serebii.net/tcgpocket/firstpartners/",
+   "released": true
   },
   "type": "grass",
   "stage": "basic",
@@ -138153,13 +138163,14 @@
     "setName": "First Partners",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/firstpartners/14.jpg",
-    "released": "2026-10-31"
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
-   "date": "2026-10-31",
-   "source": "https://serebii.net/tcgpocket/firstpartners/"
+   "date": "2026-10-29",
+   "source": "https://serebii.net/tcgpocket/firstpartners/",
+   "released": true
   },
   "type": "fire",
   "stage": "basic",
@@ -138204,13 +138215,14 @@
     "setName": "First Partners",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/firstpartners/15.jpg",
-    "released": "2026-10-31"
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
-   "date": "2026-10-31",
-   "source": "https://serebii.net/tcgpocket/firstpartners/"
+   "date": "2026-10-29",
+   "source": "https://serebii.net/tcgpocket/firstpartners/",
+   "released": true
   },
   "type": "water",
   "stage": "basic",
@@ -138255,13 +138267,14 @@
     "setName": "First Partners",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/firstpartners/16.jpg",
-    "released": "2026-10-31"
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
-   "date": "2026-10-31",
-   "source": "https://serebii.net/tcgpocket/firstpartners/"
+   "date": "2026-10-29",
+   "source": "https://serebii.net/tcgpocket/firstpartners/",
+   "released": true
   },
   "type": "grass",
   "stage": "basic",
@@ -138304,13 +138317,14 @@
     "setName": "First Partners",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/firstpartners/17.jpg",
-    "released": "2026-10-31"
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
-   "date": "2026-10-31",
-   "source": "https://serebii.net/tcgpocket/firstpartners/"
+   "date": "2026-10-29",
+   "source": "https://serebii.net/tcgpocket/firstpartners/",
+   "released": true
   },
   "type": "fire",
   "stage": "basic",
@@ -138355,13 +138369,14 @@
     "setName": "First Partners",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/firstpartners/19.jpg",
-    "released": "2026-10-31"
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
-   "date": "2026-10-31",
-   "source": "https://serebii.net/tcgpocket/firstpartners/"
+   "date": "2026-10-29",
+   "source": "https://serebii.net/tcgpocket/firstpartners/",
+   "released": true
   },
   "type": "grass",
   "stage": "basic",
@@ -138407,13 +138422,14 @@
     "setName": "First Partners",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/firstpartners/20.jpg",
-    "released": "2026-10-31"
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
-   "date": "2026-10-31",
-   "source": "https://serebii.net/tcgpocket/firstpartners/"
+   "date": "2026-10-29",
+   "source": "https://serebii.net/tcgpocket/firstpartners/",
+   "released": true
   },
   "type": "fire",
   "stage": "basic",
@@ -138459,13 +138475,14 @@
     "setName": "First Partners",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/firstpartners/21.jpg",
-    "released": "2026-10-31"
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
-   "date": "2026-10-31",
-   "source": "https://serebii.net/tcgpocket/firstpartners/"
+   "date": "2026-10-29",
+   "source": "https://serebii.net/tcgpocket/firstpartners/",
+   "released": true
   },
   "type": "water",
   "stage": "basic",
@@ -138509,13 +138526,14 @@
     "setName": "First Partners",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/firstpartners/22.jpg",
-    "released": "2026-10-31"
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
-   "date": "2026-10-31",
-   "source": "https://serebii.net/tcgpocket/firstpartners/"
+   "date": "2026-10-29",
+   "source": "https://serebii.net/tcgpocket/firstpartners/",
+   "released": true
   },
   "type": "grass",
   "stage": "basic",
@@ -138561,13 +138579,14 @@
     "setName": "First Partners",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/firstpartners/23.jpg",
-    "released": "2026-10-31"
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
-   "date": "2026-10-31",
-   "source": "https://serebii.net/tcgpocket/firstpartners/"
+   "date": "2026-10-29",
+   "source": "https://serebii.net/tcgpocket/firstpartners/",
+   "released": true
   },
   "type": "fire",
   "stage": "basic",
@@ -138611,13 +138630,14 @@
     "setName": "First Partners",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/firstpartners/24.jpg",
-    "released": "2026-10-31"
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
-   "date": "2026-10-31",
-   "source": "https://serebii.net/tcgpocket/firstpartners/"
+   "date": "2026-10-29",
+   "source": "https://serebii.net/tcgpocket/firstpartners/",
+   "released": true
   },
   "type": "water",
   "stage": "basic",
@@ -138662,13 +138682,14 @@
     "setName": "First Partners",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/firstpartners/25.jpg",
-    "released": "2026-10-31"
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
-   "date": "2026-10-31",
-   "source": "https://serebii.net/tcgpocket/firstpartners/"
+   "date": "2026-10-29",
+   "source": "https://serebii.net/tcgpocket/firstpartners/",
+   "released": true
   },
   "type": "grass",
   "stage": "basic",
@@ -138714,13 +138735,14 @@
     "rarity": "☆",
     "image": "https://img.game8.jp/13113714/459b5dbc62419b46546af540fd39dc07.webp/show",
     "imageEn": "https://serebii.net/tcgpocket/firstpartners/26.jpg",
-    "released": "2026-10-31"
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
-   "date": "2026-10-31",
-   "source": "https://serebii.net/tcgpocket/firstpartners/"
+   "date": "2026-10-29",
+   "source": "https://serebii.net/tcgpocket/firstpartners/",
+   "released": true
   },
   "type": "fire",
   "stage": "basic",
@@ -138764,13 +138786,14 @@
     "setName": "First Partners",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/firstpartners/27.jpg",
-    "released": "2026-10-31"
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
-   "date": "2026-10-31",
-   "source": "https://serebii.net/tcgpocket/firstpartners/"
+   "date": "2026-10-29",
+   "source": "https://serebii.net/tcgpocket/firstpartners/",
+   "released": true
   },
   "type": "water",
   "stage": "basic",
@@ -138813,7 +138836,7 @@
     "setName": "First Partners",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/firstpartners/28.jpg",
-    "released": "2026-10-31"
+    "released": "2026-10-29"
    },
    {
     "id": "sp1-029",
@@ -138821,7 +138844,7 @@
     "setName": "First Partners",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/firstpartners/29.jpg",
-    "released": "2026-10-31"
+    "released": "2026-10-29"
    },
    {
     "id": "sp1-030",
@@ -138829,13 +138852,14 @@
     "setName": "First Partners",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/firstpartners/30.jpg",
-    "released": "2026-10-31"
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
-   "date": "2026-10-31",
-   "source": "https://serebii.net/tcgpocket/firstpartners/"
+   "date": "2026-10-29",
+   "source": "https://serebii.net/tcgpocket/firstpartners/",
+   "released": true
   },
   "type": "psychic",
   "stage": "basic",
