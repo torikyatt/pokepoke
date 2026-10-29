@@ -1006,7 +1006,7 @@ cards:
       - id: c1-183
         rarity: ☆☆☆
         image: https://serebii.net/tcgpocket/dualfusion/183.jpg
-        how: パック以外で入手
+        pack: ピカチュウ
     pack: ピカチュウ
   - id: c1-044
     set: c1
@@ -1297,7 +1297,7 @@ cards:
       - id: c1-185
         rarity: ☆☆☆
         image: https://serebii.net/tcgpocket/dualfusion/185.jpg
-        how: パック以外で入手
+        pack: メガミュウツーX
     pack: メガミュウツーX
   - id: c1-057
     set: c1
@@ -2677,7 +2677,7 @@ cards:
       - id: c1-152
         rarity: ☆
         image: https://serebii.net/tcgpocket/dualfusion/152.jpg
-        how: パック以外で入手
+        pack: メガミュウツーX
     pack: メガミュウツーX
   - id: c1-120
     set: c1
