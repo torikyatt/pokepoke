@@ -4,7 +4,7 @@ import { thumbUrls } from "../data/load.ts";
 import { energyIconUrl } from "../icons.ts";
 import { useNav, type Tab } from "../nav.ts";
 import { useSettings, useToast } from "../store.ts";
-import type { AppCard, EnergyType } from "../types.ts";
+import type { AppCard, AppPrint, EnergyType } from "../types.ts";
 import { cardName, typeName, upcomingLabel, useLang, useT } from "../i18n.ts";
 
 export function EnergyIcon({ type, size = "md" }: { type: EnergyType; size?: "sm" | "md" | "lg" | "xl" | "fill" }) {
@@ -98,13 +98,13 @@ export function Pressable({ onTap, onLongPress, children, className = "", label 
   );
 }
 
-export function Thumb({ card, className = "" }: { card: AppCard; className?: string }) {
+export function Thumb({ card, print, className = "" }: { card: AppCard; print?: AppPrint; className?: string }) {
   const lang = useSettings((s) => s.imageLang);
   const uiLang = useLang();
-  const urls = thumbUrls(card, lang);
+  const urls = thumbUrls(card, lang, print);
   return (
     <img
-      key={`${card.id}-${lang}`}
+      key={`${print?.id ?? card.id}-${lang}`}
       src={urls[0]}
       alt={cardName(card, uiLang)}
       loading="lazy"
@@ -125,11 +125,11 @@ export function Thumb({ card, className = "" }: { card: AppCard; className?: str
 }
 
 /** 一覧のカード。左下に枚数タブ（アプリと同じ形） */
-export function PoolCard({ card, count, maxed, onTap, onLongPress, compact }: { card: AppCard; count?: number; maxed?: boolean; onTap?: () => void; onLongPress?: () => void; compact?: boolean }) {
+export function PoolCard({ card, print, count, maxed, onTap, onLongPress, compact }: { card: AppCard; print?: AppPrint; count?: number; maxed?: boolean; onTap?: () => void; onLongPress?: () => void; compact?: boolean }) {
   const lang = useLang();
   return (
     <Pressable onTap={onTap} onLongPress={onLongPress} label={cardName(card, lang)} className="relative rounded-md shadow-[2px_3px_6px_rgb(var(--shadow-rgb)/0.45)]">
-      <Thumb card={card} className={maxed ? "opacity-45" : ""} />
+      <Thumb card={card} print={print} className={maxed ? "opacity-45" : ""} />
       {/* 実装前のカード: 右上に実装予定日 */}
       {card.upcoming && (
         <span className={`absolute top-[3%] right-[3%] rounded-full bg-[#e8553d] px-1 leading-tight font-extrabold text-white shadow ${compact ? "text-[8px]" : "text-[9px]"}`}>

@@ -23,16 +23,27 @@ const UA = "pokepoke-personal/0.1 (personal, non-commercial deck builder; max 1 
 
 const src = new Map<string, string[]>();
 const jaOf = ja ? jaImageIndex(join(ROOT, "data")) : undefined;
+/** 先行公開の絵柄の画像（先に images-ja が置いたもの）。手で置いた日本語画像は日本語のサムネイルだけ。英語は英語（先行公開）の画像から */
+const prelimFile = (p: Card["prints"][number]) => {
+  const manual = join(ROOT, "public/cards-ja/manual", `${p.id}.webp`);
+  const url = ja ? p.image : (p.imageEn ?? p.image); // 英語の画像が別にあれば、英語版のサムネイルはそれから
+  const remote = url ? join(ROOT, "public", jaImageFile(url)) : undefined;
+  return ja && existsSync(manual) ? manual : remote && existsSync(remote) ? remote : existsSync(manual) ? manual : undefined;
+};
+// 既存カードに足した再録（先行公開の絵違い）は、収録IDでサムネイルを作る（「最新のカード」でその絵柄を見せる）
+const printIds: string[] = [];
+for (const c of cards)
+  for (const p of c.prints) {
+    const file = p.prelim && prelimFile(p);
+    if (!file) continue;
+    src.set(p.id, [file]);
+    printIds.push(p.id);
+  }
 for (const c of cards) {
-  // 実装前のカードは、先に images-ja が置いた画像（無ければ手で置いた画像）から作る。英語版も同じ画像
+  // 先行公開のカードは、先行公開の画像から作る
   if (c.upcoming) {
-    const p = c.prints[0];
-    const manual = join(ROOT, "public/cards-ja/manual", `${p.id}.webp`);
-    const url = ja ? p.image : (p.imageEn ?? p.image); // 英語の画像が別にあれば、英語版のサムネイルはそれから
-    const remote = url ? join(ROOT, "public", jaImageFile(url)) : undefined;
-    // 手で置いた日本語画像は日本語のサムネイルだけ。英語は英語（先行公開）の画像から
-    const file = ja && existsSync(manual) ? manual : remote && existsSync(remote) ? remote : existsSync(manual) ? manual : undefined;
-    if (file && existsSync(file)) src.set(c.id, [file]);
+    const file = prelimFile(c.prints[0]);
+    if (file) src.set(c.id, [file]);
     continue;
   }
   if (!jaOf) src.set(c.id, orderedPrints(c.prints).map((p) => p.image));
@@ -50,15 +61,16 @@ for (const c of cards) {
   if (manifest[c.id] || !existsSync(join(OUT, `${c.id}.webp`))) continue;
   manifest[c.id] = ja ? (oldJa!(c) ?? "") : c.prints[0].image;
 }
-const todo = cards.filter((c) => src.has(c.id) && (!existsSync(join(OUT, `${c.id}.webp`)) || manifest[c.id] !== src.get(c.id)![0]));
-console.log(`${ja ? "日本語" : "英語"}サムネイル: 作成済み ${cards.length - todo.length} 枚 / これから ${todo.length} 枚${ja ? `（約${Math.ceil((todo.length * INTERVAL_MS) / 60000)}分）` : ""}`);
-if (ja) console.log(`日本語画像の無いカード ${cards.length - src.size} 枚（英語画像で代用）`);
+const ids = [...cards.map((c) => c.id), ...printIds];
+const todo = ids.filter((id) => src.has(id) && (!existsSync(join(OUT, `${id}.webp`)) || manifest[id] !== src.get(id)![0]));
+console.log(`${ja ? "日本語" : "英語"}サムネイル: 作成済み ${ids.length - todo.length} 枚 / これから ${todo.length} 枚${ja ? `（約${Math.ceil((todo.length * INTERVAL_MS) / 60000)}分）` : ""}`);
+if (ja) console.log(`日本語画像の無いカード ${cards.filter((c) => !src.has(c.id)).length} 枚（英語画像で代用）`);
 
 let last = 0;
 let done = 0;
 const failed: string[] = [];
-async function one(c: Card) {
-  for (const url of src.get(c.id)!) {
+async function one(id: string) {
+  for (const url of src.get(id)!) {
     const wait = last + INTERVAL_MS - Date.now();
     if (wait > 0) await new Promise((r) => setTimeout(r, wait));
     last = Date.now();
@@ -71,21 +83,21 @@ async function one(c: Card) {
         buf = Buffer.from(await res.arrayBuffer());
       }
       const out = await sharp(buf).resize({ width: WIDTH }).webp({ quality: 74 }).toBuffer();
-      writeFileSync(join(OUT, `${c.id}.webp`), out);
-      manifest[c.id] = url;
+      writeFileSync(join(OUT, `${id}.webp`), out);
+      manifest[id] = url;
       return;
     } catch {
       // 次の候補へ
     }
   }
-  failed.push(c.id);
+  failed.push(id);
 }
 
 const queue = [...todo];
 await Promise.all(
   Array.from({ length: CONCURRENCY }, async () => {
-    for (let c = queue.shift(); c; c = queue.shift()) {
-      await one(c);
+    for (let id = queue.shift(); id; id = queue.shift()) {
+      await one(id);
       if (++done % 100 === 0) console.log(`  ${done}/${todo.length}`);
     }
   }),

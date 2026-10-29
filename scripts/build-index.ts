@@ -117,6 +117,9 @@ function printOf(c: Card, p: Card["prints"][number]): AppPrint {
     out.imageEn = p.imageEn ? jaLocal(p.imageEn) : p.image ? jaLocal(p.image) : out.imageJa;
     if (p.pack) out.pack = p.pack;
     if (p.how) out.how = p.how;
+    // 既存カードの再録の絵柄は、その絵柄のサムネイル（「最新のカード」で見せる）
+    if (p.prelim && existsSync(join(ROOT, "public/thumbs", `${p.id}.webp`))) out.thumb = true;
+    if (p.prelim && existsSync(join(ROOT, "public/thumbs-ja", `${p.id}.webp`))) out.jaThumb = true;
     return out;
   }
   // 英語画像は収録IDから場所が決まるので、まだ自前で置いていないものだけ元の URL を持たせる

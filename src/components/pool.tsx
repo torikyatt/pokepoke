@@ -280,7 +280,7 @@ export function PoolGrid({ hits, counts, maxed, onTap, footer, wide }: { hits: H
       >
         {hits.slice(0, shown).map((h) => (
           <div key={h.card.id} data-card={h.card.id}>
-            <PoolCard card={h.card} count={counts?.get(h.card.id)} maxed={maxed?.(h.card)} compact={columns === 5} onTap={() => onTap(h.card)} onLongPress={() => addToDeck(h.card)} />
+            <PoolCard card={h.card} print={h.print ? h.card.prints.find((p) => p.id === h.print) : undefined} count={counts?.get(h.card.id)} maxed={maxed?.(h.card)} compact={columns === 5} onTap={() => onTap(h.card)} onLongPress={() => addToDeck(h.card)} />
             {favOnly ? <QuickAdd card={h.card} /> : footer?.(h)}
           </div>
         ))}

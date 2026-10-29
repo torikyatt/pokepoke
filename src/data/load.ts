@@ -25,7 +25,12 @@ const enWeb = (url: string) => (__SINGLE__ && url.startsWith("cards-en/") ? enIm
  *   単一HTML版: 日本語のサムネイルを埋め込み（日本語が無いカードは英語）。英語を選んだときはネットの英語画像を使い、
  *              オフラインなら埋め込みに戻す
  */
-export function thumbUrls(card: AppCard, lang: ImageLang): string[] {
+export function thumbUrls(card: AppCard, lang: ImageLang, print?: AppPrint): string[] {
+  // 絵柄を指定したとき（再録の新しい絵柄）は、その絵柄のサムネイル。無ければカードのもの
+  if (print?.thumb) {
+    const own = thumbs ? (thumbs[print.id] ? [`data:image/webp;base64,${thumbs[print.id]}`] : []) : [lang === "ja" && print.jaThumb ? `thumbs-ja/${print.id}.webp` : `thumbs/${print.id}.webp`];
+    return [...own, ...thumbUrls(card, lang)];
+  }
   if (thumbs) {
     const b = thumbs[card.id];
     const embedded = b ? `data:image/webp;base64,${b}` : undefined;

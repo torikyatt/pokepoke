@@ -40,6 +40,8 @@ export interface AppPrint {
   how?: string; // パック以外の入手方法（プロモなど）
   imageJa?: string; // この絵柄の日本語画像（Game8）
   imageEn?: string; // 英語画像をまだ自前で置いていないときだけ、元の URL。置いてあれば cards-en/<id>.webp
+  thumb?: true; // この絵柄のサムネイルがある（thumbs/<収録ID>.webp。日本語は thumbs-ja/ にあれば）。再録の新しい絵柄
+  jaThumb?: true;
 }
 
 export interface AppCard {

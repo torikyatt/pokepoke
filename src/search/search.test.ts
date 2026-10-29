@@ -713,6 +713,13 @@ describe("最新のカード", () => {
     // 実装予定のカードも入る
     for (const c of data.cards.filter((c) => c.upcoming)) expect(hits.some((h) => h.card.id === c.id)).toBe(true);
   });
+  it("前からあるカードの再録は、新しい絵柄で見せる（ほかの検索ではふつうの絵柄）", () => {
+    const reprint = data.cards.find((c) => !c.upcoming && c.prints.some((p) => p.thumb));
+    if (!reprint) return;
+    const p = reprint.prints.find((p) => p.thumb)!;
+    expect(engine.search("最新のカード", 9999).find((h) => h.card.id === reprint.id)?.print).toBe(p.id);
+    expect(engine.search(reprint.nameJa, 9999).find((h) => h.card.id === reprint.id)?.print).toBeUndefined();
+  });
   it("ほかの条件と組み合わせられる・英語でも", () => {
     expect(engine.explain("新弾の炎ポケモン").conds.map((c) => c.id)).toEqual(expect.arrayContaining(["latest", "type:fire"]));
     expect(engine.explain("newest cards").conds.map((c) => c.id)).toEqual(["latest"]);

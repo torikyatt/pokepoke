@@ -46,6 +46,7 @@ export interface Hit {
   card: AppCard;
   score: number;
   loose?: boolean; // 条件にゆるく当たった（言葉が文にあるだけ・「グッズ」で探したどうぐ）。図鑑順でも後ろに並べる
+  print?: string; // 一覧で見せる絵柄（収録ID）。「最新のカード」で、新しいパックに再録された絵柄
   matched: string[]; // 一致した条件のID
   effects: string[]; // 一致したワザ・特性の名前
   effectsEn: string[];
@@ -343,7 +344,15 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     const count = new Map<string, number>();
     for (const c of data.cards) if (!c.upcoming) for (const code of c.sets) count.set(code, (count.get(code) ?? 0) + 1);
     const from = [...count].filter(([code, n]) => n >= 50 && !/^p/.test(code) && setDate.get(code)).map(([code]) => setDate.get(code)!).sort().pop() ?? "9999";
-    return new Set(data.cards.filter((c) => c.upcoming || c.sets.some((code) => (setDate.get(code) || "0") >= from)).map((c) => c.id));
+    const isNew = (code: string) => (setDate.get(code) || "0") >= from;
+    // 前からあるカードが新しいパックに再録されたものは、新しい絵柄（サムネイルがあるもの）で見せる。性能は同じなので
+    const prints = new Map<string, string>();
+    for (const c of data.cards) {
+      if (c.upcoming || isNew(c.prints[0].set)) continue;
+      const p = c.prints.find((p) => isNew(p.set) && p.thumb);
+      if (p) prints.set(c.id, p.id);
+    }
+    return { ids: new Set(data.cards.filter((c) => c.upcoming || c.sets.some(isNew)).map((c) => c.id)), prints };
   })();
   const LATEST: Cond = { id: "latest", kind: "latest", label: "最新のカード", en: "Newest cards", weight: 1 };
   // パック名（カード名と同じ名前のものは除く）。日本語はひらがなで打っても当たるよう normalize した形で
@@ -1155,7 +1164,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
         if (decks.length && !deckRate.has(card.id)) continue;
         if (partnerMaps.some((p) => !p.map.has(card.id))) continue;
         if (metaCond && (usage[card.id] ?? 0) < 0.01) continue;
-        if (latestCond && !latest.has(card.id)) continue;
+        if (latestCond && !latest.ids.has(card.id)) continue;
         if (setConds.length && !setConds.some((s) => card.prints.some((p) => p.set === s.code))) continue;
         if (sortBy.some((s) => sortVal(s) === undefined)) continue;
       }
@@ -1235,7 +1244,8 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       const coreRate = coreDeck && !coreDeck.cards.includes(card.id) ? coreDeck.rates.get(card.id) : undefined;
       const note = decks.length ? `採用率 ${Math.round(deckRate.get(card.id)! * 100)}%` : coreRate !== undefined ? `採用率 ${Math.round(coreRate * 100)}%` : metaCond ? `大会で ${((usage[card.id] ?? 0) * 100).toFixed(1)}%` : undefined;
       const noteEn = decks.length ? `In ${Math.round(deckRate.get(card.id)! * 100)}% of lists` : coreRate !== undefined ? `In ${Math.round(coreRate * 100)}% of lists` : metaCond ? `${((usage[card.id] ?? 0) * 100).toFixed(1)}% in tournaments` : undefined;
-      hits.push({ card, score, ...(byText || toolAsItem ? { loose: true } : {}), matched: [...matched], effects: [...effectNames.keys()].filter(Boolean), effectsEn: [...effectNames.values()].filter(Boolean), ...(note ? { note, noteEn } : {}) });
+      const print = latestCond ? latest.prints.get(card.id) : undefined;
+      hits.push({ card, score, ...(print ? { print } : {}), ...(byText || toolAsItem ? { loose: true } : {}), matched: [...matched], effects: [...effectNames.keys()].filter(Boolean), effectsEn: [...effectNames.values()].filter(Boolean), ...(note ? { note, noteEn } : {}) });
     }
     hits.sort((a, b) => b.score - a.score || order(a.card) - order(b.card));
     return hits.slice(0, limit);
