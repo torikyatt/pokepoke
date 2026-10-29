@@ -129873,7 +129873,8 @@
     "rarity": "◊",
     "image": "https://img.game8.jp/13113710/402a2d2cb309c1dbf12e7fd88075c1c4.webp/show",
     "imageEn": "https://serebii.net/tcgpocket/dualfusion/1.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "sp1-001",
@@ -129941,7 +129942,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/2.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -129996,7 +129998,8 @@
     "rarity": "◊◊◊",
     "image": "https://img.game8.jp/13113530/ebcd921e0309306ca1786f9cfc9eea76.webp/show",
     "imageEn": "https://serebii.net/tcgpocket/dualfusion/3.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-132",
@@ -130004,7 +130007,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/132.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -130067,7 +130071,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/4.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-133",
@@ -130075,7 +130080,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/133.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -130129,7 +130135,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/5.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-153",
@@ -130137,7 +130144,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/153.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-171",
@@ -130145,7 +130153,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/171.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -130194,7 +130203,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/6.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -130247,7 +130257,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/7.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -130300,7 +130311,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/8.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -130352,7 +130364,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/9.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-134",
@@ -130360,7 +130373,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/134.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -130412,7 +130426,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/10.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -130464,7 +130479,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/11.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -130516,7 +130532,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/12.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -130567,7 +130584,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/13.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -130618,7 +130636,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/14.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -130670,7 +130689,8 @@
     "rarity": "◊◊◊",
     "image": "https://img.game8.jp/13113898/1912af26ca20da528f705834c0abf265.webp/show",
     "imageEn": "https://serebii.net/tcgpocket/dualfusion/15.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-135",
@@ -130678,7 +130698,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/135.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -130744,7 +130765,8 @@
     "rarity": "◊",
     "image": "https://img.game8.jp/13113711/b56d651f962299a6570533850f172883.webp/show",
     "imageEn": "https://serebii.net/tcgpocket/dualfusion/16.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "sp1-002",
@@ -130814,7 +130836,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/17.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -130871,7 +130894,8 @@
     "rarity": "◊◊◊",
     "image": "https://img.game8.jp/13113529/b22f2b4917260c2f0999dca20c539a87.webp/show",
     "imageEn": "https://serebii.net/tcgpocket/dualfusion/18.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-136",
@@ -130879,7 +130903,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/136.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -130938,7 +130963,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/19.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -130992,7 +131018,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/20.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -131046,7 +131073,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/21.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -131099,7 +131127,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/22.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -131155,7 +131184,8 @@
     "rarity": "◊◊",
     "image": "https://img.game8.jp/13113900/ed2048ad5a7c86c8b4d75a892ae15282.webp/show",
     "imageEn": "https://serebii.net/tcgpocket/dualfusion/23.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-137",
@@ -131163,7 +131193,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/137.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -131224,7 +131255,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/24.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -131290,7 +131322,8 @@
     "rarity": "◊◊◊◊",
     "image": "https://img.game8.jp/12923032/7ac06d023af3fbf47ccc0d6378489d6b.webp/show",
     "imageEn": "https://serebii.net/tcgpocket/dualfusion/25.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-154",
@@ -131298,7 +131331,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/154.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-172",
@@ -131306,7 +131340,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/172.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-215",
@@ -131421,7 +131456,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/27.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -131476,7 +131512,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/28.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-138",
@@ -131484,7 +131521,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/138.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -131539,7 +131577,8 @@
     "rarity": "◊",
     "image": "https://img.game8.jp/13113712/2416660b7c44756d3773a2141a480c15.webp/show",
     "imageEn": "https://serebii.net/tcgpocket/dualfusion/29.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "sp1-003",
@@ -131605,7 +131644,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/30.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -131659,7 +131699,8 @@
     "rarity": "◊◊◊",
     "image": "https://img.game8.jp/13113528/3b2824f4c00918427a57e99f81393985.webp/show",
     "imageEn": "https://serebii.net/tcgpocket/dualfusion/31.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-139",
@@ -131667,7 +131708,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/139.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -131727,7 +131769,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/32.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-192",
@@ -131735,7 +131778,8 @@
     "setName": "Dual Fusion",
     "rarity": "✵",
     "image": "https://serebii.net/tcgpocket/dualfusion/192.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -131786,7 +131830,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/33.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-193",
@@ -131794,7 +131839,8 @@
     "setName": "Dual Fusion",
     "rarity": "✵",
     "image": "https://serebii.net/tcgpocket/dualfusion/193.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -131848,7 +131894,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/34.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -131902,7 +131949,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/35.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -131951,7 +131999,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/36.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -131999,7 +132048,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/37.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -132049,7 +132099,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/38.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-140",
@@ -132057,7 +132108,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/140.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -132107,7 +132159,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/39.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -132159,7 +132212,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/40.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "sp1-018",
@@ -132224,7 +132278,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/41.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-141",
@@ -132232,7 +132287,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/141.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -132295,7 +132351,8 @@
     "rarity": "◊◊◊◊",
     "image": "https://img.game8.jp/13113526/e068da7d3b77b97e1e6d75520d5fbe9d.webp/show",
     "imageEn": "https://serebii.net/tcgpocket/dualfusion/42.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-155",
@@ -132303,7 +132360,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/155.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-173",
@@ -132311,7 +132369,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/173.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -132378,7 +132437,8 @@
     "rarity": "◊◊◊◊",
     "image": "https://img.game8.jp/13113527/7b79df7f0e8faa29d7d615eb8b864854.webp/show",
     "imageEn": "https://serebii.net/tcgpocket/dualfusion/43.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-156",
@@ -132386,7 +132446,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/156.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-174",
@@ -132394,7 +132455,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/174.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-183",
@@ -132402,7 +132464,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/183.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "how": "パック以外で入手"
    }
   ],
   "tags": [],
@@ -132561,7 +132624,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/46.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -132610,7 +132674,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/47.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -132663,7 +132728,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/48.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -132721,7 +132787,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/49.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -132775,7 +132842,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/50.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-142",
@@ -132783,7 +132851,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/142.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-216",
@@ -132855,7 +132924,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/51.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-184",
@@ -132863,7 +132933,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/184.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -132919,7 +132990,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/52.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -132972,7 +133044,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/53.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-195",
@@ -132980,7 +133053,8 @@
     "setName": "Dual Fusion",
     "rarity": "✵",
     "image": "https://serebii.net/tcgpocket/dualfusion/195.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -133037,7 +133111,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/54.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-196",
@@ -133045,7 +133120,8 @@
     "setName": "Dual Fusion",
     "rarity": "✵",
     "image": "https://serebii.net/tcgpocket/dualfusion/196.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -133100,7 +133176,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/55.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-197",
@@ -133108,7 +133185,8 @@
     "setName": "Dual Fusion",
     "rarity": "✵",
     "image": "https://serebii.net/tcgpocket/dualfusion/197.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -133160,7 +133238,8 @@
     "rarity": "◊◊◊◊",
     "image": "https://img.game8.jp/12922926/689e96571dcf6eaa9e40f1ae881da1e0.webp/show",
     "imageEn": "https://serebii.net/tcgpocket/dualfusion/56.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-157",
@@ -133168,7 +133247,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/157.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-175",
@@ -133176,7 +133256,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/175.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-185",
@@ -133184,7 +133265,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/185.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "how": "パック以外で入手"
    }
   ],
   "tags": [],
@@ -133249,7 +133331,8 @@
     "rarity": "◊◊◊◊",
     "image": "https://img.game8.jp/13113525/a852bad97f4d171d5b2b98c6ae5d2a85.webp/show",
     "imageEn": "https://serebii.net/tcgpocket/dualfusion/57.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-158",
@@ -133257,7 +133340,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/158.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-176",
@@ -133265,7 +133349,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/176.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -133317,7 +133402,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/58.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -133371,7 +133457,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/59.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -133435,7 +133522,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/60.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -133484,7 +133572,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/61.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -133533,7 +133622,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/62.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "pc-003",
@@ -133590,7 +133680,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/63.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-143",
@@ -133598,7 +133689,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/143.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -133721,7 +133813,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/144.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "pc-007",
@@ -133781,7 +133874,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/66.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-198",
@@ -133789,7 +133883,8 @@
     "setName": "Dual Fusion",
     "rarity": "✵",
     "image": "https://serebii.net/tcgpocket/dualfusion/198.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "pc-008",
@@ -133852,7 +133947,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/67.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -133906,7 +134002,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/68.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -133959,7 +134056,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/69.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-199",
@@ -133967,7 +134065,8 @@
     "setName": "Dual Fusion",
     "rarity": "✵",
     "image": "https://serebii.net/tcgpocket/dualfusion/199.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -134023,7 +134122,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/70.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-200",
@@ -134031,7 +134131,8 @@
     "setName": "Dual Fusion",
     "rarity": "✵",
     "image": "https://serebii.net/tcgpocket/dualfusion/200.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -134084,7 +134185,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/71.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -134133,7 +134235,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/72.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -134185,7 +134288,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/73.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -134238,7 +134342,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/74.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-147",
@@ -134246,7 +134351,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/147.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -134299,7 +134405,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/75.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-145",
@@ -134307,7 +134414,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/145.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -134363,7 +134471,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/76.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-146",
@@ -134371,7 +134480,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/146.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -134424,7 +134534,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/77.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -134477,7 +134588,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/78.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -134531,7 +134643,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/79.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -134586,7 +134699,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/80.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-159",
@@ -134594,7 +134708,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/159.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-177",
@@ -134602,7 +134717,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/177.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-210",
@@ -134610,7 +134726,8 @@
     "setName": "Dual Fusion",
     "rarity": "✵✵",
     "image": "https://serebii.net/tcgpocket/dualfusion/210.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -134673,7 +134790,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/81.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -134732,7 +134850,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/82.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -134788,7 +134907,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/83.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-148",
@@ -134796,7 +134916,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/148.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -134860,7 +134981,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/84.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-186",
@@ -134868,7 +134990,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/186.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -134924,7 +135047,8 @@
     "rarity": "◊◊◊◊",
     "image": "https://img.game8.jp/13113899/d8c987292cf6aa015fa5af87d1714458.webp/show",
     "imageEn": "https://serebii.net/tcgpocket/dualfusion/85.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-160",
@@ -134932,7 +135056,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/160.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-178",
@@ -134940,7 +135065,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/178.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -134990,7 +135116,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/86.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -135043,7 +135170,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/87.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -135096,7 +135224,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/88.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -135147,7 +135276,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/89.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -135197,7 +135327,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/90.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -135248,7 +135379,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/91.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-161",
@@ -135256,7 +135388,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/161.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-179",
@@ -135264,7 +135397,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/179.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -135314,7 +135448,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/92.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-149",
@@ -135322,7 +135457,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/149.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -135375,7 +135511,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/93.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -135428,7 +135565,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/94.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -135480,7 +135618,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/95.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-202",
@@ -135488,7 +135627,8 @@
     "setName": "Dual Fusion",
     "rarity": "✵",
     "image": "https://serebii.net/tcgpocket/dualfusion/202.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -135544,7 +135684,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/96.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -135599,7 +135740,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/97.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-150",
@@ -135607,7 +135749,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/150.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -135671,7 +135814,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/98.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -135730,7 +135874,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/99.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -135788,7 +135933,8 @@
     "rarity": "◊◊◊◊",
     "image": "https://img.game8.jp/13113524/bfd407fbb73a6b093f9440cd16a20e97.webp/show",
     "imageEn": "https://serebii.net/tcgpocket/dualfusion/100.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-162",
@@ -135796,7 +135942,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/162.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-180",
@@ -135804,7 +135951,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/180.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-211",
@@ -135812,7 +135960,8 @@
     "setName": "Dual Fusion",
     "rarity": "✵✵",
     "image": "https://serebii.net/tcgpocket/dualfusion/211.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "pc-013",
@@ -135884,7 +136033,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/101.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-163",
@@ -135892,7 +136042,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/163.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-181",
@@ -135900,7 +136051,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/181.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-217",
@@ -135960,7 +136112,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/102.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -136019,7 +136172,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/103.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -136074,7 +136228,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/104.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -136127,7 +136282,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/105.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-203",
@@ -136135,7 +136291,8 @@
     "setName": "Dual Fusion",
     "rarity": "✵",
     "image": "https://serebii.net/tcgpocket/dualfusion/203.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -136187,7 +136344,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/106.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-204",
@@ -136195,7 +136353,8 @@
     "setName": "Dual Fusion",
     "rarity": "✵",
     "image": "https://serebii.net/tcgpocket/dualfusion/204.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -136328,7 +136487,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/108.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -136387,7 +136547,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/109.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -136442,7 +136603,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/110.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -136492,7 +136654,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/111.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -136540,7 +136703,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/112.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -136608,7 +136772,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/151.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -136716,7 +136881,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/115.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -136770,7 +136936,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/116.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -136825,7 +136992,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/117.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-206",
@@ -136833,7 +137001,8 @@
     "setName": "Dual Fusion",
     "rarity": "✵",
     "image": "https://serebii.net/tcgpocket/dualfusion/206.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -136888,7 +137057,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/118.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-164",
@@ -136896,7 +137066,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/164.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-182",
@@ -136904,7 +137075,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/182.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-214",
@@ -136912,7 +137084,8 @@
     "setName": "Dual Fusion",
     "rarity": "✵✵",
     "image": "https://serebii.net/tcgpocket/dualfusion/214.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -136945,7 +137118,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/119.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-152",
@@ -136953,7 +137127,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/152.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "how": "パック以外で入手"
    }
   ],
   "tags": [],
@@ -136987,7 +137162,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/120.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -137021,7 +137197,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/121.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -137055,7 +137232,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/122.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -137123,7 +137301,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/124.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -137157,7 +137336,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/125.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-165",
@@ -137165,7 +137345,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/165.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -137199,7 +137380,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/126.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-166",
@@ -137207,7 +137389,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/166.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -137241,7 +137424,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/127.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-167",
@@ -137249,7 +137433,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/167.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -137283,7 +137468,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/128.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-168",
@@ -137291,7 +137477,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/168.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -137325,7 +137512,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/129.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    },
    {
     "id": "c1-169",
@@ -137333,7 +137521,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/169.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "ピカチュウ"
    }
   ],
   "tags": [],
@@ -137367,7 +137556,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/130.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    },
    {
     "id": "c1-170",
@@ -137375,7 +137565,8 @@
     "setName": "Dual Fusion",
     "rarity": "☆☆",
     "image": "https://serebii.net/tcgpocket/dualfusion/170.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],
@@ -137409,7 +137600,8 @@
     "setName": "Dual Fusion",
     "rarity": "◊◊",
     "image": "https://serebii.net/tcgpocket/dualfusion/131.jpg",
-    "released": "2026-10-29"
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX"
    }
   ],
   "tags": [],

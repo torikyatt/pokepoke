@@ -114,6 +114,8 @@ function printOf(c: Card, p: Card["prints"][number]): AppPrint {
     const manual = `cards-ja/manual/${p.id}.webp`;
     out.imageJa = existsSync(join(ROOT, "public", manual)) ? manual : p.image ? jaLocal(p.image) : manual;
     out.imageEn = p.imageEn ? jaLocal(p.imageEn) : out.imageJa;
+    if (p.pack) out.pack = p.pack;
+    if (p.how) out.how = p.how;
     return out;
   }
   // 英語画像は収録IDから場所が決まるので、まだ自前で置いていないものだけ元の URL を持たせる

@@ -34,6 +34,8 @@ export interface Print {
   released?: string; // 発売日（YYYY-MM-DD）
   imageEn?: string; // 実装前のカードで、英語の画像が日本語の画像（image）と別にあるとき
   builderNr?: number; // アプリのデッキ編集画面での並び順
+  pack?: string; // 先行公開のカード: 弾の中のパック（日本語。例: ピカチュウ）。無ければどのパックからも出る
+  how?: string; // 先行公開のカード: パック以外の入手方法
 }
 
 export interface Card {

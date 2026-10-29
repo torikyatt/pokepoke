@@ -43,6 +43,7 @@ cards:
         set: sp1
         rarity: ☆
         image: https://serebii.net/tcgpocket/firstpartners/1.jpg
+    pack: ピカチュウ
   - id: c1-002
     set: c1
     rarity: ◊
@@ -62,6 +63,7 @@ cards:
         damage: '50'
         nameEn: Leaf Drain
         textEn: Heal 20 damage from this Pokémon.
+    pack: ピカチュウ
   - id: c1-003
     set: c1
     rarity: ◊◊◊
@@ -91,6 +93,8 @@ cards:
       - id: c1-132
         rarity: ☆
         image: https://serebii.net/tcgpocket/dualfusion/132.jpg
+        pack: ピカチュウ
+    pack: ピカチュウ
   - id: c1-004
     set: c1
     rarity: ◊
@@ -112,6 +116,8 @@ cards:
       - id: c1-133
         rarity: ☆
         image: https://serebii.net/tcgpocket/dualfusion/133.jpg
+        pack: ピカチュウ
+    pack: ピカチュウ
   - id: c1-005
     set: c1
     rarity: ◊◊◊◊
@@ -135,9 +141,12 @@ cards:
       - id: c1-153
         rarity: ☆☆
         image: https://serebii.net/tcgpocket/dualfusion/153.jpg
+        pack: ピカチュウ
       - id: c1-171
         rarity: ☆☆
         image: https://serebii.net/tcgpocket/dualfusion/171.jpg
+        pack: ピカチュウ
+    pack: ピカチュウ
   - id: c1-006
     set: c1
     rarity: ◊
@@ -155,6 +164,7 @@ cards:
       - cost: G
         damage: '30'
         nameEn: Vise Grip
+    pack: メガミュウツーX
   - id: c1-007
     set: c1
     rarity: ◊
@@ -172,6 +182,7 @@ cards:
       - cost: G
         damage: '20'
         nameEn: Flap
+    pack: メガミュウツーX
   - id: c1-008
     set: c1
     rarity: ◊◊
@@ -190,6 +201,7 @@ cards:
       - cost: GG
         damage: 50×
         nameEn: Honey Rush
+    pack: メガミュウツーX
   - id: c1-009
     set: c1
     rarity: ◊
@@ -211,6 +223,8 @@ cards:
       - id: c1-134
         rarity: ☆
         image: https://serebii.net/tcgpocket/dualfusion/134.jpg
+        pack: ピカチュウ
+    pack: ピカチュウ
   - id: c1-010
     set: c1
     rarity: ◊◊
@@ -230,6 +244,7 @@ cards:
         damage: '100'
         nameEn: Leaf Litter Tackle
         textEn: Discard a [G] Energy from this Pokémon.
+    pack: ピカチュウ
   - id: c1-011
     set: c1
     rarity: ◊
@@ -247,6 +262,7 @@ cards:
       - cost: G
         damage: '20'
         nameEn: Beat
+    pack: メガミュウツーX
   - id: c1-012
     set: c1
     rarity: ◊◊
@@ -265,6 +281,7 @@ cards:
       - cost: GC
         damage: '50'
         nameEn: Astonish
+    pack: メガミュウツーX
   - id: c1-013
     set: c1
     rarity: ◊◊
@@ -283,6 +300,7 @@ cards:
         damage: '60'
         nameEn: Signal Beam
         textEn: Your opponent's Active Pokémon is now Confused.
+    pack: メガミュウツーX
   - id: c1-014
     set: c1
     rarity: ◊
@@ -300,6 +318,7 @@ cards:
       - cost: G
         damage: '20'
         nameEn: Bug Bite
+    pack: メガミュウツーX
   - id: c1-015
     set: c1
     rarity: ◊◊◊
@@ -326,6 +345,8 @@ cards:
       - id: c1-135
         rarity: ☆
         image: https://serebii.net/tcgpocket/dualfusion/135.jpg
+        pack: メガミュウツーX
+    pack: メガミュウツーX
   - id: c1-016
     set: c1
     rarity: ◊
@@ -351,6 +372,7 @@ cards:
         set: sp1
         rarity: ☆
         image: https://serebii.net/tcgpocket/firstpartners/2.jpg
+    pack: メガミュウツーX
   - id: c1-017
     set: c1
     rarity: ◊
@@ -369,6 +391,7 @@ cards:
       - cost: RR
         damage: '50'
         nameEn: Flame Tail
+    pack: メガミュウツーX
   - id: c1-018
     set: c1
     rarity: ◊◊◊
@@ -398,6 +421,8 @@ cards:
       - id: c1-136
         rarity: ☆
         image: https://serebii.net/tcgpocket/dualfusion/136.jpg
+        pack: メガミュウツーX
+    pack: メガミュウツーX
   - id: c1-019
     set: c1
     rarity: ◊◊◊
@@ -416,6 +441,7 @@ cards:
         damage: 110×
         nameEn: Dynamite Steam
         textEn: Flip 2 coins. This attack does 110 damage for each heads.
+    pack: ピカチュウ
   - id: c1-020
     set: c1
     rarity: ◊
@@ -433,6 +459,7 @@ cards:
       - cost: R
         damage: '30'
         nameEn: Flare
+    pack: ピカチュウ
   - id: c1-021
     set: c1
     rarity: ◊◊
@@ -451,6 +478,7 @@ cards:
       - cost: RR
         damage: '70'
         nameEn: Heat Blast
+    pack: ピカチュウ
   - id: c1-022
     set: c1
     rarity: ◊
@@ -469,6 +497,7 @@ cards:
         damage: 20×
         nameEn: Rabbit Jumping
         textEn: Flip 2 coins. This attack does 20 damage for each heads.
+    pack: ピカチュウ
   - id: c1-023
     set: c1
     rarity: ◊◊
@@ -495,6 +524,8 @@ cards:
       - id: c1-137
         rarity: ☆
         image: https://serebii.net/tcgpocket/dualfusion/137.jpg
+        pack: ピカチュウ
+    pack: ピカチュウ
   - id: c1-024
     set: c1
     rarity: ◊◊◊
@@ -514,6 +545,7 @@ cards:
         damage: '100'
         nameEn: Spinning Kick
         textEn: This Pokémon also does 20 damage to itself.
+    pack: ピカチュウ
   - id: c1-025
     set: c1
     rarity: ◊◊◊◊
@@ -543,12 +575,15 @@ cards:
       - id: c1-154
         rarity: ☆☆
         image: https://serebii.net/tcgpocket/dualfusion/154.jpg
+        pack: ピカチュウ
       - id: c1-172
         rarity: ☆☆
         image: https://serebii.net/tcgpocket/dualfusion/172.jpg
+        pack: ピカチュウ
       - id: c1-215
         rarity: Crown Rare
         image: https://serebii.net/tcgpocket/dualfusion/215.jpg
+    pack: ピカチュウ
   - id: c1-026
     set: c1
     rarity: ◊
@@ -585,6 +620,7 @@ cards:
         damage: '130'
         nameEn: Boundless Power
         textEn: During your next turn, this Pokémon can't attack.
+    pack: ピカチュウ
   - id: c1-028
     set: c1
     rarity: ◊◊
@@ -608,6 +644,8 @@ cards:
       - id: c1-138
         rarity: ☆
         image: https://serebii.net/tcgpocket/dualfusion/138.jpg
+        pack: メガミュウツーX
+    pack: メガミュウツーX
   - id: c1-029
     set: c1
     rarity: ◊
@@ -633,6 +671,7 @@ cards:
         set: sp1
         rarity: ☆
         image: https://serebii.net/tcgpocket/firstpartners/3.jpg
+    pack: メガミュウツーX
   - id: c1-030
     set: c1
     rarity: ◊
@@ -651,6 +690,7 @@ cards:
       - cost: WW
         damage: '50'
         nameEn: Spinning Attack
+    pack: メガミュウツーX
   - id: c1-031
     set: c1
     rarity: ◊◊◊
@@ -680,6 +720,8 @@ cards:
       - id: c1-139
         rarity: ☆
         image: https://serebii.net/tcgpocket/dualfusion/139.jpg
+        pack: メガミュウツーX
+    pack: メガミュウツーX
   - id: c1-032
     set: c1
     rarity: ◊
@@ -701,6 +743,8 @@ cards:
       - id: c1-192
         rarity: ✵
         image: https://serebii.net/tcgpocket/dualfusion/192.jpg
+        pack: ピカチュウ
+    pack: ピカチュウ
   - id: c1-033
     set: c1
     rarity: ◊◊
@@ -723,6 +767,8 @@ cards:
       - id: c1-193
         rarity: ✵
         image: https://serebii.net/tcgpocket/dualfusion/193.jpg
+        pack: ピカチュウ
+    pack: ピカチュウ
   - id: c1-034
     set: c1
     rarity: ◊
@@ -740,6 +786,7 @@ cards:
       - cost: WC
         damage: '40'
         nameEn: Water Gun
+    pack: ピカチュウ
   - id: c1-035
     set: c1
     rarity: ◊◊
@@ -759,6 +806,7 @@ cards:
         damage: '60'
         nameEn: Blizzard
         textEn: This attack also does 20 damage to each of your opponent's Benched Pokémon.
+    pack: ピカチュウ
   - id: c1-036
     set: c1
     rarity: ◊
@@ -776,6 +824,7 @@ cards:
       - cost: W
         damage: '30'
         nameEn: Slap
+    pack: ピカチュウ
   - id: c1-037
     set: c1
     rarity: ◊◊
@@ -793,6 +842,7 @@ cards:
       - cost: W
         nameEn: Ice Blade
         textEn: This attack does 20 damage to 1 of your opponent's Pokémon.
+    pack: ピカチュウ
   - id: c1-038
     set: c1
     rarity: ◊◊◊
@@ -815,6 +865,8 @@ cards:
       - id: c1-140
         rarity: ☆
         image: https://serebii.net/tcgpocket/dualfusion/140.jpg
+        pack: ピカチュウ
+    pack: ピカチュウ
   - id: c1-039
     set: c1
     rarity: ◊
@@ -833,6 +885,7 @@ cards:
         damage: '40'
         nameEn: Rock Head
         textEn: During your opponent's next turn, this Pokémon takes -30 damage from attacks.
+    pack: メガミュウツーX
   - id: c1-040
     set: c1
     rarity: ◊
@@ -855,6 +908,7 @@ cards:
         set: sp1
         rarity: ☆
         image: https://serebii.net/tcgpocket/firstpartners/18.jpg
+    pack: ピカチュウ
   - id: c1-041
     set: c1
     rarity: ◊◊
@@ -880,6 +934,8 @@ cards:
       - id: c1-141
         rarity: ☆
         image: https://serebii.net/tcgpocket/dualfusion/141.jpg
+        pack: ピカチュウ
+    pack: ピカチュウ
   - id: c1-042
     set: c1
     rarity: ◊◊◊◊
@@ -907,9 +963,12 @@ cards:
       - id: c1-155
         rarity: ☆☆
         image: https://serebii.net/tcgpocket/dualfusion/155.jpg
+        pack: ピカチュウ
       - id: c1-173
         rarity: ☆☆
         image: https://serebii.net/tcgpocket/dualfusion/173.jpg
+        pack: ピカチュウ
+    pack: ピカチュウ
   - id: c1-043
     set: c1
     rarity: ◊◊◊◊
@@ -939,12 +998,16 @@ cards:
       - id: c1-156
         rarity: ☆☆
         image: https://serebii.net/tcgpocket/dualfusion/156.jpg
+        pack: ピカチュウ
       - id: c1-174
         rarity: ☆☆
         image: https://serebii.net/tcgpocket/dualfusion/174.jpg
+        pack: ピカチュウ
       - id: c1-183
         rarity: ☆☆☆
         image: https://serebii.net/tcgpocket/dualfusion/183.jpg
+        how: パック以外で入手
+    pack: ピカチュウ
   - id: c1-044
     set: c1
     rarity: ◊
@@ -998,6 +1061,7 @@ cards:
       - cost: LLC
         damage: '80'
         nameEn: Electric Ball
+    pack: ピカチュウ
   - id: c1-047
     set: c1
     rarity: ◊◊◊
@@ -1016,6 +1080,7 @@ cards:
         damage: '90'
         nameEn: Thunderbolt
         textEn: Discard all Energy from this Pokémon.
+    pack: ピカチュウ
   - id: c1-048
     set: c1
     rarity: ◊
@@ -1033,6 +1098,7 @@ cards:
       - cost: L
         damage: '20'
         nameEn: Zap Kick
+    pack: ピカチュウ
   - id: c1-049
     set: c1
     rarity: ◊
@@ -1051,6 +1117,7 @@ cards:
       - cost: L
         damage: '40'
         nameEn: Electric Punch
+    pack: ピカチュウ
   - id: c1-050
     set: c1
     rarity: ◊◊◊
@@ -1076,9 +1143,11 @@ cards:
       - id: c1-142
         rarity: ☆
         image: https://serebii.net/tcgpocket/dualfusion/142.jpg
+        pack: ピカチュウ
       - id: c1-216
         rarity: Crown Rare
         image: https://serebii.net/tcgpocket/dualfusion/216.jpg
+    pack: ピカチュウ
   - id: c1-051
     set: c1
     rarity: ◊
@@ -1100,6 +1169,8 @@ cards:
       - id: c1-184
         rarity: ☆☆☆
         image: https://serebii.net/tcgpocket/dualfusion/184.jpg
+        pack: ピカチュウ
+    pack: ピカチュウ
   - id: c1-052
     set: c1
     rarity: ◊◊
@@ -1119,6 +1190,7 @@ cards:
         damage: 30×
         nameEn: Do the Wave
         textEn: This attack does 30 damage for each of your Benched Pokémon.
+    pack: ピカチュウ
   - id: c1-053
     set: c1
     rarity: ◊
@@ -1140,6 +1212,8 @@ cards:
       - id: c1-195
         rarity: ✵
         image: https://serebii.net/tcgpocket/dualfusion/195.jpg
+        pack: メガミュウツーX
+    pack: メガミュウツーX
   - id: c1-054
     set: c1
     rarity: ◊
@@ -1162,6 +1236,8 @@ cards:
       - id: c1-196
         rarity: ✵
         image: https://serebii.net/tcgpocket/dualfusion/196.jpg
+        pack: メガミュウツーX
+    pack: メガミュウツーX
   - id: c1-055
     set: c1
     rarity: ◊◊
@@ -1185,6 +1261,8 @@ cards:
       - id: c1-197
         rarity: ✵
         image: https://serebii.net/tcgpocket/dualfusion/197.jpg
+        pack: メガミュウツーX
+    pack: メガミュウツーX
   - id: c1-056
     set: c1
     rarity: ◊◊◊◊
@@ -1211,12 +1289,16 @@ cards:
       - id: c1-157
         rarity: ☆☆
         image: https://serebii.net/tcgpocket/dualfusion/157.jpg
+        pack: メガミュウツーX
       - id: c1-175
         rarity: ☆☆
         image: https://serebii.net/tcgpocket/dualfusion/175.jpg
+        pack: メガミュウツーX
       - id: c1-185
         rarity: ☆☆☆
         image: https://serebii.net/tcgpocket/dualfusion/185.jpg
+        how: パック以外で入手
+    pack: メガミュウツーX
   - id: c1-057
     set: c1
     rarity: ◊◊◊◊
@@ -1245,9 +1327,12 @@ cards:
       - id: c1-158
         rarity: ☆☆
         image: https://serebii.net/tcgpocket/dualfusion/158.jpg
+        pack: メガミュウツーX
       - id: c1-176
         rarity: ☆☆
         image: https://serebii.net/tcgpocket/dualfusion/176.jpg
+        pack: メガミュウツーX
+    pack: メガミュウツーX
   - id: c1-058
     set: c1
     rarity: ◊
@@ -1265,6 +1350,7 @@ cards:
       - cost: P
         damage: '20'
         nameEn: Rollout
+    pack: ピカチュウ
   - id: c1-059
     set: c1
     rarity: ◊◊
@@ -1284,6 +1370,7 @@ cards:
         damage: 60×
         nameEn: Rabbit Jumping
         textEn: Flip 2 coins. This attack does 60 damage for each heads.
+    pack: ピカチュウ
   - id: c1-060
     set: c1
     rarity: ◊◊
@@ -1303,6 +1390,7 @@ cards:
         damage: 10+
         nameEn: Brainwave
         textEn: This attack does 20 more damage for each [P] Energy attached to this Pokémon.
+    pack: ピカチュウ
   - id: c1-061
     set: c1
     rarity: ◊
@@ -1320,6 +1408,7 @@ cards:
       - cost: P
         damage: '30'
         nameEn: Headbutt Bounce
+    pack: メガミュウツーX
   - id: c1-062
     set: c1
     rarity: ◊◊◊
@@ -1342,6 +1431,7 @@ cards:
         set: pc
         rarity: Promo
         image: https://serebii.net/tcgpocket/promo-c/3.jpg
+    pack: メガミュウツーX
   - id: c1-063
     set: c1
     rarity: ◊
@@ -1364,6 +1454,8 @@ cards:
       - id: c1-143
         rarity: ☆
         image: https://serebii.net/tcgpocket/dualfusion/143.jpg
+        pack: ピカチュウ
+    pack: ピカチュウ
   - id: c1-064
     set: c1
     rarity: ◊
@@ -1408,6 +1500,7 @@ cards:
       - id: c1-144
         rarity: ☆
         image: https://serebii.net/tcgpocket/dualfusion/144.jpg
+        pack: ピカチュウ
       - id: pc-007
         set: pc
         rarity: Promo
@@ -1434,10 +1527,12 @@ cards:
       - id: c1-198
         rarity: ✵
         image: https://serebii.net/tcgpocket/dualfusion/198.jpg
+        pack: メガミュウツーX
       - id: pc-008
         set: pc
         rarity: Promo
         image: https://serebii.net/tcgpocket/promo-c/8.jpg
+    pack: メガミュウツーX
   - id: c1-067
     set: c1
     rarity: ◊
@@ -1456,6 +1551,7 @@ cards:
         damage: '10'
         nameEn: Dig
         textEn: Flip a coin. If heads, during your opponent's next turn, prevent all damage from—and effects of—attacks done to this Pokémon.
+    pack: メガミュウツーX
   - id: c1-068
     set: c1
     rarity: ◊◊
@@ -1475,6 +1571,7 @@ cards:
         damage: 30×
         nameEn: Triple Smash
         textEn: Flip 3 coins. This attack does 30 damage for each heads.
+    pack: メガミュウツーX
   - id: c1-069
     set: c1
     rarity: ◊
@@ -1496,6 +1593,8 @@ cards:
       - id: c1-199
         rarity: ✵
         image: https://serebii.net/tcgpocket/dualfusion/199.jpg
+        pack: ピカチュウ
+    pack: ピカチュウ
   - id: c1-070
     set: c1
     rarity: ◊
@@ -1519,6 +1618,8 @@ cards:
       - id: c1-200
         rarity: ✵
         image: https://serebii.net/tcgpocket/dualfusion/200.jpg
+        pack: ピカチュウ
+    pack: ピカチュウ
   - id: c1-071
     set: c1
     rarity: ◊◊◊
@@ -1537,6 +1638,7 @@ cards:
       - cost: FFF
         damage: '110'
         nameEn: Earthen Press
+    pack: ピカチュウ
   - id: c1-072
     set: c1
     rarity: ◊
@@ -1554,6 +1656,7 @@ cards:
       - cost: CC
         damage: '40'
         nameEn: Elbow Strike
+    pack: メガミュウツーX
   - id: c1-073
     set: c1
     rarity: ◊
@@ -1571,6 +1674,7 @@ cards:
       - cost: F
         damage: '20'
         nameEn: Mud-Slap
+    pack: メガミュウツーX
   - id: c1-074
     set: c1
     rarity: ◊◊◊
@@ -1594,6 +1698,8 @@ cards:
       - id: c1-147
         rarity: ☆
         image: https://serebii.net/tcgpocket/dualfusion/147.jpg
+        pack: メガミュウツーX
+    pack: メガミュウツーX
   - id: c1-075
     set: c1
     rarity: ◊
@@ -1615,6 +1721,8 @@ cards:
       - id: c1-145
         rarity: ☆
         image: https://serebii.net/tcgpocket/dualfusion/145.jpg
+        pack: メガミュウツーX
+    pack: メガミュウツーX
   - id: c1-076
     set: c1
     rarity: ◊◊
@@ -1637,6 +1745,8 @@ cards:
       - id: c1-146
         rarity: ☆
         image: https://serebii.net/tcgpocket/dualfusion/146.jpg
+        pack: メガミュウツーX
+    pack: メガミュウツーX
   - id: c1-077
     set: c1
     rarity: ◊
@@ -1654,6 +1764,7 @@ cards:
       - cost: F
         damage: '20'
         nameEn: Vibration
+    pack: メガミュウツーX
   - id: c1-078
     set: c1
     rarity: ◊◊
@@ -1673,6 +1784,7 @@ cards:
         damage: 40+
         nameEn: Power Press
         textEn: If this Pokémon has at least 3 extra [F] Energy attached, this attack does 60 more damage.
+    pack: メガミュウツーX
   - id: c1-079
     set: c1
     rarity: ◊
@@ -1690,6 +1802,7 @@ cards:
       - cost: F
         damage: '10'
         nameEn: Paw Shake Punch
+    pack: メガミュウツーX
   - id: c1-080
     set: c1
     rarity: ◊◊◊◊
@@ -1715,12 +1828,16 @@ cards:
       - id: c1-159
         rarity: ☆☆
         image: https://serebii.net/tcgpocket/dualfusion/159.jpg
+        pack: メガミュウツーX
       - id: c1-177
         rarity: ☆☆
         image: https://serebii.net/tcgpocket/dualfusion/177.jpg
+        pack: メガミュウツーX
       - id: c1-210
         rarity: ✵✵
         image: https://serebii.net/tcgpocket/dualfusion/210.jpg
+        pack: メガミュウツーX
+    pack: メガミュウツーX
   - id: c1-081
     set: c1
     rarity: ◊
@@ -1738,6 +1855,7 @@ cards:
       - cost: D
         nameEn: Severe Gas
         textEn: Your opponent's Active Pokémon is now Poisoned.
+    pack: メガミュウツーX
   - id: c1-082
     set: c1
     rarity: ◊
@@ -1756,6 +1874,7 @@ cards:
       - cost: D
         damage: '30'
         nameEn: Suffocating Gas
+    pack: メガミュウツーX
   - id: c1-083
     set: c1
     rarity: ◊◊◊
@@ -1779,6 +1898,8 @@ cards:
       - id: c1-148
         rarity: ☆
         image: https://serebii.net/tcgpocket/dualfusion/148.jpg
+        pack: メガミュウツーX
+    pack: メガミュウツーX
   - id: c1-084
     set: c1
     rarity: ◊◊
@@ -1802,6 +1923,8 @@ cards:
       - id: c1-186
         rarity: ☆☆☆
         image: https://serebii.net/tcgpocket/dualfusion/186.jpg
+        pack: メガミュウツーX
+    pack: メガミュウツーX
   - id: c1-085
     set: c1
     rarity: ◊◊◊◊
@@ -1826,9 +1949,12 @@ cards:
       - id: c1-160
         rarity: ☆☆
         image: https://serebii.net/tcgpocket/dualfusion/160.jpg
+        pack: メガミュウツーX
       - id: c1-178
         rarity: ☆☆
         image: https://serebii.net/tcgpocket/dualfusion/178.jpg
+        pack: メガミュウツーX
+    pack: メガミュウツーX
   - id: c1-086
     set: c1
     rarity: ◊
@@ -1847,6 +1973,7 @@ cards:
         damage: '40'
         nameEn: Venomous Fang
         textEn: Your opponent's Active Pokémon is now Poisoned.
+    pack: メガミュウツーX
   - id: c1-087
     set: c1
     rarity: ◊
@@ -1864,6 +1991,7 @@ cards:
       - cost: C
         damage: '10'
         nameEn: Scratch
+    pack: ピカチュウ
   - id: c1-088
     set: c1
     rarity: ◊◊◊
@@ -1882,6 +2010,7 @@ cards:
       - cost: CC
         nameEn: Foul Play
         textEn: Choose 1 of your opponent's Active Pokémon's attacks and use it as this attack.
+    pack: ピカチュウ
   - id: c1-089
     set: c1
     rarity: ◊
@@ -1899,6 +2028,7 @@ cards:
       - cost: D
         damage: '20'
         nameEn: Rear Kick
+    pack: メガミュウツーX
   - id: c1-090
     set: c1
     rarity: ◊◊
@@ -1917,6 +2047,7 @@ cards:
       - cost: DD
         damage: '70'
         nameEn: Claw Slash
+    pack: メガミュウツーX
   - id: c1-091
     set: c1
     rarity: ◊◊◊◊
@@ -1939,9 +2070,12 @@ cards:
       - id: c1-161
         rarity: ☆☆
         image: https://serebii.net/tcgpocket/dualfusion/161.jpg
+        pack: ピカチュウ
       - id: c1-179
         rarity: ☆☆
         image: https://serebii.net/tcgpocket/dualfusion/179.jpg
+        pack: ピカチュウ
+    pack: ピカチュウ
   - id: c1-092
     set: c1
     rarity: ◊◊◊
@@ -1964,6 +2098,8 @@ cards:
       - id: c1-149
         rarity: ☆
         image: https://serebii.net/tcgpocket/dualfusion/149.jpg
+        pack: メガミュウツーX
+    pack: メガミュウツーX
   - id: c1-093
     set: c1
     rarity: ◊
@@ -1981,6 +2117,7 @@ cards:
       - cost: MM
         damage: '40'
         nameEn: Pierce
+    pack: ピカチュウ
   - id: c1-094
     set: c1
     rarity: ◊◊
@@ -1999,6 +2136,7 @@ cards:
       - cost: MMM
         damage: '90'
         nameEn: Hammer In
+    pack: ピカチュウ
   - id: c1-095
     set: c1
     rarity: ◊◊◊
@@ -2021,6 +2159,8 @@ cards:
       - id: c1-202
         rarity: ✵
         image: https://serebii.net/tcgpocket/dualfusion/202.jpg
+        pack: ピカチュウ
+    pack: ピカチュウ
   - id: c1-096
     set: c1
     rarity: ◊
@@ -2038,6 +2178,7 @@ cards:
       - cost: MC
         damage: '40'
         nameEn: Ram
+    pack: メガミュウツーX
   - id: c1-097
     set: c1
     rarity: ◊◊◊
@@ -2063,6 +2204,8 @@ cards:
       - id: c1-150
         rarity: ☆
         image: https://serebii.net/tcgpocket/dualfusion/150.jpg
+        pack: メガミュウツーX
+    pack: メガミュウツーX
   - id: c1-098
     set: c1
     rarity: ◊
@@ -2079,6 +2222,7 @@ cards:
       - cost: CC
         damage: '30'
         nameEn: Hook
+    pack: ピカチュウ
   - id: c1-099
     set: c1
     rarity: ◊
@@ -2096,6 +2240,7 @@ cards:
       - cost: CCC
         damage: '60'
         nameEn: Beam
+    pack: ピカチュウ
   - id: c1-100
     set: c1
     rarity: ◊◊◊◊
@@ -2120,16 +2265,20 @@ cards:
       - id: c1-162
         rarity: ☆☆
         image: https://serebii.net/tcgpocket/dualfusion/162.jpg
+        pack: ピカチュウ
       - id: c1-180
         rarity: ☆☆
         image: https://serebii.net/tcgpocket/dualfusion/180.jpg
+        pack: ピカチュウ
       - id: c1-211
         rarity: ✵✵
         image: https://serebii.net/tcgpocket/dualfusion/211.jpg
+        pack: ピカチュウ
       - id: pc-013
         set: pc
         rarity: Promo
         image: https://serebii.net/tcgpocket/promo-c/13.jpg
+    pack: ピカチュウ
   - id: c1-101
     set: c1
     rarity: ◊◊◊◊
@@ -2153,12 +2302,15 @@ cards:
       - id: c1-163
         rarity: ☆☆
         image: https://serebii.net/tcgpocket/dualfusion/163.jpg
+        pack: メガミュウツーX
       - id: c1-181
         rarity: ☆☆
         image: https://serebii.net/tcgpocket/dualfusion/181.jpg
+        pack: メガミュウツーX
       - id: c1-217
         rarity: Crown Rare
         image: https://serebii.net/tcgpocket/dualfusion/217.jpg
+    pack: メガミュウツーX
   - id: c1-102
     set: c1
     rarity: ◊
@@ -2176,6 +2328,7 @@ cards:
       - cost: C
         nameEn: Find a Friend
         textEn: Put 1 random [C] Pokémon from your deck into your hand.
+    pack: ピカチュウ
   - id: c1-103
     set: c1
     rarity: ◊
@@ -2194,6 +2347,7 @@ cards:
       - cost: C
         damage: '40'
         nameEn: Cutting Wind
+    pack: ピカチュウ
   - id: c1-104
     set: c1
     rarity: ◊◊◊
@@ -2213,6 +2367,7 @@ cards:
         damage: 40+
         nameEn: Clean Hit
         textEn: If your opponent's Active Pokémon is an Evolution Pokémon, this attack does 80 more damage.
+    pack: ピカチュウ
   - id: c1-105
     set: c1
     rarity: ◊
@@ -2234,6 +2389,8 @@ cards:
       - id: c1-203
         rarity: ✵
         image: https://serebii.net/tcgpocket/dualfusion/203.jpg
+        pack: メガミュウツーX
+    pack: メガミュウツーX
   - id: c1-106
     set: c1
     rarity: ◊◊
@@ -2256,6 +2413,8 @@ cards:
       - id: c1-204
         rarity: ✵
         image: https://serebii.net/tcgpocket/dualfusion/204.jpg
+        pack: メガミュウツーX
+    pack: メガミュウツーX
   - id: c1-107
     set: c1
     rarity: ◊
@@ -2291,6 +2450,7 @@ cards:
         damage: '30'
         nameEn: Powered Ball
         textEn: Discard a random Energy from this Pokémon.
+    pack: メガミュウツーX
   - id: c1-109
     set: c1
     rarity: ◊◊
@@ -2309,6 +2469,7 @@ cards:
       - cost: C
         damage: '30'
         nameEn: Tackle
+    pack: メガミュウツーX
   - id: c1-110
     set: c1
     rarity: ◊◊◊
@@ -2328,6 +2489,7 @@ cards:
         damage: '50'
         nameEn: Overdrive Smash
         textEn: During your next turn, this Pokémon's Overdrive Smash attack does +50 damage.
+    pack: メガミュウツーX
   - id: c1-111
     set: c1
     rarity: ◊◊
@@ -2346,6 +2508,7 @@ cards:
         damage: '80'
         nameEn: Body Slam
         textEn: Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed.
+    pack: メガミュウツーX
   - id: c1-112
     set: c1
     rarity: ◊
@@ -2366,6 +2529,7 @@ cards:
       - cost: C
         damage: '30'
         nameEn: Claw Slash
+    pack: ピカチュウ
   - id: c1-113
     set: c1
     rarity: ◊
@@ -2387,6 +2551,7 @@ cards:
       - id: c1-151
         rarity: ☆
         image: https://serebii.net/tcgpocket/dualfusion/151.jpg
+        pack: ピカチュウ
   - id: c1-114
     set: c1
     rarity: ◊◊
@@ -2423,6 +2588,7 @@ cards:
         damage: 20×
         nameEn: Rabbit Jumping
         textEn: Flip 2 coins. This attack does 20 damage for each heads.
+    pack: ピカチュウ
   - id: c1-116
     set: c1
     rarity: ◊◊
@@ -2442,6 +2608,7 @@ cards:
         damage: 40×
         nameEn: Rabbit Jumping
         textEn: Flip 2 coins. This attack does 40 damage for each heads.
+    pack: ピカチュウ
   - id: c1-117
     set: c1
     rarity: ◊
@@ -2463,6 +2630,8 @@ cards:
       - id: c1-206
         rarity: ✵
         image: https://serebii.net/tcgpocket/dualfusion/206.jpg
+        pack: メガミュウツーX
+    pack: メガミュウツーX
   - id: c1-118
     set: c1
     rarity: ◊◊◊◊
@@ -2486,12 +2655,16 @@ cards:
       - id: c1-164
         rarity: ☆☆
         image: https://serebii.net/tcgpocket/dualfusion/164.jpg
+        pack: メガミュウツーX
       - id: c1-182
         rarity: ☆☆
         image: https://serebii.net/tcgpocket/dualfusion/182.jpg
+        pack: メガミュウツーX
       - id: c1-214
         rarity: ✵✵
         image: https://serebii.net/tcgpocket/dualfusion/214.jpg
+        pack: メガミュウツーX
+    pack: メガミュウツーX
   - id: c1-119
     set: c1
     rarity: ◊◊
@@ -2504,6 +2677,8 @@ cards:
       - id: c1-152
         rarity: ☆
         image: https://serebii.net/tcgpocket/dualfusion/152.jpg
+        how: パック以外で入手
+    pack: メガミュウツーX
   - id: c1-120
     set: c1
     rarity: ◊◊
@@ -2512,6 +2687,7 @@ cards:
     kind: item
     text:
       textEn: Heal 40 damage from 1 of your Pokémon that has any Energy attached. If you healed any damage in this way, discard a random Energy from that Pokémon.
+    pack: ピカチュウ
   - id: c1-121
     set: c1
     rarity: ◊◊
@@ -2520,6 +2696,7 @@ cards:
     kind: item
     text:
       textEn: Switch out your opponent's Active Stage 2 Pokémon to the Bench. (Your opponent chooses the new Active Pokémon.)
+    pack: メガミュウツーX
   - id: c1-122
     set: c1
     rarity: ◊◊
@@ -2528,6 +2705,7 @@ cards:
     kind: item
     text:
       textEn: Your Active Pokémon recovers from all Special Conditions.
+    pack: ピカチュウ
   - id: c1-123
     set: c1
     rarity: ◊◊
@@ -2544,6 +2722,7 @@ cards:
     kind: tool
     text:
       textEn: Attacks used by the Pikachu ex this card is attached to do +30 damage to your opponent's Active Pokémon.
+    pack: ピカチュウ
   - id: c1-125
     set: c1
     rarity: ◊◊
@@ -2556,6 +2735,8 @@ cards:
       - id: c1-165
         rarity: ☆☆
         image: https://serebii.net/tcgpocket/dualfusion/165.jpg
+        pack: ピカチュウ
+    pack: ピカチュウ
   - id: c1-126
     set: c1
     rarity: ◊◊
@@ -2568,6 +2749,8 @@ cards:
       - id: c1-166
         rarity: ☆☆
         image: https://serebii.net/tcgpocket/dualfusion/166.jpg
+        pack: メガミュウツーX
+    pack: メガミュウツーX
   - id: c1-127
     set: c1
     rarity: ◊◊
@@ -2580,6 +2763,8 @@ cards:
       - id: c1-167
         rarity: ☆☆
         image: https://serebii.net/tcgpocket/dualfusion/167.jpg
+        pack: ピカチュウ
+    pack: ピカチュウ
   - id: c1-128
     set: c1
     rarity: ◊◊
@@ -2592,6 +2777,8 @@ cards:
       - id: c1-168
         rarity: ☆☆
         image: https://serebii.net/tcgpocket/dualfusion/168.jpg
+        pack: メガミュウツーX
+    pack: メガミュウツーX
   - id: c1-129
     set: c1
     rarity: ◊◊
@@ -2604,6 +2791,8 @@ cards:
       - id: c1-169
         rarity: ☆☆
         image: https://serebii.net/tcgpocket/dualfusion/169.jpg
+        pack: ピカチュウ
+    pack: ピカチュウ
   - id: c1-130
     set: c1
     rarity: ◊◊
@@ -2616,6 +2805,8 @@ cards:
       - id: c1-170
         rarity: ☆☆
         image: https://serebii.net/tcgpocket/dualfusion/170.jpg
+        pack: メガミュウツーX
+    pack: メガミュウツーX
   - id: c1-131
     set: c1
     rarity: ◊◊
@@ -2624,6 +2815,7 @@ cards:
     kind: stadium
     text:
       textEn: Once during each player's turn, that player may use this effect. Flip a coin. If heads, draw a card.
+    pack: メガミュウツーX
   - id: pc-002
     set: pc
     rarity: Promo

@@ -14,9 +14,10 @@ const COST: Record<string, EnergyType> = {
 
 interface YEffect { nameJa?: string; nameEn?: string; textJa?: string; textEn?: string; unknown?: boolean; tentative?: boolean; machine?: boolean }
 interface YAttack extends YEffect { cost: string; damage?: number | string }
-interface YPrint { id: string; set?: string; rarity: string; image?: string; imageEn?: string }
+// pack: 弾の中のパック（日本語。どのパックからも出るなら無し）。how: パック以外の入手方法
+interface YPrint { id: string; set?: string; rarity: string; image?: string; imageEn?: string; pack?: string; how?: string }
 interface YCard {
-  id: string; set: string; rarity: string; image?: string; imageEn?: string; source?: string;
+  id: string; set: string; rarity: string; image?: string; imageEn?: string; pack?: string; how?: string; source?: string;
   nameEn: string; nameJa?: string; // 日本語名が無ければ translate.ts が埋める
   kind?: CardKind; // 無ければポケモン
   type?: EnergyType[]; stage?: Card["stage"]; evolvesFrom?: string; rule?: Card["rule"];
@@ -94,7 +95,7 @@ for (const x of y.cards) {
   const print = (p: YPrint) => {
     const ps = y.sets.find((s) => s.code === (p.set ?? x.set));
     const start = ps?.date ?? ps?.available;
-    return { id: p.id, set: p.set ?? x.set, setName: setName(p.set ?? x.set), rarity: p.rarity, image: p.image ?? "", ...(p.imageEn ? { imageEn: p.imageEn } : {}), ...(start ? { released: start } : {}) };
+    return { id: p.id, set: p.set ?? x.set, setName: setName(p.set ?? x.set), rarity: p.rarity, image: p.image ?? "", ...(p.imageEn ? { imageEn: p.imageEn } : {}), ...(start ? { released: start } : {}), ...(p.pack ? { pack: p.pack } : {}), ...(p.how ? { how: p.how } : {}) };
   };
   const kind = x.kind ?? "pokemon";
   const rule = x.rule ?? "normal";
@@ -102,7 +103,7 @@ for (const x of y.cards) {
     id: x.id, nameEn: x.nameEn, ...(x.nameJa ? { nameJa: x.nameJa } : {}), kind,
     evolvesFrom: [], evolvesTo: [], rule, groups: /^Team Rocket's /.test(x.nameEn) ? ["team_rocket"] : [],
     attacks: (x.attacks ?? []).map((a) => attack(a, !!x.machine)),
-    prints: [print({ id: x.id, rarity: x.rarity, image: x.image, imageEn: x.imageEn }), ...(x.prints ?? []).map(print)],
+    prints: [print({ id: x.id, rarity: x.rarity, image: x.image, imageEn: x.imageEn, pack: x.pack, how: x.how }), ...(x.prints ?? []).map(print)],
     tags: [],
     upcoming,
   };
