@@ -62,11 +62,13 @@
  },
  "d62dfc27730b": {
   "en": "Long-Neck Hammering",
-  "ja": "ロングネックハンマー"
+  "ja": "くびながハンマー",
+  "official": true
  },
  "80292dfb9b00": {
   "en": "1 of your opponent's Benched Pokémon is chosen at random. This attack also does 50 damage to it.",
-  "ja": "相手のベンチポケモンがランダムに1回選ばれ、選ばれたポケモンにも、50ダメージ。"
+  "ja": "相手のベンチポケモンがランダムに1回選ばれ、選ばれたポケモンにも、50ダメージ。",
+  "official": true
  },
  "1b5a3af81b7f": {
   "en": "Honey Rush",
@@ -75,11 +77,13 @@
  },
  "3e0dee290fa3": {
   "en": "Leaf Litter Tackle",
-  "ja": "おちばタックル"
+  "ja": "らくようタックル",
+  "official": true
  },
  "407a11871c8b": {
   "en": "Discard a [G] Energy from this Pokémon.",
-  "ja": "このポケモンから草エネルギーを1個トラッシュ。"
+  "ja": "このポケモンから草エネルギーを1個トラッシュ。",
+  "official": true
  },
  "32968cb1a6e9": {
   "en": "Signal Beam",
@@ -98,11 +102,13 @@
  },
  "327095b57bca": {
   "en": "Dynamite Steam",
-  "ja": "ダイナマイトスチーム"
+  "ja": "ダイナマイトスチーム",
+  "official": true
  },
  "5e3a46ee96cb": {
   "en": "Flip 2 coins. This attack does 110 damage for each heads.",
-  "ja": "コインを2回投げ、オモテの数×110ダメージ。"
+  "ja": "コインを2回投げ、オモテの数×110ダメージ。",
+  "official": true
  },
  "38b375be918b": {
   "en": "Rabbit Jumping",
@@ -121,7 +127,8 @@
  },
  "aac0f76e8770": {
   "en": "Spinning Kick",
-  "ja": "スピニングキック"
+  "ja": "スピニングキック",
+  "official": true
  },
  "60c701586b1a": {
   "en": "If any of your Pokémon were Knocked Out by damage from an attack during your opponent's last turn, this attack does 70 more damage.",
@@ -130,15 +137,18 @@
  },
  "f6c74fe34f37": {
   "en": "Dual Blizzard",
-  "ja": "デュアルブリザード"
+  "ja": "デュアルブリザード",
+  "official": true
  },
  "b78e7b6e718f": {
   "en": "Spacial Rend",
-  "ja": "あくうせつだん"
+  "ja": "あくうせつだん",
+  "official": true
  },
  "1c5b8fca0ed1": {
   "en": "If your opponent has a Stadium in play, discard it.",
-  "ja": "相手の場にスタジアムが出ているなら、そのスタジアムをトラッシュする。"
+  "ja": "場に出ている相手のスタジアムをトラッシュ。",
+  "official": true
  },
  "ca161e119ff9": {
   "en": "Rock Head",
@@ -152,7 +162,8 @@
  },
  "1f82ba251b2d": {
   "en": "Sudden Duplication",
-  "ja": "とつぜんぶんしん"
+  "ja": "でたとこぶんしん",
+  "official": true
  },
  "b99107823b8c": {
   "en": "Once during your turn, when you play this card from your hand to evolve 1 of your Pokémon, you may use this Ability. Put a random Frogadier from your deck onto your bench.",
@@ -170,15 +181,18 @@
  },
  "a661faed2591": {
   "en": "Electrocreation",
-  "ja": "エレキクリエイト"
+  "ja": "でんきづくり",
+  "official": true
  },
  "c2f6c66a1518": {
   "en": "Once during your turn, you may take a [L] Energy from your Energy Zone and attach it to the [L] Pokémon in the Active Spot.",
-  "ja": "自分の番に1回使える。自分のエネルギーゾーンから雷エネルギーを1個出し、バトル場の雷ポケモンにつける。"
+  "ja": "自分の番に1回使える。自分のエネルギーゾーンから雷エネルギーを1個出し、バトル場の雷ポケモンにつける。",
+  "official": true
  },
  "e77cff622bfa": {
   "en": "Soothing Lullaby",
-  "ja": "いやしのこもりうた"
+  "ja": "じゅくすいソング",
+  "official": true
  },
  "64bdabe1611b": {
   "en": "This attack does 30 more damage for each of your opponent's Benched Pokémon.",
@@ -192,11 +206,13 @@
  },
  "42a312bf9abc": {
   "en": "Brainwave",
-  "ja": "のうは"
+  "ja": "ブレインウェーブ",
+  "official": true
  },
  "5e683ec0f501": {
   "en": "This attack does 20 more damage for each [P] Energy attached to this Pokémon.",
-  "ja": "このポケモンの超エネルギーの数×20ダメージ追加。"
+  "ja": "このポケモンの超エネルギーの数×20ダメージ追加。",
+  "official": true
  },
  "da9001688e1c": {
   "en": "Psycho Boost",
@@ -215,7 +231,8 @@
  },
  "50b6d5cf1c30": {
   "en": "Megahorn",
-  "ja": "メガホーン"
+  "ja": "メガホーン",
+  "official": true
  },
  "520ab7df8343": {
   "en": "Elbow Strike",
@@ -254,7 +271,8 @@
  },
  "e6af0fabef59": {
   "en": "Twilight Poison",
-  "ja": "トワイライトポイズン"
+  "ja": "ゆうやみどく",
+  "official": true
  },
  "d2f08151ba5d": {
   "en": "Moonlit Raid",
@@ -283,11 +301,13 @@
  },
  "ae640d3473a1": {
   "en": "Shredding Claw",
-  "ja": "シュレッドクロー"
+  "ja": "シュレッダークロー",
+  "official": true
  },
  "e874ee4713cb": {
   "en": "Flip a coin until you get tails. This attack does 50 more damage for each heads.",
-  "ja": "ウラが出るまでコインを投げ、オモテの数×50ダメージ追加。"
+  "ja": "ウラが出るまでコインを投げ、オモテの数×50ダメージ追加。",
+  "official": true
  },
  "41a4e38a59db": {
   "en": "Roar of Time",
@@ -296,7 +316,8 @@
  },
  "d424623ad200": {
   "en": "Claws of the Sunne",
-  "ja": "サンクロー"
+  "ja": "にちりんのツメ",
+  "official": true
  },
  "08ebe1013aaf": {
   "en": "Metal Scrum",
@@ -310,15 +331,18 @@
  },
  "2020b8c7a175": {
   "en": "Put 1 random [C] Pokémon from your deck into your hand.",
-  "ja": "自分の山札から無色ポケモンをランダムに1枚、手札に加える。"
+  "ja": "自分の山札から無色ポケモンをランダムに1枚、手札に加える。",
+  "official": true
  },
  "4318a53771fb": {
   "en": "Clean Hit",
-  "ja": "クリーンヒット"
+  "ja": "クリーンヒット",
+  "official": true
  },
  "e0d0aa7381e0": {
   "en": "If your opponent's Active Pokémon is an Evolution Pokémon, this attack does 80 more damage.",
-  "ja": "相手のバトルポケモンが進化ポケモンなら、80ダメージ追加。"
+  "ja": "相手のバトルポケモンが進化ポケモンなら、80ダメージ追加。",
+  "official": true
  },
  "58e8752458c3": {
   "en": "Put a random card that evolves from Eevee from your deck into your hand.",
@@ -332,7 +356,8 @@
  },
  "2b74636ac010": {
   "en": "During your next turn, this Pokémon's Overdrive Smash attack does +50 damage.",
-  "ja": "次の自分の番、このポケモンのワザ「オーバードライブスマッシュ」のダメージを+50する。"
+  "ja": "次の自分の番、このポケモンの「オーバースマッシュ」のダメージを+50する。",
+  "official": true
  },
  "56868b5aa530": {
   "en": "Immunity",
@@ -351,19 +376,23 @@
  },
  "3cda74d0086e": {
   "en": "Sweet Honey",
-  "ja": "あまいミツ"
+  "ja": "あまいミツ",
+  "official": true
  },
  "18880bc35136": {
   "en": "Choose 1 of your Pokémon, and then flip a coin until you get tails. For each heads, heal 20 damage from that Pokémon.",
-  "ja": "自分のポケモンを1匹選び、ウラが出るまでコインを投げる。オモテの数×20、そのポケモンのHPを回復。"
+  "ja": "自分のポケモンを1匹選ぶ。ウラが出るまでコインを投げ、オモテの数×20ダメージぶん、そのポケモンのHPを回復。",
+  "official": true
  },
  "5480fbed6632": {
   "en": "Super Potion",
-  "ja": "いいキズぐすり"
+  "ja": "いいきずぐすり",
+  "official": true
  },
  "b865e36badbf": {
   "en": "Heal 40 damage from 1 of your Pokémon that has any Energy attached. If you healed any damage in this way, discard a random Energy from that Pokémon.",
-  "ja": "エネルギーがついている自分のポケモン1匹のHPを40回復。回復したなら、そのポケモンからエネルギーをランダムに1個トラッシュ。"
+  "ja": "エネルギーがついている自分のポケモン1匹のHPを40回復。その後、そのポケモンからエネルギーをランダムに1個トラッシュ。",
+  "official": true
  },
  "0f7647edd0e3": {
   "en": "Max Repel",
@@ -377,11 +406,13 @@
  },
  "654caf722ad2": {
   "en": "Full Heal",
-  "ja": "なんでもなおし"
+  "ja": "なんでもなおし",
+  "official": true
  },
  "167b316b23a9": {
   "en": "Your Active Pokémon recovers from all Special Conditions.",
-  "ja": "自分のバトルポケモンの特殊状態をすべて回復する。"
+  "ja": "自分のバトルポケモンの特殊状態を、すべて回復。",
+  "official": true
  },
  "5a584e8e1529": {
   "en": "Eviolite",
@@ -395,19 +426,23 @@
  },
  "553bfcec1299": {
   "en": "Light Ball",
-  "ja": "でんきだま"
+  "ja": "でんきだま",
+  "official": true
  },
  "ddd9f664f4a5": {
   "en": "Attacks used by the Pikachu ex this card is attached to do +30 damage to your opponent's Active Pokémon.",
-  "ja": "このカードをつけているピカチュウexが使うワザの、相手のバトルポケモンへのダメージを+30する。"
+  "ja": "このカードをつけている「ピカチュウex」が使うワザの、相手のバトルポケモンへのダメージを+30する。",
+  "official": true
  },
  "5a2eadd9e983": {
   "en": "Lorelei",
-  "ja": "カンナ"
+  "ja": "カンナ",
+  "official": true
  },
  "b25d2cf84fb7": {
   "en": "During this turn, attacks used by your Dewgong, Cloyster, or Lapras do +30 damage to your opponent's Pokémon.",
-  "ja": "この番、自分のジュゴン・パルシェン・ラプラスが使うワザの、相手のポケモンへのダメージを+30する。"
+  "ja": "この番、自分の「ジュゴン」「パルシェン」「ラプラス」が使うワザの、相手のポケモン全員へのダメージを+30する。",
+  "official": true
  },
  "440642b2d6d5": {
   "en": "Blue's Provocation",
@@ -426,7 +461,8 @@
  },
  "3f26a5c5f2de": {
   "en": "Look at the top 3 cards of your deck and put 1 of them into your hand. Shuffle any other cards back into your deck.",
-  "ja": "自分の山札を上から3枚見て、その中から1枚を手札に加える。残りのカードは山札にもどして切る。"
+  "ja": "自分の山札を上から3枚見て、その中からカードを1枚選び、手札に加える。残りのカードは山札にもどす。",
+  "official": true
  },
  "2fb41e2ca6dd": {
   "en": "Rika",
@@ -440,11 +476,13 @@
  },
  "73ddc514d0d6": {
   "en": "Poké Mart Guy",
-  "ja": "フレンドリィショップの店員"
+  "ja": "フレンドリィショップのお兄さん",
+  "official": true
  },
  "f67d2a0c0e65": {
   "en": "Put 2 random cards from among Super Potion, Max Repel, and Full Heal from your deck into your hand.",
-  "ja": "自分の山札から「いいキズぐすり」「ゴールドスプレー」「なんでもなおし」のどれかをランダムに2枚、手札に加える。"
+  "ja": "自分の山札から「いいきずぐすり」「ゴールドスプレー」「なんでもなおし」をランダムに2枚、手札に加える。",
+  "official": true
  },
  "f2f5d68e6499": {
   "en": "Rising Star",
@@ -492,7 +530,8 @@
  },
  "bb8e2de16ab0": {
   "en": "Once during your turn, when you play this card from your hand to evolve 1 of your Pokémon, you may use this Ability. Put a random Frogadier from your deck onto your Bench.",
-  "ja": "自分の番に、このカードを手札から出して進化させたとき、1回使える。自分の山札からゲコガシラをランダムに1枚、ベンチに出す。"
+  "ja": "自分の番に、このカードを手札から出して進化させたとき、1回使える。自分の山札から「ゲコガシラ」をランダムに1枚、ベンチに出す。",
+  "official": true
  },
  "e0c704ee5062": {
   "en": "Your opponent's Active Pokémon is now Confused.",
@@ -562,6 +601,31 @@
  "3c52abd302bf": {
   "en": "Signs of Evolution",
   "ja": "しんかのきざし",
+  "official": true
+ },
+ "c178f7ff19c1": {
+  "en": "This Pokémon also does 20 damage to itself.",
+  "ja": "このポケモンにも20ダメージ。",
+  "official": true
+ },
+ "59f1bdb86e76": {
+  "en": "Flip a coin. If tails, this attack does nothing.",
+  "ja": "コインを1回投げウラなら、このワザは失敗。",
+  "official": true
+ },
+ "325aa26a8bbb": {
+  "en": "Your opponent's Active Pokémon is now Poisoned and Asleep.",
+  "ja": "相手のバトルポケモンをどくとねむりにする。",
+  "official": true
+ },
+ "5eb5d21904a3": {
+  "en": "Find a Friend",
+  "ja": "ともだちをさがす",
+  "official": true
+ },
+ "53ec4b72d177": {
+  "en": "Overdrive Smash",
+  "ja": "オーバースマッシュ",
   "official": true
  }
 }

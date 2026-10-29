@@ -13,6 +13,7 @@ const SOURCES: { name: string; url: string }[] = [
   { name: "Game8（ポケポケ攻略）", url: "https://game8.jp/pokemon-tcg-pocket" },
   { name: "Game8 (Pokémon TCG Pocket Wiki)", url: "https://game8.co/games/Pokemon-TCG-Pocket" },
   { name: "Serebii.net", url: "https://serebii.net/tcgpocket/" },
+  { name: "ポケらく", url: "https://pokemongo-raku.com/" },
   { name: "Limitless TCG", url: "https://play.limitlesstcg.com/" },
   { name: "PokéAPI", url: "https://pokeapi.co/" },
 ];

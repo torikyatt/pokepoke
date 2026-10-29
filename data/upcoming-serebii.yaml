@@ -21,7 +21,7 @@ cards:
   - id: c1-001
     set: c1
     rarity: ◊
-    image: https://img.game8.jp/13113710/402a2d2cb309c1dbf12e7fd88075c1c4.webp/show
+    image: https://serebii.net/tcgpocket/dualfusion/1.jpg
     nameEn: Bulbasaur
     nameJa: フシギダネ
     type:
@@ -37,7 +37,6 @@ cards:
         nameEn: Leech Seed
         textEn: Heal 10 damage from this Pokémon.
         nameJa: やどりぎのタネ
-    imageEn: https://serebii.net/tcgpocket/dualfusion/1.jpg
     prints:
       - id: sp1-001
         set: sp1
@@ -67,7 +66,7 @@ cards:
   - id: c1-003
     set: c1
     rarity: ◊◊◊
-    image: https://img.game8.jp/13113530/ebcd921e0309306ca1786f9cfc9eea76.webp/show
+    image: https://serebii.net/tcgpocket/dualfusion/3.jpg
     nameEn: Venusaur
     nameJa: フシギバナ
     type:
@@ -88,7 +87,6 @@ cards:
         damage: '90'
         nameEn: Solar Beam
         nameJa: ソーラービーム
-    imageEn: https://serebii.net/tcgpocket/dualfusion/3.jpg
     prints:
       - id: c1-132
         rarity: ☆
@@ -322,7 +320,7 @@ cards:
   - id: c1-015
     set: c1
     rarity: ◊◊◊
-    image: https://img.game8.jp/13113898/1912af26ca20da528f705834c0abf265.webp/show
+    image: https://serebii.net/tcgpocket/dualfusion/15.jpg
     nameEn: Ribombee
     nameJa: アブリボン
     type:
@@ -340,7 +338,6 @@ cards:
       - cost: G
         damage: '40'
         nameEn: Bug Buzz
-    imageEn: https://serebii.net/tcgpocket/dualfusion/15.jpg
     prints:
       - id: c1-135
         rarity: ☆
@@ -350,7 +347,7 @@ cards:
   - id: c1-016
     set: c1
     rarity: ◊
-    image: https://img.game8.jp/13113711/b56d651f962299a6570533850f172883.webp/show
+    image: https://serebii.net/tcgpocket/dualfusion/16.jpg
     nameEn: Charmander
     nameJa: ヒトカゲ
     type:
@@ -366,7 +363,6 @@ cards:
         nameEn: Ember
         textEn: Discard a [R] Energy from this Pokémon.
         nameJa: ひのこ
-    imageEn: https://serebii.net/tcgpocket/dualfusion/16.jpg
     prints:
       - id: sp1-002
         set: sp1
@@ -395,7 +391,7 @@ cards:
   - id: c1-018
     set: c1
     rarity: ◊◊◊
-    image: https://img.game8.jp/13113529/b22f2b4917260c2f0999dca20c539a87.webp/show
+    image: https://serebii.net/tcgpocket/dualfusion/18.jpg
     nameEn: Charizard
     nameJa: リザードン
     type:
@@ -416,7 +412,6 @@ cards:
         damage: '90'
         nameEn: Fire Wing
         nameJa: ほのおのつばさ
-    imageEn: https://serebii.net/tcgpocket/dualfusion/18.jpg
     prints:
       - id: c1-136
         rarity: ☆
@@ -501,7 +496,7 @@ cards:
   - id: c1-023
     set: c1
     rarity: ◊◊
-    image: https://img.game8.jp/13113900/ed2048ad5a7c86c8b4d75a892ae15282.webp/show
+    image: https://serebii.net/tcgpocket/dualfusion/23.jpg
     nameEn: Raboot
     nameJa: ラビフット
     type:
@@ -519,7 +514,6 @@ cards:
       - cost: C
         damage: '30'
         nameEn: Headbutt
-    imageEn: https://serebii.net/tcgpocket/dualfusion/23.jpg
     prints:
       - id: c1-137
         rarity: ☆
@@ -549,7 +543,7 @@ cards:
   - id: c1-025
     set: c1
     rarity: ◊◊◊◊
-    image: https://img.game8.jp/12923032/7ac06d023af3fbf47ccc0d6378489d6b.webp/show
+    image: https://serebii.net/tcgpocket/dualfusion/25.jpg
     nameEn: Fuecoco ex
     nameJa: ホゲータex
     type:
@@ -570,7 +564,6 @@ cards:
         textEn: If this Pokémon has damage on it, this attack does 70 more damage.
         nameJa: げきおこファイヤー
         textJa: このポケモンがダメージを受けているなら、70ダメージ追加。
-    imageEn: https://serebii.net/tcgpocket/dualfusion/25.jpg
     prints:
       - id: c1-154
         rarity: ☆☆
@@ -649,7 +642,7 @@ cards:
   - id: c1-029
     set: c1
     rarity: ◊
-    image: https://img.game8.jp/13113712/2416660b7c44756d3773a2141a480c15.webp/show
+    image: https://serebii.net/tcgpocket/dualfusion/29.jpg
     nameEn: Squirtle
     nameJa: ゼニガメ
     type:
@@ -665,7 +658,6 @@ cards:
         nameEn: Bubble
         textEn: Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed.
         nameJa: あわ
-    imageEn: https://serebii.net/tcgpocket/dualfusion/29.jpg
     prints:
       - id: sp1-003
         set: sp1
@@ -694,7 +686,7 @@ cards:
   - id: c1-031
     set: c1
     rarity: ◊◊◊
-    image: https://img.game8.jp/13113528/3b2824f4c00918427a57e99f81393985.webp/show
+    image: https://serebii.net/tcgpocket/dualfusion/31.jpg
     nameEn: Blastoise
     nameJa: カメックス
     type:
@@ -715,7 +707,6 @@ cards:
         damage: '100'
         nameEn: Surf
         nameJa: なみのり
-    imageEn: https://serebii.net/tcgpocket/dualfusion/31.jpg
     prints:
       - id: c1-139
         rarity: ☆
@@ -939,7 +930,7 @@ cards:
   - id: c1-042
     set: c1
     rarity: ◊◊◊◊
-    image: https://img.game8.jp/13113526/e068da7d3b77b97e1e6d75520d5fbe9d.webp/show
+    image: https://serebii.net/tcgpocket/dualfusion/42.jpg
     nameEn: Mega Greninja ex
     nameJa: メガゲッコウガex
     type:
@@ -958,7 +949,6 @@ cards:
         textEn: During your opponent's next turn, the Defending Pokémon can't retreat.
         nameJa: スプラッシュダーク
         textJa: 次の相手の番、このワザを受けたポケモンはにげるができない。
-    imageEn: https://serebii.net/tcgpocket/dualfusion/42.jpg
     prints:
       - id: c1-155
         rarity: ☆☆
@@ -972,7 +962,7 @@ cards:
   - id: c1-043
     set: c1
     rarity: ◊◊◊◊
-    image: https://img.game8.jp/13113527/7b79df7f0e8faa29d7d615eb8b864854.webp/show
+    image: https://serebii.net/tcgpocket/dualfusion/43.jpg
     nameEn: Pikachu ex
     nameJa: ピカチュウex
     type:
@@ -993,7 +983,6 @@ cards:
         textEn: Discard 2 [L] Energy from this Pokémon.
         nameJa: いなずまテール
         textJa: このポケモンから雷エネルギーを2個トラッシュ。
-    imageEn: https://serebii.net/tcgpocket/dualfusion/43.jpg
     prints:
       - id: c1-156
         rarity: ☆☆
@@ -1266,7 +1255,7 @@ cards:
   - id: c1-056
     set: c1
     rarity: ◊◊◊◊
-    image: https://img.game8.jp/12922926/689e96571dcf6eaa9e40f1ae881da1e0.webp/show
+    image: https://serebii.net/tcgpocket/dualfusion/56.jpg
     nameEn: Mega Mewtwo X ex
     nameJa: メガミュウツーXex
     type:
@@ -1284,7 +1273,6 @@ cards:
         textEn: If a Stadium is in play, this attack does 40 more damage.
         nameJa: デュアルインパクト
         textJa: 場にスタジアムが出ているなら、40ダメージ追加。
-    imageEn: https://serebii.net/tcgpocket/dualfusion/56.jpg
     prints:
       - id: c1-157
         rarity: ☆☆
@@ -1302,7 +1290,7 @@ cards:
   - id: c1-057
     set: c1
     rarity: ◊◊◊◊
-    image: https://img.game8.jp/13113525/a852bad97f4d171d5b2b98c6ae5d2a85.webp/show
+    image: https://serebii.net/tcgpocket/dualfusion/57.jpg
     nameEn: Mew ex
     nameJa: ミュウex
     type:
@@ -1322,7 +1310,6 @@ cards:
         damage: '60'
         nameEn: Psyburn
         nameJa: サイコバーン
-    imageEn: https://serebii.net/tcgpocket/dualfusion/57.jpg
     prints:
       - id: c1-158
         rarity: ☆☆
@@ -1928,7 +1915,7 @@ cards:
   - id: c1-085
     set: c1
     rarity: ◊◊◊◊
-    image: https://img.game8.jp/13113899/d8c987292cf6aa015fa5af87d1714458.webp/show
+    image: https://serebii.net/tcgpocket/dualfusion/85.jpg
     nameEn: Mega Tyranitar ex
     nameJa: メガバンギラスex
     type:
@@ -1944,7 +1931,6 @@ cards:
         damage: '180'
         nameEn: Crushing Rampage
         textEn: Discard the top 2 cards of your deck.
-    imageEn: https://serebii.net/tcgpocket/dualfusion/85.jpg
     prints:
       - id: c1-160
         rarity: ☆☆
@@ -2244,7 +2230,7 @@ cards:
   - id: c1-100
     set: c1
     rarity: ◊◊◊◊
-    image: https://img.game8.jp/13113524/bfd407fbb73a6b093f9440cd16a20e97.webp/show
+    image: https://serebii.net/tcgpocket/dualfusion/100.jpg
     nameEn: Mega Dragonite ex
     nameJa: メガカイリューex
     type:
@@ -2260,7 +2246,6 @@ cards:
         textEn: 1 of your opponent's Pokémon is chosen at random. Do 250 damage to it.
         nameJa: ドラゴニックメテオ
         textJa: 相手のポケモンがランダムに1回選ばれ、選ばれたポケモンに、250ダメージ。
-    imageEn: https://serebii.net/tcgpocket/dualfusion/100.jpg
     prints:
       - id: c1-162
         rarity: ☆☆
@@ -2881,7 +2866,7 @@ cards:
   - id: sp1-004
     set: sp1
     rarity: ☆
-    image: https://img.game8.jp/13113713/3333aed3a836b49ab6557d72bfa8047f.webp/show
+    image: https://serebii.net/tcgpocket/firstpartners/4.jpg
     nameEn: Chikorita
     nameJa: チコリータ
     type:
@@ -2896,7 +2881,6 @@ cards:
         damage: '40'
         nameEn: Razor Leaf
         nameJa: はっぱカッター
-    imageEn: https://serebii.net/tcgpocket/firstpartners/4.jpg
   - id: sp1-005
     set: sp1
     rarity: ☆
@@ -3020,7 +3004,7 @@ cards:
   - id: sp1-012
     set: sp1
     rarity: ☆
-    image: https://img.game8.jp/13113715/f22eb7f293b90e6fbe80f01b4dbc6d7b.webp/show
+    image: https://serebii.net/tcgpocket/firstpartners/12.jpg
     nameEn: Piplup
     nameJa: ポッチャマ
     type:
@@ -3035,7 +3019,6 @@ cards:
         damage: '20'
         nameEn: Peck
         nameJa: つつく
-    imageEn: https://serebii.net/tcgpocket/firstpartners/12.jpg
   - id: sp1-013
     set: sp1
     rarity: ☆
@@ -3249,7 +3232,7 @@ cards:
   - id: sp1-026
     set: sp1
     rarity: ☆
-    image: https://img.game8.jp/13113714/459b5dbc62419b46546af540fd39dc07.webp/show
+    image: https://serebii.net/tcgpocket/firstpartners/26.jpg
     nameEn: Fuecoco
     nameJa: ホゲータ
     type:
@@ -3265,7 +3248,6 @@ cards:
         nameEn: Flamethrower
         textEn: Discard a [R] Energy from this Pokémon.
         nameJa: かえんほうしゃ
-    imageEn: https://serebii.net/tcgpocket/firstpartners/26.jpg
   - id: sp1-027
     set: sp1
     rarity: ☆

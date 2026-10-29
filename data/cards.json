@@ -130037,8 +130037,7 @@
     "set": "c1",
     "setName": "Dual Fusion",
     "rarity": "◊",
-    "image": "https://img.game8.jp/13113710/402a2d2cb309c1dbf12e7fd88075c1c4.webp/show",
-    "imageEn": "https://serebii.net/tcgpocket/dualfusion/1.jpg",
+    "image": "https://serebii.net/tcgpocket/dualfusion/1.jpg",
     "released": "2026-10-29",
     "pack": "ピカチュウ"
    },
@@ -130162,8 +130161,7 @@
     "set": "c1",
     "setName": "Dual Fusion",
     "rarity": "◊◊◊",
-    "image": "https://img.game8.jp/13113530/ebcd921e0309306ca1786f9cfc9eea76.webp/show",
-    "imageEn": "https://serebii.net/tcgpocket/dualfusion/3.jpg",
+    "image": "https://serebii.net/tcgpocket/dualfusion/3.jpg",
     "released": "2026-10-29",
     "pack": "ピカチュウ"
    },
@@ -130289,9 +130287,9 @@
     "costTyped": 3,
     "damage": 100,
     "damageVariable": false,
-    "nameJa": "ロングネックハンマー",
+    "nameJa": "くびながハンマー",
     "textJa": "相手のベンチポケモンがランダムに1回選ばれ、選ばれたポケモンにも、50ダメージ。",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -130580,9 +130578,9 @@
     "costTyped": 1,
     "damage": 100,
     "damageVariable": false,
-    "nameJa": "おちばタックル",
+    "nameJa": "らくようタックル",
     "textJa": "このポケモンから草エネルギーを1個トラッシュ。",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -130853,8 +130851,7 @@
     "set": "c1",
     "setName": "Dual Fusion",
     "rarity": "◊◊◊",
-    "image": "https://img.game8.jp/13113898/1912af26ca20da528f705834c0abf265.webp/show",
-    "imageEn": "https://serebii.net/tcgpocket/dualfusion/15.jpg",
+    "image": "https://serebii.net/tcgpocket/dualfusion/15.jpg",
     "released": "2026-10-29",
     "pack": "メガミュウツーX"
    },
@@ -130929,8 +130926,7 @@
     "set": "c1",
     "setName": "Dual Fusion",
     "rarity": "◊",
-    "image": "https://img.game8.jp/13113711/b56d651f962299a6570533850f172883.webp/show",
-    "imageEn": "https://serebii.net/tcgpocket/dualfusion/16.jpg",
+    "image": "https://serebii.net/tcgpocket/dualfusion/16.jpg",
     "released": "2026-10-29",
     "pack": "メガミュウツーX"
    },
@@ -131058,8 +131054,7 @@
     "set": "c1",
     "setName": "Dual Fusion",
     "rarity": "◊◊◊",
-    "image": "https://img.game8.jp/13113529/b22f2b4917260c2f0999dca20c539a87.webp/show",
-    "imageEn": "https://serebii.net/tcgpocket/dualfusion/18.jpg",
+    "image": "https://serebii.net/tcgpocket/dualfusion/18.jpg",
     "released": "2026-10-29",
     "pack": "メガミュウツーX"
    },
@@ -131119,7 +131114,7 @@
     "damageVariable": true,
     "nameJa": "ダイナマイトスチーム",
     "textJa": "コインを2回投げ、オモテの数×110ダメージ。",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -131348,8 +131343,7 @@
     "set": "c1",
     "setName": "Dual Fusion",
     "rarity": "◊◊",
-    "image": "https://img.game8.jp/13113900/ed2048ad5a7c86c8b4d75a892ae15282.webp/show",
-    "imageEn": "https://serebii.net/tcgpocket/dualfusion/23.jpg",
+    "image": "https://serebii.net/tcgpocket/dualfusion/23.jpg",
     "released": "2026-10-29",
     "pack": "ピカチュウ"
    },
@@ -131411,7 +131405,7 @@
     "damageVariable": false,
     "nameJa": "スピニングキック",
     "textJa": "このポケモンにも20ダメージ。",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -131486,8 +131480,7 @@
     "set": "c1",
     "setName": "Dual Fusion",
     "rarity": "◊◊◊◊",
-    "image": "https://img.game8.jp/12923032/7ac06d023af3fbf47ccc0d6378489d6b.webp/show",
-    "imageEn": "https://serebii.net/tcgpocket/dualfusion/25.jpg",
+    "image": "https://serebii.net/tcgpocket/dualfusion/25.jpg",
     "released": "2026-10-29",
     "pack": "ピカチュウ"
    },
@@ -131741,8 +131734,7 @@
     "set": "c1",
     "setName": "Dual Fusion",
     "rarity": "◊",
-    "image": "https://img.game8.jp/13113712/2416660b7c44756d3773a2141a480c15.webp/show",
-    "imageEn": "https://serebii.net/tcgpocket/dualfusion/29.jpg",
+    "image": "https://serebii.net/tcgpocket/dualfusion/29.jpg",
     "released": "2026-10-29",
     "pack": "メガミュウツーX"
    },
@@ -131863,8 +131855,7 @@
     "set": "c1",
     "setName": "Dual Fusion",
     "rarity": "◊◊◊",
-    "image": "https://img.game8.jp/13113528/3b2824f4c00918427a57e99f81393985.webp/show",
-    "imageEn": "https://serebii.net/tcgpocket/dualfusion/31.jpg",
+    "image": "https://serebii.net/tcgpocket/dualfusion/31.jpg",
     "released": "2026-10-29",
     "pack": "メガミュウツーX"
    },
@@ -131986,7 +131977,7 @@
     "costTyped": 3,
     "damageVariable": false,
     "nameJa": "デュアルブリザード",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -132254,8 +132245,8 @@
     "damage": 70,
     "damageVariable": false,
     "nameJa": "あくうせつだん",
-    "textJa": "相手の場にスタジアムが出ているなら、そのスタジアムをトラッシュする。",
-    "jaSource": "machine"
+    "textJa": "場に出ている相手のスタジアムをトラッシュ。",
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -132474,9 +132465,9 @@
    "nameEn": "Sudden Duplication",
    "textEn": "Once during your turn, when you play this card from your hand to evolve 1 of your Pokémon, you may use this Ability. Put a random Frogadier from your deck onto your Bench.",
    "tags": [],
-   "nameJa": "とつぜんぶんしん",
-   "textJa": "自分の番に、このカードを手札から出して進化させたとき、1回使える。自分の山札からゲコガシラをランダムに1枚、ベンチに出す。",
-   "jaSource": "machine"
+   "nameJa": "でたとこぶんしん",
+   "textJa": "自分の番に、このカードを手札から出して進化させたとき、1回使える。自分の山札から「ゲコガシラ」をランダムに1枚、ベンチに出す。",
+   "jaSource": "official"
   }
  },
  {
@@ -132515,8 +132506,7 @@
     "set": "c1",
     "setName": "Dual Fusion",
     "rarity": "◊◊◊◊",
-    "image": "https://img.game8.jp/13113526/e068da7d3b77b97e1e6d75520d5fbe9d.webp/show",
-    "imageEn": "https://serebii.net/tcgpocket/dualfusion/42.jpg",
+    "image": "https://serebii.net/tcgpocket/dualfusion/42.jpg",
     "released": "2026-10-29",
     "pack": "ピカチュウ"
    },
@@ -132601,8 +132591,7 @@
     "set": "c1",
     "setName": "Dual Fusion",
     "rarity": "◊◊◊◊",
-    "image": "https://img.game8.jp/13113527/7b79df7f0e8faa29d7d615eb8b864854.webp/show",
-    "imageEn": "https://serebii.net/tcgpocket/dualfusion/43.jpg",
+    "image": "https://serebii.net/tcgpocket/dualfusion/43.jpg",
     "released": "2026-10-29",
     "pack": "ピカチュウ"
    },
@@ -133046,9 +133035,9 @@
    "nameEn": "Electrocreation",
    "textEn": "Once during your turn, you may take a [L] Energy from your Energy Zone and attach it to the [L] Pokémon in the Active Spot.",
    "tags": [],
-   "nameJa": "エレキクリエイト",
+   "nameJa": "でんきづくり",
    "textJa": "自分の番に1回使える。自分のエネルギーゾーンから雷エネルギーを1個出し、バトル場の雷ポケモンにつける。",
-   "jaSource": "machine"
+   "jaSource": "official"
   }
  },
  {
@@ -133079,8 +133068,8 @@
     "costTyped": 2,
     "damage": 30,
     "damageVariable": false,
-    "nameJa": "いやしのこもりうた",
-    "jaSource": "machine"
+    "nameJa": "じゅくすいソング",
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -133402,8 +133391,7 @@
     "set": "c1",
     "setName": "Dual Fusion",
     "rarity": "◊◊◊◊",
-    "image": "https://img.game8.jp/12922926/689e96571dcf6eaa9e40f1ae881da1e0.webp/show",
-    "imageEn": "https://serebii.net/tcgpocket/dualfusion/56.jpg",
+    "image": "https://serebii.net/tcgpocket/dualfusion/56.jpg",
     "released": "2026-10-29",
     "pack": "メガミュウツーX"
    },
@@ -133495,8 +133483,7 @@
     "set": "c1",
     "setName": "Dual Fusion",
     "rarity": "◊◊◊◊",
-    "image": "https://img.game8.jp/13113525/a852bad97f4d171d5b2b98c6ae5d2a85.webp/show",
-    "imageEn": "https://serebii.net/tcgpocket/dualfusion/57.jpg",
+    "image": "https://serebii.net/tcgpocket/dualfusion/57.jpg",
     "released": "2026-10-29",
     "pack": "メガミュウツーX"
    },
@@ -133676,9 +133663,9 @@
     "costTyped": 0,
     "damage": 10,
     "damageVariable": true,
-    "nameJa": "のうは",
+    "nameJa": "ブレインウェーブ",
     "textJa": "このポケモンの超エネルギーの数×20ダメージ追加。",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -134278,7 +134265,7 @@
     "damageVariable": false,
     "nameJa": "メガホーン",
     "textJa": "コインを1回投げウラなら、このワザは失敗。",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -135061,9 +135048,9 @@
     "costTyped": 1,
     "damage": 50,
     "damageVariable": false,
-    "nameJa": "トワイライトポイズン",
+    "nameJa": "ゆうやみどく",
     "textJa": "相手のバトルポケモンをどくとねむりにする。",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -135211,8 +135198,7 @@
     "set": "c1",
     "setName": "Dual Fusion",
     "rarity": "◊◊◊◊",
-    "image": "https://img.game8.jp/13113899/d8c987292cf6aa015fa5af87d1714458.webp/show",
-    "imageEn": "https://serebii.net/tcgpocket/dualfusion/85.jpg",
+    "image": "https://serebii.net/tcgpocket/dualfusion/85.jpg",
     "released": "2026-10-29",
     "pack": "メガミュウツーX"
    },
@@ -135533,9 +135519,9 @@
     "costTyped": 2,
     "damage": 90,
     "damageVariable": true,
-    "nameJa": "シュレッドクロー",
+    "nameJa": "シュレッダークロー",
     "textJa": "ウラが出るまでコインを投げ、オモテの数×50ダメージ追加。",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -135773,8 +135759,8 @@
     "costTyped": 3,
     "damage": 90,
     "damageVariable": true,
-    "nameJa": "サンクロー",
-    "jaSource": "machine"
+    "nameJa": "にちりんのツメ",
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -136097,8 +136083,7 @@
     "set": "c1",
     "setName": "Dual Fusion",
     "rarity": "◊◊◊◊",
-    "image": "https://img.game8.jp/13113524/bfd407fbb73a6b093f9440cd16a20e97.webp/show",
-    "imageEn": "https://serebii.net/tcgpocket/dualfusion/100.jpg",
+    "image": "https://serebii.net/tcgpocket/dualfusion/100.jpg",
     "released": "2026-10-29",
     "pack": "ピカチュウ"
    },
@@ -136268,7 +136253,7 @@
     "damageVariable": false,
     "nameJa": "ともだちをさがす",
     "textJa": "自分の山札から無色ポケモンをランダムに1枚、手札に加える。",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -136384,7 +136369,7 @@
     "damageVariable": true,
     "nameJa": "クリーンヒット",
     "textJa": "相手のバトルポケモンが進化ポケモンなら、80ダメージ追加。",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -136758,8 +136743,8 @@
     "damage": 50,
     "damageVariable": false,
     "nameJa": "オーバースマッシュ",
-    "textJa": "次の自分の番、このポケモンのワザ「オーバードライブスマッシュ」のダメージを+50する。",
-    "jaSource": "machine"
+    "textJa": "次の自分の番、このポケモンの「オーバースマッシュ」のダメージを+50する。",
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -137306,11 +137291,10 @@
   "text": {
    "textEn": "Choose 1 of your Pokémon, and then flip a coin until you get tails. For each heads, heal 20 damage from that Pokémon.",
    "tags": [],
-   "textJa": "自分のポケモンを1匹選び、ウラが出るまでコインを投げる。オモテの数×20、そのポケモンのHPを回復。",
-   "jaSource": "machine"
+   "textJa": "自分のポケモンを1匹選ぶ。ウラが出るまでコインを投げ、オモテの数×20ダメージぶん、そのポケモンのHPを回復。",
+   "jaSource": "official"
   },
-  "nameJa": "あまいミツ",
-  "nameJaMachine": true
+  "nameJa": "あまいミツ"
  },
  {
   "id": "c1-120",
@@ -137341,11 +137325,10 @@
   "text": {
    "textEn": "Heal 40 damage from 1 of your Pokémon that has any Energy attached. If you healed any damage in this way, discard a random Energy from that Pokémon.",
    "tags": [],
-   "textJa": "エネルギーがついている自分のポケモン1匹のHPを40回復。回復したなら、そのポケモンからエネルギーをランダムに1個トラッシュ。",
-   "jaSource": "machine"
+   "textJa": "エネルギーがついている自分のポケモン1匹のHPを40回復。その後、そのポケモンからエネルギーをランダムに1個トラッシュ。",
+   "jaSource": "official"
   },
-  "nameJa": "いいキズぐすり",
-  "nameJaMachine": true
+  "nameJa": "いいきずぐすり"
  },
  {
   "id": "c1-121",
@@ -137410,11 +137393,10 @@
   "text": {
    "textEn": "Your Active Pokémon recovers from all Special Conditions.",
    "tags": [],
-   "textJa": "自分のバトルポケモンの特殊状態をすべて回復する。",
-   "jaSource": "machine"
+   "textJa": "自分のバトルポケモンの特殊状態を、すべて回復。",
+   "jaSource": "official"
   },
-  "nameJa": "なんでもなおし",
-  "nameJaMachine": true
+  "nameJa": "なんでもなおし"
  },
  {
   "id": "c1-123",
@@ -137478,11 +137460,10 @@
   "text": {
    "textEn": "Attacks used by the Pikachu ex this card is attached to do +30 damage to your opponent's Active Pokémon.",
    "tags": [],
-   "textJa": "このカードをつけているピカチュウexが使うワザの、相手のバトルポケモンへのダメージを+30する。",
-   "jaSource": "machine"
+   "textJa": "このカードをつけている「ピカチュウex」が使うワザの、相手のバトルポケモンへのダメージを+30する。",
+   "jaSource": "official"
   },
-  "nameJa": "でんきだま",
-  "nameJaMachine": true
+  "nameJa": "でんきだま"
  },
  {
   "id": "c1-125",
@@ -137522,11 +137503,10 @@
   "text": {
    "textEn": "During this turn, attacks used by your Dewgong, Cloyster, or Lapras do +30 damage to your opponent's Pokémon.",
    "tags": [],
-   "textJa": "この番、自分のジュゴン・パルシェン・ラプラスが使うワザの、相手のポケモンへのダメージを+30する。",
-   "jaSource": "machine"
+   "textJa": "この番、自分の「ジュゴン」「パルシェン」「ラプラス」が使うワザの、相手のポケモン全員へのダメージを+30する。",
+   "jaSource": "official"
   },
-  "nameJa": "カンナ",
-  "nameJaMachine": true
+  "nameJa": "カンナ"
  },
  {
   "id": "c1-126",
@@ -137609,8 +137589,8 @@
   "text": {
    "textEn": "Look at the top 3 cards of your deck and put 1 of them into your hand. Shuffle any other cards back into your deck.",
    "tags": [],
-   "textJa": "自分の山札を上から3枚見て、その中から1枚を手札に加える。残りのカードは山札にもどして切る。",
-   "jaSource": "machine"
+   "textJa": "自分の山札を上から3枚見て、その中からカードを1枚選び、手札に加える。残りのカードは山札にもどす。",
+   "jaSource": "official"
   },
   "nameJa": "セレナの選択"
  },
@@ -137695,11 +137675,10 @@
   "text": {
    "textEn": "Put 2 random cards from among Super Potion, Max Repel, and Full Heal from your deck into your hand.",
    "tags": [],
-   "textJa": "自分の山札から「いいキズぐすり」「ゴールドスプレー」「なんでもなおし」のどれかをランダムに2枚、手札に加える。",
-   "jaSource": "machine"
+   "textJa": "自分の山札から「いいきずぐすり」「ゴールドスプレー」「なんでもなおし」をランダムに2枚、手札に加える。",
+   "jaSource": "official"
   },
-  "nameJa": "フレンドリィショップの店員",
-  "nameJaMachine": true
+  "nameJa": "フレンドリィショップのお兄さん"
  },
  {
   "id": "c1-130",
@@ -138001,8 +137980,7 @@
     "set": "sp1",
     "setName": "First Partners",
     "rarity": "☆",
-    "image": "https://img.game8.jp/13113713/3333aed3a836b49ab6557d72bfa8047f.webp/show",
-    "imageEn": "https://serebii.net/tcgpocket/firstpartners/4.jpg",
+    "image": "https://serebii.net/tcgpocket/firstpartners/4.jpg",
     "released": "2026-10-29"
    }
   ],
@@ -138410,8 +138388,7 @@
     "set": "sp1",
     "setName": "First Partners",
     "rarity": "☆",
-    "image": "https://img.game8.jp/13113715/f22eb7f293b90e6fbe80f01b4dbc6d7b.webp/show",
-    "imageEn": "https://serebii.net/tcgpocket/firstpartners/12.jpg",
+    "image": "https://serebii.net/tcgpocket/firstpartners/12.jpg",
     "released": "2026-10-29"
    }
   ],
@@ -139084,8 +139061,7 @@
     "set": "sp1",
     "setName": "First Partners",
     "rarity": "☆",
-    "image": "https://img.game8.jp/13113714/459b5dbc62419b46546af540fd39dc07.webp/show",
-    "imageEn": "https://serebii.net/tcgpocket/firstpartners/26.jpg",
+    "image": "https://serebii.net/tcgpocket/firstpartners/26.jpg",
     "released": "2026-10-29"
    }
   ],
