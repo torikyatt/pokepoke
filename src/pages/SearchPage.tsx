@@ -98,7 +98,7 @@ export function SearchPage({ wide, counts }: { wide?: boolean; counts?: Map<stri
                 </Chip>
               ))}
             </div>
-            {/* 最新のカード: 実装予定のカードがあればそれ、無ければ最新パックのカードに絞り込む（パック別のカード一覧は設定へ） */}
+            {/* 最新のカード: いちばん新しいパックと、それ以降に出たプロモ・スペシャルパック・実装予定のカードに絞り込む（パック別のカード一覧は設定へ） */}
             {latest.n > 0 && (
               <button type="button" onClick={() => go({ q: latest.q }, false)} className="neu-sm neu-press flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-extrabold text-accent-deep">
                 <span className="rounded-full bg-[#e8553d] px-1.5 text-[10px] leading-relaxed text-white">NEW</span>

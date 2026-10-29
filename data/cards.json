@@ -129880,13 +129880,15 @@
     "set": "sp1",
     "setName": "First Partners",
     "rarity": "☆",
-    "image": "https://serebii.net/tcgpocket/firstpartners/1.jpg"
+    "image": "https://serebii.net/tcgpocket/firstpartners/1.jpg",
+    "released": "2026-10-31"
    }
   ],
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "grass",
   "stage": "basic",
@@ -129945,7 +129947,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "grass",
   "stage": "stage1",
@@ -130007,7 +130010,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "grass",
   "stage": "stage2",
@@ -130077,7 +130081,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "grass",
   "stage": "basic",
@@ -130146,7 +130151,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "grass",
   "stage": "stage1",
@@ -130194,7 +130200,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "grass",
   "stage": "basic",
@@ -130246,7 +130253,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "grass",
   "stage": "basic",
@@ -130298,7 +130306,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "grass",
   "stage": "stage1",
@@ -130357,7 +130366,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "grass",
   "stage": "basic",
@@ -130408,7 +130418,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "grass",
   "stage": "stage1",
@@ -130459,7 +130470,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "grass",
   "stage": "basic",
@@ -130510,7 +130522,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "grass",
   "stage": "stage1",
@@ -130560,7 +130573,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "grass",
   "stage": "basic",
@@ -130610,7 +130624,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "grass",
   "stage": "basic",
@@ -130669,7 +130684,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "grass",
   "stage": "stage1",
@@ -130735,13 +130751,15 @@
     "set": "sp1",
     "setName": "First Partners",
     "rarity": "☆",
-    "image": "https://serebii.net/tcgpocket/firstpartners/2.jpg"
+    "image": "https://serebii.net/tcgpocket/firstpartners/2.jpg",
+    "released": "2026-10-31"
    }
   ],
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "fire",
   "stage": "basic",
@@ -130802,7 +130820,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "fire",
   "stage": "stage1",
@@ -130866,7 +130885,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "fire",
   "stage": "stage2",
@@ -130924,7 +130944,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "fire",
   "stage": "basic",
@@ -130977,7 +130998,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "fire",
   "stage": "basic",
@@ -131030,7 +131052,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "fire",
   "stage": "stage1",
@@ -131082,7 +131105,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "fire",
   "stage": "basic",
@@ -131145,7 +131169,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "fire",
   "stage": "stage1",
@@ -131205,7 +131230,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "fire",
   "stage": "stage2",
@@ -131294,7 +131320,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "fire",
   "stage": "basic",
@@ -131347,7 +131374,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "fire",
   "stage": "basic",
@@ -131399,7 +131427,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "fire",
   "stage": "stage1",
@@ -131461,7 +131490,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "fire",
   "stage": "stage1",
@@ -131516,13 +131546,15 @@
     "set": "sp1",
     "setName": "First Partners",
     "rarity": "☆",
-    "image": "https://serebii.net/tcgpocket/firstpartners/3.jpg"
+    "image": "https://serebii.net/tcgpocket/firstpartners/3.jpg",
+    "released": "2026-10-31"
    }
   ],
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "water",
   "stage": "basic",
@@ -131579,7 +131611,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "water",
   "stage": "stage1",
@@ -131640,7 +131673,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "water",
   "stage": "stage2",
@@ -131707,7 +131741,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "water",
   "stage": "basic",
@@ -131765,7 +131800,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "water",
   "stage": "stage1",
@@ -131818,7 +131854,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "water",
   "stage": "basic",
@@ -131871,7 +131908,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "water",
   "stage": "stage1",
@@ -131919,7 +131957,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "water",
   "stage": "basic",
@@ -131966,7 +132005,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "water",
   "stage": "basic",
@@ -132023,7 +132063,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "water",
   "stage": "basic",
@@ -132072,7 +132113,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "water",
   "stage": "basic",
@@ -132124,13 +132166,15 @@
     "set": "sp1",
     "setName": "First Partners",
     "rarity": "☆",
-    "image": "https://serebii.net/tcgpocket/firstpartners/18.jpg"
+    "image": "https://serebii.net/tcgpocket/firstpartners/18.jpg",
+    "released": "2026-10-31"
    }
   ],
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "water",
   "stage": "basic",
@@ -132194,7 +132238,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "water",
   "stage": "stage1",
@@ -132272,7 +132317,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "water",
   "type2": "darkness",
@@ -132362,7 +132408,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "lightning",
   "stage": "basic",
@@ -132415,7 +132462,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "lightning",
   "stage": "basic",
@@ -132469,7 +132517,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "lightning",
   "stage": "stage1",
@@ -132518,7 +132567,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "lightning",
   "stage": "basic",
@@ -132566,7 +132616,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "lightning",
   "stage": "basic",
@@ -132618,7 +132669,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "lightning",
   "stage": "basic",
@@ -132675,7 +132727,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "lightning",
   "stage": "stage1",
@@ -132744,7 +132797,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "lightning",
   "stage": "stage2",
@@ -132815,7 +132869,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "psychic",
   "stage": "basic",
@@ -132870,7 +132925,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "psychic",
   "stage": "stage1",
@@ -132930,7 +132986,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "psychic",
   "stage": "basic",
@@ -132994,7 +133051,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "psychic",
   "stage": "stage1",
@@ -133056,7 +133114,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "psychic",
   "stage": "stage2",
@@ -133131,7 +133190,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "psychic",
   "type2": "fighting",
@@ -133211,7 +133271,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "psychic",
   "stage": "basic",
@@ -133262,7 +133323,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "psychic",
   "stage": "basic",
@@ -133315,7 +133377,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "psychic",
   "stage": "stage1",
@@ -133378,7 +133441,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "psychic",
   "stage": "stage1",
@@ -133426,7 +133490,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "psychic",
   "stage": "basic",
@@ -133475,13 +133540,15 @@
     "set": "pc",
     "setName": "Promo-C",
     "rarity": "Promo",
-    "image": "https://serebii.net/tcgpocket/promo-c/3.jpg"
+    "image": "https://serebii.net/tcgpocket/promo-c/3.jpg",
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "psychic",
   "stage": "basic",
@@ -133537,7 +133604,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "psychic",
   "stage": "basic",
@@ -133588,13 +133656,15 @@
     "set": "pc",
     "setName": "Promo-C",
     "rarity": "Promo",
-    "image": "https://serebii.net/tcgpocket/promo-c/6.jpg"
+    "image": "https://serebii.net/tcgpocket/promo-c/6.jpg",
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "psychic",
   "stage": "basic",
@@ -133658,13 +133728,15 @@
     "set": "pc",
     "setName": "Promo-C",
     "rarity": "Promo",
-    "image": "https://serebii.net/tcgpocket/promo-c/7.jpg"
+    "image": "https://serebii.net/tcgpocket/promo-c/7.jpg",
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "psychic",
   "stage": "stage1",
@@ -133724,13 +133796,15 @@
     "set": "pc",
     "setName": "Promo-C",
     "rarity": "Promo",
-    "image": "https://serebii.net/tcgpocket/promo-c/8.jpg"
+    "image": "https://serebii.net/tcgpocket/promo-c/8.jpg",
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "psychic",
   "stage": "stage2",
@@ -133784,7 +133858,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "fighting",
   "stage": "basic",
@@ -133837,7 +133912,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "fighting",
   "stage": "stage1",
@@ -133897,7 +133973,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "fighting",
   "stage": "basic",
@@ -133960,7 +134037,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "fighting",
   "stage": "stage1",
@@ -134012,7 +134090,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "fighting",
   "stage": "stage2",
@@ -134060,7 +134139,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "fighting",
   "stage": "basic",
@@ -134111,7 +134191,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "fighting",
   "stage": "basic",
@@ -134171,7 +134252,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "fighting",
   "stage": "stage1",
@@ -134231,7 +134313,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "fighting",
   "stage": "basic",
@@ -134294,7 +134377,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "fighting",
   "stage": "stage1",
@@ -134346,7 +134430,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "fighting",
   "stage": "basic",
@@ -134398,7 +134483,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "fighting",
   "stage": "stage1",
@@ -134451,7 +134537,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "fighting",
   "stage": "basic",
@@ -134529,7 +134616,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "fighting",
   "stage": "stage1",
@@ -134591,7 +134679,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "darkness",
   "stage": "basic",
@@ -134649,7 +134738,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "darkness",
   "stage": "stage1",
@@ -134712,7 +134802,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "darkness",
   "stage": "stage2",
@@ -134783,7 +134874,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "darkness",
   "stage": "stage1",
@@ -134854,7 +134946,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "darkness",
   "stage": "stage2",
@@ -134903,7 +134996,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "darkness",
   "stage": "basic",
@@ -134955,7 +135049,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "darkness",
   "stage": "basic",
@@ -135007,7 +135102,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "darkness",
   "stage": "stage1",
@@ -135057,7 +135153,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "darkness",
   "stage": "basic",
@@ -135106,7 +135203,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "darkness",
   "stage": "stage1",
@@ -135172,7 +135270,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "metal",
   "stage": "basic",
@@ -135229,7 +135328,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "metal",
   "stage": "basic",
@@ -135281,7 +135381,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "metal",
   "stage": "basic",
@@ -135333,7 +135434,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "metal",
   "stage": "stage1",
@@ -135392,7 +135494,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "metal",
   "stage": "stage2",
@@ -135447,7 +135550,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "metal",
   "stage": "basic",
@@ -135509,7 +135613,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "metal",
   "stage": "stage1",
@@ -135572,7 +135677,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "dragon",
   "stage": "basic",
@@ -135630,7 +135736,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "dragon",
   "stage": "stage1",
@@ -135712,13 +135819,15 @@
     "set": "pc",
     "setName": "Promo-C",
     "rarity": "Promo",
-    "image": "https://serebii.net/tcgpocket/promo-c/13.jpg"
+    "image": "https://serebii.net/tcgpocket/promo-c/13.jpg",
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "dragon",
   "stage": "stage2",
@@ -135805,7 +135914,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "dragon",
   "stage": "basic",
@@ -135856,7 +135966,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "colorless",
   "stage": "basic",
@@ -135914,7 +136025,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "colorless",
   "stage": "stage1",
@@ -135968,7 +136080,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "colorless",
   "stage": "stage2",
@@ -136028,7 +136141,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "colorless",
   "stage": "basic",
@@ -136087,7 +136201,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "colorless",
   "stage": "stage1",
@@ -136165,7 +136280,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "colorless",
   "stage": "basic",
@@ -136218,7 +136334,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "colorless",
   "stage": "basic",
@@ -136276,7 +136393,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "colorless",
   "stage": "stage1",
@@ -136330,7 +136448,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "colorless",
   "stage": "stage2",
@@ -136379,7 +136498,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "colorless",
   "stage": "basic",
@@ -136426,7 +136546,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "colorless",
   "stage": "basic",
@@ -136493,7 +136614,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "colorless",
   "stage": "basic",
@@ -136544,7 +136666,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "colorless",
   "stage": "stage1",
@@ -136599,7 +136722,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "colorless",
   "stage": "basic",
@@ -136652,7 +136776,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "colorless",
   "stage": "stage1",
@@ -136714,7 +136839,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "colorless",
   "stage": "basic",
@@ -136792,7 +136918,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "type": "colorless",
   "stage": "stage1",
@@ -136832,7 +136959,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "text": {
    "textEn": "Choose 1 of your Pokémon, and then flip a coin until you get tails. For each heads, heal 20 damage from that Pokémon.",
@@ -136865,7 +136993,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "text": {
    "textEn": "Heal 40 damage from 1 of your Pokémon that has any Energy attached. If you healed any damage in this way, discard a random Energy from that Pokémon.",
@@ -136898,7 +137027,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "text": {
    "textEn": "Switch out your opponent's Active Stage 2 Pokémon to the Bench. (Your opponent chooses the new Active Pokémon.)",
@@ -136931,7 +137061,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "text": {
    "textEn": "Your Active Pokémon recovers from all Special Conditions.",
@@ -136964,7 +137095,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "text": {
    "textEn": "The Basic Pokémon this card is attached to takes -20 damage from attacks from your opponent's Pokémon.",
@@ -136997,7 +137129,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "text": {
    "textEn": "Attacks used by the Pikachu ex this card is attached to do +30 damage to your opponent's Active Pokémon.",
@@ -137038,7 +137171,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "text": {
    "textEn": "During this turn, attacks used by your Dewgong, Cloyster, or Lapras do +30 damage to your opponent's Pokémon.",
@@ -137079,7 +137213,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "text": {
    "textEn": "You can use this card only if you have Venusaur, Charizard, Blastoise, or Pidgeot in play. Switch in 1 of your opponent's Benched Pokémon to the Active Spot.",
@@ -137120,7 +137255,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "text": {
    "textEn": "Look at the top 3 cards of your deck and put 1 of them into your hand. Shuffle any other cards back into your deck.",
@@ -137161,7 +137297,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "text": {
    "textEn": "Produce 2 [F] Energy from your Energy Zone, and attach it to 1 of your Whiscash or Paldean Clodsire.",
@@ -137202,7 +137339,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "text": {
    "textEn": "Put 2 random cards from among Super Potion, Max Repel, and Full Heal from your deck into your hand.",
@@ -137243,7 +137381,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "text": {
    "textEn": "You can use this card only if you have 3 or more different Pokémon types in play. Switch your Active Pokémon with 1 of your Benched Pokémon.",
@@ -137276,7 +137415,8 @@
   "tags": [],
   "upcoming": {
    "date": "2026-10-29",
-   "source": "https://serebii.net/tcgpocket/dualfusion/"
+   "source": "https://serebii.net/tcgpocket/dualfusion/",
+   "released": true
   },
   "text": {
    "textEn": "Once during each player's turn, that player may use this effect. Flip a coin. If heads, draw a card.",
@@ -137319,12 +137459,15 @@
     "set": "pc",
     "setName": "Promo-C",
     "rarity": "Promo",
-    "image": "https://serebii.net/tcgpocket/promo-c/2.jpg"
+    "image": "https://serebii.net/tcgpocket/promo-c/2.jpg",
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
-   "source": "https://serebii.net/tcgpocket/promo-c/"
+   "date": "2026-10-29",
+   "source": "https://serebii.net/tcgpocket/promo-c/",
+   "released": true
   },
   "type": "psychic",
   "stage": "basic",
@@ -137368,12 +137511,15 @@
     "set": "pc",
     "setName": "Promo-C",
     "rarity": "Promo",
-    "image": "https://serebii.net/tcgpocket/promo-c/4.jpg"
+    "image": "https://serebii.net/tcgpocket/promo-c/4.jpg",
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
-   "source": "https://serebii.net/tcgpocket/promo-c/"
+   "date": "2026-10-29",
+   "source": "https://serebii.net/tcgpocket/promo-c/",
+   "released": true
   },
   "type": "psychic",
   "stage": "basic",
@@ -137418,12 +137564,15 @@
     "set": "pc",
     "setName": "Promo-C",
     "rarity": "Promo",
-    "image": "https://serebii.net/tcgpocket/promo-c/5.jpg"
+    "image": "https://serebii.net/tcgpocket/promo-c/5.jpg",
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
-   "source": "https://serebii.net/tcgpocket/promo-c/"
+   "date": "2026-10-29",
+   "source": "https://serebii.net/tcgpocket/promo-c/",
+   "released": true
   },
   "type": "psychic",
   "stage": "stage1",
@@ -137448,12 +137597,15 @@
     "set": "pc",
     "setName": "Promo-C",
     "rarity": "Promo",
-    "image": "https://serebii.net/tcgpocket/promo-c/9.jpg"
+    "image": "https://serebii.net/tcgpocket/promo-c/9.jpg",
+    "released": "2026-10-29"
    }
   ],
   "tags": [],
   "upcoming": {
-   "source": "https://serebii.net/tcgpocket/promo-c/"
+   "date": "2026-10-29",
+   "source": "https://serebii.net/tcgpocket/promo-c/",
+   "released": true
   },
   "text": {
    "textEn": "Move all [P] Energy from 1 of your Benched [P] Pokémon to your Mega Mewtwo Y ex in the Active Spot.",
@@ -137499,11 +137651,13 @@
     "setName": "First Partners",
     "rarity": "☆",
     "image": "https://img.game8.jp/13113713/3333aed3a836b49ab6557d72bfa8047f.webp/show",
-    "imageEn": "https://serebii.net/tcgpocket/firstpartners/4.jpg"
+    "imageEn": "https://serebii.net/tcgpocket/firstpartners/4.jpg",
+    "released": "2026-10-31"
    }
   ],
   "tags": [],
   "upcoming": {
+   "date": "2026-10-31",
    "source": "https://serebii.net/tcgpocket/firstpartners/"
   },
   "type": "grass",
@@ -137547,11 +137701,13 @@
     "set": "sp1",
     "setName": "First Partners",
     "rarity": "☆",
-    "image": "https://serebii.net/tcgpocket/firstpartners/5.jpg"
+    "image": "https://serebii.net/tcgpocket/firstpartners/5.jpg",
+    "released": "2026-10-31"
    }
   ],
   "tags": [],
   "upcoming": {
+   "date": "2026-10-31",
    "source": "https://serebii.net/tcgpocket/firstpartners/"
   },
   "type": "fire",
@@ -137595,11 +137751,13 @@
     "set": "sp1",
     "setName": "First Partners",
     "rarity": "☆",
-    "image": "https://serebii.net/tcgpocket/firstpartners/6.jpg"
+    "image": "https://serebii.net/tcgpocket/firstpartners/6.jpg",
+    "released": "2026-10-31"
    }
   ],
   "tags": [],
   "upcoming": {
+   "date": "2026-10-31",
    "source": "https://serebii.net/tcgpocket/firstpartners/"
   },
   "type": "water",
@@ -137643,11 +137801,13 @@
     "set": "sp1",
     "setName": "First Partners",
     "rarity": "☆",
-    "image": "https://serebii.net/tcgpocket/firstpartners/7.jpg"
+    "image": "https://serebii.net/tcgpocket/firstpartners/7.jpg",
+    "released": "2026-10-31"
    }
   ],
   "tags": [],
   "upcoming": {
+   "date": "2026-10-31",
    "source": "https://serebii.net/tcgpocket/firstpartners/"
   },
   "type": "grass",
@@ -137691,11 +137851,13 @@
     "set": "sp1",
     "setName": "First Partners",
     "rarity": "☆",
-    "image": "https://serebii.net/tcgpocket/firstpartners/8.jpg"
+    "image": "https://serebii.net/tcgpocket/firstpartners/8.jpg",
+    "released": "2026-10-31"
    }
   ],
   "tags": [],
   "upcoming": {
+   "date": "2026-10-31",
    "source": "https://serebii.net/tcgpocket/firstpartners/"
   },
   "type": "fire",
@@ -137739,11 +137901,13 @@
     "set": "sp1",
     "setName": "First Partners",
     "rarity": "☆",
-    "image": "https://serebii.net/tcgpocket/firstpartners/9.jpg"
+    "image": "https://serebii.net/tcgpocket/firstpartners/9.jpg",
+    "released": "2026-10-31"
    }
   ],
   "tags": [],
   "upcoming": {
+   "date": "2026-10-31",
    "source": "https://serebii.net/tcgpocket/firstpartners/"
   },
   "type": "water",
@@ -137787,11 +137951,13 @@
     "set": "sp1",
     "setName": "First Partners",
     "rarity": "☆",
-    "image": "https://serebii.net/tcgpocket/firstpartners/10.jpg"
+    "image": "https://serebii.net/tcgpocket/firstpartners/10.jpg",
+    "released": "2026-10-31"
    }
   ],
   "tags": [],
   "upcoming": {
+   "date": "2026-10-31",
    "source": "https://serebii.net/tcgpocket/firstpartners/"
   },
   "type": "grass",
@@ -137835,11 +138001,13 @@
     "set": "sp1",
     "setName": "First Partners",
     "rarity": "☆",
-    "image": "https://serebii.net/tcgpocket/firstpartners/11.jpg"
+    "image": "https://serebii.net/tcgpocket/firstpartners/11.jpg",
+    "released": "2026-10-31"
    }
   ],
   "tags": [],
   "upcoming": {
+   "date": "2026-10-31",
    "source": "https://serebii.net/tcgpocket/firstpartners/"
   },
   "type": "fire",
@@ -137884,11 +138052,13 @@
     "setName": "First Partners",
     "rarity": "☆",
     "image": "https://img.game8.jp/13113715/f22eb7f293b90e6fbe80f01b4dbc6d7b.webp/show",
-    "imageEn": "https://serebii.net/tcgpocket/firstpartners/12.jpg"
+    "imageEn": "https://serebii.net/tcgpocket/firstpartners/12.jpg",
+    "released": "2026-10-31"
    }
   ],
   "tags": [],
   "upcoming": {
+   "date": "2026-10-31",
    "source": "https://serebii.net/tcgpocket/firstpartners/"
   },
   "type": "water",
@@ -137932,11 +138102,13 @@
     "set": "sp1",
     "setName": "First Partners",
     "rarity": "☆",
-    "image": "https://serebii.net/tcgpocket/firstpartners/13.jpg"
+    "image": "https://serebii.net/tcgpocket/firstpartners/13.jpg",
+    "released": "2026-10-31"
    }
   ],
   "tags": [],
   "upcoming": {
+   "date": "2026-10-31",
    "source": "https://serebii.net/tcgpocket/firstpartners/"
   },
   "type": "grass",
@@ -137980,11 +138152,13 @@
     "set": "sp1",
     "setName": "First Partners",
     "rarity": "☆",
-    "image": "https://serebii.net/tcgpocket/firstpartners/14.jpg"
+    "image": "https://serebii.net/tcgpocket/firstpartners/14.jpg",
+    "released": "2026-10-31"
    }
   ],
   "tags": [],
   "upcoming": {
+   "date": "2026-10-31",
    "source": "https://serebii.net/tcgpocket/firstpartners/"
   },
   "type": "fire",
@@ -138029,11 +138203,13 @@
     "set": "sp1",
     "setName": "First Partners",
     "rarity": "☆",
-    "image": "https://serebii.net/tcgpocket/firstpartners/15.jpg"
+    "image": "https://serebii.net/tcgpocket/firstpartners/15.jpg",
+    "released": "2026-10-31"
    }
   ],
   "tags": [],
   "upcoming": {
+   "date": "2026-10-31",
    "source": "https://serebii.net/tcgpocket/firstpartners/"
   },
   "type": "water",
@@ -138078,11 +138254,13 @@
     "set": "sp1",
     "setName": "First Partners",
     "rarity": "☆",
-    "image": "https://serebii.net/tcgpocket/firstpartners/16.jpg"
+    "image": "https://serebii.net/tcgpocket/firstpartners/16.jpg",
+    "released": "2026-10-31"
    }
   ],
   "tags": [],
   "upcoming": {
+   "date": "2026-10-31",
    "source": "https://serebii.net/tcgpocket/firstpartners/"
   },
   "type": "grass",
@@ -138125,11 +138303,13 @@
     "set": "sp1",
     "setName": "First Partners",
     "rarity": "☆",
-    "image": "https://serebii.net/tcgpocket/firstpartners/17.jpg"
+    "image": "https://serebii.net/tcgpocket/firstpartners/17.jpg",
+    "released": "2026-10-31"
    }
   ],
   "tags": [],
   "upcoming": {
+   "date": "2026-10-31",
    "source": "https://serebii.net/tcgpocket/firstpartners/"
   },
   "type": "fire",
@@ -138174,11 +138354,13 @@
     "set": "sp1",
     "setName": "First Partners",
     "rarity": "☆",
-    "image": "https://serebii.net/tcgpocket/firstpartners/19.jpg"
+    "image": "https://serebii.net/tcgpocket/firstpartners/19.jpg",
+    "released": "2026-10-31"
    }
   ],
   "tags": [],
   "upcoming": {
+   "date": "2026-10-31",
    "source": "https://serebii.net/tcgpocket/firstpartners/"
   },
   "type": "grass",
@@ -138224,11 +138406,13 @@
     "set": "sp1",
     "setName": "First Partners",
     "rarity": "☆",
-    "image": "https://serebii.net/tcgpocket/firstpartners/20.jpg"
+    "image": "https://serebii.net/tcgpocket/firstpartners/20.jpg",
+    "released": "2026-10-31"
    }
   ],
   "tags": [],
   "upcoming": {
+   "date": "2026-10-31",
    "source": "https://serebii.net/tcgpocket/firstpartners/"
   },
   "type": "fire",
@@ -138274,11 +138458,13 @@
     "set": "sp1",
     "setName": "First Partners",
     "rarity": "☆",
-    "image": "https://serebii.net/tcgpocket/firstpartners/21.jpg"
+    "image": "https://serebii.net/tcgpocket/firstpartners/21.jpg",
+    "released": "2026-10-31"
    }
   ],
   "tags": [],
   "upcoming": {
+   "date": "2026-10-31",
    "source": "https://serebii.net/tcgpocket/firstpartners/"
   },
   "type": "water",
@@ -138322,11 +138508,13 @@
     "set": "sp1",
     "setName": "First Partners",
     "rarity": "☆",
-    "image": "https://serebii.net/tcgpocket/firstpartners/22.jpg"
+    "image": "https://serebii.net/tcgpocket/firstpartners/22.jpg",
+    "released": "2026-10-31"
    }
   ],
   "tags": [],
   "upcoming": {
+   "date": "2026-10-31",
    "source": "https://serebii.net/tcgpocket/firstpartners/"
   },
   "type": "grass",
@@ -138372,11 +138560,13 @@
     "set": "sp1",
     "setName": "First Partners",
     "rarity": "☆",
-    "image": "https://serebii.net/tcgpocket/firstpartners/23.jpg"
+    "image": "https://serebii.net/tcgpocket/firstpartners/23.jpg",
+    "released": "2026-10-31"
    }
   ],
   "tags": [],
   "upcoming": {
+   "date": "2026-10-31",
    "source": "https://serebii.net/tcgpocket/firstpartners/"
   },
   "type": "fire",
@@ -138420,11 +138610,13 @@
     "set": "sp1",
     "setName": "First Partners",
     "rarity": "☆",
-    "image": "https://serebii.net/tcgpocket/firstpartners/24.jpg"
+    "image": "https://serebii.net/tcgpocket/firstpartners/24.jpg",
+    "released": "2026-10-31"
    }
   ],
   "tags": [],
   "upcoming": {
+   "date": "2026-10-31",
    "source": "https://serebii.net/tcgpocket/firstpartners/"
   },
   "type": "water",
@@ -138469,11 +138661,13 @@
     "set": "sp1",
     "setName": "First Partners",
     "rarity": "☆",
-    "image": "https://serebii.net/tcgpocket/firstpartners/25.jpg"
+    "image": "https://serebii.net/tcgpocket/firstpartners/25.jpg",
+    "released": "2026-10-31"
    }
   ],
   "tags": [],
   "upcoming": {
+   "date": "2026-10-31",
    "source": "https://serebii.net/tcgpocket/firstpartners/"
   },
   "type": "grass",
@@ -138519,11 +138713,13 @@
     "setName": "First Partners",
     "rarity": "☆",
     "image": "https://img.game8.jp/13113714/459b5dbc62419b46546af540fd39dc07.webp/show",
-    "imageEn": "https://serebii.net/tcgpocket/firstpartners/26.jpg"
+    "imageEn": "https://serebii.net/tcgpocket/firstpartners/26.jpg",
+    "released": "2026-10-31"
    }
   ],
   "tags": [],
   "upcoming": {
+   "date": "2026-10-31",
    "source": "https://serebii.net/tcgpocket/firstpartners/"
   },
   "type": "fire",
@@ -138567,11 +138763,13 @@
     "set": "sp1",
     "setName": "First Partners",
     "rarity": "☆",
-    "image": "https://serebii.net/tcgpocket/firstpartners/27.jpg"
+    "image": "https://serebii.net/tcgpocket/firstpartners/27.jpg",
+    "released": "2026-10-31"
    }
   ],
   "tags": [],
   "upcoming": {
+   "date": "2026-10-31",
    "source": "https://serebii.net/tcgpocket/firstpartners/"
   },
   "type": "water",
@@ -138614,25 +138812,29 @@
     "set": "sp1",
     "setName": "First Partners",
     "rarity": "☆",
-    "image": "https://serebii.net/tcgpocket/firstpartners/28.jpg"
+    "image": "https://serebii.net/tcgpocket/firstpartners/28.jpg",
+    "released": "2026-10-31"
    },
    {
     "id": "sp1-029",
     "set": "sp1",
     "setName": "First Partners",
     "rarity": "☆",
-    "image": "https://serebii.net/tcgpocket/firstpartners/29.jpg"
+    "image": "https://serebii.net/tcgpocket/firstpartners/29.jpg",
+    "released": "2026-10-31"
    },
    {
     "id": "sp1-030",
     "set": "sp1",
     "setName": "First Partners",
     "rarity": "☆",
-    "image": "https://serebii.net/tcgpocket/firstpartners/30.jpg"
+    "image": "https://serebii.net/tcgpocket/firstpartners/30.jpg",
+    "released": "2026-10-31"
    }
   ],
   "tags": [],
   "upcoming": {
+   "date": "2026-10-31",
    "source": "https://serebii.net/tcgpocket/firstpartners/"
   },
   "type": "psychic",

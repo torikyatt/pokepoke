@@ -9,7 +9,11 @@ export type ImageLang = "ja" | "en";
 export async function loadData(): Promise<AppData> {
   const bin = Uint8Array.from(atob(packed), (c) => c.charCodeAt(0));
   const stream = new Blob([bin]).stream().pipeThrough(new DecompressionStream("gzip"));
-  return JSON.parse(await new Response(stream).text());
+  const data: AppData = JSON.parse(await new Response(stream).text());
+  // 実装日を過ぎた先行公開のカード（スペシャルパックの配布開始など）は、データを作り直さなくても実装済みとして扱う（日本時間の日付で）
+  const today = new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10);
+  for (const c of data.cards) if (c.upcoming?.date && c.upcoming.date <= today) delete c.upcoming;
+  return data;
 }
 
 /** 自前の英語画像（cards-en/）は、単一HTML版ではサイトに無いので元の URL を使う */

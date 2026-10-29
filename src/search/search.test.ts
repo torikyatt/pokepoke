@@ -697,16 +697,21 @@ describe("効果も入れた最大ダメージ（並べ替え・条件の絞り�
 });
 
 describe("最新のカード", () => {
-  it("実装予定のカードがあればそれだけ、無ければ最新パックのカード", () => {
-    const up = data.cards.filter((c) => c.upcoming);
-    if (up.length) expect(new Set(engine.search("最新のカード", 9999).map((h) => h.card.id))).toEqual(new Set(up.map((c) => c.id)));
-    // 実装予定のカードを除いたデータ（全部実装されたあと）: いちばん新しいパック（プロモ以外）のカード
-    const released = { ...data, cards: data.cards.filter((c) => !c.upcoming) };
-    const e = createEngine(released, {});
-    const newest = released.sets.filter((s) => s.released && !/^p/.test(s.code) && released.cards.some((c) => c.prints.some((p) => p.set === s.code))).sort((a, b) => b.released.localeCompare(a.released))[0];
-    const hits = e.search("新カード", 999);
-    expect(e.explain("新カード").conds.map((c) => c.label)).toEqual([`最新パック「${newest.nameJa || newest.name}」`]);
-    expect(hits.length).toBe(released.cards.filter((c) => c.prints.some((p) => p.set === newest.code)).length);
+  it("いちばん新しいパックと、それ以降に出たプロモ・スペシャルパック、実装予定のカード", () => {
+    const setDate = new Map(data.sets.map((s) => [s.code, s.released]));
+    const big = data.sets.filter((s) => !/^p/.test(s.code) && s.released && data.cards.filter((c) => !c.upcoming && c.sets.includes(s.code)).length >= 50);
+    const from = big.map((s) => s.released).sort().pop()!;
+    const expected = data.cards.filter((c) => c.upcoming || c.sets.some((code) => (setDate.get(code) || "0") >= from));
+    const hits = engine.search("最新のカード", 9999);
+    expect(new Set(hits.map((h) => h.card.id))).toEqual(new Set(expected.map((c) => c.id)));
+    expect(engine.explain("最新のカード").conds.map((c) => c.label)).toEqual(["最新のカード"]);
+    // 新しいパックのカード（前のパックのカードは入らない）
+    const newest = big.find((s) => s.released === from)!;
+    expect(hits.some((h) => h.card.sets.includes(newest.code))).toBe(true);
+    const older = big.filter((s) => s.released < from).pop()!;
+    expect(hits.some((h) => h.card.sets.length === 1 && h.card.sets[0] === older.code)).toBe(false);
+    // 実装予定のカードも入る
+    for (const c of data.cards.filter((c) => c.upcoming)) expect(hits.some((h) => h.card.id === c.id)).toBe(true);
   });
   it("ほかの条件と組み合わせられる・英語でも", () => {
     expect(engine.explain("新弾の炎ポケモン").conds.map((c) => c.id)).toEqual(expect.arrayContaining(["latest", "type:fire"]));

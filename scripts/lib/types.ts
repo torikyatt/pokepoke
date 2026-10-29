@@ -59,7 +59,7 @@ export interface Card {
   text?: Effect;
   prints: Print[];
   tags: string[];
-  upcoming?: Upcoming; // まだ実装されていない（先行公開の情報。data/upcoming.yaml）
+  upcoming?: Upcoming; // 先行公開の情報から作ったカード（data/upcoming*.yaml）。released でなければ、まだ実装されていない
 }
 
 /** 実装前のカードの情報 */
@@ -67,4 +67,5 @@ export interface Upcoming {
   date?: string; // 実装予定日（YYYY-MM-DD。未定なら無し）
   source: string; // 情報の出どころ
   unknown?: ("weakness" | "retreat" | "hp")[]; // まだ公開されていない項目
+  released?: true; // 実装日を過ぎた（元データにはまだ無い）。アプリでは実装済みのカードとして扱う
 }

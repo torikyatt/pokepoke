@@ -260,7 +260,11 @@ const out: AppCard[] = cards.map((c) => {
   if (c.type) card.type = c.type;
   if (c.type2) card.type2 = c.type2;
   if (c.upcoming) {
-    card.upcoming = c.upcoming;
+    // 実装日を過ぎたもの（元データにまだ無い）は、実装済みのカードとして出す（画像は先行公開のもの）
+    if (!c.upcoming.released) {
+      const { released: _, ...u } = c.upcoming;
+      card.upcoming = u;
+    }
     card.imageJa = card.prints[0].imageJa!;
     card.image = card.prints[0].imageEn ?? card.imageJa;
   }

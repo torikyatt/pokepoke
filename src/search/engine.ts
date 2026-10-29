@@ -34,7 +34,7 @@ export type Cond = { id: string; label: string; en: string; weight?: number; wor
   | { kind: "deck"; archs: string[] } // 大会のデッキタイプに入っているカード
   | { kind: "partner"; cards: string[]; deck?: boolean } // そのカードと相性のいいカード。deck: 「〇〇デッキ」（そのカードと進化ラインを先頭に）
   | { kind: "meta" } // 大会でよく使われるカード
-  | { kind: "latest" } // 最新のカード: 実装予定のカードがあればそれ、無ければ最新パックのカード
+  | { kind: "latest" } // 最新のカード: いちばん新しいパックと、それ以降に出たカード（プロモ・スペシャルパック・実装予定のカード）
   | { kind: "set"; code: string } // パック名（「デュアルフュージョン」）: そのパックに入っているカード
   | { kind: "sort"; by: "hp" | "damage"; desc: boolean } // 「HP最大」「火力がいちばん高い」: その数字の順に並べる
 );
@@ -336,16 +336,16 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     return m;
   };
   const usage = data.meta?.usage ?? {};
-  // 最新のカード: 実装予定のカード（data/upcoming.yaml）があればそれ。無ければ、いちばん新しいパック（プロモ以外）に入っているカード
+  // 最新のカード: いちばん新しいパック（プロモ・スペシャルパックのような小さいものは除く）と、その発売日以降に出たカード
+  // （新しいプロモ・スペシャルパック）、それに実装予定のカード
   const latest = (() => {
-    const up = data.cards.filter((c) => c.upcoming);
-    if (up.length) return { ids: new Set(up.map((c) => c.id)), label: "実装予定のカード", en: "Upcoming cards" };
-    const used = new Set(data.cards.flatMap((c) => c.prints.map((p) => p.set)));
-    const set = data.sets.filter((s) => s.released && used.has(s.code) && !/^p/.test(s.code)).sort((a, b) => b.released.localeCompare(a.released))[0];
-    if (!set) return { ids: new Set<string>(), label: "最新のカード", en: "Newest cards" };
-    return { ids: new Set(data.cards.filter((c) => c.prints.some((p) => p.set === set.code)).map((c) => c.id)), label: `最新パック「${set.nameJa || set.name}」`, en: `Newest set: ${set.name}` };
+    const setDate = new Map(data.sets.map((s) => [s.code, s.released]));
+    const count = new Map<string, number>();
+    for (const c of data.cards) if (!c.upcoming) for (const code of c.sets) count.set(code, (count.get(code) ?? 0) + 1);
+    const from = [...count].filter(([code, n]) => n >= 50 && !/^p/.test(code) && setDate.get(code)).map(([code]) => setDate.get(code)!).sort().pop() ?? "9999";
+    return new Set(data.cards.filter((c) => c.upcoming || c.sets.some((code) => (setDate.get(code) || "0") >= from)).map((c) => c.id));
   })();
-  const LATEST: Cond = { id: "latest", kind: "latest", label: latest.label, en: latest.en, weight: 1 };
+  const LATEST: Cond = { id: "latest", kind: "latest", label: "最新のカード", en: "Newest cards", weight: 1 };
   // パック名（カード名と同じ名前のものは除く）。日本語はひらがなで打っても当たるよう normalize した形で
   const usedSets = new Set(data.cards.flatMap((c) => c.prints.map((p) => p.set)));
   const setNames = data.sets
@@ -1155,7 +1155,7 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
         if (decks.length && !deckRate.has(card.id)) continue;
         if (partnerMaps.some((p) => !p.map.has(card.id))) continue;
         if (metaCond && (usage[card.id] ?? 0) < 0.01) continue;
-        if (latestCond && !latest.ids.has(card.id)) continue;
+        if (latestCond && !latest.has(card.id)) continue;
         if (setConds.length && !setConds.some((s) => card.prints.some((p) => p.set === s.code))) continue;
         if (sortBy.some((s) => sortVal(s) === undefined)) continue;
       }

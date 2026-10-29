@@ -1,5 +1,6 @@
-// 実装前のカード（data/upcoming.yaml・data/upcoming-*.yaml）を data/cards.json に足す。npm run data の match-ja のあと・translate の前に動かす。
+// 先行公開の情報から作るカード（data/upcoming.yaml・data/upcoming-*.yaml）を data/cards.json に足す。npm run data の match-ja のあと・translate の前に動かす。
 // 元データに実装予定日以降のプリントが出たら（＝実装されて本物のデータが入ったら）、そのパックのカードは足さない
+// 実装日を過ぎても元データにまだ入っていないものは、先行公開の情報のまま「実装済み」として足す（デッキにも入れられる）
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { load as loadYaml } from "js-yaml";
@@ -24,7 +25,8 @@ interface YCard {
   text?: YEffect; // トレーナーズの効果
   prints?: YPrint[]; // 絵違い（☆・色違いなど）
 }
-interface YSet { code: string; nameEn: string; nameJa: string; date?: string; source: string }
+// date: 実装日（元データにこの日以降のプリントが出たら外す）。available: 配布が始まる日（プロモ・スペシャルパック。外すのは同じカードが元データに出たとき）
+interface YSet { code: string; nameEn: string; nameJa: string; date?: string; available?: string; source: string }
 // 手で書いたもの（upcoming.yaml）と、先行公開の全カード一覧から作ったもの（upcoming-*.yaml）
 const files = ["upcoming.yaml", ...readdirSync(DATA).filter((f) => /^upcoming-.+\.yaml$/.test(f)).sort()];
 const y = { sets: [] as YSet[], cards: [] as YCard[] };
@@ -35,6 +37,8 @@ for (const f of files) {
 }
 
 const cards: Card[] = JSON.parse(readFileSync(join(DATA, "cards.json"), "utf8")).filter((c: Card) => !c.upcoming);
+// 今日（日本時間）。実装日・配布開始日を過ぎたものは実装済み
+const today = process.env.TODAY ?? new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10);
 const released = (c: Card) => c.prints.map((p) => p.released ?? "").filter(Boolean);
 // 実装済みになったか: パックは「予定日以降のプリントが元データにある」。
 // 日付の無いもの（プロモ・スペシャルパック）は「名前・HP・ワザのコストとダメージが同じカードが元データにある」
@@ -81,11 +85,16 @@ for (const x of y.cards) {
     skipped.push(x.nameEn);
     continue;
   }
-  const upcoming: Upcoming = { ...(set?.date ? { date: set.date } : {}), source: x.source ?? set!.source, ...(x.unknown ? { unknown: x.unknown } : {}) };
+  const start = set?.date ?? set?.available;
+  const upcoming: Upcoming = {
+    ...(start ? { date: start } : {}), source: x.source ?? set!.source, ...(x.unknown ? { unknown: x.unknown } : {}),
+    ...(start && start <= today ? { released: true as const } : {}),
+  };
   const setName = (code: string) => y.sets.find((s) => s.code === code)?.nameEn ?? cards.flatMap((c) => c.prints).find((p) => p.set === code)?.setName ?? code;
   const print = (p: YPrint) => {
     const ps = y.sets.find((s) => s.code === (p.set ?? x.set));
-    return { id: p.id, set: p.set ?? x.set, setName: setName(p.set ?? x.set), rarity: p.rarity, image: p.image ?? "", ...(p.imageEn ? { imageEn: p.imageEn } : {}), ...(ps?.date ? { released: ps.date } : {}) };
+    const start = ps?.date ?? ps?.available;
+    return { id: p.id, set: p.set ?? x.set, setName: setName(p.set ?? x.set), rarity: p.rarity, image: p.image ?? "", ...(p.imageEn ? { imageEn: p.imageEn } : {}), ...(start ? { released: start } : {}) };
   };
   const kind = x.kind ?? "pokemon";
   const rule = x.rule ?? "normal";
@@ -132,4 +141,5 @@ for (const c of all) {
 }
 
 writeFileSync(join(DATA, "cards.json"), JSON.stringify(all, null, 1));
-console.log(`実装前のカード ${added.length} 枚を追加${skipped.length ? ` / 実装済みなので外した ${skipped.length} 枚: ${skipped.join(", ")}` : ""}`);
+const out = added.filter((c) => c.upcoming!.released).length;
+console.log(`先行公開のカード ${added.length} 枚を追加（うち実装済み ${out} 枚）${skipped.length ? ` / 実装済みなので外した ${skipped.length} 枚: ${skipped.join(", ")}` : ""}`);
