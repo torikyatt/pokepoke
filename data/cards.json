@@ -130455,7 +130455,7 @@
   "attacks": [
    {
     "nameEn": "Honey Rush",
-    "textEn": "",
+    "textEn": "Reveal all of the Sweet Honey in your hand, and this attack does 50 damage for each card you revealed in this way.",
     "tags": [],
     "cost": {
      "grass": 2
@@ -130465,6 +130465,7 @@
     "damage": 50,
     "damageVariable": true,
     "nameJa": "ハニーラッシュ",
+    "textJa": "自分の手札にある「あまいミツ」をすべて相手に見せ、見せた枚数×50ダメージ。",
     "jaSource": "official"
    }
   ],
@@ -130675,7 +130676,7 @@
   "attacks": [
    {
     "nameEn": "Astonish",
-    "textEn": "",
+    "textEn": "A card is chosen at random from your opponent's hand. Your opponent reveals that card and shuffles it into their deck.",
     "tags": [],
     "cost": {
      "grass": 1,
@@ -130686,6 +130687,7 @@
     "damage": 50,
     "damageVariable": false,
     "nameJa": "おどろかす",
+    "textJa": "相手の手札からランダムに1枚、オモテを見て、山札にもどす。",
     "jaSource": "official"
    }
   ],
@@ -131966,9 +131968,8 @@
   "groups": [],
   "attacks": [
    {
-    "unknown": true,
     "nameEn": "Dual Blizzard",
-    "textEn": "",
+    "textEn": "Discard 2 [W] Energy from this Pokémon. This attack does 60 damage to 2 of your opponent's Pokémon.",
     "tags": [],
     "cost": {
      "water": 3
@@ -131977,6 +131978,7 @@
     "costTyped": 3,
     "damageVariable": false,
     "nameJa": "デュアルブリザード",
+    "textJa": "このポケモンから水エネルギーを2個トラッシュし、相手のポケモン2匹に60ダメージ。",
     "jaSource": "official"
    }
   ],
@@ -132085,6 +132087,7 @@
    {
     "nameEn": "Blizzard",
     "textEn": "This attack also does 20 damage to each of your opponent's Benched Pokémon.",
+    "textJa": "相手のベンチポケモン全員にも20ダメージ。",
     "tags": [],
     "cost": {
      "water": 2,
@@ -132095,7 +132098,6 @@
     "damage": 60,
     "damageVariable": false,
     "nameJa": "ふぶき",
-    "textJa": "相手のベンチポケモン全員にも20ダメージ",
     "jaSource": "official"
    }
   ],
@@ -132186,6 +132188,7 @@
    {
     "nameEn": "Ice Blade",
     "textEn": "This attack does 20 damage to 1 of your opponent's Pokémon.",
+    "textJa": "相手のポケモン1匹に20ダメージ。",
     "tags": [],
     "cost": {
      "water": 1
@@ -132194,7 +132197,6 @@
     "costTyped": 1,
     "damageVariable": false,
     "nameJa": "こおりのやいば",
-    "textJa": "相手にポケモン1匹に20ダメージ。",
     "jaSource": "official"
    }
   ],
@@ -133059,7 +133061,7 @@
   "attacks": [
    {
     "nameEn": "Soothing Lullaby",
-    "textEn": "",
+    "textEn": "Your opponent's Active Pokémon is now Asleep. While it is Asleep from this effect, your opponent flips 2 coins instead of 1, and it recovers only if both of them are heads.",
     "tags": [],
     "cost": {
      "psychic": 2
@@ -133069,6 +133071,7 @@
     "damage": 30,
     "damageVariable": false,
     "nameJa": "じゅくすいソング",
+    "textJa": "相手のバトルポケモンをねむりにする。このねむりで投げるコインは2回になり、すべてオモテが出ないと回復しない。",
     "jaSource": "official"
    }
   ],
@@ -133125,6 +133128,7 @@
    {
     "nameEn": "Do the Wave",
     "textEn": "This attack does 30 damage for each of your Benched Pokémon.",
+    "textJa": "自分のベンチポケモンの数×30ダメージ。",
     "tags": [],
     "cost": {
      "psychic": 2
@@ -133134,7 +133138,6 @@
     "damage": 30,
     "damageVariable": true,
     "nameJa": "ともだちのわ",
-    "textJa": "自分のベンチポケモンの数×30",
     "jaSource": "official"
    }
   ],
@@ -133589,6 +133592,7 @@
    {
     "nameEn": "Rabbit Jumping",
     "textEn": "Flip 2 coins. This attack does 60 damage for each heads.",
+    "textJa": "コインを2回投げ、オモテの数×60ダメージ。",
     "tags": [],
     "cost": {
      "psychic": 1,
@@ -133599,7 +133603,6 @@
     "damage": 60,
     "damageVariable": true,
     "nameJa": "ラビットジャンプ",
-    "textJa": "コインを2回投げ、オモテの数x60ダメージ",
     "jaSource": "official"
    }
   ],
@@ -133754,7 +133757,7 @@
   "attacks": [
    {
     "nameEn": "Psycho Boost",
-    "textEn": "",
+    "textEn": "During your next turn, this Pokémon's Psycho Boost attack does −50 damage.",
     "tags": [],
     "cost": {
      "psychic": 2,
@@ -133765,6 +133768,7 @@
     "damage": 100,
     "damageVariable": false,
     "nameJa": "サイコブースト",
+    "textJa": "次の自分の番、このポケモンの「サイコブースト」のダメージを-50する。",
     "jaSource": "official"
    }
   ],
@@ -134007,7 +134011,7 @@
   "attacks": [
    {
     "nameEn": "Wings of the Moone",
-    "textEn": "",
+    "textEn": "Move all Energy from this Pokémon to your Benched Pokémon in any way you like.",
     "tags": [],
     "cost": {
      "psychic": 2
@@ -134017,6 +134021,7 @@
     "damage": 110,
     "damageVariable": false,
     "nameJa": "がちりんのつばさ",
+    "textJa": "このポケモンからエネルギーをすべて、ベンチポケモンに好きなようにつけ替える。",
     "jaSource": "official"
    }
   ],
@@ -135750,7 +135755,8 @@
   "attacks": [
    {
     "nameEn": "Claws of the Sunne",
-    "textEn": "",
+    "textEn": "This attack does 30 more damage for each point you have gotten.",
+    "textJa": "自分がすでにとったポイントの数×30ダメージ追加。",
     "tags": [],
     "cost": {
      "metal": 3
@@ -136162,7 +136168,8 @@
    },
    {
     "nameEn": "Dragon Impact",
-    "textEn": "",
+    "textEn": "Discard 2 random Energy from this Pokémon.",
+    "textJa": "このポケモンからエネルギーをランダムに2個トラッシュ。",
     "tags": [],
     "cost": {
      "grass": 1,

@@ -28,7 +28,7 @@
           ja: エネゾーンから加速
           en: From Energy Zone
           match:
-            - '(take|Take|produce|Take an amount of) [^.]*Energy from your Energy Zone'
+            - '([Tt]ake|[Pp]roduce|Take an amount of) [^.]*Energy from your Energy Zone'
         - id: energy.accel.trash
           ja: トラッシュから加速
           en: From discard pile
@@ -42,7 +42,7 @@
           match:
             - '(Energy Zone|discard pile)[^.]*attach (it|them|1 Energy each) to (?!this Pok)'
             - 'Energy Zone and attach it to each of'
-            - 'Choose 2 of your Benched Pokémon\. For each of those Pokémon, take'
+            - 'For each of those Pokémon, take a [^.]* Energy from your Energy Zone and attach it to that Pokémon'
             - 'attach 1 Energy each to 2 of your Benched'
             - 'Energy from your discard pile to (your|that)'
     - id: energy.move
@@ -142,6 +142,9 @@
         - 'put a random \[[A-Z]\] Pokémon from your deck into your hand'
         - 'random Pokémon in your deck'
         - 'Put 2 random cards from among Magneton'
+      exclude:
+        # フレンドリィショップのお兄さん: いいきずぐすり・ゴールドスプレー・なんでもなおし（グッズ）の中から
+        - 'from among [^.]*(Potion|Repel|Heal|Spray)'
     - id: draw.search_trainer
       ja: 山札からトレーナーズを持ってくる
       en: Search Trainers from deck
@@ -364,7 +367,7 @@
       match:
         - 'recovers? from'
         - 'remove a random Special Condition'
-        - 'can.t be affected by any Special Conditions'
+        - 'can.t be affected by (any )?Special Conditions'
         - 'can.t be Asleep'
 
 - id: defense
@@ -476,7 +479,8 @@
             - 'shuffle it into your opponent.s deck'
             - 'Your opponent shuffles their hand into their deck'
             - 'opponent shuffle their hand into their deck'
-            - 'a card is chosen at random from your opponent.s hand\. Your opponent reveals that card and shuffles'
+            # 「〜相手の手札からランダムに1枚選ばれる。相手はそのカードを見せて山札にもどす」（タグは1文ずつ当てるので、後ろの文で）
+            - 'Your opponent reveals that card and shuffles it into their deck'
             - 'both player.s hands is chosen at random'
             - 'Each player shuffles the cards in their hand'
         - id: disrupt.hand.peek
@@ -749,7 +753,7 @@
             - 'If you don.t have'
             - 'If you have any Stage 2 Pokémon on your Bench'
             - 'for each [A-Z][a-z]+ (and [A-Z][a-z]+ )?you have in play'
-            - 'for each of your Benched [A-Z][a-z]+'
+            - 'for each of your Benched (?!Pokémon)[A-Z][a-z]+'
             - 'that have the [A-Z][\w ]+ attack'
     # どのエネルギーを数えるかで分ける。エネ加速と相性がいいのは、自分のエネを数えるもの（self・own）だけ。
     # 相手のエネを数えるもの（スリーパー・ミュウツーなど）は、自分がエネを付けても強くならない
@@ -830,8 +834,10 @@
       en: Depends on deck
       match:
         - 'for each [^.]* in your opponent.s deck'
-        - 'Discard the top card of your deck(, and if that card is|\. If that card is)'
-        - 'Reveal the top \d+ cards of your deck\. This attack does'
+        # タグは1文ずつ当てる（「山札の上を1枚トラッシュ。そのカードが〜なら」「山札の上を3枚見せる。見せた中の〜の数×」）
+        - 'Discard the top card of your deck, and if that card is'
+        - '^If that card is'
+        - 'This attack does \d+ damage for each [^.]* you find there'
     - id: cond.hand
       ja: 手札の枚数で変わる
       en: Depends on hand size
@@ -839,6 +845,8 @@
         - 'cards? in (your|their) hand(,| as)'
         - 'for each card in your hand'
         - 'for each card in your opponent.s hand'
+        # ハニーラッシュ: 手札の「あまいミツ」を見せた枚数ぶん
+        - 'Reveal all of the [^.]* in your hand, and this attack does'
     - id: cond.point
       ja: ポイントで変わる
       en: Depends on points
@@ -945,6 +953,12 @@
       match:
         - 'During your next turn, this Pokémon can.t (attack|use)'
         - 'during your next turn, this Pokémon can.t attack'
+    # サイコブースト: 次の自分の番、このワザのダメージが下がる
+    - id: drawback.weaker
+      ja: 次の番ダメージが下がる
+      en: Weaker next turn
+      match:
+        - 'During your next turn, this Pokémon.s [^.]* attack does [−-]\d+ damage'
     - id: drawback.self_status
       ja: 自分が状態異常になる
       en: Self Special Condition

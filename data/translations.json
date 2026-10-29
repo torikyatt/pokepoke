@@ -656,5 +656,45 @@
   "en": "Flip a coin. If heads, this attack does 60 more damage.",
   "ja": "コインを1回投げオモテなら、60ダメージ追加。",
   "official": true
+ },
+ "a6168facd1a9": {
+  "en": "Reveal all of the Sweet Honey in your hand, and this attack does 50 damage for each card you revealed in this way.",
+  "ja": "自分の手札にある「あまいミツ」をすべて相手に見せ、見せた枚数×50ダメージ。",
+  "official": true
+ },
+ "be6c67c0c362": {
+  "en": "A card is chosen at random from your opponent's hand. Your opponent reveals that card and shuffles it into their deck.",
+  "ja": "相手の手札からランダムに1枚、オモテを見て、山札にもどす。",
+  "official": true
+ },
+ "3cf0d84b3b63": {
+  "en": "Discard 2 [W] Energy from this Pokémon. This attack does 60 damage to 2 of your opponent's Pokémon.",
+  "ja": "このポケモンから水エネルギーを2個トラッシュし、相手のポケモン2匹に60ダメージ。",
+  "official": true
+ },
+ "927bc41fcb90": {
+  "en": "Your opponent's Active Pokémon is now Asleep. While it is Asleep from this effect, your opponent flips 2 coins instead of 1, and it recovers only if both of them are heads.",
+  "ja": "相手のバトルポケモンをねむりにする。このねむりで投げるコインは2回になり、すべてオモテが出ないと回復しない。",
+  "official": true
+ },
+ "5ef55e70312b": {
+  "en": "During your next turn, this Pokémon's Psycho Boost attack does −50 damage.",
+  "ja": "次の自分の番、このポケモンの「サイコブースト」のダメージを-50する。",
+  "official": true
+ },
+ "a83c0439dfa8": {
+  "en": "Move all Energy from this Pokémon to your Benched Pokémon in any way you like.",
+  "ja": "このポケモンからエネルギーをすべて、ベンチポケモンに好きなようにつけ替える。",
+  "official": true
+ },
+ "30a9b5ecb890": {
+  "en": "This attack does 30 more damage for each point you have gotten.",
+  "ja": "自分がすでにとったポイントの数×30ダメージ追加。",
+  "official": true
+ },
+ "7820be0d925b": {
+  "en": "Discard 2 random Energy from this Pokémon.",
+  "ja": "このポケモンからエネルギーをランダムに2個トラッシュ。",
+  "official": true
  }
 }

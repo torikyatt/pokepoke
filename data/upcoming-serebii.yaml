@@ -199,6 +199,7 @@ cards:
       - cost: GG
         damage: 50×
         nameEn: Honey Rush
+        textEn: Reveal all of the Sweet Honey in your hand, and this attack does 50 damage for each card you revealed in this way.
     pack: メガミュウツーX
   - id: c1-009
     set: c1
@@ -279,6 +280,7 @@ cards:
       - cost: GC
         damage: '50'
         nameEn: Astonish
+        textEn: A card is chosen at random from your opponent's hand. Your opponent reveals that card and shuffles it into their deck.
     pack: メガミュウツーX
   - id: c1-013
     set: c1
@@ -751,9 +753,9 @@ cards:
     weakness: metal
     retreat: 3
     attacks:
-      - unknown: true
-        cost: WWW
+      - cost: WWW
         nameEn: Dual Blizzard
+        textEn: Discard 2 [W] Energy from this Pokémon. This attack does 60 damage to 2 of your opponent's Pokémon.
     prints:
       - id: c1-193
         rarity: ✵
@@ -797,6 +799,7 @@ cards:
         damage: '60'
         nameEn: Blizzard
         textEn: This attack also does 20 damage to each of your opponent's Benched Pokémon.
+        textJa: 相手のベンチポケモン全員にも20ダメージ。
     pack: ピカチュウ
   - id: c1-036
     set: c1
@@ -833,6 +836,7 @@ cards:
       - cost: W
         nameEn: Ice Blade
         textEn: This attack does 20 damage to 1 of your opponent's Pokémon.
+        textJa: 相手のポケモン1匹に20ダメージ。
     pack: ピカチュウ
   - id: c1-038
     set: c1
@@ -1154,6 +1158,7 @@ cards:
       - cost: PP
         damage: '30'
         nameEn: Soothing Lullaby
+        textEn: Your opponent's Active Pokémon is now Asleep. While it is Asleep from this effect, your opponent flips 2 coins instead of 1, and it recovers only if both of them are heads.
     prints:
       - id: c1-184
         rarity: ☆☆☆
@@ -1179,6 +1184,7 @@ cards:
         damage: 30×
         nameEn: Do the Wave
         textEn: This attack does 30 damage for each of your Benched Pokémon.
+        textJa: 自分のベンチポケモンの数×30ダメージ。
     pack: ピカチュウ
   - id: c1-053
     set: c1
@@ -1357,6 +1363,7 @@ cards:
         damage: 60×
         nameEn: Rabbit Jumping
         textEn: Flip 2 coins. This attack does 60 damage for each heads.
+        textJa: コインを2回投げ、オモテの数×60ダメージ。
     pack: ピカチュウ
   - id: c1-060
     set: c1
@@ -1413,6 +1420,7 @@ cards:
       - cost: PPC
         damage: '100'
         nameEn: Psycho Boost
+        textEn: During your next turn, this Pokémon's Psycho Boost attack does −50 damage.
     prints:
       - id: pc-003
         set: pc
@@ -1510,6 +1518,7 @@ cards:
       - cost: PP
         damage: '110'
         nameEn: Wings of the Moone
+        textEn: Move all Energy from this Pokémon to your Benched Pokémon in any way you like.
     prints:
       - id: c1-198
         rarity: ✵
@@ -2141,6 +2150,8 @@ cards:
       - cost: MMM
         damage: 90+
         nameEn: Claws of the Sunne
+        textEn: This attack does 30 more damage for each point you have gotten.
+        textJa: 自分がすでにとったポイントの数×30ダメージ追加。
     prints:
       - id: c1-202
         rarity: ✵
@@ -2283,6 +2294,8 @@ cards:
       - cost: GPC
         damage: '140'
         nameEn: Dragon Impact
+        textEn: Discard 2 random Energy from this Pokémon.
+        textJa: このポケモンからエネルギーをランダムに2個トラッシュ。
     prints:
       - id: c1-163
         rarity: ☆☆

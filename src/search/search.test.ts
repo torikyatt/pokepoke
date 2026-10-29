@@ -752,3 +752,18 @@ describe("検索ログから: パック名・打ちまちがいの名前・言�
     expect(engine.explain("雷エネ１ 残り無").conds.map((c) => c.id)).toContain("costTyped");
   });
 });
+
+describe("新カードのタグ（効果文を公式の画像で確かめて直したもの）", () => {
+  const tagsOf = (id: string) => effectsOf(data.cards.find((c) => c.id === id)!).flatMap((e) => e.tags);
+  it("相手をねむり・手札を山札にもどさせる・次の番ダメージが下がる", () => {
+    expect(tagsOf("c1-051")).toContain("status.sleep"); // プリン「じゅくすいソング」
+    expect(tagsOf("c1-012")).toContain("disrupt.hand.shuffle"); // モロバレル「おどろかす」
+    expect(tagsOf("a3a-041")).toContain("disrupt.hand.shuffle"); // ワルビアル「ひっこぬきファング」（2文にまたがる判定で当たっていなかった）
+    expect(tagsOf("c1-062")).toContain("drawback.weaker"); // デオキシス「サイコブースト」
+    expect(engine.search("相手を眠らせる", 9999).map((h) => h.card.id)).toContain("c1-051");
+  });
+  it("グッズを持ってくる効果を、ポケモンを持ってくる効果にしない", () => {
+    expect(tagsOf("c1-129")).not.toContain("draw.search_pokemon"); // フレンドリィショップのお兄さん
+    expect(tagsOf("b4-002")).toContain("draw.search_pokemon"); // カラサリス（ポケモンの中から）
+  });
+});
