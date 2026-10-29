@@ -1,5 +1,5 @@
 import { orderedPrints } from "./prints.ts";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 // Game8 から抽出したデータの形（data/game8/*.json）。文字列はNFKC正規化・前後空白除去済み
 
@@ -49,10 +49,14 @@ export function jaImageIndex(dataDir: string): (card: { id: string; prints: { id
   const match: Record<string, { g8: number[] }> = JSON.parse(readFileSync(join(dataDir, "game8/match.json"), "utf8"));
   const byId = new Map(g8.map((c) => [c.g8Id, c]));
   const setOf = (s: string) => ({ pa: "PROMO-A", pb: "PROMO-B" } as Record<string, string>)[s] ?? s.charAt(0).toUpperCase() + s.slice(1);
-  // いちばん基本の絵柄（◇ → プロモ → ☆ …）から順に、Game8 に画像があるものを使う
+  // いちばん基本の絵柄（◇ → プロモ → ☆ …）から順に、Game8 に画像があるものを使う。
+  // 手で置いた日本語画像（public/cards-ja/manual/<収録ID>.webp。Game8 に無い絵柄）があれば、その絵柄はそれ（ファイルの絶対パスを返す）
+  const manualDir = join(dataDir, "../public/cards-ja/manual");
   return (card) => {
     const matched = (match[card.id]?.g8 ?? []).map((id) => byId.get(id)).filter((c): c is G8Card => !!c && !!c.image);
     for (const p of orderedPrints(card.prints)) {
+      const manual = join(manualDir, `${p.id}.webp`);
+      if (existsSync(manual)) return manual;
       const own = matched.find((m) => m.set === setOf(p.set) && m.number === Number(p.id.split("-").pop()));
       if (own) return own.image;
     }

@@ -2,7 +2,7 @@
 // 入力: data/cards.json, data/tags.json, data/taxonomy.yaml, data/lexicon/*.json
 // 出力: src/data/app-data.json（生成物。コミットしない）
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { basename, join } from "node:path";
 import { load as loadYaml } from "js-yaml";
 import { jaImageIndex } from "./lib/game8.ts";
 import { basePrint, orderedPrints } from "./lib/prints.ts";
@@ -247,7 +247,7 @@ const out: AppCard[] = cards.map((c) => {
     // 絵柄は「いちばん基本のもの」を先頭に（一覧・詳細・サムネイルはこれ）
     prints: withFoilImages(orderedPrints(c.prints).map((p) => printOf(c, p))),
     image: c.upcoming ? "" : enLocal(basePrint(c.prints).id),
-    ...(jaImageOf(c) ? { imageJa: jaLocal(jaImageOf(c)!) } : {}),
+    ...(jaImageOf(c) ? { imageJa: jaImageOf(c)!.startsWith("/") ? `cards-ja/manual/${basename(jaImageOf(c)!)}` : jaLocal(jaImageOf(c)!) } : {}),
     ...(existsSync(join(ROOT, "public/thumbs-ja", `${c.id}.webp`)) ? { jaThumb: true as const } : {}),
     order: Math.min(...c.prints.map((p) => p.builderNr ?? 99999)),
     released: c.prints.map((p) => p.released ?? "9999").sort()[0],

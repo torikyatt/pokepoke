@@ -35024,7 +35024,7 @@
     "damage": 50,
     "damageVariable": false,
     "nameJa": "ムーンプレス",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -56487,9 +56487,9 @@
    "nameEn": "Fantastical Floating",
    "textEn": "If you have Latias in play, this Pokémon has no Retreat Cost.",
    "tags": [],
-   "nameJa": "ゆめのうきあし",
-   "textJa": "自分の場に「ラティアス」がいるなら、このポケモンのにげるためのエネルギーは、すべてなくなる。",
-   "jaSource": "machine"
+   "nameJa": "むげんフロート",
+   "textJa": "自分の場に「ラティアス」がいるなら、このポケモンのにげるためのエネルギーを、すべてなくす。",
+   "jaSource": "official"
   },
   "nameJa": "ラティオス"
  },
@@ -80409,9 +80409,9 @@
    "nameEn": "Repelling Wind",
    "textEn": "Once during your turn, you may switch out your opponent's Active Basic Pokémon to the Bench. (Your opponent chooses the new Active Pokémon.)",
    "tags": [],
-   "nameJa": "はじきかぜ",
-   "textJa": "自分の番に1回使える。相手のバトル場のたねポケモンを、ベンチポケモンと入れ替える。〔バトル場に出すポケモンは相手が選ぶ。〕",
-   "jaSource": "machine"
+   "nameJa": "むしよけウインド",
+   "textJa": "自分の番に1回使える。相手のバトル場のたねポケモンをベンチポケモンと入れ替える。[バトル場に出すポケモンは相手が選ぶ。]",
+   "jaSource": "official"
   },
   "nameJa": "オオスバメ"
  },
@@ -104027,8 +104027,8 @@
     "costTyped": 1,
     "damageVariable": false,
     "nameJa": "バッドポイズン",
-    "jaSource": "machine",
-    "textJa": "相手のバトルポケモンをどくにする。このどくで受けるダメージは、40になる。"
+    "jaSource": "official",
+    "textJa": "相手のバトルポケモンをどくにする。このどくのダメージは40になる。"
    }
   ],
   "prints": [
@@ -106213,8 +106213,8 @@
     "costTyped": 2,
     "damageVariable": false,
     "nameJa": "オーガウィップ",
-    "textJa": "このポケモンの残りHPと同じ数のダメージを、相手のバトルポケモンに与える。",
-    "jaSource": "machine"
+    "textJa": "このポケモンの残りHPぶん、相手のバトルポケモンにダメージを与える。",
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -108898,7 +108898,7 @@
     "damageVariable": false,
     "nameJa": "まねまねシャッフル",
     "textJa": "自分の手札をすべて山札にもどす。相手の手札の枚数ぶん、自分の山札を引く。",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -111434,8 +111434,8 @@
    "textEn": "This Pokémon may have up to 2 Pokémon Tool cards attached to it.",
    "tags": [],
    "nameJa": "ダブルカスタム",
-   "textJa": "このポケモンは、ポケモンのどうぐを2枚までつけられる。",
-   "jaSource": "machine"
+   "textJa": "このポケモンは、「ポケモンのどうぐ」を2枚までつけられる。",
+   "jaSource": "official"
   },
   "nameJa": "ブロロローム"
  },
@@ -116798,9 +116798,9 @@
     "costTyped": 0,
     "damage": 40,
     "damageVariable": true,
-    "nameJa": "しりもちスプラッシュ",
+    "nameJa": "ヒップドロップ",
     "textJa": "コインを1回投げオモテなら、60ダメージ追加。",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -117074,8 +117074,8 @@
     "costTyped": 2,
     "damageVariable": false,
     "nameJa": "オーガウィップ",
-    "textJa": "このポケモンの残りHPと同じ数のダメージを、相手のバトルポケモンに与える。",
-    "jaSource": "machine"
+    "textJa": "このポケモンの残りHPぶん、相手のバトルポケモンにダメージを与える。",
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -123366,9 +123366,9 @@
    "nameEn": "Healing Ripples",
    "textEn": "Once during your turn, when you play this Pokémon from your hand to evolve 1 of your Pokémon, you may heal 60 damage from 1 of your [W] Pokémon.",
    "tags": [],
-   "nameJa": "いやしのさざなみ",
+   "nameJa": "いやしのはもん",
    "textJa": "自分の番に、このカードを手札から出して進化させたとき、1回使える。自分の水ポケモン1匹のHPを60回復。",
-   "jaSource": "machine"
+   "jaSource": "official"
   },
   "nameJa": "ミロカロス"
  },
