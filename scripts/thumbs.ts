@@ -30,6 +30,8 @@ const prelimFile = (p: Card["prints"][number]) => {
   const remote = url ? join(ROOT, "public", jaImageFile(url)) : undefined;
   return ja && existsSync(manual) ? manual : remote && existsSync(remote) ? remote : existsSync(manual) ? manual : undefined;
 };
+/** 先行公開の絵柄に日本語の画像があるか（手で置いた画像、または Game8 の画像。Serebii は英語） */
+const hasJaImage = (p: Card["prints"][number]) => existsSync(join(ROOT, "public/cards-ja/manual", `${p.id}.webp`)) || (!!p.image && !/serebii\.net/.test(p.image));
 // 既存カードに足した再録（先行公開の絵違い）は、収録IDでサムネイルを作る（「最新のカード」でその絵柄を見せる）
 const printIds: string[] = [];
 for (const c of cards)
@@ -40,9 +42,9 @@ for (const c of cards)
     printIds.push(p.id);
   }
 for (const c of cards) {
-  // 先行公開のカードは、先行公開の画像から作る
+  // 先行公開のカードは、先行公開の画像から作る。日本語は、日本語の画像がある絵柄（基本の絵柄に無ければ絵違い）から
   if (c.upcoming) {
-    const file = prelimFile(c.prints[0]);
+    const file = prelimFile(ja ? (c.prints.find(hasJaImage) ?? c.prints[0]) : c.prints[0]);
     if (file) src.set(c.id, [file]);
     continue;
   }

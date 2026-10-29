@@ -271,7 +271,9 @@ const out: AppCard[] = cards.map((c) => {
       const { released: _, ...u } = c.upcoming;
       card.upcoming = u;
     }
-    card.imageJa = card.prints[0].imageJa!;
+    // 日本語の画像は、日本語の画像がある絵柄（基本の絵柄に無ければ絵違い）から
+    const jaPrint = c.prints.find((p) => existsSync(join(ROOT, "public/cards-ja/manual", `${p.id}.webp`)) || (!!p.image && !/serebii\.net/.test(p.image)));
+    card.imageJa = (jaPrint && card.prints.find((p) => p.id === jaPrint.id)?.imageJa) || card.prints[0].imageJa!;
     card.image = card.prints[0].imageEn ?? card.imageJa;
   }
   if (c.stage) card.stage = c.stage;
