@@ -54028,6 +54028,15 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/a4/183.webp",
     "released": "2025-07-30",
     "builderNr": 1003
+   },
+   {
+    "id": "pc-010",
+    "set": "pc",
+    "setName": "Promo-C",
+    "rarity": "Promo",
+    "image": "https://serebii.net/tcgpocket/promo-c/10.jpg",
+    "released": "2026-10-29",
+    "prelim": true
    }
   ],
   "tags": [],
@@ -74713,6 +74722,15 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2/032.webp",
     "released": "2026-01-29",
     "builderNr": 1398
+   },
+   {
+    "id": "pc-012",
+    "set": "pc",
+    "setName": "Promo-C",
+    "rarity": "Promo",
+    "image": "https://serebii.net/tcgpocket/promo-c/12.jpg",
+    "released": "2026-10-29",
+    "prelim": true
    }
   ],
   "tags": [],
@@ -75654,6 +75672,15 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2/049.webp",
     "released": "2026-01-29",
     "builderNr": 1415
+   },
+   {
+    "id": "pc-001",
+    "set": "pc",
+    "setName": "Promo-C",
+    "rarity": "Promo",
+    "image": "https://serebii.net/tcgpocket/promo-c/1.jpg",
+    "released": "2026-10-29",
+    "prelim": true
    }
   ],
   "tags": [],
@@ -88443,6 +88470,16 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b2b/073.webp",
     "released": "2026-03-26",
     "builderNr": 1649
+   },
+   {
+    "id": "c1-201",
+    "set": "c1",
+    "setName": "Dual Fusion",
+    "rarity": "✵",
+    "image": "https://serebii.net/tcgpocket/dualfusion/201.jpg",
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX",
+    "prelim": true
    }
   ],
   "tags": [],
@@ -89832,6 +89869,16 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/245.webp",
     "released": "2026-09-30",
     "builderNr": 1671
+   },
+   {
+    "id": "c1-189",
+    "set": "c1",
+    "setName": "Dual Fusion",
+    "rarity": "✵",
+    "image": "https://serebii.net/tcgpocket/dualfusion/189.jpg",
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX",
+    "prelim": true
    }
   ],
   "tags": [],
@@ -97056,6 +97103,16 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/190.webp",
     "released": "2026-09-30",
     "builderNr": 1806
+   },
+   {
+    "id": "c1-212",
+    "set": "c1",
+    "setName": "Dual Fusion",
+    "rarity": "✵✵",
+    "image": "https://serebii.net/tcgpocket/dualfusion/212.jpg",
+    "released": "2026-10-29",
+    "pack": "ピカチュウ",
+    "prelim": true
    }
   ],
   "tags": [],
@@ -104697,6 +104754,16 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/192.webp",
     "released": "2026-09-30",
     "builderNr": 1957
+   },
+   {
+    "id": "c1-213",
+    "set": "c1",
+    "setName": "Dual Fusion",
+    "rarity": "✵✵",
+    "image": "https://serebii.net/tcgpocket/dualfusion/213.jpg",
+    "released": "2026-10-29",
+    "pack": "ピカチュウ",
+    "prelim": true
    }
   ],
   "tags": [],
@@ -106459,6 +106526,16 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/262.webp",
     "released": "2026-09-30",
     "builderNr": 1985
+   },
+   {
+    "id": "c1-190",
+    "set": "c1",
+    "setName": "Dual Fusion",
+    "rarity": "✵",
+    "image": "https://serebii.net/tcgpocket/dualfusion/190.jpg",
+    "released": "2026-10-29",
+    "pack": "ピカチュウ",
+    "prelim": true
    }
   ],
   "tags": [],
@@ -106538,6 +106615,16 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/263.webp",
     "released": "2026-09-30",
     "builderNr": 1986
+   },
+   {
+    "id": "c1-191",
+    "set": "c1",
+    "setName": "Dual Fusion",
+    "rarity": "✵",
+    "image": "https://serebii.net/tcgpocket/dualfusion/191.jpg",
+    "released": "2026-10-29",
+    "pack": "ピカチュウ",
+    "prelim": true
    }
   ],
   "tags": [],
@@ -106615,6 +106702,16 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/038.webp",
     "released": "2026-09-30",
     "builderNr": 1987
+   },
+   {
+    "id": "c1-208",
+    "set": "c1",
+    "setName": "Dual Fusion",
+    "rarity": "✵✵",
+    "image": "https://serebii.net/tcgpocket/dualfusion/208.jpg",
+    "released": "2026-10-29",
+    "pack": "ピカチュウ",
+    "prelim": true
    }
   ],
   "tags": [],
@@ -109739,6 +109836,16 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/128.webp",
     "released": "2026-09-30",
     "builderNr": 2045
+   },
+   {
+    "id": "c1-209",
+    "set": "c1",
+    "setName": "Dual Fusion",
+    "rarity": "✵✵",
+    "image": "https://serebii.net/tcgpocket/dualfusion/209.jpg",
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX",
+    "prelim": true
    }
   ],
   "tags": [],
@@ -122281,6 +122388,15 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/a4b/188.webp",
     "released": "2025-09-30",
     "builderNr": 734
+   },
+   {
+    "id": "pc-011",
+    "set": "pc",
+    "setName": "Promo-C",
+    "rarity": "Promo",
+    "image": "https://serebii.net/tcgpocket/promo-c/11.jpg",
+    "released": "2026-10-29",
+    "prelim": true
    }
   ],
   "tags": [],
@@ -127746,6 +127862,16 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/244.webp",
     "released": "2026-09-30",
     "builderNr": 1670
+   },
+   {
+    "id": "c1-188",
+    "set": "c1",
+    "setName": "Dual Fusion",
+    "rarity": "✵",
+    "image": "https://serebii.net/tcgpocket/dualfusion/188.jpg",
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX",
+    "prelim": true
    }
   ],
   "tags": [],
@@ -128669,6 +128795,16 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/360.webp",
     "released": "2026-09-30",
     "builderNr": 1900
+   },
+   {
+    "id": "c1-205",
+    "set": "c1",
+    "setName": "Dual Fusion",
+    "rarity": "✵",
+    "image": "https://serebii.net/tcgpocket/dualfusion/205.jpg",
+    "released": "2026-10-29",
+    "pack": "ピカチュウ",
+    "prelim": true
    }
   ],
   "tags": [],
@@ -128877,6 +129013,16 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/243.webp",
     "released": "2026-09-30",
     "builderNr": 1669
+   },
+   {
+    "id": "c1-187",
+    "set": "c1",
+    "setName": "Dual Fusion",
+    "rarity": "✵",
+    "image": "https://serebii.net/tcgpocket/dualfusion/187.jpg",
+    "released": "2026-10-29",
+    "pack": "ピカチュウ",
+    "prelim": true
    }
   ],
   "tags": [],
@@ -129228,6 +129374,16 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4/054.webp",
     "released": "2026-07-30",
     "builderNr": 2015
+   },
+   {
+    "id": "c1-194",
+    "set": "c1",
+    "setName": "Dual Fusion",
+    "rarity": "✵",
+    "image": "https://serebii.net/tcgpocket/dualfusion/194.jpg",
+    "released": "2026-10-29",
+    "pack": "ピカチュウ",
+    "prelim": true
    }
   ],
   "tags": [],
@@ -129399,6 +129555,16 @@
     "image": "https://raw.githubusercontent.com/PocketDecks/pokemon-tcg-pocket-cards/refs/heads/main/images/webp/cards/b4b/410.webp",
     "released": "2026-09-30",
     "builderNr": 1673
+   },
+   {
+    "id": "c1-207",
+    "set": "c1",
+    "setName": "Dual Fusion",
+    "rarity": "✵✵",
+    "image": "https://serebii.net/tcgpocket/dualfusion/207.jpg",
+    "released": "2026-10-29",
+    "pack": "メガミュウツーX",
+    "prelim": true
    }
   ],
   "tags": [],
@@ -130301,7 +130467,7 @@
     "damage": 50,
     "damageVariable": true,
     "nameJa": "ハニーラッシュ",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -130574,7 +130740,7 @@
     "damageVariable": false,
     "nameJa": "シグナルビーム",
     "textJa": "相手のバトルポケモンをこんらんにする。",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -130719,9 +130885,9 @@
    "nameEn": "Honey Gather",
    "textEn": "Once during your turn, you may use this Ability. Put a Sweet Honey rental card into your hand.",
    "tags": [],
-   "nameJa": "ハニーギャザー",
+   "nameJa": "みつあつめ",
    "textJa": "自分の番に1回使える。レンタルカードの「あまいミツ」を1枚、手札に加える。",
-   "jaSource": "machine"
+   "jaSource": "official"
   }
  },
  {
@@ -131117,7 +131283,7 @@
     "damageVariable": true,
     "nameJa": "ラビットジャンプ",
     "textJa": "コインを2回投げ、オモテの数×20ダメージ。",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -131215,8 +131381,8 @@
    "textEn": "As long as this Pokémon is in play, flip 3 more coins for the Rabbit Jumping attack used by your Pokémon.",
    "tags": [],
    "nameJa": "ジャンピングコーチ",
-   "textJa": "このポケモンが場にいるかぎり、自分のポケモンが使うワザ「ラビットジャンプ」のコインを投げる回数を3回増やす。",
-   "jaSource": "machine"
+   "textJa": "このポケモンがいるかぎり、自分のポケモンが使うワザ「ラビットジャンプ」で投げるコインの数を、3回多くする。",
+   "jaSource": "official"
   }
  },
  {
@@ -131501,8 +131667,8 @@
     "damage": 70,
     "damageVariable": true,
     "nameJa": "まきかえす",
-    "textJa": "前の相手の番に、ワザのダメージで自分のポケモンがきぜつしていたなら、70ダメージ追加。",
-    "jaSource": "machine"
+    "textJa": "前の相手の番、ワザのダメージで、自分のポケモンがきぜつしていたなら、70ダメージ追加。",
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -132149,7 +132315,7 @@
     "damageVariable": false,
     "nameJa": "いしあたま",
     "textJa": "次の相手の番、このポケモンが受けるワザのダメージを-30する。",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -132564,7 +132730,7 @@
     "damageVariable": false,
     "nameJa": "じばく",
     "textJa": "このポケモンにも90ダメージ。",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -133166,7 +133332,7 @@
     "damageVariable": true,
     "nameJa": "マインドジャック",
     "textJa": "相手のベンチポケモンの数×30ダメージ追加。",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -133447,7 +133613,7 @@
     "damageVariable": true,
     "nameJa": "ラビットジャンプ",
     "textJa": "コインを2回投げ、オモテの数x60ダメージ",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -133612,7 +133778,7 @@
     "damage": 100,
     "damageVariable": false,
     "nameJa": "サイコブースト",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -133731,7 +133897,7 @@
     "damageVariable": false,
     "nameJa": "ちりあつめ",
     "textJa": "自分の山札を1枚引く。",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -133863,8 +134029,8 @@
     "costTyped": 2,
     "damage": 110,
     "damageVariable": false,
-    "nameJa": "ムーンウイング",
-    "jaSource": "machine"
+    "nameJa": "がちりんのつばさ",
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -134224,8 +134390,8 @@
     "costTyped": 0,
     "damage": 40,
     "damageVariable": false,
-    "nameJa": "エルボースマッシュ",
-    "jaSource": "machine"
+    "nameJa": "ひじうち",
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -134461,7 +134627,7 @@
     "damageVariable": false,
     "nameJa": "ためる",
     "textJa": "自分のエネルギーゾーンから闘エネルギーを2個出し、このポケモンにつける。",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -134578,7 +134744,7 @@
     "damageVariable": true,
     "nameJa": "パワープレス",
     "textJa": "追加で闘エネルギーが3個ついているなら、60ダメージ追加。",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -134633,7 +134799,7 @@
     "damage": 10,
     "damageVariable": false,
     "nameJa": "おてパンチ",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -134747,9 +134913,9 @@
    "nameEn": "Reflexive Retaliation",
    "textEn": "If this Pokémon is in the Active Spot and is damaged by an attack from your opponent's Pokémon, do 30 damage to the Attacking Pokémon.",
    "tags": [],
-   "nameJa": "はんしゃカウンター",
-   "textJa": "このポケモンがバトル場で相手のポケモンからワザのダメージを受けたとき、ワザを使ったポケモンに30ダメージ。",
-   "jaSource": "machine"
+   "nameJa": "ストライクバック",
+   "textJa": "このポケモンが、バトル場で相手のポケモンからワザのダメージを受けたとき、ワザを使ったポケモンに30ダメージ。",
+   "jaSource": "official"
   }
  },
  {
@@ -134778,9 +134944,9 @@
     "costTotal": 1,
     "costTyped": 1,
     "damageVariable": false,
-    "nameJa": "ヘビーガス",
+    "nameJa": "ひどいガス",
     "textJa": "相手のバトルポケモンをどくにする。",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -134969,9 +135135,9 @@
     "costTyped": 1,
     "damage": 30,
     "damageVariable": true,
-    "nameJa": "げっこうしゅうげき",
+    "nameJa": "ムーンレイド",
     "textJa": "相手のバトルポケモンがたねポケモンなら、50ダメージ追加。",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -135034,9 +135200,9 @@
     "costTyped": 2,
     "damage": 180,
     "damageVariable": false,
-    "nameJa": "クラッシングランペイジ",
+    "nameJa": "ランページクラッシュ",
     "textJa": "自分の山札を上から2枚トラッシュ。",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -135214,7 +135380,7 @@
     "damageVariable": false,
     "nameJa": "イカサマ",
     "textJa": "相手のバトルポケモンが持っているワザを1つ選び、このワザとして使う。",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -135438,7 +135604,7 @@
     "damageVariable": false,
     "nameJa": "ときのほうこう",
     "textJa": "相手の山札を上から1枚トラッシュ。",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -135771,8 +135937,8 @@
    "textEn": "As long as this Pokémon is in play, all of your [M] Pokémon take -20 damage from attacks from your opponent's Pokémon. This effect doesn't stack.",
    "tags": [],
    "nameJa": "メタルスクラム",
-   "textJa": "このポケモンが場にいるかぎり、自分の鋼ポケモン全員が、相手のポケモンから受けるワザのダメージを-20する。この効果は重ならない。",
-   "jaSource": "machine"
+   "textJa": "このポケモンがいるかぎり、自分の鋼ポケモン全員が、相手のポケモンから受けるワザのダメージを-20する。この特性は重ならない。",
+   "jaSource": "official"
   }
  },
  {
@@ -136422,8 +136588,8 @@
     "costTyped": 0,
     "damageVariable": false,
     "nameJa": "しんかのきざし",
-    "textJa": "自分の山札からイーブイから進化するカードをランダムに1枚、手札に加える。",
-    "jaSource": "machine"
+    "textJa": "「イーブイ」から進化するカードを、自分の山札からランダムに1枚、手札に加える。",
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -136477,7 +136643,7 @@
     "damageVariable": false,
     "nameJa": "パワーボール",
     "textJa": "このポケモンからエネルギーをランダムに1個トラッシュ。",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -136725,7 +136891,7 @@
    "tags": [],
    "nameJa": "めんえき",
    "textJa": "このポケモンは特殊状態にならない。",
-   "jaSource": "machine"
+   "jaSource": "official"
   }
  },
  {
@@ -136871,7 +137037,7 @@
     "damageVariable": true,
     "nameJa": "ラビットジャンプ",
     "textJa": "コインを2回投げ、オモテの数×20ダメージ。",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -136926,7 +137092,7 @@
     "damageVariable": true,
     "nameJa": "ラビットジャンプ",
     "textJa": "コインを2回投げ、オモテの数×40ダメージ。",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -137045,9 +137211,9 @@
     "costTyped": 0,
     "damage": 100,
     "damageVariable": true,
-    "nameJa": "ハイパーラリアット",
+    "nameJa": "ひっさつラリアット",
     "textJa": "コインを2回投げ、すべてオモテなら、100ダメージ追加。",
-    "jaSource": "machine"
+    "jaSource": "official"
    }
   ],
   "prints": [
@@ -137210,11 +137376,10 @@
   "text": {
    "textEn": "Switch out your opponent's Active Stage 2 Pokémon to the Bench. (Your opponent chooses the new Active Pokémon.)",
    "tags": [],
-   "textJa": "相手のバトル場の2進化ポケモンをベンチポケモンと入れ替える。（新しいバトルポケモンは相手が選ぶ。）",
-   "jaSource": "machine"
+   "textJa": "相手のバトル場の2進化ポケモンをベンチポケモンと入れ替える。[バトル場に出すポケモンは相手が選ぶ。]",
+   "jaSource": "official"
   },
-  "nameJa": "ゴールドスプレー",
-  "nameJaMachine": true
+  "nameJa": "ゴールドスプレー"
  },
  {
   "id": "c1-122",
@@ -137280,10 +137445,9 @@
    "textEn": "The Basic Pokémon this card is attached to takes -20 damage from attacks from your opponent's Pokémon.",
    "tags": [],
    "textJa": "このカードをつけているたねポケモンが、相手のポケモンから受けるワザのダメージを-20する。",
-   "jaSource": "machine"
+   "jaSource": "official"
   },
-  "nameJa": "しんかのきせき",
-  "nameJaMachine": true
+  "nameJa": "しんかのきせき"
  },
  {
   "id": "c1-124",
@@ -137402,11 +137566,10 @@
   "text": {
    "textEn": "You can use this card only if you have Venusaur, Charizard, Blastoise, or Pidgeot in play. Switch in 1 of your opponent's Benched Pokémon to the Active Spot.",
    "tags": [],
-   "textJa": "このカードは、自分の場にフシギバナ・リザードン・カメックス・ピジョットのどれかがいるときにしか使えない。相手のベンチポケモンを1匹選び、バトルポケモンと入れ替える。",
-   "jaSource": "machine"
+   "textJa": "このカードは、自分の場に「フシギバナ」または「リザードン」または「カメックス」または「ピジョット」がいるときにしか使えない。相手のベンチポケモンを1匹選び、バトルポケモンと入れ替える。",
+   "jaSource": "official"
   },
-  "nameJa": "グリーンの挑発",
-  "nameJaMachine": true
+  "nameJa": "グリーンの挑発"
  },
  {
   "id": "c1-127",
@@ -137490,11 +137653,10 @@
   "text": {
    "textEn": "Produce 2 [F] Energy from your Energy Zone, and attach it to 1 of your Whiscash or Paldean Clodsire.",
    "tags": [],
-   "textJa": "自分のエネルギーゾーンから闘エネルギーを2個出し、自分のナマズンかパルデアドオーにつける。",
-   "jaSource": "machine"
+   "textJa": "自分のエネルギーゾーンから闘エネルギーを2個出し、「ナマズン」または「パルデア ドオー」1匹につける。",
+   "jaSource": "official"
   },
-  "nameJa": "チリ",
-  "nameJaMachine": true
+  "nameJa": "チリ"
  },
  {
   "id": "c1-129",
@@ -137578,11 +137740,10 @@
   "text": {
    "textEn": "You can use this card only if you have 3 or more different Pokémon types in play. Switch your Active Pokémon with 1 of your Benched Pokémon.",
    "tags": [],
-   "textJa": "このカードは、自分の場のポケモンのタイプが3種類以上のときにしか使えない。自分のバトルポケモンをベンチポケモンと入れ替える。",
-   "jaSource": "machine"
+   "textJa": "このカードは、自分の場のポケモンのタイプが3種類以上のときにしか使えない。自分のバトルポケモンを、ベンチポケモンと入れ替える。",
+   "jaSource": "official"
   },
-  "nameJa": "ライジングスター",
-  "nameJaMachine": true
+  "nameJa": "ホープトレーナー"
  },
  {
   "id": "c1-131",
@@ -137613,11 +137774,10 @@
   "text": {
    "textEn": "Once during each player's turn, that player may use this effect. Flip a coin. If heads, draw a card.",
    "tags": [],
-   "textJa": "おたがいのプレイヤーは、自分の番に1回、コインを1回投げてよい。オモテなら、山札を1枚引く。",
-   "jaSource": "machine"
+   "textJa": "おたがいのプレイヤーは、自分の番に1回使える。コインを1回投げオモテなら、自分の山札を1枚引く。",
+   "jaSource": "official"
   },
-  "nameJa": "すてられた駅",
-  "nameJaMachine": true
+  "nameJa": "さびれたスタンド"
  },
  {
   "id": "pc-002",

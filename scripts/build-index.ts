@@ -109,11 +109,12 @@ function withFoilImages(prints: AppPrint[]): AppPrint[] {
 
 function printOf(c: Card, p: Card["prints"][number]): AppPrint {
   const out: AppPrint = { id: p.id, set: p.set, setName: p.setName, rarity: p.rarity };
-  // 実装前のカードは先行公開の画像（日本語）だけ。英語表示でも同じ画像を使う。無ければ手で置いた画像（public/cards-ja/manual/）
-  if (c.upcoming) {
+  // 先行公開の情報から作ったカード・絵違いは先行公開の画像。日本語は、手で置いた画像（public/cards-ja/manual/。自引きのキャプチャなど）があればそれ
+  if (c.upcoming || p.prelim) {
     const manual = `cards-ja/manual/${p.id}.webp`;
     out.imageJa = existsSync(join(ROOT, "public", manual)) ? manual : p.image ? jaLocal(p.image) : manual;
-    out.imageEn = p.imageEn ? jaLocal(p.imageEn) : out.imageJa;
+    // 英語は英語の画像（imageEn。無ければ先行公開の画像）。手で置いた日本語画像（自引きのキャプチャなど）は英語には使わない
+    out.imageEn = p.imageEn ? jaLocal(p.imageEn) : p.image ? jaLocal(p.image) : out.imageJa;
     if (p.pack) out.pack = p.pack;
     if (p.how) out.how = p.how;
     return out;

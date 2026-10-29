@@ -27,20 +27,24 @@ interface YCard {
   prints?: YPrint[]; // 絵違い（☆・色違いなど）
 }
 // date: 実装日（元データにこの日以降のプリントが出たら外す）。available: 配布が始まる日（プロモ・スペシャルパック。外すのは同じカードが元データに出たとき）
+// 既存カードの再録（新しいパックの絵違い）。of: 既存カードのID
+interface YReprint extends YPrint { of: string; set: string }
 interface YSet { code: string; nameEn: string; nameJa: string; date?: string; available?: string; source: string }
 // 手で書いたもの（upcoming.yaml）と、先行公開の全カード一覧から作ったもの（upcoming-*.yaml）
 const files = ["upcoming.yaml", ...readdirSync(DATA).filter((f) => /^upcoming-.+\.yaml$/.test(f)).sort()];
-const y = { sets: [] as YSet[], cards: [] as YCard[] };
+const y = { sets: [] as YSet[], cards: [] as YCard[], reprints: [] as YReprint[] };
 for (const f of files) {
-  const d = loadYaml(readFileSync(join(DATA, f), "utf8")) as { sets?: YSet[]; cards?: YCard[] };
+  const d = loadYaml(readFileSync(join(DATA, f), "utf8")) as { sets?: YSet[]; cards?: YCard[]; reprints?: YReprint[] };
   y.sets.push(...(d.sets ?? []));
   y.cards.push(...(d.cards ?? []));
+  y.reprints.push(...(d.reprints ?? []));
 }
 
 const cards: Card[] = JSON.parse(readFileSync(join(DATA, "cards.json"), "utf8")).filter((c: Card) => !c.upcoming);
+for (const c of cards) c.prints = c.prints.filter((p) => !p.prelim); // 前に足した再録は足し直す
 // 今日（日本時間）。実装日・配布開始日を過ぎたものは実装済み
 const today = process.env.TODAY ?? new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10);
-const released = (c: Card) => c.prints.map((p) => p.released ?? "").filter(Boolean);
+const released = (c: Card) => c.prints.filter((p) => !p.prelim).map((p) => p.released ?? "").filter(Boolean);
 // 実装済みになったか: パックは「予定日以降のプリントが元データにある」。
 // 日付の無いもの（プロモ・スペシャルパック）は「名前・HP・ワザのコストとダメージが同じカードが元データにある」
 // （フシギダネのように同じ名前の別のカードが前からあるので、名前だけでは決めない）
@@ -76,6 +80,22 @@ function attack(a: YAttack, machine: boolean): Attack {
     ...(dmg ? { damage: Number(dmg.replace(/[+×]/, "")) } : {}),
     damageVariable: !!dmg && /[+×]/.test(dmg),
   };
+}
+
+// 既存カードの再録: 元データにその収録が出たら（パックが実装されて本物のデータが入ったら）足さない
+const realPrints = new Set(cards.flatMap((c) => c.prints.map((p) => p.id)));
+let reprinted = 0;
+for (const r of y.reprints) {
+  const set = y.sets.find((s) => s.code === r.set);
+  const card = cards.find((c) => c.id === r.of);
+  if (realPrints.has(r.id) || (set?.date && cards.some((c) => released(c).some((d) => d >= set.date!)))) continue;
+  if (!card) throw new Error(`再録の元のカードが無い: ${r.id} → ${r.of}`);
+  const start = set?.date ?? set?.available;
+  card.prints.push({
+    id: r.id, set: r.set, setName: set?.nameEn ?? r.set, rarity: r.rarity, image: r.image ?? "", ...(start ? { released: start } : {}),
+    ...(r.pack ? { pack: r.pack } : {}), ...(r.how ? { how: r.how } : {}), prelim: true,
+  });
+  reprinted++;
 }
 
 const added: Card[] = [];
@@ -143,4 +163,4 @@ for (const c of all) {
 
 writeFileSync(join(DATA, "cards.json"), JSON.stringify(all, null, 1));
 const out = added.filter((c) => c.upcoming!.released).length;
-console.log(`先行公開のカード ${added.length} 枚を追加（うち実装済み ${out} 枚）${skipped.length ? ` / 実装済みなので外した ${skipped.length} 枚: ${skipped.join(", ")}` : ""}`);
+console.log(`先行公開のカード ${added.length} 枚を追加（うち実装済み ${out} 枚）・既存カードの再録 ${reprinted} 枚${skipped.length ? ` / 実装済みなので外した ${skipped.length} 枚: ${skipped.join(", ")}` : ""}`);

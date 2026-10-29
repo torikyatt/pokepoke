@@ -36,6 +36,7 @@ export interface Print {
   builderNr?: number; // アプリのデッキ編集画面での並び順
   pack?: string; // 先行公開のカード: 弾の中のパック（日本語。例: ピカチュウ）。無ければどのパックからも出る
   how?: string; // 先行公開のカード: パック以外の入手方法
+  prelim?: true; // 先行公開の情報から既存のカードに足した絵違い（再録。data/upcoming*.yaml の reprints）
 }
 
 export interface Card {

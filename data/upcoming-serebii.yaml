@@ -3308,3 +3308,102 @@ cards:
       - id: sp1-030
         rarity: ☆
         image: https://serebii.net/tcgpocket/firstpartners/30.jpg
+reprints:
+  - id: c1-187
+    of: pb-079
+    set: c1
+    rarity: ✵
+    image: https://serebii.net/tcgpocket/dualfusion/187.jpg
+    pack: ピカチュウ
+  - id: c1-188
+    of: pb-061
+    set: c1
+    rarity: ✵
+    image: https://serebii.net/tcgpocket/dualfusion/188.jpg
+    pack: メガミュウツーX
+  - id: c1-189
+    of: b3-006
+    set: c1
+    rarity: ✵
+    image: https://serebii.net/tcgpocket/dualfusion/189.jpg
+    pack: メガミュウツーX
+  - id: c1-190
+    of: b4-024
+    set: c1
+    rarity: ✵
+    image: https://serebii.net/tcgpocket/dualfusion/190.jpg
+    pack: ピカチュウ
+  - id: c1-191
+    of: b4-025
+    set: c1
+    rarity: ✵
+    image: https://serebii.net/tcgpocket/dualfusion/191.jpg
+    pack: ピカチュウ
+  - id: c1-194
+    of: pb-085
+    set: c1
+    rarity: ✵
+    image: https://serebii.net/tcgpocket/dualfusion/194.jpg
+    pack: ピカチュウ
+  - id: c1-201
+    of: b2b-045
+    set: c1
+    rarity: ✵
+    image: https://serebii.net/tcgpocket/dualfusion/201.jpg
+    pack: メガミュウツーX
+  - id: c1-205
+    of: pb-076
+    set: c1
+    rarity: ✵
+    image: https://serebii.net/tcgpocket/dualfusion/205.jpg
+    pack: ピカチュウ
+  - id: c1-207
+    of: pb-087
+    set: c1
+    rarity: ✵✵
+    image: https://serebii.net/tcgpocket/dualfusion/207.jpg
+    pack: メガミュウツーX
+  - id: c1-208
+    of: b4-026
+    set: c1
+    rarity: ✵✵
+    image: https://serebii.net/tcgpocket/dualfusion/208.jpg
+    pack: ピカチュウ
+  - id: c1-209
+    of: b4-084
+    set: c1
+    rarity: ✵✵
+    image: https://serebii.net/tcgpocket/dualfusion/209.jpg
+    pack: メガミュウツーX
+  - id: c1-212
+    of: b3-141
+    set: c1
+    rarity: ✵✵
+    image: https://serebii.net/tcgpocket/dualfusion/212.jpg
+    pack: ピカチュウ
+  - id: c1-213
+    of: b3b-060
+    set: c1
+    rarity: ✵✵
+    image: https://serebii.net/tcgpocket/dualfusion/213.jpg
+    pack: ピカチュウ
+  - id: pc-001
+    of: b2-049
+    set: pc
+    rarity: Promo
+    image: https://serebii.net/tcgpocket/promo-c/1.jpg
+  - id: pc-010
+    of: a4-147
+    set: pc
+    rarity: Promo
+    image: https://serebii.net/tcgpocket/promo-c/10.jpg
+  - id: pc-011
+    of: pa-087
+    set: pc
+    rarity: Promo
+    image: https://serebii.net/tcgpocket/promo-c/11.jpg
+  - id: pc-012
+    of: b2-032
+    set: pc
+    rarity: Promo
+    image: https://serebii.net/tcgpocket/promo-c/12.jpg

@@ -70,7 +70,8 @@
  },
  "1b5a3af81b7f": {
   "en": "Honey Rush",
-  "ja": "ハニーラッシュ"
+  "ja": "ハニーラッシュ",
+  "official": true
  },
  "3e0dee290fa3": {
   "en": "Leaf Litter Tackle",
@@ -82,15 +83,18 @@
  },
  "32968cb1a6e9": {
   "en": "Signal Beam",
-  "ja": "シグナルビーム"
+  "ja": "シグナルビーム",
+  "official": true
  },
  "f676d1befee3": {
   "en": "Honey Gather",
-  "ja": "ハニーギャザー"
+  "ja": "みつあつめ",
+  "official": true
  },
  "adae92181529": {
   "en": "Once during your turn, you may use this Ability. Put a Sweet Honey rental card into your hand.",
-  "ja": "自分の番に1回使える。レンタルカードの「あまいミツ」を1枚、手札に加える。"
+  "ja": "自分の番に1回使える。レンタルカードの「あまいミツ」を1枚、手札に加える。",
+  "official": true
  },
  "327095b57bca": {
   "en": "Dynamite Steam",
@@ -102,15 +106,18 @@
  },
  "38b375be918b": {
   "en": "Rabbit Jumping",
-  "ja": "ラビットジャンプ"
+  "ja": "ラビットジャンプ",
+  "official": true
  },
  "3c4246ebd2f1": {
   "en": "Jumping Coach",
-  "ja": "ジャンピングコーチ"
+  "ja": "ジャンピングコーチ",
+  "official": true
  },
  "9d3ac7056f4f": {
   "en": "As long as this Pokémon is in play, flip 3 more coins for the Rabbit Jumping attack used by your Pokémon.",
-  "ja": "このポケモンが場にいるかぎり、自分のポケモンが使うワザ「ラビットジャンプ」のコインを投げる回数を3回増やす。"
+  "ja": "このポケモンがいるかぎり、自分のポケモンが使うワザ「ラビットジャンプ」で投げるコインの数を、3回多くする。",
+  "official": true
  },
  "aac0f76e8770": {
   "en": "Spinning Kick",
@@ -118,7 +125,8 @@
  },
  "60c701586b1a": {
   "en": "If any of your Pokémon were Knocked Out by damage from an attack during your opponent's last turn, this attack does 70 more damage.",
-  "ja": "前の相手の番に、ワザのダメージで自分のポケモンがきぜつしていたなら、70ダメージ追加。"
+  "ja": "前の相手の番、ワザのダメージで、自分のポケモンがきぜつしていたなら、70ダメージ追加。",
+  "official": true
  },
  "f6c74fe34f37": {
   "en": "Dual Blizzard",
@@ -134,11 +142,13 @@
  },
  "ca161e119ff9": {
   "en": "Rock Head",
-  "ja": "いしあたま"
+  "ja": "いしあたま",
+  "official": true
  },
  "4b2aafe20358": {
   "en": "During your opponent's next turn, this Pokémon takes -30 damage from attacks.",
-  "ja": "次の相手の番、このポケモンが受けるワザのダメージを-30する。"
+  "ja": "次の相手の番、このポケモンが受けるワザのダメージを-30する。",
+  "official": true
  },
  "1f82ba251b2d": {
   "en": "Sudden Duplication",
@@ -150,11 +160,13 @@
  },
  "8bec77b4bdca": {
   "en": "Self-Destruct",
-  "ja": "じばく"
+  "ja": "じばく",
+  "official": true
  },
  "c275c37ab408": {
   "en": "This Pokémon also does 90 damage to itself.",
-  "ja": "このポケモンにも90ダメージ。"
+  "ja": "このポケモンにも90ダメージ。",
+  "official": true
  },
  "a661faed2591": {
   "en": "Electrocreation",
@@ -170,7 +182,8 @@
  },
  "64bdabe1611b": {
   "en": "This attack does 30 more damage for each of your opponent's Benched Pokémon.",
-  "ja": "相手のベンチポケモンの数×30ダメージ追加。"
+  "ja": "相手のベンチポケモンの数×30ダメージ追加。",
+  "official": true
  },
  "5dae0d532f87": {
   "en": "Dual Impact",
@@ -187,15 +200,18 @@
  },
  "da9001688e1c": {
   "en": "Psycho Boost",
-  "ja": "サイコブースト"
+  "ja": "サイコブースト",
+  "official": true
  },
  "4aaa96d668c0": {
   "en": "Dust Gathering",
-  "ja": "ちりあつめ"
+  "ja": "ちりあつめ",
+  "official": true
  },
  "b904d8e3111d": {
   "en": "Wings of the Moone",
-  "ja": "ムーンウイング"
+  "ja": "がちりんのつばさ",
+  "official": true
  },
  "50b6d5cf1c30": {
   "en": "Megahorn",
@@ -203,31 +219,38 @@
  },
  "520ab7df8343": {
   "en": "Elbow Strike",
-  "ja": "エルボースマッシュ"
+  "ja": "ひじうち",
+  "official": true
  },
  "efb5648fd23a": {
   "en": "Take 2 [F] Energy from your Energy Zone and attach it to this Pokémon.",
-  "ja": "自分のエネルギーゾーンから闘エネルギーを2個出し、このポケモンにつける。"
+  "ja": "自分のエネルギーゾーンから闘エネルギーを2個出し、このポケモンにつける。",
+  "official": true
  },
  "8b03f993af90": {
   "en": "If this Pokémon has at least 3 extra [F] Energy attached, this attack does 60 more damage.",
-  "ja": "追加で闘エネルギーが3個ついているなら、60ダメージ追加。"
+  "ja": "追加で闘エネルギーが3個ついているなら、60ダメージ追加。",
+  "official": true
  },
  "a31803918ca1": {
   "en": "Paw Shake Punch",
-  "ja": "おてパンチ"
+  "ja": "おてパンチ",
+  "official": true
  },
  "cdf97c248f66": {
   "en": "Reflexive Retaliation",
-  "ja": "はんしゃカウンター"
+  "ja": "ストライクバック",
+  "official": true
  },
  "f59a9414843e": {
   "en": "If this Pokémon is in the Active Spot and is damaged by an attack from your opponent's Pokémon, do 30 damage to the Attacking Pokémon.",
-  "ja": "このポケモンがバトル場で相手のポケモンからワザのダメージを受けたとき、ワザを使ったポケモンに30ダメージ。"
+  "ja": "このポケモンが、バトル場で相手のポケモンからワザのダメージを受けたとき、ワザを使ったポケモンに30ダメージ。",
+  "official": true
  },
  "f2ea4f507932": {
   "en": "Severe Gas",
-  "ja": "ヘビーガス"
+  "ja": "ひどいガス",
+  "official": true
  },
  "e6af0fabef59": {
   "en": "Twilight Poison",
@@ -235,23 +258,28 @@
  },
  "d2f08151ba5d": {
   "en": "Moonlit Raid",
-  "ja": "げっこうしゅうげき"
+  "ja": "ムーンレイド",
+  "official": true
  },
  "a4364e7c7835": {
   "en": "If your opponent's Active Pokémon is a Basic Pokémon, this attack does 50 more damage.",
-  "ja": "相手のバトルポケモンがたねポケモンなら、50ダメージ追加。"
+  "ja": "相手のバトルポケモンがたねポケモンなら、50ダメージ追加。",
+  "official": true
  },
  "4a9e2350ada3": {
   "en": "Crushing Rampage",
-  "ja": "クラッシングランペイジ"
+  "ja": "ランページクラッシュ",
+  "official": true
  },
  "a744616f2b64": {
   "en": "Discard the top 2 cards of your deck.",
-  "ja": "自分の山札を上から2枚トラッシュ。"
+  "ja": "自分の山札を上から2枚トラッシュ。",
+  "official": true
  },
  "3b9bde080a55": {
   "en": "Foul Play",
-  "ja": "イカサマ"
+  "ja": "イカサマ",
+  "official": true
  },
  "ae640d3473a1": {
   "en": "Shredding Claw",
@@ -263,7 +291,8 @@
  },
  "41a4e38a59db": {
   "en": "Roar of Time",
-  "ja": "ときのほうこう"
+  "ja": "ときのほうこう",
+  "official": true
  },
  "d424623ad200": {
   "en": "Claws of the Sunne",
@@ -271,11 +300,13 @@
  },
  "08ebe1013aaf": {
   "en": "Metal Scrum",
-  "ja": "メタルスクラム"
+  "ja": "メタルスクラム",
+  "official": true
  },
  "f260d87d2e59": {
   "en": "As long as this Pokémon is in play, all of your [M] Pokémon take -20 damage from attacks from your opponent's Pokémon. This effect doesn't stack.",
-  "ja": "このポケモンが場にいるかぎり、自分の鋼ポケモン全員が、相手のポケモンから受けるワザのダメージを-20する。この効果は重ならない。"
+  "ja": "このポケモンがいるかぎり、自分の鋼ポケモン全員が、相手のポケモンから受けるワザのダメージを-20する。この特性は重ならない。",
+  "official": true
  },
  "2020b8c7a175": {
   "en": "Put 1 random [C] Pokémon from your deck into your hand.",
@@ -291,11 +322,13 @@
  },
  "58e8752458c3": {
   "en": "Put a random card that evolves from Eevee from your deck into your hand.",
-  "ja": "自分の山札からイーブイから進化するカードをランダムに1枚、手札に加える。"
+  "ja": "「イーブイ」から進化するカードを、自分の山札からランダムに1枚、手札に加える。",
+  "official": true
  },
  "50489ff72b06": {
   "en": "Powered Ball",
-  "ja": "パワーボール"
+  "ja": "パワーボール",
+  "official": true
  },
  "2b74636ac010": {
   "en": "During your next turn, this Pokémon's Overdrive Smash attack does +50 damage.",
@@ -303,15 +336,18 @@
  },
  "56868b5aa530": {
   "en": "Immunity",
-  "ja": "めんえき"
+  "ja": "めんえき",
+  "official": true
  },
  "772795146131": {
   "en": "This Pokémon can't be affected by Special Conditions.",
-  "ja": "このポケモンは特殊状態にならない。"
+  "ja": "このポケモンは特殊状態にならない。",
+  "official": true
  },
  "a7441c94131c": {
   "en": "Hyper Lariat",
-  "ja": "ハイパーラリアット"
+  "ja": "ひっさつラリアット",
+  "official": true
  },
  "3cda74d0086e": {
   "en": "Sweet Honey",
@@ -331,11 +367,13 @@
  },
  "0f7647edd0e3": {
   "en": "Max Repel",
-  "ja": "ゴールドスプレー"
+  "ja": "ゴールドスプレー",
+  "official": true
  },
  "eae2e33dd18f": {
   "en": "Switch out your opponent's Active Stage 2 Pokémon to the Bench. (Your opponent chooses the new Active Pokémon.)",
-  "ja": "相手のバトル場の2進化ポケモンをベンチポケモンと入れ替える。（新しいバトルポケモンは相手が選ぶ。）"
+  "ja": "相手のバトル場の2進化ポケモンをベンチポケモンと入れ替える。[バトル場に出すポケモンは相手が選ぶ。]",
+  "official": true
  },
  "654caf722ad2": {
   "en": "Full Heal",
@@ -347,11 +385,13 @@
  },
  "5a584e8e1529": {
   "en": "Eviolite",
-  "ja": "しんかのきせき"
+  "ja": "しんかのきせき",
+  "official": true
  },
  "3d253c5a7d85": {
   "en": "The Basic Pokémon this card is attached to takes -20 damage from attacks from your opponent's Pokémon.",
-  "ja": "このカードをつけているたねポケモンが、相手のポケモンから受けるワザのダメージを-20する。"
+  "ja": "このカードをつけているたねポケモンが、相手のポケモンから受けるワザのダメージを-20する。",
+  "official": true
  },
  "553bfcec1299": {
   "en": "Light Ball",
@@ -371,11 +411,13 @@
  },
  "440642b2d6d5": {
   "en": "Blue's Provocation",
-  "ja": "グリーンの挑発"
+  "ja": "グリーンの挑発",
+  "official": true
  },
  "f81c07b86543": {
   "en": "You can use this card only if you have Venusaur, Charizard, Blastoise, or Pidgeot in play. Switch in 1 of your opponent's Benched Pokémon to the Active Spot.",
-  "ja": "このカードは、自分の場にフシギバナ・リザードン・カメックス・ピジョットのどれかがいるときにしか使えない。相手のベンチポケモンを1匹選び、バトルポケモンと入れ替える。"
+  "ja": "このカードは、自分の場に「フシギバナ」または「リザードン」または「カメックス」または「ピジョット」がいるときにしか使えない。相手のベンチポケモンを1匹選び、バトルポケモンと入れ替える。",
+  "official": true
  },
  "e1f47dce3b2d": {
   "en": "Serena's Choice",
@@ -387,11 +429,13 @@
  },
  "2fb41e2ca6dd": {
   "en": "Rika",
-  "ja": "チリ"
+  "ja": "チリ",
+  "official": true
  },
  "d53e05746e6d": {
   "en": "Produce 2 [F] Energy from your Energy Zone, and attach it to 1 of your Whiscash or Paldean Clodsire.",
-  "ja": "自分のエネルギーゾーンから闘エネルギーを2個出し、自分のナマズンかパルデアドオーにつける。"
+  "ja": "自分のエネルギーゾーンから闘エネルギーを2個出し、「ナマズン」または「パルデア ドオー」1匹につける。",
+  "official": true
  },
  "73ddc514d0d6": {
   "en": "Poké Mart Guy",
@@ -403,19 +447,23 @@
  },
  "f2f5d68e6499": {
   "en": "Rising Star",
-  "ja": "ライジングスター"
+  "ja": "ホープトレーナー",
+  "official": true
  },
  "163d793f37f5": {
   "en": "You can use this card only if you have 3 or more different Pokémon types in play. Switch your Active Pokémon with 1 of your Benched Pokémon.",
-  "ja": "このカードは、自分の場のポケモンのタイプが3種類以上のときにしか使えない。自分のバトルポケモンをベンチポケモンと入れ替える。"
+  "ja": "このカードは、自分の場のポケモンのタイプが3種類以上のときにしか使えない。自分のバトルポケモンを、ベンチポケモンと入れ替える。",
+  "official": true
  },
  "c832b19b596a": {
   "en": "Abandoned Station",
-  "ja": "すてられた駅"
+  "ja": "さびれたスタンド",
+  "official": true
  },
  "d4cd2f2e7187": {
   "en": "Once during each player's turn, that player may use this effect. Flip a coin. If heads, draw a card.",
-  "ja": "おたがいのプレイヤーは、自分の番に1回、コインを1回投げてよい。オモテなら、山札を1枚引く。"
+  "ja": "おたがいのプレイヤーは、自分の番に1回使える。コインを1回投げオモテなら、自分の山札を1枚引く。",
+  "official": true
  },
  "8d6e6e1eb499": {
   "en": "Psychic Blaster",
@@ -444,5 +492,75 @@
  "bb8e2de16ab0": {
   "en": "Once during your turn, when you play this card from your hand to evolve 1 of your Pokémon, you may use this Ability. Put a random Frogadier from your deck onto your Bench.",
   "ja": "自分の番に、このカードを手札から出して進化させたとき、1回使える。自分の山札からゲコガシラをランダムに1枚、ベンチに出す。"
+ },
+ "e0c704ee5062": {
+  "en": "Your opponent's Active Pokémon is now Confused.",
+  "ja": "相手のバトルポケモンをこんらんにする。",
+  "official": true
+ },
+ "fada264ff817": {
+  "en": "Flip 2 coins. This attack does 20 damage for each heads.",
+  "ja": "コインを2回投げ、オモテの数×20ダメージ。",
+  "official": true
+ },
+ "a952572e6337": {
+  "en": "Mind Jack",
+  "ja": "マインドジャック",
+  "official": true
+ },
+ "a6906d705cc6": {
+  "en": "Flip 2 coins. This attack does 60 damage for each heads.",
+  "ja": "コインを2回投げ、オモテの数×60ダメージ。",
+  "official": true
+ },
+ "c598a7cc76ad": {
+  "en": "Your opponent's Active Pokémon is now Poisoned.",
+  "ja": "相手のバトルポケモンをどくにする。",
+  "official": true
+ },
+ "d539dd147fde": {
+  "en": "Choose 1 of your opponent's Active Pokémon's attacks and use it as this attack.",
+  "ja": "相手のバトルポケモンが持っているワザを1つ選び、このワザとして使う。",
+  "official": true
+ },
+ "1d82be8d94b5": {
+  "en": "Discard the top card of your opponent's deck.",
+  "ja": "相手の山札を上から1枚トラッシュ。",
+  "official": true
+ },
+ "0fea450a4696": {
+  "en": "Rally Back",
+  "ja": "まきかえす",
+  "official": true
+ },
+ "45dcd526ba2b": {
+  "en": "Flip 2 coins. If both of them are heads, this attack does 100 more damage.",
+  "ja": "コインを2回投げ、すべてオモテなら、100ダメージ追加。",
+  "official": true
+ },
+ "db0571f78f16": {
+  "en": "Draw a card.",
+  "ja": "自分の山札を1枚引く。",
+  "official": true
+ },
+ "4c771a2c9aaf": {
+  "en": "Discard a random Energy from this Pokémon.",
+  "ja": "このポケモンからエネルギーをランダムに1個トラッシュ。",
+  "official": true
+ },
+ "7e9f23b99ab6": {
+  "en": "Amass",
+  "ja": "ためる",
+  "official": true
+ },
+ "e84448d7205d": {
+  "en": "Power Press",
+  "ja": "パワープレス",
+  "official": true
+ },
+ "3c52abd302bf": {
+  "en": "Signs of Evolution",
+  "ja": "しんかのきざし",
+  "official": true
  }
 }

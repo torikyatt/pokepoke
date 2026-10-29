@@ -29,7 +29,9 @@ for (const c of cards) {
     const p = c.prints[0];
     const manual = join(ROOT, "public/cards-ja/manual", `${p.id}.webp`);
     const url = ja ? p.image : (p.imageEn ?? p.image); // 英語の画像が別にあれば、英語版のサムネイルはそれから
-    const file = existsSync(manual) ? manual : url ? join(ROOT, "public", jaImageFile(url)) : undefined;
+    const remote = url ? join(ROOT, "public", jaImageFile(url)) : undefined;
+    // 手で置いた日本語画像は日本語のサムネイルだけ。英語は英語（先行公開）の画像から
+    const file = ja && existsSync(manual) ? manual : remote && existsSync(remote) ? remote : existsSync(manual) ? manual : undefined;
     if (file && existsSync(file)) src.set(c.id, [file]);
     continue;
   }
