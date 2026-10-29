@@ -42,6 +42,7 @@ export interface AppPrint {
   imageEn?: string; // 英語画像をまだ自前で置いていないときだけ、元の URL。置いてあれば cards-en/<id>.webp
   thumb?: true; // この絵柄のサムネイルがある（thumbs/<収録ID>.webp。日本語は thumbs-ja/ にあれば）。再録の新しい絵柄
   jaThumb?: true;
+  tv?: string; // サムネイルの版（中身から作る。URL に付けて、古いサムネイルがキャッシュに残らないように）
 }
 
 export interface AppCard {
@@ -72,6 +73,7 @@ export interface AppCard {
   image: string; // 高解像度画像（英語・PocketDecks。オンライン時）
   imageJa?: string; // 日本語の画像（Game8。オンライン時）
   jaThumb?: true; // 日本語のサムネイル（public/thumbs-ja/）がある
+  tv: string; // サムネイルの版（中身から作る。URL に付けて、古いサムネイルがキャッシュに残らないように）
   order: number; // アプリのデッキ編集画面と同じ並び（図鑑順）
   released: string; // 最初の収録の発売日
   rarities: string[]; // 収録されているレアリティ（◊ ◊◊ … ☆ … Crown Rare, Promo）

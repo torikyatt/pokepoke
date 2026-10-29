@@ -1,6 +1,7 @@
 // アプリに埋め込むデータを作る。
 // 入力: data/cards.json, data/tags.json, data/taxonomy.yaml, data/lexicon/*.json
 // 出力: src/data/app-data.json（生成物。コミットしない）
+import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { basename, join } from "node:path";
 import { load as loadYaml } from "js-yaml";
@@ -107,12 +108,26 @@ function withFoilImages(prints: AppPrint[]): AppPrint[] {
   return prints;
 }
 
+// 中身が変わっても名前が変わらない画像（手で置いた日本語画像・サムネイル）は、中身から作った版を URL に付ける。
+// ブラウザのキャッシュ（4時間）に古い画像が残らないように
+const verCache = new Map<string, string>();
+function fileVer(...files: string[]): string {
+  const key = files.join("|");
+  if (!verCache.has(key)) {
+    const h = createHash("sha1");
+    for (const f of files) if (existsSync(join(ROOT, "public", f))) h.update(readFileSync(join(ROOT, "public", f)));
+    verCache.set(key, h.digest("hex").slice(0, 8));
+  }
+  return verCache.get(key)!;
+}
+const versioned = (file: string) => `${file}?v=${fileVer(file)}`;
+
 function printOf(c: Card, p: Card["prints"][number]): AppPrint {
   const out: AppPrint = { id: p.id, set: p.set, setName: p.setName, rarity: p.rarity };
   // 先行公開の情報から作ったカード・絵違いは先行公開の画像。日本語は、手で置いた画像（public/cards-ja/manual/。自引きのキャプチャなど）があればそれ
   if (c.upcoming || p.prelim) {
     const manual = `cards-ja/manual/${p.id}.webp`;
-    out.imageJa = existsSync(join(ROOT, "public", manual)) ? manual : p.image ? jaLocal(p.image) : manual;
+    out.imageJa = existsSync(join(ROOT, "public", manual)) ? versioned(manual) : p.image ? jaLocal(p.image) : manual;
     // 英語は英語の画像（imageEn。無ければ先行公開の画像）。手で置いた日本語画像（自引きのキャプチャなど）は英語には使わない
     out.imageEn = p.imageEn ? jaLocal(p.imageEn) : p.image ? jaLocal(p.image) : out.imageJa;
     if (p.pack) out.pack = p.pack;
@@ -120,6 +135,7 @@ function printOf(c: Card, p: Card["prints"][number]): AppPrint {
     // 既存カードの再録の絵柄は、その絵柄のサムネイル（「最新のカード」で見せる）
     if (p.prelim && existsSync(join(ROOT, "public/thumbs", `${p.id}.webp`))) out.thumb = true;
     if (p.prelim && existsSync(join(ROOT, "public/thumbs-ja", `${p.id}.webp`))) out.jaThumb = true;
+    if (out.thumb) out.tv = fileVer(`thumbs/${p.id}.webp`, `thumbs-ja/${p.id}.webp`);
     return out;
   }
   // 英語画像は収録IDから場所が決まるので、まだ自前で置いていないものだけ元の URL を持たせる
@@ -127,7 +143,7 @@ function printOf(c: Card, p: Card["prints"][number]): AppPrint {
   else out.imageEn = enImageRemote(p.id);
   // 手で置いた日本語画像（public/cards-ja/manual/<収録ID>.webp。Game8 に無いもの）があれば、それを使う
   const manual = `cards-ja/manual/${p.id}.webp`;
-  if (existsSync(join(ROOT, "public", manual))) out.imageJa = manual;
+  if (existsSync(join(ROOT, "public", manual))) out.imageJa = versioned(manual);
   const g = (g8Match[c.id]?.g8 ?? []).map((id) => g8ById.get(id)).find((x) => x && x.set === g8SetOf(p.set) && x.number === Number(p.id.split("-").pop()));
   if (!g) return out;
   if (g.image && !out.imageJa) out.imageJa = jaLocal(g.image);
@@ -247,8 +263,9 @@ const out: AppCard[] = cards.map((c) => {
     // 絵柄は「いちばん基本のもの」を先頭に（一覧・詳細・サムネイルはこれ）
     prints: withFoilImages(orderedPrints(c.prints).map((p) => printOf(c, p))),
     image: c.upcoming ? "" : enLocal(basePrint(c.prints).id),
-    ...(jaImageOf(c) ? { imageJa: jaImageOf(c)!.startsWith("/") ? `cards-ja/manual/${basename(jaImageOf(c)!)}` : jaLocal(jaImageOf(c)!) } : {}),
+    ...(jaImageOf(c) ? { imageJa: jaImageOf(c)!.startsWith("/") ? versioned(`cards-ja/manual/${basename(jaImageOf(c)!)}`) : jaLocal(jaImageOf(c)!) } : {}),
     ...(existsSync(join(ROOT, "public/thumbs-ja", `${c.id}.webp`)) ? { jaThumb: true as const } : {}),
+    tv: fileVer(`thumbs/${c.id}.webp`, `thumbs-ja/${c.id}.webp`),
     order: Math.min(...c.prints.map((p) => p.builderNr ?? 99999)),
     released: c.prints.map((p) => p.released ?? "9999").sort()[0],
     rarities: [...new Set(c.prints.map((p) => p.rarity))],

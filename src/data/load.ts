@@ -28,7 +28,8 @@ const enWeb = (url: string) => (__SINGLE__ && url.startsWith("cards-en/") ? enIm
 export function thumbUrls(card: AppCard, lang: ImageLang, print?: AppPrint): string[] {
   // 絵柄を指定したとき（再録の新しい絵柄）は、その絵柄のサムネイル。無ければカードのもの
   if (print?.thumb) {
-    const own = thumbs ? (thumbs[print.id] ? [`data:image/webp;base64,${thumbs[print.id]}`] : []) : [lang === "ja" && print.jaThumb ? `thumbs-ja/${print.id}.webp` : `thumbs/${print.id}.webp`];
+    const v = print.tv ? `?v=${print.tv}` : "";
+    const own = thumbs ? (thumbs[print.id] ? [`data:image/webp;base64,${thumbs[print.id]}`] : []) : [lang === "ja" && print.jaThumb ? `thumbs-ja/${print.id}.webp${v}` : `thumbs/${print.id}.webp${v}`];
     return [...own, ...thumbUrls(card, lang)];
   }
   if (thumbs) {
@@ -36,8 +37,9 @@ export function thumbUrls(card: AppCard, lang: ImageLang, print?: AppPrint): str
     const embedded = b ? `data:image/webp;base64,${b}` : undefined;
     return (lang === "en" ? [enWeb(card.image), embedded] : [embedded, enWeb(card.image)]).filter((u): u is string => !!u);
   }
-  const ja = card.jaThumb ? `thumbs-ja/${card.id}.webp` : undefined;
-  const en = `thumbs/${card.id}.webp`;
+  const v = card.tv ? `?v=${card.tv}` : "";
+  const ja = card.jaThumb ? `thumbs-ja/${card.id}.webp${v}` : undefined;
+  const en = `thumbs/${card.id}.webp${v}`;
   return (lang === "ja" ? [ja, en] : [en, ja]).filter((u): u is string => !!u);
 }
 export const thumbUrl = (card: AppCard, lang: ImageLang) => thumbUrls(card, lang)[0];
