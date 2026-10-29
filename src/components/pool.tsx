@@ -445,6 +445,15 @@ function NumSelect({ value, onChange, options, placeholder, suffix }: { value?: 
   );
 }
 
+/** エネルギーのアイコンを並べて選ぶ（タイプ・ワザに必要なエネ・弱点。どれも同じ大きさ） */
+function EnergyToggles({ types, selected, onToggle }: { types: EnergyType[]; selected: EnergyType[]; onToggle: (t: EnergyType) => void }) {
+  return types.map((ty) => (
+    <button key={ty} type="button" onClick={() => onToggle(ty)} aria-pressed={selected.includes(ty)} className={`rounded-full p-1 ${selected.includes(ty) ? "ring-[3px] ring-accent" : "opacity-60"}`}>
+      <EnergyIcon type={ty} size="lg" />
+    </button>
+  ));
+}
+
 export function SortFilterSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { data } = useData();
   const pool = usePool();
@@ -517,11 +526,7 @@ export function SortFilterSheet({ open, onClose }: { open: boolean; onClose: () 
       </Section>
 
       <Section title={t("タイプ", "Type")}>
-        {TYPES.map((ty) => (
-          <button key={ty} type="button" onClick={() => toggle("types", ty)} aria-pressed={f.types.includes(ty)} className={`rounded-full p-1 ${f.types.includes(ty) ? "ring-[3px] ring-accent" : "opacity-60"}`}>
-            <EnergyIcon type={ty} size="xl" />
-          </button>
-        ))}
+        <EnergyToggles types={TYPES} selected={f.types} onToggle={(ty) => toggle("types", ty)} />
       </Section>
       <Section title={t("カードの種類", "Card type")}>
         {KINDS.map((k) => (
@@ -567,12 +572,11 @@ export function SortFilterSheet({ open, onClose }: { open: boolean; onClose: () 
         <NumSelect value={f.damageMin} onChange={(v) => setF({ ...f, damageMin: v })} options={DMG_STEPS} placeholder={t("最大ダメージ", "Max damage")} suffix={t(" 以上", "+")} />
         <NumSelect value={f.costMax} onChange={(v) => setF({ ...f, costMax: v })} options={[0, 1, 2, 3, 4]} placeholder={t("ワザのエネ数", "Attack cost")} suffix={t("エネ以下で使える", " Energy or less")} />
       </Section>
+      <Section title={t("ワザに必要なエネ", "Attack Energy")}>
+        <EnergyToggles types={TYPES.filter((ty) => ty !== "dragon")} selected={f.costTypes} onToggle={(ty) => toggle("costTypes", ty)} />
+      </Section>
       <Section title={t("弱点", "Weakness")}>
-        {TYPES.filter((ty) => ty !== "dragon" && ty !== "colorless").map((ty) => (
-          <button key={ty} type="button" onClick={() => toggle("weakness", ty)} aria-pressed={f.weakness.includes(ty)} className={`rounded-full p-1 ${f.weakness.includes(ty) ? "ring-[3px] ring-accent" : "opacity-60"}`}>
-            <EnergyIcon type={ty} size="lg" />
-          </button>
-        ))}
+        <EnergyToggles types={TYPES.filter((ty) => ty !== "dragon" && ty !== "colorless")} selected={f.weakness} onToggle={(ty) => toggle("weakness", ty)} />
       </Section>
       <Section title={t("効果", "Effects")}>
         {topTags.map((tg) => {

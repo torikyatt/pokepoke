@@ -32,6 +32,7 @@ export interface Filters {
   weakness: EnergyType[];
   damageMin?: number;
   costMax?: number;
+  costTypes: EnergyType[]; // ワザに必要なエネ: そのエネルギーをコストに含むワザがある（どれか）
   tags: string[]; // どれかを持つ（親タグは子タグも含む）
   groups: CardGroup[];
   sets: string[];
@@ -39,7 +40,7 @@ export interface Filters {
 }
 
 export const EMPTY_FILTERS: Filters = {
-  types: [], kinds: [], stages: [], rules: [], ability: "", retreat: [], weakness: [], tags: [], groups: [], sets: [], rarities: [],
+  types: [], kinds: [], stages: [], rules: [], ability: "", retreat: [], weakness: [], costTypes: [], tags: [], groups: [], sets: [], rarities: [],
 };
 
 export function activeCount(f: Filters): number {
@@ -66,6 +67,7 @@ export function matchFilters(c: AppCard, f: Filters): boolean {
   if (f.weakness.length && !has(f.weakness, c.weakness)) return false;
   if (f.damageMin !== undefined && Math.floor(c.sortDamage) < f.damageMin) return false; // 効果で増える分も入れた最大
   if (f.costMax !== undefined && (c.minCost === undefined || c.minCost > f.costMax)) return false;
+  if (f.costTypes.length && !c.attacks.some((a) => f.costTypes.some((t) => (a.cost[t] ?? 0) > 0))) return false;
   if (f.tags.length && !f.tags.some((t) => c.tags.some((x) => x === t || x.startsWith(t + ".")))) return false;
   if (f.groups.length && !f.groups.some((g) => c.groups.includes(g))) return false;
   if (f.sets.length && !f.sets.some((s) => c.sets.includes(s))) return false;
@@ -166,6 +168,11 @@ function createPoolStore(scope: string) {
         version: 3,
         storage: safeStorage,
         partialize: (s) => ({ columns: s.columns, sort: s.sort, desc: s.desc, filters: s.filters }),
+        // 保存した絞り込みに後から足した項目（ワザに必要なエネなど）が無くても動くように、空の絞り込みに重ねる
+        merge: (saved, cur) => {
+          const s = saved as Partial<PoolState> | undefined;
+          return { ...cur, ...s, filters: { ...EMPTY_FILTERS, ...s?.filters } };
+        },
         // 前の版のはじめの並び（図鑑順・おすすめ順）のままの人は、一致度順にする（検索の一致度が並びに効くように）
         migrate: (s, version) => {
           const old = s as Omit<Partial<PoolState>, "sort"> & { sort?: string };
