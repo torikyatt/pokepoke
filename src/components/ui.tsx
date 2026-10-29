@@ -165,7 +165,9 @@ export function BottomNav() {
     </button>
   );
   return (
-    <nav className="neu fixed inset-x-0 bottom-0 z-[46] rounded-t-3xl pb-[env(safe-area-inset-bottom)]">
+    // 下の背景を画面の外まで延ばす（スクロールでブラウザのバーが縮むとき、下に固定したものの位置の更新が遅れて
+    // 下にすき間が開くブラウザがあるので、そのすき間も同じ色でうめる）
+    <nav className="neu fixed inset-x-0 bottom-0 z-[46] rounded-t-3xl pb-[env(safe-area-inset-bottom)] after:pointer-events-none after:absolute after:inset-x-0 after:top-[calc(100%-1px)] after:h-[40vh] after:bg-panel">
       <div className="mx-auto flex max-w-3xl">
         {item("search", t("カード", "Cards"), "/", <IconSearch />)}
         {item("deck", t("デッキ", "Decks"), "/deck", <IconDeck />)}
@@ -305,7 +307,7 @@ export function Sheet({ open, onClose, title, children, footer, z = "z-50" }: { 
   return createPortal(
     <div className={`fixed inset-0 ${z} flex flex-col justify-end lg:items-center lg:justify-center lg:p-6`} role="dialog" aria-modal="true" aria-label={title}>
       <button ref={backdrop} type="button" aria-label={t("閉じる", "Close")} className="absolute inset-0 bg-scrim/35" onClick={onClose} />
-      <div ref={panel} className="sheet-up relative mx-auto flex max-h-[88dvh] w-full max-w-3xl flex-col rounded-t-3xl bg-panel shadow-2xl lg:max-w-2xl lg:rounded-3xl">
+      <div ref={panel} className="sheet-up relative mx-auto flex max-h-[88dvh] w-full max-w-3xl flex-col rounded-t-3xl bg-panel shadow-2xl lg:max-w-2xl lg:rounded-3xl after:pointer-events-none after:absolute after:inset-x-0 after:top-[calc(100%-1px)] after:h-[40vh] after:bg-panel lg:after:hidden">
         <div onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerCancel={onUp} className="cursor-grab touch-none select-none">
           <span aria-hidden className="mx-auto mt-2 block h-1 w-10 rounded-full bg-slot-line lg:hidden" />
           <div className="flex items-center justify-between px-5 pt-2 pb-2 lg:pt-4">

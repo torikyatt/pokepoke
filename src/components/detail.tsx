@@ -449,7 +449,7 @@ export function DetailSheet() {
         aria-modal={full}
         aria-hidden={!open}
         aria-label={card ? cardName(card, lang) : t("カード詳細", "Card details")}
-        className={`group fixed inset-x-0 bottom-0 z-50 mx-auto flex h-[94dvh] max-w-3xl flex-col rounded-t-3xl bg-canvas shadow-[0_-6px_24px_rgb(61_71_87/0.22)] [backface-visibility:hidden] will-change-transform transition-transform duration-300 ease-[cubic-bezier(.2,.8,.2,1)] ${open ? "" : "pointer-events-none"}`}
+        className={`group fixed inset-x-0 bottom-0 z-50 mx-auto flex h-[94dvh] max-w-3xl flex-col rounded-t-3xl bg-canvas shadow-[0_-6px_24px_rgb(61_71_87/0.22)] after:pointer-events-none after:absolute after:inset-x-0 after:top-[calc(100%-1px)] after:h-[40vh] after:bg-canvas [backface-visibility:hidden] will-change-transform transition-transform duration-300 ease-[cubic-bezier(.2,.8,.2,1)] ${open ? "" : "pointer-events-none"}`}
         style={{ transform: SHEET_TRANSFORM[at] }}
       >
         {/* 半分で止まる位置の合図: ふちが水色にふわっと光る */}
