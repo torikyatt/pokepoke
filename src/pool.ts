@@ -54,8 +54,10 @@ export function activeCount(f: Filters): number {
 
 const has = <T>(list: T[], v: T | undefined) => !list.length || (v !== undefined && list.includes(v));
 
-// 絞り込みは、同じ欄で複数選んだら「全部に当てはまる」（AND）。
-// ただし1枚に1つしかないもの（カードの種類・進化・ルール・にげるエネ・弱点）は、全部に当てはまるカードが無いので「どれか」（OR）
+// 同じ欄で複数選んだとき:
+//   タイプ・ワザに必要なエネ・効果は「全部」（AND）。カードの性質をかけ合わせて絞りたいので
+//   それ以外（カードの種類・進化・ルール・にげるエネ・弱点・グループ・パック・レアリティ）は「どれか」（OR）。
+//   1枚に1つしかないものや、「ex かメガシンカex」「このパックかあのパック」のように並べて見たいもの
 export function matchFilters(c: AppCard, f: Filters): boolean {
   if (!f.types.every((t) => c.type === t || c.type2 === t || c.typeRefs.includes(t))) return false;
   if (!has(f.kinds, c.kind)) return false;
@@ -72,9 +74,9 @@ export function matchFilters(c: AppCard, f: Filters): boolean {
   // 1つのワザのコストに、選んだエネルギーが全部入っている
   if (f.costTypes.length && !c.attacks.some((a) => f.costTypes.every((t) => (a.cost[t] ?? 0) > 0))) return false;
   if (!f.tags.every((t) => c.tags.some((x) => x === t || x.startsWith(t + ".")))) return false;
-  if (!f.groups.every((g) => c.groups.includes(g))) return false;
-  if (!f.sets.every((s) => c.sets.includes(s))) return false;
-  if (!f.rarities.every((r) => c.rarities.includes(r))) return false;
+  if (f.groups.length && !f.groups.some((g) => c.groups.includes(g))) return false;
+  if (f.sets.length && !f.sets.some((s) => c.sets.includes(s))) return false;
+  if (f.rarities.length && !f.rarities.some((r) => c.rarities.includes(r))) return false;
   return true;
 }
 

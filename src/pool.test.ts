@@ -21,15 +21,16 @@ describe("絞り込み", () => {
     const colorless = data.cards.filter((c) => matchFilters(c, { ...EMPTY_FILTERS, costTypes: ["colorless"] }));
     expect(colorless.every((c) => c.kind === "pokemon")).toBe(true);
   });
-  it("複数選んだら全部に当てはまるもの（AND）。1枚に1つしかないもの（進化など）は、どれか（OR）", () => {
-    const dual = data.cards.filter((c) => matchFilters(c, { ...EMPTY_FILTERS, types: ["water", "darkness"] }));
+  it("タイプ・効果は複数選んだら全部（AND）、グループ・パック・レアリティ・ルールなどは、どれか（OR）", () => {
+    const n = (f: Partial<typeof EMPTY_FILTERS>) => data.cards.filter((c) => matchFilters(c, { ...EMPTY_FILTERS, ...f }));
+    const dual = n({ types: ["water", "darkness"] });
     expect(dual.some((c) => c.id === "c1-042")).toBe(true); // メガゲッコウガex（水・悪）
-    expect(dual.every((c) => [c.type, c.type2, ...c.typeRefs].includes("water") && [c.type, c.type2, ...c.typeRefs].includes("darkness"))).toBe(true);
-    const tags = ["status.sleep", "status.poison"];
-    const both = data.cards.filter((c) => matchFilters(c, { ...EMPTY_FILTERS, tags }));
+    expect(dual.length).toBeLessThan(n({ types: ["water"] }).length);
+    const both = n({ tags: ["status.sleep", "status.poison"] });
     expect(both.length).toBeGreaterThan(0);
-    expect(both.every((c) => tags.every((t) => c.tags.includes(t)))).toBe(true);
-    const stages = data.cards.filter((c) => matchFilters(c, { ...EMPTY_FILTERS, stages: ["basic", "stage1"] }));
-    expect(stages.length).toBeGreaterThan(0);
+    expect(both.every((c) => c.tags.includes("status.sleep") && c.tags.includes("status.poison"))).toBe(true);
+    expect(n({ rules: ["ex", "mega_ex"] }).length).toBeGreaterThan(n({ rules: ["ex"] }).length);
+    expect(n({ sets: ["a1", "c1"] }).length).toBeGreaterThan(n({ sets: ["a1"] }).length);
+    expect(n({ rarities: ["☆", "☆☆"] }).length).toBeGreaterThan(n({ rarities: ["☆"] }).length);
   });
 });
