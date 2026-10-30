@@ -32,8 +32,8 @@ export interface Filters {
   weakness: EnergyType[];
   damageMin?: number;
   costMax?: number;
-  costTypes: EnergyType[]; // ワザに必要なエネ: そのエネルギーをコストに含むワザがある（どれか）
-  tags: string[]; // どれかを持つ（親タグは子タグも含む）
+  costTypes: EnergyType[]; // ワザに必要なエネ: 選んだエネルギーを全部コストに含むワザがある
+  tags: string[]; // 全部を持つ（親タグは子タグも含む）
   groups: CardGroup[];
   sets: string[];
   rarities: string[];
@@ -54,8 +54,10 @@ export function activeCount(f: Filters): number {
 
 const has = <T>(list: T[], v: T | undefined) => !list.length || (v !== undefined && list.includes(v));
 
+// 絞り込みは、同じ欄で複数選んだら「全部に当てはまる」（AND）。
+// ただし1枚に1つしかないもの（カードの種類・進化・ルール・にげるエネ・弱点）は、全部に当てはまるカードが無いので「どれか」（OR）
 export function matchFilters(c: AppCard, f: Filters): boolean {
-  if (f.types.length && !f.types.some((t) => c.type === t || c.type2 === t || c.typeRefs.includes(t))) return false;
+  if (!f.types.every((t) => c.type === t || c.type2 === t || c.typeRefs.includes(t))) return false;
   if (!has(f.kinds, c.kind)) return false;
   if (f.stages.length && !has(f.stages, c.stage)) return false;
   if (f.rules.length && (c.kind !== "pokemon" || !f.rules.includes(c.rule))) return false;
@@ -67,11 +69,12 @@ export function matchFilters(c: AppCard, f: Filters): boolean {
   if (f.weakness.length && !has(f.weakness, c.weakness)) return false;
   if (f.damageMin !== undefined && Math.floor(c.sortDamage) < f.damageMin) return false; // 効果で増える分も入れた最大
   if (f.costMax !== undefined && (c.minCost === undefined || c.minCost > f.costMax)) return false;
-  if (f.costTypes.length && !c.attacks.some((a) => f.costTypes.some((t) => (a.cost[t] ?? 0) > 0))) return false;
-  if (f.tags.length && !f.tags.some((t) => c.tags.some((x) => x === t || x.startsWith(t + ".")))) return false;
-  if (f.groups.length && !f.groups.some((g) => c.groups.includes(g))) return false;
-  if (f.sets.length && !f.sets.some((s) => c.sets.includes(s))) return false;
-  if (f.rarities.length && !f.rarities.some((r) => c.rarities.includes(r))) return false;
+  // 1つのワザのコストに、選んだエネルギーが全部入っている
+  if (f.costTypes.length && !c.attacks.some((a) => f.costTypes.every((t) => (a.cost[t] ?? 0) > 0))) return false;
+  if (!f.tags.every((t) => c.tags.some((x) => x === t || x.startsWith(t + ".")))) return false;
+  if (!f.groups.every((g) => c.groups.includes(g))) return false;
+  if (!f.sets.every((s) => c.sets.includes(s))) return false;
+  if (!f.rarities.every((r) => c.rarities.includes(r))) return false;
   return true;
 }
 
