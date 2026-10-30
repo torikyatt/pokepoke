@@ -21,7 +21,7 @@ describe("絞り込み", () => {
     const colorless = data.cards.filter((c) => matchFilters(c, { ...EMPTY_FILTERS, costTypes: ["colorless"] }));
     expect(colorless.every((c) => c.kind === "pokemon")).toBe(true);
   });
-  it("タイプ・効果は複数選んだら全部（AND）、グループ・パック・レアリティ・ルールなどは、どれか（OR）", () => {
+  it("タイプ・効果・グループは複数選んだら全部（AND）、パック・レアリティ・ルールなどは、どれか（OR）", () => {
     const n = (f: Partial<typeof EMPTY_FILTERS>) => data.cards.filter((c) => matchFilters(c, { ...EMPTY_FILTERS, ...f }));
     const dual = n({ types: ["water", "darkness"] });
     expect(dual.some((c) => c.id === "c1-042")).toBe(true); // メガゲッコウガex（水・悪）
@@ -29,6 +29,9 @@ describe("絞り込み", () => {
     const both = n({ tags: ["status.sleep", "status.poison"] });
     expect(both.length).toBeGreaterThan(0);
     expect(both.every((c) => c.tags.includes("status.sleep") && c.tags.includes("status.poison"))).toBe(true);
+    const groups = n({ groups: ["team_rocket", "baby"] });
+    expect(groups.every((c) => c.groups.includes("team_rocket") && c.groups.includes("baby"))).toBe(true);
+    expect(groups.length).toBeLessThanOrEqual(n({ groups: ["team_rocket"] }).length);
     expect(n({ rules: ["ex", "mega_ex"] }).length).toBeGreaterThan(n({ rules: ["ex"] }).length);
     expect(n({ sets: ["a1", "c1"] }).length).toBeGreaterThan(n({ sets: ["a1"] }).length);
     expect(n({ rarities: ["☆", "☆☆"] }).length).toBeGreaterThan(n({ rarities: ["☆"] }).length);
