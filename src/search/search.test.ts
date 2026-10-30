@@ -767,3 +767,21 @@ describe("新カードのタグ（効果文を公式の画像で確かめて直�
     expect(tagsOf("b4-002")).toContain("draw.search_pokemon"); // カラサリス（ポケモンの中から）
   });
 });
+
+describe("ワザに要るエネを2つ以上（1つのワザで両方使う）", () => {
+  const ok = (q: string, a: string, b: string) => {
+    const hits = engine.search(q, 9999);
+    expect(hits.length).toBeGreaterThan(0);
+    expect(hits.every((h) => h.card.attacks.some((x) => (x.cost[a as "psychic"] ?? 0) > 0 && (x.cost[b as "psychic"] ?? 0) > 0))).toBe(true);
+    return hits.length;
+  };
+  it("「無色わざ 超わざ」「無色エネと超エネを使うワザ」「超と無色のワザ」は同じ", () => {
+    const n = ok("無色わざ　超わざ", "colorless", "psychic");
+    expect(ok("無色エネと超エネを使うワザ", "colorless", "psychic")).toBe(n);
+    expect(ok("超と無色のワザ", "colorless", "psychic")).toBe(n);
+    ok("炎わざ 水わざ", "fire", "water");
+  });
+  it("「無色わざ」だけなら、今までどおり無色エネだけで使えるワザ", () => {
+    expect(engine.explain("無色わざ").conds.map((c) => c.id)).toEqual(["costTyped"]);
+  });
+});

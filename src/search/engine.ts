@@ -809,15 +809,31 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
     take(/(?:あとは|あと|残りは|残り|のこりは|ほかは|他は)無(?:色(?:えね)?(?:の)?(?:わざ|技)?|(?= |$))/g, () => {
       add({ id: "costTyped", kind: "costTyped", n: typedSum, label: typedSeen ? "残りは無色" : "無色だけ", en: typedSeen ? "Rest Colorless" : "Colorless only" });
     });
+    // 「無色エネと超エネを使うワザ」「超と無色のワザ」→ 1つのワザで、どのエネも使う（無色も「無色だけ」ではなく、含むもの）
+    {
+      const T = `(?:${TYPE_RE})(?:えね)?`;
+      const LIST = `${T}(?:\\s*(?:と|や|か|\\s)\\s*${T})+`;
+      take(new RegExp(`${LIST}(?:を|が)?\\s*(?:(?:含む|ふくむ|含んだ|ふくんだ|使う|つかう|入った|はいつた|入る|はいる)(?:の)?|の|で(?:使える|つかえる|打てる|撃てる)(?:の)?)?\\s*(?:わざ|技)`, "g"), (m) => {
+        for (const t of m[0].match(new RegExp(TYPE_RE, "g")) ?? []) add(costHasCond(typeOf(t)));
+      });
+    }
     // 「無色エネを含む技」「水エネを使う技」（空白をはさんでも）→ そのタイプのエネを1つ以上使うワザ（無色も「無色だけ」ではなく、含むもの）
     take(new RegExp(`(${TYPE_RE})(?:えね)?(?:を|が)?\\s*(?:含む|ふくむ|含んだ|ふくんだ|使う|つかう|入った|はいつた|入る|はいる)(?:の)?\\s*(?:わざ|技)`, "g"), (m) => {
       add(costHasCond(typeOf(m[1])));
     });
     // 「無色技」「水エネのワザ」「無色エネで使えるワザ」→ ワザに要るエネのタイプ。
     // ポケモン自身のタイプ（「水ポケモン」）とは別の条件にするので、一緒に書けば両方で絞り込める
+    let colorlessWaza = false;
     take(new RegExp(`(${TYPE_RE})(?:えね)?(?:の|で(?:使える|つかえる|打てる|撃てる)(?:の)?)?(?:わざ|技)`, "g"), (m) => {
-      add(attackTypeCond(typeOf(m[1])));
+      const t = typeOf(m[1]);
+      if (t === "colorless") colorlessWaza = true;
+      add(attackTypeCond(t));
     });
+    // 「無色わざ 超わざ」のように、ほかのタイプのワザと一緒に書いた「無色わざ」は「無色だけ」ではなく、無色エネも使うワザ
+    if (colorlessWaza && conds.some((c) => c.kind === "costHas" && c.type !== "colorless")) {
+      const i = conds.findIndex((c) => c.id === COLORLESS_ONLY.id);
+      if (i >= 0) conds.splice(i, 1, costHasCond("colorless"));
+    }
     take(/(?:どのえねでも|どんなえねでも|なんのえねでも|無色だけ|無色のみ|無色えねだけ)/g, () => {
       add(COLORLESS_ONLY);
     });
