@@ -785,3 +785,18 @@ describe("ワザに要るエネを2つ以上（1つのワザで両方使う）",
     expect(engine.explain("無色わざ").conds.map((c) => c.id)).toEqual(["costTyped"]);
   });
 });
+
+describe("使えるタイミングが決まった特性", () => {
+  const ids = (q: string) => engine.search(q, 9999).map((h) => h.card.id);
+  it("進化したとき・場に出したときに使える特性", () => {
+    const evo = ids("進化時のみ使える特性");
+    expect(evo).toContain("c1-041"); // ゲコガシラ「でたとこぶんしん」（this card と書かれていても）
+    expect(evo).toContain("a3b-034"); // ニンフィアex
+    expect(ids("場に出た時のみ使える特性")).toContain("b3a-019"); // ミライドンex
+    expect(engine.explain("when it evolves").conds.map((c) => c.id)).toEqual(["tag:trigger.evolve"]);
+  });
+  it("「2進化 特性」は 2進化＋特性（進化したときの特性にしない）", () => {
+    expect(engine.explain("2進化 特性").conds.map((c) => c.id)).not.toContain("tag:trigger.evolve");
+    expect(engine.explain("進化 特性").conds.map((c) => c.id)).not.toContain("tag:trigger.evolve");
+  });
+});

@@ -673,6 +673,26 @@
         - 'When this Pokémon is Knocked Out'
         - 'Pokémon were Knocked Out by damage from an attack during your opponent.s last turn'
 
+- id: trigger
+  ja: 使えるタイミングが決まった特性
+  en: Ability with a set timing
+  children:
+    # 「自分の番に、このカードを手札から出して進化させたとき、1回使える」
+    - id: trigger.evolve
+      # 名前に「特性」を入れない（「2進化 特性」のような別々の言葉の組み合わせに当たらないように）
+      ja: 進化したときに使える
+      en: Ability usable when it evolves
+      on: [ability]
+      match:
+        - 'when you play this (Pokémon|card) from your hand to evolve'
+    # 「自分の番に、このカードを手札からベンチに出したとき、1回使える」
+    - id: trigger.bench
+      ja: 場に出したときに使える
+      en: Ability usable when played onto the Bench
+      on: [ability]
+      match:
+        - 'when you (put|play) this (Pokémon|card) from your hand onto your Bench'
+
 - id: passive
   ja: 常時効果
   en: Passive effects
