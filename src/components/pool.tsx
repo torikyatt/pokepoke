@@ -36,7 +36,9 @@ export function usePoolResults(conds: Cond[]) {
     const key: SortKey = sort === "score" && !scored ? "order" : sort;
     const sorted0 = sortHits(raw, key, key === sort ? desc : key === "score", data.meta?.usage, lang);
     // 一致度順の代わりに図鑑順にしたときも、ゆるく当たったもの（「グッズ」で探したどうぐなど）は後ろに
-    const sorted = key !== sort ? [...sorted0.filter((h) => !h.loose), ...sorted0.filter((h) => h.loose)] : sorted0;
+    const sorted1 = key !== sort ? [...sorted0.filter((h) => !h.loose), ...sorted0.filter((h) => h.loose)] : sorted0;
+    // 「最新のカード」で新しい絵柄だけ追加された前からあるカード（新しい絵柄で見せるもの）は、いちばん後ろに
+    const sorted = [...sorted1.filter((h) => !h.print), ...sorted1.filter((h) => h.print)];
     // 一致度順で切るのは、弱い一致（いちばん良い一致の半分未満）だけ。強く一致したものは50件を超えても全部出す
     const strong = key === "score" && !usageFirst ? sorted.filter((h) => h.score >= (sorted[0]?.score ?? 0) * 0.5) : sorted;
     return { hits: key === "score" && !usageFirst ? (strong.length > 50 ? strong : sorted.slice(0, 50)) : sorted, scored, total: raw.length };

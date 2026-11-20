@@ -122,7 +122,18 @@ function fileVer(...files: string[]): string {
 }
 const versioned = (file: string) => `${file}?v=${fileVer(file)}`;
 
+/** 絵柄ごとのサムネイル（基本の絵柄でない、最新のパックの再録の絵柄。scripts/thumbs.ts が作る）があれば印を付ける */
 function printOf(c: Card, p: Card["prints"][number]): AppPrint {
+  const out = printOfInner(c, p);
+  if (p.id !== c.id && existsSync(join(ROOT, "public/thumbs", `${p.id}.webp`))) {
+    out.thumb = true;
+    if (existsSync(join(ROOT, "public/thumbs-ja", `${p.id}.webp`))) out.jaThumb = true;
+    out.tv = fileVer(`thumbs/${p.id}.webp`, `thumbs-ja/${p.id}.webp`);
+  }
+  return out;
+}
+
+function printOfInner(c: Card, p: Card["prints"][number]): AppPrint {
   const out: AppPrint = { id: p.id, set: p.set, setName: p.setName, rarity: p.rarity };
   // 先行公開の情報から作ったカード・絵違いは先行公開の画像。日本語は、手で置いた画像（public/cards-ja/manual/。自引きのキャプチャなど）があればそれ
   if (c.upcoming || p.prelim) {
@@ -132,10 +143,6 @@ function printOf(c: Card, p: Card["prints"][number]): AppPrint {
     out.imageEn = p.imageEn ? jaLocal(p.imageEn) : p.image ? jaLocal(p.image) : out.imageJa;
     if (p.pack) out.pack = p.pack;
     if (p.how) out.how = p.how;
-    // 既存カードの再録の絵柄は、その絵柄のサムネイル（「最新のカード」で見せる）
-    if (p.prelim && existsSync(join(ROOT, "public/thumbs", `${p.id}.webp`))) out.thumb = true;
-    if (p.prelim && existsSync(join(ROOT, "public/thumbs-ja", `${p.id}.webp`))) out.jaThumb = true;
-    if (out.thumb) out.tv = fileVer(`thumbs/${p.id}.webp`, `thumbs-ja/${p.id}.webp`);
     return out;
   }
   // 英語画像は収録IDから場所が決まるので、まだ自前で置いていないものだけ元の URL を持たせる

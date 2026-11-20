@@ -697,11 +697,12 @@ describe("効果も入れた最大ダメージ（並べ替え・条件の絞り�
 });
 
 describe("最新のカード", () => {
-  it("いちばん新しいパックと、それ以降に出たプロモ・スペシャルパック、実装予定のカード", () => {
+  it("いちばん新しいパックと、それ以降に出たスペシャルパック、いちばん新しいプロモ、実装予定のカード", () => {
     const setDate = new Map(data.sets.map((s) => [s.code, s.released]));
     const big = data.sets.filter((s) => !/^p/.test(s.code) && s.released && data.cards.filter((c) => !c.upcoming && c.sets.includes(s.code)).length >= 50);
     const from = big.map((s) => s.released).sort().pop()!;
-    const expected = data.cards.filter((c) => c.upcoming || c.sets.some((code) => (setDate.get(code) || "0") >= from));
+    const promo = [...new Set(data.cards.flatMap((c) => c.sets))].filter((s) => /^p[a-z]$/.test(s)).sort().pop(); // いちばん新しいプロモ
+    const expected = data.cards.filter((c) => c.upcoming || c.sets.some((code) => (setDate.get(code) || "0") >= from || code === promo));
     const hits = engine.search("最新のカード", 9999);
     expect(new Set(hits.map((h) => h.card.id))).toEqual(new Set(expected.map((c) => c.id)));
     expect(engine.explain("最新のカード").conds.map((c) => c.label)).toEqual(["最新のカード"]);
@@ -721,6 +722,18 @@ describe("最新のカード", () => {
     const p = reprint.prints.find((p) => p.thumb)!;
     expect(engine.search("最新のカード", 9999).find((h) => h.card.id === reprint.id)?.print).toBe(p.id);
     expect(engine.search(reprint.nameJa, 9999).find((h) => h.card.id === reprint.id)?.print).toBeUndefined();
+  });
+  it("プロモCも入り、新しい絵柄だけ追加された前からあるカードは全部その絵柄で、いちばん後ろ", () => {
+    const hits = engine.search("最新のカード", 9999);
+    expect(hits.some((h) => h.card.id === "pc-002")).toBe(true); // メガミュウツーYex（プロモC）
+    const pika = hits.find((h) => h.card.prints.some((p) => p.id === "pc-001"))!; // ピカチュウ（夢幻パレード → プロモCで新しい絵柄）
+    expect(pika.print).toBe("pc-001");
+    const first = hits.findIndex((h) => h.print);
+    expect(first).toBeGreaterThan(0);
+    expect(hits.slice(first).every((h) => h.print)).toBe(true);
+    // 新しい絵柄だけ追加されたカードは、全部新しい絵柄（サムネイル）で見せる
+    const NEW = ["c1", "pc", "sp1"];
+    for (const h of hits) if (!NEW.includes(h.card.prints[0].set) && !h.card.upcoming) expect(h.print).toBeTruthy();
   });
   it("ほかの条件と組み合わせられる・英語でも", () => {
     expect(engine.explain("新弾の炎ポケモン").conds.map((c) => c.id)).toEqual(expect.arrayContaining(["latest", "type:fire"]));

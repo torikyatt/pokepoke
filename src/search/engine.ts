@@ -338,13 +338,14 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
   };
   const usage = data.meta?.usage ?? {};
   // 最新のカード: いちばん新しいパック（プロモ・スペシャルパックのような小さいものは除く）と、その発売日以降に出たカード
-  // （新しいプロモ・スペシャルパック）、それに実装予定のカード
+  // （スペシャルパック）、いちばん新しいプロモ（プロモC など）、それに実装予定のカード（scripts/lib/latest.ts と同じ決め方）
   const latest = (() => {
     const setDate = new Map(data.sets.map((s) => [s.code, s.released]));
     const count = new Map<string, number>();
     for (const c of data.cards) if (!c.upcoming) for (const code of c.sets) count.set(code, (count.get(code) ?? 0) + 1);
     const from = [...count].filter(([code, n]) => n >= 50 && !/^p/.test(code) && setDate.get(code)).map(([code]) => setDate.get(code)!).sort().pop() ?? "9999";
-    const isNew = (code: string) => (setDate.get(code) || "0") >= from;
+    const promo = [...count.keys()].filter((s) => /^p[a-z]$/.test(s)).sort().pop();
+    const isNew = (code: string) => (setDate.get(code) || "0") >= from || code === promo;
     // 前からあるカードが新しいパックに再録されたものは、新しい絵柄（サムネイルがあるもの）で見せる。性能は同じなので
     const prints = new Map<string, string>();
     for (const c of data.cards) {
@@ -1281,7 +1282,8 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       const print = latestCond ? latest.prints.get(card.id) : undefined;
       hits.push({ card, score, ...(print ? { print } : {}), ...(byText || toolAsItem ? { loose: true } : {}), matched: [...matched], effects: [...effectNames.keys()].filter(Boolean), effectsEn: [...effectNames.values()].filter(Boolean), ...(note ? { note, noteEn } : {}) });
     }
-    hits.sort((a, b) => b.score - a.score || order(a.card) - order(b.card));
+    // 「最新のカード」で新しい絵柄だけ追加された前からあるカード（print あり）は、新しく出たカードの後ろに
+    hits.sort((a, b) => Number(!!a.print) - Number(!!b.print) || b.score - a.score || order(a.card) - order(b.card));
     return hits.slice(0, limit);
   }
 

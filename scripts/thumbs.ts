@@ -7,6 +7,7 @@ import { join } from "node:path";
 import sharp from "sharp";
 import { jaImageIndex } from "./lib/game8.ts";
 import { jaImageFile } from "./lib/ja-images.ts";
+import { latestSets } from "./lib/latest.ts";
 import { orderedPrints } from "./lib/prints.ts";
 import type { Card } from "./lib/types.ts";
 
@@ -32,15 +33,33 @@ const prelimFile = (p: Card["prints"][number]) => {
 };
 /** 先行公開の絵柄に日本語の画像があるか（手で置いた画像、または Game8 の画像。Serebii は英語） */
 const hasJaImage = (p: Card["prints"][number]) => existsSync(join(ROOT, "public/cards-ja/manual", `${p.id}.webp`)) || (!!p.image && !/serebii\.net/.test(p.image));
-// 既存カードに足した再録（先行公開の絵違い）は、収録IDでサムネイルを作る（「最新のカード」でその絵柄を見せる）
+// 前からあるカードの、最新のパックでの再録の絵柄は、収録IDでもサムネイルを作る（「最新のカード」でその絵柄を見せる）
+//   英語: 先行公開の画像か元データ（PocketDecks）の画像。日本語: 手で置いた画像か Game8 の画像（無ければ英語）
+const latest = latestSets(cards);
+const g8Print = (() => {
+  const g8: { g8Id: number; set: string; number: number; image?: string }[] = JSON.parse(readFileSync(join(ROOT, "data/game8/cards.json"), "utf8"));
+  const match: Record<string, { g8: number[] }> = JSON.parse(readFileSync(join(ROOT, "data/game8/match.json"), "utf8"));
+  const byId = new Map(g8.map((x) => [x.g8Id, x]));
+  const setOf = (s: string) => ({ pa: "PROMO-A", pb: "PROMO-B", pc: "PROMO-C" } as Record<string, string>)[s] ?? s.charAt(0).toUpperCase() + s.slice(1);
+  return (c: Card, p: Card["prints"][number]) => {
+    const g = (match[c.id]?.g8 ?? []).map((id) => byId.get(id)).find((x) => x && x.image && x.set === setOf(p.set) && x.number === Number(p.id.split("-").pop()));
+    const file = g?.image ? join(ROOT, "public", jaImageFile(g.image)) : undefined;
+    return file && existsSync(file) ? file : undefined;
+  };
+})();
 const printIds: string[] = [];
-for (const c of cards)
+for (const c of cards) {
+  if (c.upcoming || latest.has(c.prints[0].set)) continue;
   for (const p of c.prints) {
-    const file = p.prelim && prelimFile(p);
+    if (p.id === c.id || !latest.has(p.set)) continue;
+    const manual = join(ROOT, "public/cards-ja/manual", `${p.id}.webp`);
+    const en = p.prelim ? prelimFile(p) : p.image;
+    const file = ja ? (existsSync(manual) ? manual : g8Print(c, p) ?? en) : en;
     if (!file) continue;
     src.set(p.id, [file]);
     printIds.push(p.id);
   }
+}
 for (const c of cards) {
   // 先行公開のカードは、先行公開の画像から作る。日本語は、日本語の画像がある絵柄（基本の絵柄に無ければ絵違い）から
   if (c.upcoming) {
