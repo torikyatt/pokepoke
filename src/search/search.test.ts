@@ -800,3 +800,19 @@ describe("使えるタイミングが決まった特性", () => {
     expect(engine.explain("進化 特性").conds.map((c) => c.id)).not.toContain("tag:trigger.evolve");
   });
 });
+
+describe("検索ログから（11月）", () => {
+  it("読める条件が無い言葉で全カードを出さない（名前にその言葉を含むカード、無ければ0件）", () => {
+    expect(engine.search("コトハ", 9999).length).toBe(0);
+    const e = engine.search("エ", 9999);
+    expect(e.length).toBeGreaterThan(0);
+    expect(e.length).toBeLessThan(data.cards.length);
+    expect(e.every((h) => h.card.nameJa.includes("エ") || h.card.nameEn.toLowerCase().includes("e"))).toBe(true);
+  });
+  it("英語のパック名の打ちかけ（Fanta → Fantastical Parade）", () => {
+    expect(engine.explain("Fanta").conds.map((c) => c.id)).toEqual(["set:b2"]);
+  });
+  it("「ポケモンをトラッシュ」→ 自分のベンチ（ポケモン）をトラッシュ", () => {
+    expect(engine.explain("ポケモンをトラッシュ").conds.map((c) => c.id)).toContain("tag:drawback.discard_bench");
+  });
+});

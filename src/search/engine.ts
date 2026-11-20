@@ -1108,6 +1108,21 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
         out.push({ id: `name:${w}`, kind: "name", name: w, ids: named.map((c) => c.id), pin: true, label: `名前に「${useJa ? query.trim() : w}」`, en: `Name contains "${w}"`, weight: 3 });
       }
     }
+    // 英語のパック名の打ちかけ（「Fanta」→ Fantastical Parade）: 読めなかった言葉1つだけで、カード名にも無く、
+    // 頭が合うパックが1つだけなら、そのパック
+    if (out.length === 1 && out[0].kind === "text" && !out[0].read) {
+      const w = enKey(query).trim();
+      const sets = /^[a-z]{4,}$/.test(w) ? setNames.filter((x) => x.en.startsWith(w)) : [];
+      if (sets.length === 1 && !data.cards.some((c) => haystack.get(c.id)!.nameEn.includes(w))) out.splice(0, 1, setCond(sets[0].s));
+    }
+    // 読める条件が1つも無いとき（「コトハ」→「こと」「は」がどちらも読み飛ばす言葉、「エ」1文字）: 全カードを出さない。
+    // 名前にその言葉を含むカード（無ければ0件）
+    if (!out.length && query.trim()) {
+      const sj = strictKey(query);
+      const en = enKey(query).trim();
+      const ids = data.cards.filter((c) => strictNames.get(c.id)!.includes(sj) || (!!en && haystack.get(c.id)!.nameEn.includes(en))).map((c) => c.id);
+      out.push({ id: `name:${sj}`, kind: "name", name: sj, ids, label: `名前に「${query.trim()}」`, en: `Name contains "${query.trim()}"`, weight: 3 });
+    }
     const unread = [...new Set([...out.flatMap((c) => (c.kind === "text" && !c.read ? [c.term] : [])), ...dropped])].filter((w) => !exactNames.has(w));
     return { conds: out, unread };
   }
