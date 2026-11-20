@@ -807,12 +807,13 @@ describe("検索ログから（11月）", () => {
     const e = engine.search("エ", 9999);
     expect(e.length).toBeGreaterThan(0);
     expect(e.length).toBeLessThan(data.cards.length);
-    expect(e.every((h) => h.card.nameJa.includes("エ") || h.card.nameEn.toLowerCase().includes("e"))).toBe(true);
+    expect(e.every((h) => /[エえ]/.test(h.card.nameJa))).toBe(true);
   });
   it("英語のパック名の打ちかけ（Fanta → Fantastical Parade）", () => {
     expect(engine.explain("Fanta").conds.map((c) => c.id)).toEqual(["set:b2"]);
   });
-  it("「ポケモンをトラッシュ」→ 自分のベンチ（ポケモン）をトラッシュ", () => {
+  it("「ポケモンをトラッシュ」→ 自分のベンチ（ポケモン）をトラッシュ。「ポケモンをトラッシュから」は回収のまま", () => {
     expect(engine.explain("ポケモンをトラッシュ").conds.map((c) => c.id)).toContain("tag:drawback.discard_bench");
+    expect(engine.explain("ポケモンをトラッシュから手札に戻せるカード").conds.map((c) => c.id)).not.toContain("tag:drawback.discard_bench");
   });
 });

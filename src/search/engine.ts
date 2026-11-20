@@ -735,6 +735,9 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
 
     // 「回復しながら攻撃」の「しながら」は、ただのつなぎ
     take(/しながら/g, () => {});
+    // 「ポケモンをトラッシュ」「自分のポケモンを捨てる」だけ → 自分のベンチ（ポケモン）をトラッシュする効果。
+    // 「ポケモンをトラッシュから〜」（回収）は辞書のほうで読む
+    take(/(?:自分の)?ぽけもんを(?:とらつしゆ|捨て)(?:する|できる|る)?(?!\s*(?:から|に|の))/g, () => add(condOf({ tag: "drawback.discard_bench" }, 1, "ポケモンをトラッシュ")));
     // 「毎ターン使える特性」→ 自分の番に1回使える特性（常時はたらく特性ではなく、使うもの）
     take(/(?:毎たん|まいたん|毎番|毎回|毎ターン)(?:に)?(?:使える|つかえる|使う|つかう|発動できる)?/g, () =>
       add({ id: "text:番に1回", kind: "text", term: normalize("番に1回").replace(/ /g, ""), label: "毎ターン使える（番に1回）", en: "Usable every turn", weight: 0.6, read: true }),
@@ -1116,8 +1119,8 @@ export function createEngine(data: AppData, opts: EngineOptions = {}) {
       if (sets.length === 1 && !data.cards.some((c) => haystack.get(c.id)!.nameEn.includes(w))) out.splice(0, 1, setCond(sets[0].s));
     }
     // 読める条件が1つも無いとき（「コトハ」→「こと」「は」がどちらも読み飛ばす言葉、「エ」1文字）: 全カードを出さない。
-    // 名前にその言葉を含むカード（無ければ0件）
-    if (!out.length && query.trim()) {
+    // 名前にその言葉を含むカード（無ければ0件）。英字1〜2文字（「p」）は打っている途中かもしれないので広げない
+    if (!out.length && query.trim() && !/^[a-z0-9 ]{1,2}$/i.test(query.trim())) {
       const sj = strictKey(query);
       const en = enKey(query).trim();
       const ids = data.cards.filter((c) => strictNames.get(c.id)!.includes(sj) || (!!en && haystack.get(c.id)!.nameEn.includes(en))).map((c) => c.id);
