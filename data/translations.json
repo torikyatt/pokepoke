@@ -520,23 +520,28 @@
  },
  "8d6e6e1eb499": {
   "en": "Psychic Blaster",
-  "ja": "サイコブラスター"
+  "ja": "サイキックブラスター",
+  "official": true
  },
  "6de8f9b041c7": {
   "en": "Flip a coin for each [P] Energy attached to this Pokémon. This attack does 60 damage for each heads.",
-  "ja": "このポケモンの超エネルギーの数ぶんコインを投げ、オモテの数×60ダメージ。"
+  "ja": "このポケモンの超エネルギーの数ぶんコインを投げ、オモテの数×60ダメージ。",
+  "official": true
  },
  "855d5553915b": {
   "en": "Perplex",
-  "ja": "こんわく"
+  "ja": "まどわす",
+  "official": true
  },
  "8e147eccd8c2": {
   "en": "If your opponent's Active Pokémon is Confused, this attack does 90 more damage.",
-  "ja": "相手のバトルポケモンがこんらんなら、90ダメージ追加。"
+  "ja": "相手のバトルポケモンがこんらんなら、90ダメージ追加。",
+  "official": true
  },
  "0cdb8c0045e0": {
   "en": "Genome Converter Y",
-  "ja": "ゲノムコンバーターY"
+  "ja": "ゲノムコンバーターY",
+  "official": true
  },
  "724d3300a84f": {
   "en": "Move all [P] Energy from 1 of your Benched [P] Pokémon to your Mega Mewtwo Y ex in the Active Spot.",
@@ -695,6 +700,16 @@
  "7820be0d925b": {
   "en": "Discard 2 random Energy from this Pokémon.",
   "ja": "このポケモンからエネルギーをランダムに2個トラッシュ。",
+  "official": true
+ },
+ "bf785d8d566c": {
+  "en": "Pester the Dizzy",
+  "ja": "めまいのついげき",
+  "official": true
+ },
+ "13d8947377a0": {
+  "en": "Move all [ P ] Energy from 1 of your Benched [ P ] Pokémon to your Mega Mewtwo Y ex in the Active Spot.",
+  "ja": "自分のベンチの超ポケモン1匹から超エネルギーをすべて、バトル場の「メガミュウツーYex」につけ替える。",
   "official": true
  }
 }

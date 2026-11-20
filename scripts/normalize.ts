@@ -89,7 +89,8 @@ for (const xs of groups.values()) {
     evolvesTo: [],
     rule: x.mega ? "mega_ex" : x.ex ? "ex" : "normal",
     groups: [
-      ...((x.special_tags ?? []) as string[]).map((g) => (({ ultra_beasts: "ultra_beast" }) as Record<string, string>)[g] ?? g),
+      // dual_type はグループではなく2つ目のタイプ（subtype_2）で表す
+      ...((x.special_tags ?? []) as string[]).filter((g) => g !== "dual_type").map((g) => (({ ultra_beasts: "ultra_beast" }) as Record<string, string>)[g] ?? g),
       ...(/^Team Rocket's /.test(x.name) ? ["team_rocket"] : []),
     ] as Card["groups"],
     attacks: [],
@@ -98,6 +99,7 @@ for (const xs of groups.values()) {
   };
   if (kind === "pokemon") {
     card.type = TYPE[x.subtype];
+    if (x.subtype_2) card.type2 = TYPE[x.subtype_2]; // デュアルタイプ（デュアルフュージョン〜）
     card.stage = STAGE[x.stage];
     card.evolvesFromName = x.evolves_from ?? undefined;
     card.points = x.points ?? undefined;

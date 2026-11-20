@@ -53,10 +53,13 @@ const CODE: Record<string, string> = Object.fromEntries(Object.entries(COST).map
 // ワザ名が分かっていないもの（?）は、名前を比べない
 const realKey = (c: Card, x: YCard) =>
   c.attacks.map((a, i) => atkKey(Object.entries(a.cost).flatMap(([t, n]) => Array(n).fill(CODE[t])).join(""), a.damage, x.attacks?.[i]?.nameEn ? a.nameEn : undefined)).join("|");
+// 同じ収録ID（「pc-009」）のプリントが元データにあれば、それも実装済み
+const realIds = new Set(cards.flatMap((c) => c.prints.filter((p) => !p.prelim).map((p) => p.id)));
 const arrived = (date: string | undefined, x: YCard) =>
-  date
+  realIds.has(x.id) ||
+  (date
     ? cards.some((c) => released(c).some((d) => d >= date))
-    : cards.some((c) => c.nameEn === x.nameEn && c.hp === x.hp && realKey(c, x) === (x.attacks ?? []).map((a) => atkKey(a.cost, a.damage, a.nameEn)).join("|") && (x.kind ?? "pokemon") === c.kind && (c.kind === "pokemon" || c.text?.textEn === x.text?.textEn));
+    : cards.some((c) => c.nameEn === x.nameEn && c.hp === x.hp && realKey(c, x) === (x.attacks ?? []).map((a) => atkKey(a.cost, a.damage, a.nameEn)).join("|") && (x.kind ?? "pokemon") === c.kind && (c.kind === "pokemon" || c.text?.textEn === x.text?.textEn)));
 
 const effect = (e: YEffect, machine: boolean) => ({
   ...(e.unknown ? { unknown: true as const } : {}),
@@ -104,6 +107,18 @@ for (const x of y.cards) {
   const set = y.sets.find((s) => s.code === x.set);
   if (arrived(set?.date, x)) {
     skipped.push(x.nameEn);
+    // 実装されたカードの絵違いのうち、まだ元データに無いもの（別の先行公開のパックの絵柄）は、元データのカードに足す
+    const real = cards.find((c) => c.prints.some((p) => p.id === x.id && !p.prelim));
+    for (const p of x.prints ?? []) {
+      if (!real || realIds.has(p.id)) continue;
+      const ps = y.sets.find((s) => s.code === p.set);
+      const start = ps?.date ?? ps?.available;
+      real.prints.push({
+        id: p.id, set: p.set ?? x.set, setName: ps?.nameEn ?? p.set ?? x.set, rarity: p.rarity, image: p.image ?? "", ...(start ? { released: start } : {}),
+        ...(p.pack ? { pack: p.pack } : {}), ...(p.how ? { how: p.how } : {}), prelim: true,
+      });
+      reprinted++;
+    }
     continue;
   }
   const start = set?.date ?? set?.available;

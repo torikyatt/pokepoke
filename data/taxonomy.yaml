@@ -161,7 +161,7 @@
           match:
             - 'random Item card from your deck'
             - 'Put all Item cards you find there'
-            - 'Put a [^.]* rental card into your hand'
+            - 'Put an? ([^.]* )?rental card into your hand'
             - 'random cards from among Super Potion'
             - 'put all Item cards you find there'
           children:
@@ -978,7 +978,7 @@
       ja: 次の番ダメージが下がる
       en: Weaker next turn
       match:
-        - 'During your next turn, this Pokémon.s [^.]* attack does [−-]\d+ damage'
+        - 'During your next turn, this Pokémon.s [^.]* does [−-]\d+ damage'
     - id: drawback.self_status
       ja: 自分が状態異常になる
       en: Self Special Condition

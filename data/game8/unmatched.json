@@ -109,9 +109,26 @@
    "reason": "Game8に合う行が無い: ワザ「Call for Family」"
   },
   {
-   "id": "pb-099",
-   "nameEn": "Mega Garchomp ex",
-   "nameJa": "メガガブリアスex",
+   "id": "pc-002",
+   "nameEn": "Mega Mewtwo Y ex",
+   "nameJa": "メガミュウツーYex",
+   "reason": "Game8に該当カードが見つからない"
+  },
+  {
+   "id": "pc-004",
+   "nameEn": "Inkay",
+   "nameJa": "マーイーカ",
+   "reason": "Game8に合う行が無い: ワザ「Perplex」"
+  },
+  {
+   "id": "pc-005",
+   "nameEn": "Malamar",
+   "nameJa": "カラマネロ",
+   "reason": "Game8に合う行が無い: ワザ「Pester the Dizzy」"
+  },
+  {
+   "id": "pc-009",
+   "nameEn": "Genome Converter Y",
    "reason": "Game8に該当カードが見つからない"
   }
  ],
@@ -196,6 +213,22 @@
   {
    "g8Id": 2101422,
    "title": "キルリア(B4-167/155)"
+  },
+  {
+   "g8Id": 2197161,
+   "title": "ダークライ(PROMO-B-095/P-B)"
+  },
+  {
+   "g8Id": 2197162,
+   "title": "タイレーツ(PROMO-B-096/P-B)"
+  },
+  {
+   "g8Id": 2197163,
+   "title": "フカマル(PROMO-B-097/P-B)"
+  },
+  {
+   "g8Id": 2197164,
+   "title": "ガバイト(PROMO-B-098/P-B)"
   }
  ]
 }

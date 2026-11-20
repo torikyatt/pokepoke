@@ -714,7 +714,9 @@ describe("最新のカード", () => {
     for (const c of data.cards.filter((c) => c.upcoming)) expect(hits.some((h) => h.card.id === c.id)).toBe(true);
   });
   it("前からあるカードの再録は、新しい絵柄で見せる（ほかの検索ではふつうの絵柄）", () => {
-    const reprint = data.cards.find((c) => !c.upcoming && c.prints.some((p) => p.thumb));
+    const newest = new Set(engine.search("最新のカード", 9999).map((h) => h.card.id));
+    // 前のパックが基本の絵柄で、新しい絵柄（サムネイルのある再録）があるカード
+    const reprint = data.cards.find((c) => !c.upcoming && newest.has(c.id) && !["c1", "pc", "sp1"].includes(c.prints[0].set) && c.prints.some((p) => p.thumb));
     if (!reprint) return;
     const p = reprint.prints.find((p) => p.thumb)!;
     expect(engine.search("最新のカード", 9999).find((h) => h.card.id === reprint.id)?.print).toBe(p.id);
